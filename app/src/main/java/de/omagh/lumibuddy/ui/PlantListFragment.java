@@ -1,38 +1,127 @@
 package de.omagh.lumibuddy.ui;
 
-import androidx.lifecycle.ViewModelProvider;
-
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.data.model.Plant;
 
+import java.util.ArrayList;
+
+/**
+ * Fragment displaying a list of plants, with add, delete, and image support.
+ * Tapping a plant navigates to its detail; long-pressing deletes.
+ */
 public class PlantListFragment extends Fragment {
+    private PlantListViewModel viewModel;
+    private PlantListAdapter adapter;
+    // The most recent image URI picked for a new plant
+    private Uri pickedImageUri = null;
+    // Reference to the current ImageView in the dialog (for updating preview)
+    private ImageView plantImagePreview = null;
 
-    private PlantListViewModel mViewModel;
+    // Image picker launcher for "Add Plant" dialog
+    private final ActivityResultLauncher<String> imagePickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                if (uri != null && plantImagePreview != null) {
+                    pickedImageUri = uri;
+                    plantImagePreview.setImageURI(uri);
+                }
+            });
 
-    public static PlantListFragment newInstance() {
-        return new PlantListFragment();
-    }
-
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_plant_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_plant_list, container, false);
+
+        // Set up RecyclerView and adapter
+        RecyclerView recyclerView = view.findViewById(R.id.plantRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new PlantListAdapter(new ArrayList<>());
+        recyclerView.setAdapter(adapter);
+
+        // Add click for plant details (navigation)
+        adapter.setOnPlantClickListener(plant -> {
+            Bundle args = new Bundle();
+            args.putString(PlantDetailFragment.ARG_NAME, plant.getName());
+            args.putString(PlantDetailFragment.ARG_TYPE, plant.getType());
+            args.putString("plant_image_uri", plant.getImageUri());
+            androidx.navigation.Navigation.findNavController(requireView())
+                    .navigate(R.id.plantDetailFragment, args);
+        });
+
+        // Add long-press for delete with confirmation
+        adapter.setOnPlantDeleteListener(plant -> {
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Delete Plant")
+                    .setMessage("Delete " + plant.getName() + "?")
+                    .setPositiveButton("Delete", (dialog, which) -> viewModel.deletePlant(plant))
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+        // Set up FAB for adding new plants
+        FloatingActionButton addFab = view.findViewById(R.id.addPlantFab);
+        addFab.setOnClickListener(v -> showAddPlantDialog());
+
+        // Initialize ViewModel (AndroidViewModel for Room)
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(PlantListViewModel.class);
+
+        // Observe plant list for updates
+        viewModel.getPlants().observe(getViewLifecycleOwner(), adapter::updatePlants);
+
+        return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(PlantListViewModel.class);
-        // TODO: Use the ViewModel
-    }
+    /**
+     * Shows a dialog for entering a new plant's details (with image).
+     */
+    private void showAddPlantDialog() {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_plant, null);
+        EditText nameInput = dialogView.findViewById(R.id.editPlantName);
+        EditText typeInput = dialogView.findViewById(R.id.editPlantType);
+        plantImagePreview = dialogView.findViewById(R.id.plantImagePreview);
+        Button pickImageBtn = dialogView.findViewById(R.id.pickImageBtn);
 
+        pickedImageUri = null; // Reset for new dialog
+        if (plantImagePreview != null) {
+            plantImagePreview.setImageResource(R.drawable.ic_eco); // Default icon
+        }
+
+        pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
+
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Add New Plant")
+                .setView(dialogView)
+                .setPositiveButton("Add", (dialog, which) -> {
+                    String name = nameInput.getText().toString().trim();
+                    String type = typeInput.getText().toString().trim();
+                    String imageUriStr = pickedImageUri != null ? pickedImageUri.toString() : "";
+                    if (!name.isEmpty() && !type.isEmpty()) {
+                        String id = java.util.UUID.randomUUID().toString();
+                        viewModel.addPlant(new Plant(id, name, type, imageUriStr));
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
 }

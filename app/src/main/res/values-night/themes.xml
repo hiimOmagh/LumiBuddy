@@ -1,7 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.LumiBuddy" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Theme.LumiBuddy" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/dliColor</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Dark backgrounds -->
+        <item name="android:colorBackground">#222B2F</item>
+        <item name="colorSurface">#232323</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorOutline">@color/cardBorder</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/secondaryText</item>
+        <item name="floatingActionButtonStyle">
+            @style/Widget.MaterialComponents.FloatingActionButton
+        </item>
+        <item name="cardViewStyle">@style/CardView</item>
+        <item name="android:statusBarColor">#111C22</item>
+        <item name="android:navigationBarColor">#191C1C</item>
+        <item name="android:colorControlHighlight">@color/luxColor</item>
+    </style>
+
+    <style name="CardView" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="cardElevation">6dp</item>
+        <item name="cardBackgroundColor">#232323</item>
     </style>
 </resources>

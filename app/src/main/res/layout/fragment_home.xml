@@ -1,13 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.HomeFragment">
+    android:background="?android:colorBackground"
+    android:paddingTop="16dp"
+    android:paddingBottom="24dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+    <TextView
+        android:id="@+id/homeWelcomeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/homeWelcomeText" />
+        <!-- Lamp type selector -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/lamp_type"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_marginBottom="6dp" />
 
-</FrameLayout>
+        <Spinner
+            android:id="@+id/lampTypeSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
+            android:minHeight="48dp" />
+
+        <!-- CameraX Preview & Measure Button -->
+        <androidx.camera.view.PreviewView
+            android:id="@+id/cameraPreview"
+            android:layout_width="300dp"
+            android:layout_height="220dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/cameraMeasureButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="20dp"
+            android:icon="@drawable/ic_camera"
+            android:text="@string/measure_with_camera"
+            android:textColor="#2E7D32" />
+
+        <!-- Measurement Cards Flipper -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="6dp"
+            android:layout_marginBottom="18dp">
+
+            <ViewFlipper
+                android:id="@+id/measureFlipper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inAnimation="@android:anim/slide_in_left"
+                android:outAnimation="@android:anim/slide_out_right"
+                android:padding="10dp">
+
+                <!-- Use different layouts for each card for unique icons/colors! -->
+                <include layout="@layout/lux_card" />
+
+                <include layout="@layout/ppfd_card" />
+
+                <include layout="@layout/dli_card" />
+            </ViewFlipper>
+        </androidx.cardview.widget.CardView>
+
+        <!-- DLI Widget: card style, chips, modern color -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/dliWidget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/dli_calculator"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:textColor="@color/dliColor"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:id="@+id/dliValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/placeholder_dli_value"
+                    android:textStyle="bold"
+                    android:textSize="38sp"
+                    android:textColor="@color/dliColor"
+                    android:layout_marginBottom="12dp" />
+
+                <!-- Hour adjustor row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginBottom="12dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/minusHour"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:text="@string/placeholder_minus"
+                        android:textSize="24sp"
+                        app:cornerRadius="24dp"
+                        android:contentDescription="@string/decrease_hours" />
+
+                    <TextView
+                        android:id="@+id/hourValue"
+                        android:layout_width="64dp"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:text="@string/placeholder_24_h"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/plusHour"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:text="@string/placeholder_plus"
+                        android:textSize="24sp"
+                        app:cornerRadius="24dp"
+                        android:contentDescription="@string/increase_hours" />
+                </LinearLayout>
+
+                <!-- Preset Chips Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/preset12h"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="@string/placeholder_12_h"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/preset18h"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="@string/placeholder_18_h"
+                        android:textAllCaps="false"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/preset24h"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="@string/_24_h"
+                        android:textAllCaps="false"
+                        app:cornerRadius="18dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

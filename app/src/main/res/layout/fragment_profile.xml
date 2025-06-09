@@ -1,14 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?android:colorBackground"
+    android:paddingTop="24dp"
+    android:paddingBottom="0dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
 
-</FrameLayout>
+        <!-- Profile Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="8dp"
+            android:backgroundTint="@android:color/white"
+            android:layout_marginBottom="24dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:padding="26dp">
+
+                <ImageView
+                    android:id="@+id/profileAvatar"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:src="@drawable/ic_person"
+                    android:background="@drawable/card_bg"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/profile_avatar_desc"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    android:id="@+id/profileName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/your_name"
+                    android:textColor="#43A047"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/profileEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/user_email_com"
+                    android:textSize="15sp"
+                    android:textColor="@color/darker_gray"
+                    android:layout_marginBottom="12dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Profile actions (can be replaced by a RecyclerView for settings/options) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/editProfileBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:icon="@drawable/ic_edit"
+            android:text="@string/edit_profile"
+            android:textColor="#2E7D32" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/settingsBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:icon="@drawable/ic_settings"
+            android:text="@string/settings"
+            android:textColor="#2E7D32" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/signOutBtn"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:icon="@drawable/ic_logout"
+            android:text="@string/sign_out"
+            android:textColor="#212121" />
+    </LinearLayout>
+</ScrollView>

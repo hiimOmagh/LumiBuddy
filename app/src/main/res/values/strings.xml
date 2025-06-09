@@ -2,4 +2,70 @@
     <string name="app_name">LumiBuddy</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="plant_list_desc">List of your plants</string>
+    <string name="add_plant_fab_desc">Add new plant</string>
+    <string name="plant_name_input_desc">Plant name input field</string>
+    <string name="plant_type_input_desc">Plant type input field</string>
+    <string name="plant_name_label">Plant name</string>
+    <string name="plant_type_label">Plant type</string>
+    <string name="edit_plant">Edit plant</string>
+    <string name="plant_image_desc">Plant image preview</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="agenda_title">My Plant Agenda</string>
+    <string name="add_agenda_event">Add agenda event</string>
+    <string name="calibration">Calibration</string>
+    <string name="calibration_info">Calibrate your light sensor for accurate readings. Place your phone under a known reference light source and tap "Start Calibration" to begin.</string>
+    <string name="start_calibration">Start Calibration</string>
+    <string name="app_icon">App icon</string>
+    <string name="welcome_title">Welcome to LumiBuddy!</string>
+    <string name="welcome_subtitle">Your all-in-one smart plant light and care companion.</string>
+    <string name="lamp_profiles_title">Lamp Profiles</string>
+    <string name="add_lamp_profile">Add Lamp Profile</string>
+    <string name="lamp_type">"Lamp Type : "</string>
+    <string name="_24_h">24 h</string>
+    <string name="placeholder_dli_value">--</string>
+    <string name="placeholder_minus">−</string>
+    <string name="placeholder_24_h">24 h</string>
+    <string name="placeholder_18_h">18 h</string>
+    <string name="placeholder_12_h">12 h</string>
+    <string name="placeholder_plus">+</string>
+    <string name="increase_hours">Increase Hours</string>
+    <string name="decrease_hours">Decrease Hours\n</string>
+    <string name="dli_calculator">DLI Calculator</string>
+    <string name="measure_with_camera">Measure with Camera</string>
+    <string name="type_herb">Type: Herb</string>
+    <string name="plant_name">Plant Name</string>
+    <string name="plant_diary_title">Plant Diary Title</string>
+    <string name="add_diary_entry">Add Diary Entry</string>
+    <string name="profile_avatar_desc">Profile avatar</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="settings">Settings</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="unit_of_measurement">Unit of Measurement</string>
+    <string name="version">v1.0.0</string>
+    <string name="lux_measurement_icon">Lux Measurement icon</string>
+    <string name="lux">Lux</string>
+    <string name="lx">lx</string>
+    <string name="_0_0">0.0</string>
+    <string name="add_growth_event">Add growth event</string>
+    <string name="growth_timeline_title">Growth Timeline Title</string>
+    <string name="your_name">Your Name</string>
+    <string name="user_email_com">user@email.com</string>
+    <string name="daily_light_amount">Daily Light Amount</string>
+    <string name="dli">DLI</string>
+    <string name="mol_m_d">mol/m²/d</string>
+    <string name="dliValue">0.000\n</string>
+    <string name="selected_light_hours">Selected light hours</string>
+    <string name="homeWelcomeText">Welcome</string>
+
+
+    <string-array name="lamp_types">
+        <item>Sunlight</item>
+        <item>White LED (neutral)</item>
+        <item>Warm LED</item>
+        <item>Blurple LED</item>
+        <item>HPS</item>
+    </string-array>
+
 </resources>

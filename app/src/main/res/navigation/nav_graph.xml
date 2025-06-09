@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="de.omagh.lumibuddy.ui.HomeFragment"
+        android:label="Home" />
+
+    <fragment
+        android:id="@+id/measureFragment"
+        android:name="de.omagh.lumibuddy.ui.MeasureFragment"
+        android:label="Measure" />
+
+    <fragment
+        android:id="@+id/plantListFragment"
+        android:name="de.omagh.lumibuddy.ui.PlantListFragment"
+        android:label="Plants" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="de.omagh.lumibuddy.ui.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/plantDetailFragment"
+        android:name="de.omagh.lumibuddy.ui.PlantDetailFragment"
+        android:label="Plant Detail">
+        <!-- ...arguments... -->
+    </fragment>
+
+</navigation>

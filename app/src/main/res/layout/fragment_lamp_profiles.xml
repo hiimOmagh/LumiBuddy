@@ -1,14 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.LampProfilesFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?android:colorBackground">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Title -->
     <TextView
+        android:id="@+id/lampProfilesTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/lamp_profiles_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="28dp"
+        android:layout_marginBottom="10dp" />
+
+    <!-- RecyclerView for lamp profiles -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lampProfilesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="70dp"
+        android:clipToPadding="false"
+        android:paddingBottom="90dp"
+        tools:listitem="@layout/item_lamp_profile" />
 
+    <!-- FloatingActionButton for adding new profile -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addLampProfileFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="26dp"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/add_lamp_profile" />
 </FrameLayout>

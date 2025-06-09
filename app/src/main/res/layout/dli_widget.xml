@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dliWidget"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@drawable/card_bg"
+    android:elevation="6dp"
+    android:padding="18dp"
+    android:layout_margin="10dp">
+
+    <!-- Preset hour buttons (use MaterialButton for chip style) -->
+    <LinearLayout
+        android:id="@+id/dliPresetLayout"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/preset12h"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:text="12 h"
+            android:textAllCaps="false"
+            android:textColor="#2E7D32"
+            app:cornerRadius="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/preset18h"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:text="18 h"
+            android:textAllCaps="false"
+            android:textColor="#2E7D32"
+            app:cornerRadius="20dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/preset24h"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:text="24 h"
+            android:textAllCaps="false"
+            android:textColor="#37474F"
+            app:cornerRadius="20dp" />
+    </LinearLayout>
+
+    <!-- Custom hour selector -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/minusHour"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Decrease hours"
+            android:text="@string/decrease_hours"
+            android:textColor="#689F38"
+            android:textSize="28sp"
+            app:cornerRadius="24dp" />
+
+        <TextView
+            android:id="@+id/hourValue"
+            android:layout_width="64dp"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="@string/_24_h"
+            android:textSize="28sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:contentDescription="@string/selected_light_hours" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/plusHour"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="Increase hours"
+            android:text="@string/increase_hours"
+            android:textColor="#689F38"
+            android:textSize="28sp"
+            app:cornerRadius="24dp" />
+    </LinearLayout>
+
+    <!-- Orange info bar -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/orange_rounded_bg"
+        android:padding="6dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="10dp">
+
+        <TextView
+            android:id="@+id/dliInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/daily_light_amount"
+            android:textColor="#616161"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+        <!-- (Optionally add an info icon here) -->
+    </LinearLayout>
+
+    <!-- Large DLI Value Box -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_rounded_border"
+        android:padding="12dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginBottom="6dp">
+
+        <TextView
+            android:id="@+id/dliValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dliValue"
+            android:textSize="48sp"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/dliLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dli"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/dliUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mol_m_d"
+        android:textColor="#757575"
+        android:textSize="14sp" />
+</LinearLayout>

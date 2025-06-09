@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="placeholder_dli_value">--</string>
+    <string name="placeholder_18_h">18 h</string>
+    <string name="increase_hours">Increase Hours</string>
+    <string name="decrease_hours">Decrease Hours\n</string>
+    <string name="measure_with_camera">Measure with Camera</string>
+    <string name="type_herb">Type: Herb</string>
+    <string name="plant_name">Plant Name</string>
+    <string name="plant_diary_title">Plant Diary Title</string>
+    <string name="add_diary_entry">Add Diary Entry</string>
+    <string name="version">v1.0.0</string>
+    <string name="lux">Lux</string>
+    <string name="lx">lx</string>
+    <string name="_0_0">0.0</string>
+    <string name="add_growth_event">Add growth event</string>
+    <string name="growth_timeline_title">Growth Timeline Title</string>
+    <string name="your_name">Your Name</string>
+    <string name="user_email_com">user@email.com</string>
+    <string name="daily_light_amount">Daily Light Amount</string>
+    <string name="dli">DLI</string>
+    <string name="mol_m_d">mol/m²/d</string>
+    <string name="dliValue">0.000\n</string>
+    <string name="selected_light_hours">Selected light hours</string>
+    <string name="homeWelcomeText">Welcome</string>
+</resources>

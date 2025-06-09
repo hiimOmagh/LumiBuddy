@@ -3,11 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="16dp"
+    android:paddingBottom="0dp"
+    android:background="?android:colorBackground"
     tools:context=".ui.AgendaFragment">
 
+    <!-- Title -->
     <TextView
+        android:id="@+id/agendaTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/agenda_title"
+        android:textStyle="bold"
+        android:textSize="26sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="?attr/colorPrimary" />
+
+    <!-- Example agenda/calendar card (replace with RecyclerView or CalendarView for real app) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/agendaRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:layout_marginTop="60dp"
+        android:clipToPadding="false"
+        android:paddingBottom="96dp"
+        tools:listitem="@layout/item_agenda" />
+
+    <!-- Example FloatingActionButton for adding events (optional) -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addAgendaEventFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="28dp"
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/add_agenda_event" />
 
 </FrameLayout>

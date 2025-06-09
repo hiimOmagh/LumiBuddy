@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Sun Circle -->
+    <path
+        android:fillColor="#FFD600"
+        android:pathData="M24,8a16,16 0 1,0 0,32a16,16 0 1,0 0,-32z" />
+
+    <!-- Sun Rays -->
+    <path
+        android:strokeColor="#FFD600"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M24,2v6 M24,40v6
+                          M8,24h-6 M46,24h-6
+                          M10.9,10.9l-4.3,-4.3 M41.4,41.4l-4.3,-4.3
+                          M10.9,37.1l-4.3,4.3 M41.4,6.6l-4.3,4.3" />
+
+    <!-- Clock (overlay) -->
+    <path
+        android:strokeColor="#FF7043"
+        android:strokeWidth="2"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M24,16
+            a8,8 0 1,0 0.1,0" />
+    <path
+        android:strokeColor="#FF7043"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:fillColor="@android:color/transparent"
+        android:pathData="M24,20v5l3,3" />
+
+    <!-- Leaf (bottom right) -->
+    <path
+        android:fillColor="#43A047"
+        android:pathData="M33,34c2,2 5,3 7,2c-1,-2 0,-5 -2,-7c-2,-2 -5,-2 -7,0c-2,2 -2,5 0,7z" />
+</vector>

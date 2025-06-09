@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center_horizontal">
+
+    <EditText
+        android:id="@+id/editPlantName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/plant_name_input_desc"
+        android:inputType="textPersonName"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/plant_name_input_desc"
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="?attr/colorPrimary" />
+
+    <EditText
+        android:id="@+id/editPlantType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/plant_type_input_desc"
+        android:inputType="text"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/plant_type_input_desc"
+        android:layout_marginBottom="18dp"
+        android:backgroundTint="?attr/colorPrimary" />
+
+    <ImageView
+        android:id="@+id/plantImagePreview"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/ic_eco"
+        android:contentDescription="@string/plant_image_desc"
+        android:scaleType="centerCrop"
+        android:background="@drawable/card_bg"
+        android:elevation="6dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="6dp" />
+
+    <!-- Material style button for picking image -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pickImageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_image"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="4dp"
+        style="@style/Widget.MaterialComponents.Button.TextButton" />
+
+</LinearLayout>

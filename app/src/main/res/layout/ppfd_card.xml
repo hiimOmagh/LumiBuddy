@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/card_bg"
+    android:padding="18dp"
+    android:layout_marginBottom="18dp"
+    android:elevation="4dp">
+
+    <ImageView
+        android:id="@+id/metricIcon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:src="@drawable/ic_ppfd"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/metricValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="--"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:textColor="@color/ppfdColor" />
+
+    <TextView
+        android:id="@+id/metricUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="μmol/m²/s"
+        android:textSize="16sp"
+        android:textColor="@color/secondaryText"
+        android:layout_marginBottom="2dp" />
+
+    <TextView
+        android:id="@+id/metricLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PPFD"
+        android:textSize="18sp"
+        android:textColor="@color/ppfdColor"
+        android:textStyle="bold" />
+</LinearLayout>

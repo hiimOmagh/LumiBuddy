@@ -1,5 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Base colors -->
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Main Material Theme colors -->
+    <color name="colorPrimary">#8BC34A</color> <!-- Green, app primary -->
+    <color name="colorOnBackground">#222222</color> <!-- Main text color on backgrounds -->
+    <color name="cardBorder">#B9F7B5</color> <!-- Soft green card border -->
+
+    <!-- Text colors -->
+    <color name="primaryText">#222222</color>
+    <color name="secondaryText">#888888</color>
+    <color name="darker_gray">#616161</color> <!-- Extra for dark mode/dark text -->
+
+    <!-- Measurement/Metric Colors -->
+    <color name="luxColor">#45C16C</color>    <!-- Green for Lux -->
+    <color name="ppfdColor">#4286F4</color>   <!-- Blue for PPFD -->
+    <color name="dliColor">#FF9800</color>    <!-- Orange for DLI, accent -->
+    <color name="accent">#FF9800</color>      <!-- Orange, can alias for accent -->
+
+    <!-- Backgrounds -->
+    <color name="background">#FFFDFBFA</color>
+    <color name="colorAccent">#00BCD4</color>
+    <color name="colorPrimaryDark">#004D40</color> <!-- Very light for cards/views -->
+
+    <!-- You can add more, e.g. error, success, warning, etc. -->
+
 </resources>

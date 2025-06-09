@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/measureFragment"
+        android:icon="@drawable/ic_lux"
+        android:title="Measure" />
+    <item
+        android:id="@+id/plantListFragment"
+        android:icon="@drawable/ic_eco"
+        android:title="Plants" />
+    <item
+        android:id="@+id/settingsFragment"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
+</menu>
