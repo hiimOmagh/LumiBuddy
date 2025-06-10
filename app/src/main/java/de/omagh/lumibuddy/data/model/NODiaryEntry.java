@@ -1,11 +1,11 @@
-package de.omagh.lumibuddy.feature_diary;
+package de.omagh.lumibuddy.data.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.annotation.NonNull;
 
 @Entity(tableName = "diary_entries")
-public class DiaryEntry {
+public class NODiaryEntry {
 
     @PrimaryKey
     @NonNull
@@ -17,7 +17,7 @@ public class DiaryEntry {
     private final String imageUri;     // Optional image URI
     private final String eventType;    // e.g., "watering", "note", "light"
 
-    public DiaryEntry(@NonNull String id, String plantId, long timestamp, String note, String imageUri, String eventType) {
+    public NODiaryEntry(@NonNull String id, String plantId, long timestamp, String note, String imageUri, String eventType) {
         this.id = id;
         this.plantId = plantId;
         this.timestamp = timestamp;

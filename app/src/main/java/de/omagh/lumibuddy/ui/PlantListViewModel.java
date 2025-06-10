@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.model.Plant;
@@ -19,6 +21,7 @@ import de.omagh.lumibuddy.data.model.Plant;
 public class PlantListViewModel extends AndroidViewModel {
     private final LiveData<List<Plant>> plants;
     private final AppDatabase db;
+    private final ExecutorService executor;
 
     /**
      * Initializes the ViewModel and loads LiveData from Room DB.
@@ -29,6 +32,7 @@ public class PlantListViewModel extends AndroidViewModel {
         super(application);
         db = AppDatabase.getInstance(application);
         plants = db.plantDao().getAll();
+        executor = Executors.newSingleThreadExecutor();
     }
 
     /**
@@ -39,23 +43,39 @@ public class PlantListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Adds a plant to the database (on a background thread).
+     * Gets a plant by its ID (for detail view).
+     */
+    public LiveData<Plant> getPlantById(long id) {
+        return db.plantDao().getById(id);
+    }
+
+    /**
+     * Adds a plant to the database asynchronously.
      */
     public void addPlant(Plant plant) {
-        new Thread(() -> db.plantDao().insert(plant)).start();
+        executor.execute(() -> db.plantDao().insert(plant));
     }
 
     /**
-     * Deletes a plant from the database (on a background thread).
-     */
-    public void deletePlant(Plant plant) {
-        new Thread(() -> db.plantDao().delete(plant)).start();
-    }
-
-    /**
-     * Updates a plant in the database (on a background thread).
+     * Updates a plant in the database asynchronously.
      */
     public void updatePlant(Plant plant) {
-        new Thread(() -> db.plantDao().update(plant)).start();
+        executor.execute(() -> db.plantDao().update(plant));
+    }
+
+    /**
+     * Deletes a plant from the database asynchronously.
+     */
+    public void deletePlant(Plant plant) {
+        executor.execute(() -> db.plantDao().delete(plant));
+    }
+
+    /**
+     * Shut down the executor when the ViewModel is destroyed.
+     */
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        executor.shutdown();
     }
 }

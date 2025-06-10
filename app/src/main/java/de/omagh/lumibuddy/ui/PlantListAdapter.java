@@ -1,8 +1,10 @@
 package de.omagh.lumibuddy.ui;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -10,12 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.data.model.Plant;
 
 /**
  * Adapter for displaying a list of plants in a RecyclerView.
- * Supports click for details and long-press for delete.
+ * Supports click for details and long-press for deletion.
  */
 public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.PlantViewHolder> {
 
@@ -23,7 +25,9 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
     private OnPlantClickListener clickListener;
     private OnPlantDeleteListener deleteListener;
 
-    // Click for detail
+    /**
+     * Interface for handling plant item clicks (navigate to details).
+     */
     public interface OnPlantClickListener {
         void onPlantClick(Plant plant);
     }
@@ -32,7 +36,9 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
         this.clickListener = listener;
     }
 
-    // Long-press for delete
+    /**
+     * Interface for handling long-press deletions.
+     */
     public interface OnPlantDeleteListener {
         void onPlantDelete(Plant plant);
     }
@@ -45,6 +51,9 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
         this.plants = plants;
     }
 
+    /**
+     * Updates the list of plants and refreshes the view.
+     */
     public void updatePlants(List<Plant> newPlants) {
         this.plants = newPlants;
         notifyDataSetChanged();
@@ -53,7 +62,8 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
     @NonNull
     @Override
     public PlantViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_plant, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_plant, parent, false);
         return new PlantViewHolder(view);
     }
 
@@ -63,16 +73,23 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
         holder.plantName.setText(plant.getName());
         holder.plantType.setText(plant.getType());
 
-        // Set accessibility content descriptions
         holder.plantName.setContentDescription("Plant name: " + plant.getName());
         holder.plantType.setContentDescription("Plant type: " + plant.getType());
 
-        // Click for detail
+        // Optional: Load image if present
+        String imageUri = plant.getImageUri();
+        if (imageUri != null && !imageUri.isEmpty()) {
+            holder.plantImage.setImageURI(Uri.parse(imageUri));
+        } else {
+            holder.plantImage.setImageResource(R.drawable.ic_eco); // fallback/default
+        }
+
+        // Tap → open details
         holder.itemView.setOnClickListener(v -> {
             if (clickListener != null) clickListener.onPlantClick(plant);
         });
 
-        // Long-press for delete
+        // Long press → confirm deletion
         holder.itemView.setOnLongClickListener(v -> {
             if (deleteListener != null) {
                 deleteListener.onPlantDelete(plant);
@@ -84,17 +101,21 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
 
     @Override
     public int getItemCount() {
-        return plants != null ? plants.size() : 0;
+        return (plants != null) ? plants.size() : 0;
     }
 
+    /**
+     * ViewHolder for plant items.
+     */
     static class PlantViewHolder extends RecyclerView.ViewHolder {
         TextView plantName, plantType;
+        ImageView plantImage;
 
-        PlantViewHolder(View itemView) {
+        PlantViewHolder(@NonNull View itemView) {
             super(itemView);
             plantName = itemView.findViewById(R.id.plantName);
             plantType = itemView.findViewById(R.id.plantType);
+            plantImage = itemView.findViewById(R.id.plantImage); // needs to exist in layout
         }
     }
-
 }

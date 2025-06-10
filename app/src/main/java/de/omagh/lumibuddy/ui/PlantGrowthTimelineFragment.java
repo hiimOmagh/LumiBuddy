@@ -1,49 +1,45 @@
 package de.omagh.lumibuddy.ui;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import de.omagh.lumibuddy.R;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PlantGrowthTimelineFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.UUID;
+
+import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.data.db.AppDatabase;
+import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
+import de.omagh.lumibuddy.feature_diary.DiaryEntryAdapter;
+
+
 public class PlantGrowthTimelineFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    public static final String ARG_PLANT_ID = "plant_id";
+    private String plantId;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private DiaryViewModel diaryViewModel;
+    private DiaryEntryAdapter adapter;
 
     public PlantGrowthTimelineFragment() {
-        // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlantGrowthTimelineFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PlantGrowthTimelineFragment newInstance(String param1, String param2) {
+    public static PlantGrowthTimelineFragment newInstance(String plantId) {
         PlantGrowthTimelineFragment fragment = new PlantGrowthTimelineFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PLANT_ID, plantId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,15 +48,47 @@ public class PlantGrowthTimelineFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            plantId = getArguments().getString(ARG_PLANT_ID);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_plant_growth_timeline, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Setup RecyclerView
+        RecyclerView recyclerView = view.findViewById(R.id.timelineRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new DiaryEntryAdapter();
+        recyclerView.setAdapter(adapter);
+
+        // ViewModel
+        AppDatabase db = AppDatabase.getInstance(requireContext());
+        diaryViewModel = new ViewModelProvider(this,
+                new DiaryViewModel.Factory(db.diaryDao(), plantId))
+                .get(DiaryViewModel.class);
+
+        diaryViewModel.getDiaryEntries().observe(getViewLifecycleOwner(), adapter::submitList);
+
+        // FAB to add dummy log (for now)
+        FloatingActionButton fab = view.findViewById(R.id.addLogFab);
+        fab.setOnClickListener(v -> {
+            DiaryEntry entry = new DiaryEntry(
+                    UUID.randomUUID().toString(),
+                    plantId,
+                    System.currentTimeMillis(),
+                    "Sample note entry",
+                    "",
+                    "note"
+            );
+            diaryViewModel.addEntry(entry);
+            Toast.makeText(getContext(), "Diary entry added", Toast.LENGTH_SHORT).show();
+        });
     }
 }

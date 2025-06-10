@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -19,24 +20,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.UUID;
+
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
 
-import java.util.ArrayList;
-
 /**
- * Fragment displaying a list of plants, with add, delete, and image support.
- * Tapping a plant navigates to its detail; long-pressing deletes.
+ * Fragment displaying a list of plants with add, delete, and detail support.
+ * Tapping a plant navigates to its detail; long-pressing deletes it.
  */
 public class PlantListFragment extends Fragment {
     private PlantListViewModel viewModel;
     private PlantListAdapter adapter;
-    // The most recent image URI picked for a new plant
     private Uri pickedImageUri = null;
-    // Reference to the current ImageView in the dialog (for updating preview)
     private ImageView plantImagePreview = null;
 
-    // Image picker launcher for "Add Plant" dialog
+    // Image picker for Add Plant dialog
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null && plantImagePreview != null) {
@@ -51,23 +52,24 @@ public class PlantListFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_plant_list, container, false);
 
-        // Set up RecyclerView and adapter
+        // RecyclerView setup
         RecyclerView recyclerView = view.findViewById(R.id.plantRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new PlantListAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        // Add click for plant details (navigation)
+        // On plant click → navigate to details
         adapter.setOnPlantClickListener(plant -> {
             Bundle args = new Bundle();
             args.putString(PlantDetailFragment.ARG_NAME, plant.getName());
             args.putString(PlantDetailFragment.ARG_TYPE, plant.getType());
             args.putString("plant_image_uri", plant.getImageUri());
-            androidx.navigation.Navigation.findNavController(requireView())
+
+            androidx.navigation.Navigation.findNavController(recyclerView)
                     .navigate(R.id.plantDetailFragment, args);
         });
 
-        // Add long-press for delete with confirmation
+        // On long press → delete with confirmation
         adapter.setOnPlantDeleteListener(plant -> {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Delete Plant")
@@ -77,23 +79,23 @@ public class PlantListFragment extends Fragment {
                     .show();
         });
 
-        // Set up FAB for adding new plants
+        // FAB to add new plant
         FloatingActionButton addFab = view.findViewById(R.id.addPlantFab);
         addFab.setOnClickListener(v -> showAddPlantDialog());
 
-        // Initialize ViewModel (AndroidViewModel for Room)
+        // ViewModel init
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
                 .get(PlantListViewModel.class);
 
-        // Observe plant list for updates
+        // Observe LiveData for plant list
         viewModel.getPlants().observe(getViewLifecycleOwner(), adapter::updatePlants);
 
         return view;
     }
 
     /**
-     * Shows a dialog for entering a new plant's details (with image).
+     * Shows a dialog to input a new plant's data (with optional image).
      */
     private void showAddPlantDialog() {
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_plant, null);
@@ -102,7 +104,7 @@ public class PlantListFragment extends Fragment {
         plantImagePreview = dialogView.findViewById(R.id.plantImagePreview);
         Button pickImageBtn = dialogView.findViewById(R.id.pickImageBtn);
 
-        pickedImageUri = null; // Reset for new dialog
+        pickedImageUri = null;
         if (plantImagePreview != null) {
             plantImagePreview.setImageResource(R.drawable.ic_eco); // Default icon
         }
@@ -116,10 +118,15 @@ public class PlantListFragment extends Fragment {
                     String name = nameInput.getText().toString().trim();
                     String type = typeInput.getText().toString().trim();
                     String imageUriStr = pickedImageUri != null ? pickedImageUri.toString() : "";
-                    if (!name.isEmpty() && !type.isEmpty()) {
-                        String id = java.util.UUID.randomUUID().toString();
-                        viewModel.addPlant(new Plant(id, name, type, imageUriStr));
+
+                    if (name.isEmpty() || type.isEmpty()) {
+                        Toast.makeText(getContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    String id = UUID.randomUUID().toString();
+                    Plant newPlant = new Plant(id, name, type, imageUriStr);
+                    viewModel.addPlant(newPlant);
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
