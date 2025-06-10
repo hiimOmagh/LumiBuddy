@@ -13,13 +13,13 @@
         android:id="@+id/agendaTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/agenda_title"
-        android:textStyle="bold"
-        android:textSize="26sp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="10dp"
-        android:textColor="?attr/colorPrimary" />
+        android:text="@string/agenda_title"
+        android:textColor="#689F38"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
     <!-- Example agenda/calendar card (replace with RecyclerView or CalendarView for real app) -->
     <androidx.recyclerview.widget.RecyclerView
