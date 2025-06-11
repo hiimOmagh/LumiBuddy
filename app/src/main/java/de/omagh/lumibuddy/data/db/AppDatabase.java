@@ -8,13 +8,15 @@ import androidx.room.RoomDatabase;
 
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry; // ✅ Correct import
+import de.omagh.lumibuddy.data.model.GrowLightProfile;
 
 @Database(
         entities = {
                 Plant.class,
-                DiaryEntry.class // ✅ Add this line
+                DiaryEntry.class,
+                GrowLightProfile.class
         },
-        version = 2,
+        version = 3,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -22,6 +24,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract DiaryDao diaryDao();
 
+    public abstract GrowLightDao growLightDao();
     private static volatile AppDatabase instance;
 
     /**
