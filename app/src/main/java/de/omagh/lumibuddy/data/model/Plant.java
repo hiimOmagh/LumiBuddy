@@ -3,7 +3,7 @@ package de.omagh.lumibuddy.data.model;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import org.jspecify.annotations.NonNull;
+import androidx.annotation.NonNull;
 
 @Entity(tableName = "plants")
 public class Plant {

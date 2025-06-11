@@ -18,6 +18,6 @@ public class PeriodicScanScheduler {
     }
 
     public void runWeekly(List<Plant> plants, List<DiaryEntry> entries) {
-        wateringScheduler.runDailyCheck(plants, entries);
+        wateringScheduler.runDailyCheck(plants);
     }
 }

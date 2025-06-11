@@ -37,6 +37,7 @@ public class PlantGrowthTimelineFragment extends Fragment {
     private DiaryViewModel diaryViewModel;
     private DiaryEntryAdapter adapter;
     private Uri selectedImageUri = null;
+    private ImageView dialogImagePreview;
 
     private final androidx.activity.result.ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.GetContent(), uri -> {
@@ -48,7 +49,6 @@ public class PlantGrowthTimelineFragment extends Fragment {
                 }
             });
 
-    private ImageView dialogImagePreview;
 
     public PlantGrowthTimelineFragment() {
     }
