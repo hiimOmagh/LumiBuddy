@@ -50,15 +50,13 @@
                     android:layout_marginBottom="18dp" />
 
                 <!-- Example calibration step -->
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/startCalibrationBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/start_calibration"
                     android:textAllCaps="false"
                     style="@style/Widget.MaterialComponents.Button"
-                    android:backgroundTint="?attr/colorPrimary"
-                    android:textColor="@android:color/white"
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp" />
             </LinearLayout>

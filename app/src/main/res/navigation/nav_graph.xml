@@ -29,5 +29,14 @@
         android:label="Plant Detail">
         <!-- ...arguments... -->
     </fragment>
+    <fragment
+        android:id="@+id/addPlantFragment"
+        android:name="de.omagh.lumibuddy.ui.AddPlantFragment"
+        android:label="Add Plant" />
+
+    <fragment
+        android:id="@+id/plantDiaryFragment"
+        android:name="de.omagh.lumibuddy.ui.PlantDiaryFragment"
+        android:label="Diary" />
 
 </navigation>

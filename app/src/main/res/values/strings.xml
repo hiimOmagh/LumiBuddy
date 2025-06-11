@@ -69,6 +69,14 @@
     <string name="calibration_profile">Calibration Profile</string>
     <string name="save">Save</string>
 
+    <!-- Home dashboard strings -->
+    <string name="todays_conditions">Daily Conditions</string>
+    <string name="upcoming_tasks">Upcoming Tasks</string>
+    <string name="start_measurement">Start Measurement</string>
+    <string name="add_plant">Add Plant</string>
+    <string name="view_timeline">View Timeline</string>
+    <string name="coming_soon">Coming soon</string>
+
     <string-array name="measurement_units">
         <item>Lux</item>
         <item>PPFD</item>

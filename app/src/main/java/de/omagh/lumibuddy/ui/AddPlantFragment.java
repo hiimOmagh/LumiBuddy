@@ -6,7 +6,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
+import com.google.android.material.button.MaterialButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -32,7 +33,7 @@ public class AddPlantFragment extends Fragment {
 
     private EditText nameInput, typeInput;
     private ImageView imagePreview;
-    private Button saveBtn, pickImageBtn;
+    private MaterialButton saveBtn, pickImageBtn;
 
     private PlantListViewModel plantListViewModel;
     private Uri selectedImageUri = null;

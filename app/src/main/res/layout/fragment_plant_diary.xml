@@ -28,6 +28,16 @@
         android:paddingBottom="90dp"
         tools:listitem="@layout/item_diary_entry" />
 
+    <!-- Placeholder when diary feature is not ready -->
+    <TextView
+        android:id="@+id/diaryPlaceholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/coming_soon"
+        android:textColor="@color/darker_gray"
+        android:textSize="18sp"
+        android:layout_gravity="center" />
+
     <!-- FloatingActionButton for adding new diary entries -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addDiaryEntryFab"
