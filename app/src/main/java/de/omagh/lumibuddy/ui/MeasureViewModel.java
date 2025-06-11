@@ -13,6 +13,7 @@ import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
 import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
+import de.omagh.lumibuddy.feature_user.SettingsManager;
 
 /**
  * ViewModel for light measurement, lamp type selection, and calculation of PPFD/DLI.
@@ -43,6 +44,7 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MeasurementEngine measurementEngine;
     private final CalibrationManager calibrationManager;
     private final GrowLightProfileManager growLightManager;
+    private final SettingsManager settingsManager;
     private final MutableLiveData<String> lampIdLiveData;
 
 
@@ -51,7 +53,18 @@ public class MeasureViewModel extends AndroidViewModel {
         measurementEngine = new MeasurementEngine(application.getApplicationContext());
         calibrationManager = new CalibrationManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());
-        lampIdLiveData = new MutableLiveData<>(growLightManager.getActiveLampProfile().id);
+        settingsManager = new SettingsManager(application.getApplicationContext());
+
+        int hours = settingsManager.getLightDuration();
+        hoursLiveData.setValue(hours);
+
+        String lampId = settingsManager.getSelectedCalibrationProfileId();
+        if (lampId == null || lampId.isEmpty()) {
+            lampId = growLightManager.getActiveLampProfile().id;
+        } else {
+            growLightManager.setActiveLampProfile(lampId);
+        }
+        lampIdLiveData = new MutableLiveData<>(lampId);
     }
 
     /**
@@ -115,11 +128,13 @@ public class MeasureViewModel extends AndroidViewModel {
         if (hours < 1) hours = 1;
         if (hours > 24) hours = 24;
         hoursLiveData.postValue(hours);
+        settingsManager.setLightDuration(hours);
         updateDLI(getPPFDValue(), hours);
     }
 
     public void setLampProfileId(String id) {
         growLightManager.setActiveLampProfile(id);
+        settingsManager.setSelectedCalibrationProfileId(id);
         lampIdLiveData.setValue(id);
         updatePPFD(getLuxValue());
     }

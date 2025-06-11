@@ -23,6 +23,7 @@ import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.util.OnSwipeTouchListener;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
+import de.omagh.lumibuddy.feature_user.SettingsManager;
 
 public class MeasureFragment extends Fragment {
     private MeasureViewModel mViewModel;
@@ -34,6 +35,7 @@ public class MeasureFragment extends Fragment {
     private View dliWidget;
     private GrowLightProfileManager lampManager;
     private java.util.List<LampProduct> lampList;
+    private SettingsManager settingsManager;
     // DLI widget controls
     private Button preset12h, preset18h, preset24h, plusHour, minusHour;
     private TextView hourValue, dliWidgetValue;
@@ -55,6 +57,7 @@ public class MeasureFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
+        settingsManager = new SettingsManager(requireContext());
 
         // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);
@@ -77,6 +80,17 @@ public class MeasureFragment extends Fragment {
         }
         measureFlipper = view.findViewById(R.id.measureFlipper);
         dliWidget = view.findViewById(R.id.dliWidget);
+
+        // Default displayed metric based on user preference
+        String prefUnit = settingsManager.getPreferredUnit();
+        if ("PPFD".equalsIgnoreCase(prefUnit)) {
+            measureFlipper.setDisplayedChild(1);
+        } else if ("DLI".equalsIgnoreCase(prefUnit)) {
+            measureFlipper.setDisplayedChild(2);
+        } else {
+            measureFlipper.setDisplayedChild(0);
+        }
+        updateDLIWidgetVisibility(measureFlipper.getDisplayedChild());
 
         // Bind cards for modern UI
         luxCard = view.findViewById(R.id.luxCard);

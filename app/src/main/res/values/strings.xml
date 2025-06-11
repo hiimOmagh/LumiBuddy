@@ -65,6 +65,15 @@
     <string name="_12_h">12 h</string>
     <string name="_18_h">18 h</string>
 
+    <string name="light_duration_hours">Light Duration (h)</string>
+    <string name="calibration_profile">Calibration Profile</string>
+    <string name="save">Save</string>
+
+    <string-array name="measurement_units">
+        <item>Lux</item>
+        <item>PPFD</item>
+        <item>DLI</item>
+    </string-array>
 
     <string-array name="lamp_types">
         <item>Sunlight</item>
