@@ -88,7 +88,7 @@ public class PlantDetailFragment extends Fragment {
                     String careText = String.format(java.util.Locale.US,
                             "Light %.0f-%.0f μmol/m²/s\nWater every %d d\nTemp %.0f-%.0f°C\nHumidity %.0f-%.0f%%",
                             profile.getMinPPFD(), profile.getMaxPPFD(),
-                            profile.getWaterFrequencyDays(),
+                            profile.getWateringIntervalDays(),
                             profile.getMinTemperature(), profile.getMaxTemperature(),
                             profile.getMinHumidity(), profile.getMaxHumidity());
                     careInfoView.setText(careText);

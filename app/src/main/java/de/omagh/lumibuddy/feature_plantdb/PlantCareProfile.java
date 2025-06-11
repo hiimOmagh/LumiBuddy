@@ -11,7 +11,11 @@ public class PlantCareProfile {
     private final float maxPPFD;
     private final float minDLI;
     private final float maxDLI;
-    private final int waterFrequencyDays;
+    // How often to water the plant in days
+    private final int wateringIntervalDays;
+    // Convenience targets used by the recommendation engine
+    private final float targetDLI;
+    private final float humidityRange;
     private final float minHumidity;
     private final float maxHumidity;
     private final float minTemperature;
@@ -23,7 +27,7 @@ public class PlantCareProfile {
             float maxPPFD,
             float minDLI,
             float maxDLI,
-            int waterFrequencyDays,
+            int wateringIntervalDays,
             float minHumidity,
             float maxHumidity,
             float minTemperature,
@@ -33,11 +37,13 @@ public class PlantCareProfile {
         this.maxPPFD = maxPPFD;
         this.minDLI = minDLI;
         this.maxDLI = maxDLI;
-        this.waterFrequencyDays = waterFrequencyDays;
+        this.wateringIntervalDays = wateringIntervalDays;
         this.minHumidity = minHumidity;
         this.maxHumidity = maxHumidity;
         this.minTemperature = minTemperature;
         this.maxTemperature = maxTemperature;
+        this.targetDLI = (minDLI + maxDLI) / 2f;
+        this.humidityRange = maxHumidity - minHumidity;
     }
 
     public PlantStage getStage() {
@@ -60,8 +66,23 @@ public class PlantCareProfile {
         return maxDLI;
     }
 
+    public float getTargetDLI() {
+        return targetDLI;
+    }
+
+    public float getHumidityRange() {
+        return humidityRange;
+    }
+
+    /**
+     * Alias for backwards compatibility.
+     */
     public int getWaterFrequencyDays() {
-        return waterFrequencyDays;
+        return wateringIntervalDays;
+    }
+
+    public int getWateringIntervalDays() {
+        return wateringIntervalDays;
     }
 
     public float getMinHumidity() {
