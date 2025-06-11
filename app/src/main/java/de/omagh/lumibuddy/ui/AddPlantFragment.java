@@ -39,6 +39,9 @@ public class AddPlantFragment extends Fragment {
     private Uri selectedImageUri = null;
     private String existingPlantId = null;
 
+    // ML plant recognition
+    private de.omagh.lumibuddy.feature_ml.PlantRecognitionModel plantRecognizer;
+
     public static final String ARG_PLANT_ID = "plant_id";
     public static final String ARG_NAME = "plant_name";
     public static final String ARG_TYPE = "plant_type";
@@ -49,6 +52,20 @@ public class AddPlantFragment extends Fragment {
                 if (uri != null) {
                     selectedImageUri = uri;
                     imagePreview.setImageURI(uri);
+                    try {
+                        android.graphics.Bitmap bmp;
+                        if (android.os.Build.VERSION.SDK_INT >= 28) {
+                            bmp = android.graphics.ImageDecoder.decodeBitmap(
+                                    android.graphics.ImageDecoder.createSource(
+                                            requireActivity().getContentResolver(), uri));
+                        } else {
+                            bmp = android.provider.MediaStore.Images.Media.getBitmap(
+                                    requireActivity().getContentResolver(), uri);
+                        }
+                        recognizePlant(bmp);
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 
@@ -72,6 +89,9 @@ public class AddPlantFragment extends Fragment {
 
         // Init ViewModel
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
+
+        plantRecognizer = new de.omagh.lumibuddy.feature_ml.PlantClassifier();
+        plantRecognizer.loadModel();
 
         // Check for edit mode
         Bundle args = getArguments();
@@ -115,5 +135,13 @@ public class AddPlantFragment extends Fragment {
             androidx.navigation.Navigation.findNavController(requireView()).popBackStack();
 
         });
+    }
+
+    private void recognizePlant(android.graphics.Bitmap bitmap) {
+        if (plantRecognizer == null) return;
+        plantRecognizer.analyzeImage(bitmap);
+        String result = plantRecognizer.getResult();
+        android.widget.Toast.makeText(getContext(), "Recognized: " + result,
+                android.widget.Toast.LENGTH_SHORT).show();
     }
 }

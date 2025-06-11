@@ -1,9 +1,11 @@
 package de.omagh.lumibuddy.feature_recommendation;
 
+import android.Manifest;
 import android.app.NotificationChannel;
 import android.content.Context;
 import android.os.Build;
 
+import androidx.annotation.RequiresPermission;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -23,22 +25,21 @@ public class NotificationManager {
     }
 
     private void createChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(
-                    CHANNEL_ID,
-                    "Care Reminders",
-                    android.app.NotificationManager.IMPORTANCE_DEFAULT);
-            android.app.NotificationManager nm =
-                    (android.app.NotificationManager) context.getSystemService(android.app.NotificationManager.class);
-            if (nm != null) {
-                nm.createNotificationChannel(channel);
-            }
+        NotificationChannel channel = new NotificationChannel(
+                CHANNEL_ID,
+                "Care Reminders",
+                android.app.NotificationManager.IMPORTANCE_DEFAULT);
+        android.app.NotificationManager nm =
+                (android.app.NotificationManager) context.getSystemService(android.app.NotificationManager.class);
+        if (nm != null) {
+            nm.createNotificationChannel(channel);
         }
     }
 
     /**
      * Shows a simple notification reminding the user to water a plant.
      */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void notifyWateringNeeded(String plantName, int daysSince) {
         String text = "Water " + plantName + " today – it's been " + daysSince
                 + " days since last watering!";

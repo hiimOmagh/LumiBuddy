@@ -45,6 +45,10 @@ public class MeasureFragment extends Fragment {
     private Button cameraMeasureButton;
     private CameraLightMeterX cameraLightMeterX;
 
+    // AR overlay integration
+    private boolean enableAROverlay = false;
+    private de.omagh.lumibuddy.feature_ar.AROverlayRenderer arOverlayRenderer;
+
     // Modern card views
     private View luxCard, ppfdCard, dliCard;
     private TextView luxValue, ppfdValue, dliValue;
@@ -153,6 +157,11 @@ public class MeasureFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(MeasureViewModel.class);
 
+        if (enableAROverlay) {
+            arOverlayRenderer = new de.omagh.lumibuddy.feature_ar.ARMeasureOverlay();
+            arOverlayRenderer.init();
+        }
+
         // LiveData observers update card values
         mViewModel.getLux().observe(getViewLifecycleOwner(), lux ->
                 luxValue.setText(String.format("%.1f", lux)));
@@ -228,6 +237,13 @@ public class MeasureFragment extends Fragment {
                                     mViewModel.setLux(pseudoLux);
                                     cameraPreview.setVisibility(View.GONE);
 
+                                    if (enableAROverlay && arOverlayRenderer != null) {
+                                        de.omagh.lumibuddy.data.model.Measurement m =
+                                                new de.omagh.lumibuddy.data.model.Measurement();
+                                        m.lux = pseudoLux;
+                                        arOverlayRenderer.renderOverlay(new android.graphics.Canvas(), m);
+                                    }
+
                                     // Auto-detect lamp type and show warning if needed
                                     String[] analysis = autoDetectLampType(meanR, meanG, meanB);
                                     String lampSuggestion = analysis[0];
@@ -271,6 +287,7 @@ public class MeasureFragment extends Fragment {
         super.onPause();
         mViewModel.stopMeasuring();
         if (cameraLightMeterX != null) cameraLightMeterX.stopCamera();
+        if (arOverlayRenderer != null) arOverlayRenderer.cleanup();
     }
 
     // Show next/prev measurement screen and handle DLI widget visibility
