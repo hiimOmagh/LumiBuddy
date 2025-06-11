@@ -2,7 +2,8 @@ package de.omagh.lumibuddy.data.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
+
+import org.jspecify.annotations.NonNull;
 
 @Entity(tableName = "plants")
 public class Plant {

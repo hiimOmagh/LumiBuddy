@@ -2,10 +2,11 @@ package de.omagh.lumibuddy.ui;
 
 import android.app.Application;
 
-import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import org.jspecify.annotations.NonNull;
 
 import de.omagh.lumibuddy.feature_measurement.ALSManager;
 import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;

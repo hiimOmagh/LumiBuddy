@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.jspecify.annotations.NonNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 /**
- * Adapter for displaying a list of NODiaryEntry items in a RecyclerView (growth timeline).
+ * Adapter for displaying a list of DiaryEntry items in a RecyclerView (growth timeline).
  */
 public class DiaryEntryAdapter extends RecyclerView.Adapter<DiaryEntryAdapter.DiaryViewHolder> {
 

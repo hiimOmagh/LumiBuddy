@@ -9,31 +9,28 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omagh.lumibuddy.data.db.DiaryDao;
-import de.omagh.lumibuddy.data.model.NODiaryEntry;
 
 /**
  * ViewModel for managing diary entries (timeline) for a specific plant.
  */
 public class DiaryViewModel extends ViewModel {
 
-    private final LiveData<List<NODiaryEntry>> diaryEntries;
     private final DiaryDao diaryDao;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    public DiaryViewModel(DiaryDao dao, String plantId) {
+    public DiaryViewModel(DiaryDao dao) {
         this.diaryDao = dao;
-        this.diaryEntries = dao.getEntriesForPlant(plantId);
     }
 
-    public LiveData<List<NODiaryEntry>> getDiaryEntries() {
-        return diaryEntries;
+    public LiveData<List<DiaryEntry>> getDiaryEntriesForPlant(String plantId) {
+        return diaryDao.getEntriesForPlant(plantId);
     }
 
-    public void addEntry(NODiaryEntry entry) {
+    public void addEntry(DiaryEntry entry) {
         executor.execute(() -> diaryDao.insert(entry));
     }
 
-    public void deleteEntry(NODiaryEntry entry) {
+    public void deleteEntry(DiaryEntry entry) {
         executor.execute(() -> diaryDao.delete(entry));
     }
 
@@ -48,18 +45,16 @@ public class DiaryViewModel extends ViewModel {
      */
     public static class Factory implements ViewModelProvider.Factory {
         private final DiaryDao dao;
-        private final String plantId;
 
-        public Factory(DiaryDao dao, String plantId) {
+        public Factory(DiaryDao dao) {
             this.dao = dao;
-            this.plantId = plantId;
         }
 
         @SuppressWarnings("unchecked")
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             if (modelClass.isAssignableFrom(DiaryViewModel.class)) {
-                return (T) new DiaryViewModel(dao, plantId);
+                return (T) new DiaryViewModel(dao);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

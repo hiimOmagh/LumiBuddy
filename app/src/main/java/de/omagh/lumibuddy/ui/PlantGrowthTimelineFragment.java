@@ -7,14 +7,15 @@ import android.view.ViewGroup;
 
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -63,7 +64,7 @@ public class PlantGrowthTimelineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Setup RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.timelineRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.growthTimelineRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DiaryEntryAdapter();
         recyclerView.setAdapter(adapter);
@@ -71,13 +72,13 @@ public class PlantGrowthTimelineFragment extends Fragment {
         // ViewModel
         AppDatabase db = AppDatabase.getInstance(requireContext());
         diaryViewModel = new ViewModelProvider(this,
-                new DiaryViewModel.Factory(db.diaryDao(), plantId))
+                new DiaryViewModel.Factory(db.diaryDao()))
                 .get(DiaryViewModel.class);
-
-        diaryViewModel.getDiaryEntries().observe(getViewLifecycleOwner(), adapter::submitList);
+        diaryViewModel.getDiaryEntriesForPlant(plantId)
+                .observe(getViewLifecycleOwner(), adapter::submitList);
 
         // FAB to add dummy log (for now)
-        FloatingActionButton fab = view.findViewById(R.id.addLogFab);
+        FloatingActionButton fab = view.findViewById(R.id.addGrowthEventFab);
         fab.setOnClickListener(v -> {
             DiaryEntry entry = new DiaryEntry(
                     UUID.randomUUID().toString(),

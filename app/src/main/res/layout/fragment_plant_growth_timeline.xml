@@ -26,7 +26,7 @@
         android:layout_marginTop="70dp"
         android:clipToPadding="false"
         android:paddingBottom="90dp"
-        tools:listitem="@layout/item_growth_timeline" />
+        tools:listitem="@layout/item_diary_entry" />
 
     <!-- (Optional) FAB for adding a new growth event/photo -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton

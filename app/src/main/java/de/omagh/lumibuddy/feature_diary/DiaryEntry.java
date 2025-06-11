@@ -2,7 +2,8 @@ package de.omagh.lumibuddy.feature_diary;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
+
+import org.jspecify.annotations.NonNull;
 
 @Entity(tableName = "diary_entries")
 public class DiaryEntry {

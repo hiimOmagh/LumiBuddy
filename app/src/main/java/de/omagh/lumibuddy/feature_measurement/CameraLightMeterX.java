@@ -2,7 +2,6 @@ package de.omagh.lumibuddy.feature_measurement;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
@@ -14,6 +13,8 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
 
 import android.app.Activity;
+
+import org.jspecify.annotations.NonNull;
 
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;

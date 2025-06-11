@@ -14,10 +14,12 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Size;
 
+
 import androidx.annotation.RequiresPermission;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Camera-based light meter. Takes a photo through a diffuser and analyzes mean RGB.
@@ -92,7 +94,7 @@ public class CameraLightMeter {
                     cameraDevice = camera;
                     try {
                         camera.createCaptureSession(
-                                Arrays.asList(imageReader.getSurface()),
+                                Collections.singletonList(imageReader.getSurface()),
                                 new CameraCaptureSession.StateCallback() {
                                     @Override
                                     public void onConfigured(CameraCaptureSession session) {

@@ -42,6 +42,9 @@ dependencies {
     implementation(libs.camera.camera2)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
+    // Guava needed for CameraX ListenableFuture
+    implementation(libs.guava)
+    implementation(libs.jetbrains.annotations)
 
     implementation(libs.room.runtime)
     implementation(libs.room.compiler)
