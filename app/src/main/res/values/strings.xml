@@ -24,6 +24,7 @@
     <string name="add_lamp_profile">Add Lamp Profile</string>
     <string name="delete_lamp_profile">Delete Lamp Profile</string>
     <string name="add_lamp">Add Lamp</string>
+    <string name="edit_lamp">Edit Lamp</string>
     <string name="invalid_number">Invalid number</string>
     <string name="lamp_type">"Lamp Type : "</string>
     <string name="calibration_factor_placeholder">Factor: —</string>

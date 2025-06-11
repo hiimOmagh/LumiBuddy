@@ -100,6 +100,19 @@ public class GrowLightProfileManager {
     }
 
     /**
+     * Update an existing custom lamp profile by ID.
+     */
+    public void updateProfile(LampProduct lamp) {
+        for (int i = 0; i < customProfiles.size(); i++) {
+            if (customProfiles.get(i).id.equalsIgnoreCase(lamp.id)) {
+                customProfiles.set(i, lamp);
+                saveCustomProfiles();
+                break;
+            }
+        }
+    }
+
+    /**
      * Remove a custom lamp profile by ID.
      */
     public void removeCustomProfile(String id) {

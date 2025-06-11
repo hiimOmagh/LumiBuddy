@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageButton;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,6 +22,7 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
     private List<LampProduct> lamps;
     private OnLampClickListener clickListener;
     private OnLampDeleteListener deleteListener;
+    private OnLampEditListener editListener;
 
     public interface OnLampClickListener {
         void onLampClick(LampProduct lamp);
@@ -30,12 +32,20 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
         void onLampDelete(LampProduct lamp);
     }
 
+    public interface OnLampEditListener {
+        void onLampEdit(LampProduct lamp);
+    }
+
     public void setOnLampClickListener(OnLampClickListener l) {
         this.clickListener = l;
     }
 
     public void setOnLampDeleteListener(OnLampDeleteListener l) {
         this.deleteListener = l;
+    }
+
+    public void setOnLampEditListener(OnLampEditListener l) {
+        this.editListener = l;
     }
 
     public LampProfileAdapter(List<LampProduct> lamps) {
@@ -66,6 +76,10 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
             if (clickListener != null) clickListener.onLampClick(lamp);
         });
 
+        holder.editButton.setOnClickListener(v -> {
+            if (editListener != null) editListener.onLampEdit(lamp);
+        });
+
         holder.itemView.setOnLongClickListener(v -> {
             if (deleteListener != null) {
                 deleteListener.onLampDelete(lamp);
@@ -82,11 +96,13 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
 
     static class LampViewHolder extends RecyclerView.ViewHolder {
         TextView name, details;
+        android.widget.ImageButton editButton;
 
         LampViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.lampName);
             details = itemView.findViewById(R.id.lampDetails);
+            editButton = itemView.findViewById(R.id.editLampButton);
         }
     }
 }

@@ -54,6 +54,8 @@ public class LampProfilesFragment extends Fragment {
                     .show();
         });
 
+        adapter.setOnLampEditListener(this::showEditDialog);
+
         FloatingActionButton fab = view.findViewById(R.id.addLampProfileFab);
         fab.setOnClickListener(v -> showAddDialog());
 
@@ -90,6 +92,43 @@ public class LampProfilesFragment extends Fragment {
                         viewModel.addProfile(lp);
                     } catch (NumberFormatException ex) {
                         Toast.makeText(getContext(), "Invalid number", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showEditDialog(LampProduct lamp) {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_lamp_profile, null);
+        EditText name = dialogView.findViewById(R.id.editLampName);
+        EditText brand = dialogView.findViewById(R.id.editLampBrand);
+        EditText type = dialogView.findViewById(R.id.editLampType);
+        EditText spec = dialogView.findViewById(R.id.editLampSpectrum);
+        EditText watt = dialogView.findViewById(R.id.editLampWattage);
+        EditText factor = dialogView.findViewById(R.id.editLampFactor);
+        EditText ppfd = dialogView.findViewById(R.id.editLampPPFD);
+
+        name.setText(lamp.name);
+        brand.setText(lamp.brand);
+        type.setText(lamp.type);
+        spec.setText(lamp.spectrum);
+        watt.setText(String.valueOf(lamp.wattage));
+        factor.setText(String.valueOf(lamp.calibrationFactor));
+        ppfd.setText(String.valueOf(lamp.ppfdAt30cm));
+
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.edit_lamp)
+                .setView(dialogView)
+                .setPositiveButton(R.string.save, (d, w) -> {
+                    try {
+                        int wv = Integer.parseInt(watt.getText().toString());
+                        float f = Float.parseFloat(factor.getText().toString());
+                        float p = Float.parseFloat(ppfd.getText().toString());
+                        LampProduct updated = new LampProduct(lamp.id, name.getText().toString(), brand.getText().toString(),
+                                type.getText().toString(), spec.getText().toString(), wv, f, p);
+                        viewModel.updateProfile(updated);
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getContext(), R.string.invalid_number, Toast.LENGTH_SHORT).show();
                     }
                 })
                 .setNegativeButton("Cancel", null)

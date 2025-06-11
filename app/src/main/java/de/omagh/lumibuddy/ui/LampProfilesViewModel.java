@@ -35,6 +35,11 @@ public class LampProfilesViewModel extends AndroidViewModel {
         profiles.setValue(manager.getAllProfiles());
     }
 
+    public void updateProfile(LampProduct p) {
+        manager.updateProfile(p);
+        profiles.setValue(manager.getAllProfiles());
+    }
+
     public void removeProfile(LampProduct p) {
         manager.removeCustomProfile(p.id);
         profiles.setValue(manager.getAllProfiles());
