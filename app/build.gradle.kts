@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.jetbrains.annotations)
 
     implementation(libs.room.runtime)
-    implementation(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
 // For LiveData support:
     implementation(libs.androidx.room.ktx)
