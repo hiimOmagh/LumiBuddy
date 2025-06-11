@@ -8,12 +8,11 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.db.DiaryDao;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.lumibuddy.feature_diary.DiaryRepository;
 
 import org.jspecify.annotations.NonNull;
 
@@ -22,33 +21,33 @@ import org.jspecify.annotations.NonNull;
  */
 public class DiaryViewModel extends AndroidViewModel {
 
-    private final DiaryDao diaryDao;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final DiaryRepository repository;
 
     public DiaryViewModel(@NonNull Application application) {
         super(application);
-        diaryDao = AppDatabase.getInstance(application).diaryDao();
+        DiaryDao dao = AppDatabase.getInstance(application).diaryDao();
+        repository = new DiaryRepository(dao);
     }
 
     public LiveData<List<DiaryEntry>> getDiaryEntriesForPlant(String plantId) {
-        return diaryDao.getEntriesForPlant(plantId);
+        return repository.getEntriesForPlant(plantId);
     }
 
     public List<DiaryEntry> getDiaryEntriesForPlantSync(String plantId) {
-        return diaryDao.getEntriesForPlantSync(plantId);
+        return repository.getEntriesForPlantSync(plantId);
     }
     public void addEntry(DiaryEntry entry) {
-        executor.execute(() -> diaryDao.insert(entry));
+        repository.insert(entry);
     }
 
     public void deleteEntry(DiaryEntry entry) {
-        executor.execute(() -> diaryDao.delete(entry));
+        repository.delete(entry);
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        executor.shutdown();
+        repository.shutdown();
     }
 
     /**

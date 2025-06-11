@@ -11,6 +11,7 @@ import org.jspecify.annotations.NonNull;
 import de.omagh.lumibuddy.feature_measurement.ALSManager;
 import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
 import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
+import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
@@ -153,13 +154,13 @@ public class MeasureViewModel extends AndroidViewModel {
         }
         calibrationFactorLiveData.setValue(factor);
 
-        float ppfd = lux * factor;
+        float ppfd = MeasurementUtils.luxToPPFD(lux, factor);
         ppfdLiveData.setValue(ppfd);
         updateDLI(ppfd, getHoursValue());
     }
 
     private void updateDLI(float ppfd, int hours) {
-        float dli = (ppfd * hours * 3600f) / 1_000_000f;
+        float dli = MeasurementUtils.ppfdToDLI(ppfd, hours);
         dliLiveData.setValue(dli);
     }
 

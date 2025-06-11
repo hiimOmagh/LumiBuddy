@@ -14,7 +14,8 @@ public class SettingsManager {
     private static final String KEY_UNIT = "preferred_unit";
     private static final String KEY_DURATION = "light_duration_hours";
     private static final String KEY_CALIB_ID = "selected_calibration_profile";
-
+    private static final String KEY_ENABLE_AR = "enable_ar_overlay";
+    private static final String KEY_ENABLE_ML = "enable_ml_features";
     private final SharedPreferences prefs;
 
     public SettingsManager(Context context) {
@@ -61,5 +62,33 @@ public class SettingsManager {
      */
     public void setSelectedCalibrationProfileId(String id) {
         prefs.edit().putString(KEY_CALIB_ID, id).apply();
+    }
+
+    /**
+     * Returns true if AR overlay features are enabled.
+     */
+    public boolean isArOverlayEnabled() {
+        return prefs.getBoolean(KEY_ENABLE_AR, false);
+    }
+
+    /**
+     * Enable or disable AR overlay features.
+     */
+    public void setArOverlayEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_ENABLE_AR, enabled).apply();
+    }
+
+    /**
+     * Returns true if ML features are enabled.
+     */
+    public boolean isMlFeaturesEnabled() {
+        return prefs.getBoolean(KEY_ENABLE_ML, false);
+    }
+
+    /**
+     * Enable or disable ML features.
+     */
+    public void setMlFeaturesEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_ENABLE_ML, enabled).apply();
     }
 }

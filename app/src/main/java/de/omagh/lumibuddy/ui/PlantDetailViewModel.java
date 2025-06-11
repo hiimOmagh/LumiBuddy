@@ -1,20 +1,31 @@
 package de.omagh.lumibuddy.ui;
 
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.data.db.AppDatabase;
+import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
+
+import org.jspecify.annotations.NonNull;
 
 /**
  * ViewModel for PlantDetailFragment.
  * Holds LiveData for a single plant, supporting detail view and editing.
  * Can be extended to load/update a plant from Room database.
  */
-public class PlantDetailViewModel extends ViewModel {
+public class PlantDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
+    private final PlantRepository repository;
 
+    public PlantDetailViewModel(@NonNull Application application) {
+        super(application);
+        repository = new PlantRepository(AppDatabase.getInstance(application));
+    }
     /**
      * Returns observable plant data for the detail screen.
      */
@@ -41,7 +52,13 @@ public class PlantDetailViewModel extends ViewModel {
         }
     }
 
-    // TODO: In the future, add DB support like:
-    // public void loadPlantById(String id) { ... }
-    // public void savePlantUpdate(Plant plant) { ... }
+    /**
+     * Persist the currently edited plant to the repository.
+     */
+    public void savePlant() {
+        Plant current = plant.getValue();
+        if (current != null) {
+            repository.updatePlant(current);
+        }
+    }
 }

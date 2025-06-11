@@ -17,7 +17,7 @@ public class PeriodicScanScheduler {
         this.wateringScheduler = wateringScheduler;
     }
 
-    public void runWeekly(List<Plant> plants, List<DiaryEntry> entries) {
+    public void runWeekly(List<Plant> plants) {
         wateringScheduler.runDailyCheck(plants);
     }
 }

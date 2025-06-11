@@ -91,9 +91,12 @@ public class AddPlantFragment extends Fragment {
         // Init ViewModel
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
 
-        plantRecognizer = new de.omagh.lumibuddy.feature_ml.PlantClassifier();
-        plantRecognizer.loadModel();
-
+        de.omagh.lumibuddy.feature_user.SettingsManager sm =
+                new de.omagh.lumibuddy.feature_user.SettingsManager(requireContext());
+        if (sm.isMlFeaturesEnabled()) {
+            plantRecognizer = new de.omagh.lumibuddy.feature_ml.PlantClassifier();
+            plantRecognizer.loadModel();
+        }
         // Check for edit mode
         Bundle args = getArguments();
         if (args != null) {
