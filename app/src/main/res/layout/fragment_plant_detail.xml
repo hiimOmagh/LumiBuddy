@@ -67,6 +67,12 @@
                     android:layout_marginBottom="20dp"
                     android:text="@string/care_info_placeholder" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/viewTimelineButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_timeline" />
+
                 <!-- Add more plant details/info as needed here -->
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

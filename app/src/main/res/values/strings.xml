@@ -83,6 +83,13 @@
         <item>DLI</item>
     </string-array>
 
+    <!-- Diary event types -->
+    <string-array name="diary_event_types">
+        <item>watering</item>
+        <item>light</item>
+        <item>note</item>
+    </string-array>
+    <!-- Lamp types -->
     <string-array name="lamp_types">
         <item>Sunlight</item>
         <item>White LED (neutral)</item>

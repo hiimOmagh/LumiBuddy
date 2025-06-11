@@ -1,10 +1,14 @@
 package de.omagh.lumibuddy.ui;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -20,7 +24,6 @@ import org.jspecify.annotations.Nullable;
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
 import de.omagh.lumibuddy.feature_diary.DiaryEntryAdapter;
@@ -33,6 +36,19 @@ public class PlantGrowthTimelineFragment extends Fragment {
 
     private DiaryViewModel diaryViewModel;
     private DiaryEntryAdapter adapter;
+    private Uri selectedImageUri = null;
+
+    private final androidx.activity.result.ActivityResultLauncher<String> imagePickerLauncher =
+            registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.GetContent(), uri -> {
+                if (uri != null) {
+                    selectedImageUri = uri;
+                    if (dialogImagePreview != null) {
+                        dialogImagePreview.setImageURI(uri);
+                    }
+                }
+            });
+
+    private ImageView dialogImagePreview;
 
     public PlantGrowthTimelineFragment() {
     }
@@ -70,26 +86,44 @@ public class PlantGrowthTimelineFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // ViewModel
-        AppDatabase db = AppDatabase.getInstance(requireContext());
         diaryViewModel = new ViewModelProvider(this,
-                new DiaryViewModel.Factory(db.diaryDao()))
+                new DiaryViewModel.Factory(requireActivity().getApplication()))
                 .get(DiaryViewModel.class);
         diaryViewModel.getDiaryEntriesForPlant(plantId)
                 .observe(getViewLifecycleOwner(), adapter::submitList);
 
-        // FAB to add dummy log (for now)
+        // FAB to add new log entry
         FloatingActionButton fab = view.findViewById(R.id.addGrowthEventFab);
-        fab.setOnClickListener(v -> {
-            DiaryEntry entry = new DiaryEntry(
-                    UUID.randomUUID().toString(),
-                    plantId,
-                    System.currentTimeMillis(),
-                    "Sample note entry",
-                    "",
-                    "note"
-            );
-            diaryViewModel.addEntry(entry);
-            Toast.makeText(getContext(), "Diary entry added", Toast.LENGTH_SHORT).show();
-        });
+        fab.setOnClickListener(v -> showAddEntryDialog());
+    }
+
+    private void showAddEntryDialog() {
+        View dialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_diary_entry, null);
+        Spinner typeSpinner = dialog.findViewById(R.id.eventTypeSpinner);
+        EditText noteInput = dialog.findViewById(R.id.editDiaryNote);
+        dialogImagePreview = dialog.findViewById(R.id.diaryImagePreview);
+        dialog.findViewById(R.id.pickImageBtn).setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
+
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(R.string.add_diary_entry)
+                .setView(dialog)
+                .setPositiveButton(R.string.save, (d, which) -> {
+                    String note = noteInput.getText().toString().trim();
+                    String type = typeSpinner.getSelectedItem().toString();
+                    String uriStr = selectedImageUri != null ? selectedImageUri.toString() : "";
+                    DiaryEntry entry = new DiaryEntry(
+                            UUID.randomUUID().toString(),
+                            plantId,
+                            System.currentTimeMillis(),
+                            note,
+                            uriStr,
+                            type
+                    );
+                    diaryViewModel.addEntry(entry);
+                    selectedImageUri = null;
+                    Toast.makeText(getContext(), R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
     }
 }

@@ -29,6 +29,7 @@ import de.omagh.lumibuddy.data.model.Plant;
  * Fragment to add or edit a plant.
  * If an ID is passed in arguments, the plant will be edited.
  */
+
 public class AddPlantFragment extends Fragment {
 
     private EditText nameInput, typeInput;

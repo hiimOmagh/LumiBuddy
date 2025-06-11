@@ -26,6 +26,8 @@ import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
 import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantStage;
+import de.omagh.lumibuddy.ui.PlantListViewModel;
+import de.omagh.lumibuddy.ui.PlantGrowthTimelineFragment;
 
 /**
  * Fragment to display details of a single plant and allow editing.
@@ -33,11 +35,13 @@ import de.omagh.lumibuddy.feature_plantdb.PlantStage;
  */
 public class PlantDetailFragment extends Fragment {
 
+    public static final String ARG_ID = "plant_id";
     public static final String ARG_NAME = "plant_name";
     public static final String ARG_TYPE = "plant_type";
     public static final String ARG_IMAGE_URI = "plant_image_uri";
 
     private PlantDetailViewModel viewModel;
+    private PlantListViewModel listViewModel;
     private ImageView plantImageView;
     private PlantDatabaseManager dbManager;
     private PlantIdentifier identifier;
@@ -56,20 +60,24 @@ public class PlantDetailFragment extends Fragment {
         careInfoView = view.findViewById(R.id.detailCareInfo);
         plantImageView = view.findViewById(R.id.detailPlantImage);
         FloatingActionButton editFab = view.findViewById(R.id.editPlantFab);
+        View timelineButton = view.findViewById(R.id.viewTimelineButton);
 
         dbManager = new PlantDatabaseManager();
         identifier = new PlantIdentifier(dbManager);
-        // ViewModel
+        // ViewModels
         viewModel = new ViewModelProvider(this).get(PlantDetailViewModel.class);
+        listViewModel = new ViewModelProvider(requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(PlantListViewModel.class);
 
         // Retrieve arguments
         Bundle args = getArguments();
+        String id = (args != null) ? args.getString(ARG_ID, "0") : "0";
         String name = (args != null) ? args.getString(ARG_NAME, "Unknown") : "Unknown";
         String type = (args != null) ? args.getString(ARG_TYPE, "Unknown") : "Unknown";
         String imageUri = (args != null) ? args.getString(ARG_IMAGE_URI, "") : "";
 
-        // For now, use dummy ID; in future use real ID and fetch from DB
-        Plant passedPlant = new Plant("0", name, type, imageUri);
+        Plant passedPlant = new Plant(id, name, type, imageUri);
         viewModel.setPlant(passedPlant);
 
         // Observe LiveData for display
@@ -102,6 +110,17 @@ public class PlantDetailFragment extends Fragment {
 
         // Edit FAB
         editFab.setOnClickListener(v -> showEditPlantDialog());
+
+        // View timeline button
+        timelineButton.setOnClickListener(v -> {
+            Plant current = viewModel.getPlant().getValue();
+            if (current != null) {
+                Bundle b = new Bundle();
+                b.putString(PlantGrowthTimelineFragment.ARG_PLANT_ID, current.getId());
+                androidx.navigation.Navigation.findNavController(v)
+                        .navigate(R.id.plantGrowthTimelineFragment, b);
+            }
+        });
 
         return view;
     }
@@ -167,8 +186,9 @@ public class PlantDetailFragment extends Fragment {
 
                     Plant updated = new Plant(current.getId(), newName, newType, current.getImageUri());
                     viewModel.setPlant(updated);
-
-                    // TODO: Save updated plant to DB using a shared ViewModel or repository
+                    if (listViewModel != null) {
+                        listViewModel.updatePlant(updated);
+                    }
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

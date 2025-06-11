@@ -11,6 +11,16 @@ import androidx.navigation.Navigation;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.Observer;
+
+import java.util.List;
+
+import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
+import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
+import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
+import de.omagh.lumibuddy.data.db.AppDatabase;
+import de.omagh.lumibuddy.ui.PlantListViewModel;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -56,6 +66,16 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        PlantListViewModel plantVm = new ViewModelProvider(requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(PlantListViewModel.class);
+        RecommendationEngine engine = new RecommendationEngine();
+        NotificationManager nm = new NotificationManager(requireContext());
+        WateringScheduler scheduler = new WateringScheduler(engine, nm,
+                AppDatabase.getInstance(requireContext()).diaryDao());
+
+        plantVm.getPlants().observe(getViewLifecycleOwner(), scheduler::runDailyCheck);
+
         view.findViewById(R.id.startMeasureButton).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.measureFragment));
 
@@ -63,8 +83,7 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(v).navigate(R.id.addPlantFragment));
 
         view.findViewById(R.id.viewTimelineButton).setOnClickListener(v ->
-                Navigation.findNavController(v).navigate(R.id.plantDiaryFragment));
-
+                Navigation.findNavController(v).navigate(R.id.plantListFragment));
         return view;
     }
 }

@@ -64,9 +64,10 @@ public class PlantListFragment extends Fragment {
         // On plant click → navigate to details
         adapter.setOnPlantClickListener(plant -> {
             Bundle args = new Bundle();
+            args.putString(PlantDetailFragment.ARG_ID, plant.getId());
             args.putString(PlantDetailFragment.ARG_NAME, plant.getName());
             args.putString(PlantDetailFragment.ARG_TYPE, plant.getType());
-            args.putString("plant_image_uri", plant.getImageUri());
+            args.putString(PlantDetailFragment.ARG_IMAGE_URI, plant.getImageUri());
 
             androidx.navigation.Navigation.findNavController(recyclerView)
                     .navigate(R.id.plantDetailFragment, args);
