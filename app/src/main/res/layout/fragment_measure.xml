@@ -25,10 +25,18 @@
 
         <Spinner
             android:id="@+id/lampTypeSpinner"
+            android:text="@array/lamp_types"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:minHeight="48dp" />
+
+        <TextView
+            android:id="@+id/calibrationFactorText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dp"
-            android:minHeight="48dp" />
+            android:text="@string/calibration_factor_placeholder" />
 
         <!-- CameraX Preview & Measure Button -->
         <androidx.camera.view.PreviewView

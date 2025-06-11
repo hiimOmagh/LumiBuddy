@@ -11,6 +11,7 @@
     <string name="edit_plant">Edit plant</string>
     <string name="plant_image_desc">Plant image preview</string>
     <string name="pick_image">Pick Image</string>
+    <string name="search_plant_db">Search Plant DB</string>
     <string name="agenda_title">My Plant Agenda</string>
     <string name="add_agenda_event">Add agenda event</string>
     <string name="calibration">Calibration</string>
@@ -22,6 +23,8 @@
     <string name="lamp_profiles_title">Lamp Profiles</string>
     <string name="add_lamp_profile">Add Lamp Profile</string>
     <string name="lamp_type">"Lamp Type : "</string>
+    <string name="calibration_factor_placeholder">Factor: —</string>
+    <string name="calibration_factor">Factor: %1$.3f</string>
     <string name="_24_h">24 h</string>
     <string name="placeholder_dli_value">--</string>
     <string name="placeholder_minus">−</string>
@@ -56,6 +59,7 @@
     <string name="dli">DLI</string>
     <string name="mol_m_d">mol/m²/d</string>
     <string name="dliValue">0.000\n</string>
+    <string name="care_info_placeholder">Care info</string>
     <string name="selected_light_hours">Selected light hours</string>
     <string name="homeWelcomeText">Welcome</string>
     <string name="_12_h">12 h</string>

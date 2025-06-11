@@ -10,6 +10,9 @@ import org.jspecify.annotations.NonNull;
 
 import de.omagh.lumibuddy.feature_measurement.ALSManager;
 import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
+import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
+import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
+import de.omagh.lumibuddy.feature_growlight.LampProduct;
 
 /**
  * ViewModel for light measurement, lamp type selection, and calculation of PPFD/DLI.
@@ -25,6 +28,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
         public final float luxToPPFD;
 
+
         LampType(float factor) {
             this.luxToPPFD = factor;
         }
@@ -35,12 +39,19 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<Integer> hoursLiveData = new MutableLiveData<>(24);
     private final MutableLiveData<Float> dliLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
-
+    private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
     private final MeasurementEngine measurementEngine;
+    private final CalibrationManager calibrationManager;
+    private final GrowLightProfileManager growLightManager;
+    private final MutableLiveData<String> lampIdLiveData;
+
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
         measurementEngine = new MeasurementEngine(application.getApplicationContext());
+        calibrationManager = new CalibrationManager(application.getApplicationContext());
+        growLightManager = new GrowLightProfileManager(application.getApplicationContext());
+        lampIdLiveData = new MutableLiveData<>(growLightManager.getActiveLampProfile().id);
     }
 
     /**
@@ -72,10 +83,17 @@ public class MeasureViewModel extends AndroidViewModel {
     }
 
     /**
-     * LiveData for lamp type
+     * LiveData for active lamp profile ID.
+     * */
+    public LiveData<String> getLampProfileId() {
+        return lampIdLiveData;
+    }
+
+    /**
+     * LiveData for the current calibration factor in PPFD/lux.
      */
-    public LiveData<LampType> getLampType() {
-        return lampTypeLiveData;
+    public LiveData<Float> getCalibrationFactor() {
+        return calibrationFactorLiveData;
     }
 
     // --- ALS management ---
@@ -100,19 +118,27 @@ public class MeasureViewModel extends AndroidViewModel {
         updateDLI(getPPFDValue(), hours);
     }
 
-    public void setLampType(LampType lampType) {
-        lampTypeLiveData.setValue(lampType);
+    public void setLampProfileId(String id) {
+        growLightManager.setActiveLampProfile(id);
+        lampIdLiveData.setValue(id);
         updatePPFD(getLuxValue());
     }
 
     // --- Internal calculations ---
     private void updatePPFD(float lux) {
-        LampType type = lampTypeLiveData.getValue();
-        updatePPFD(lux, type != null ? type : LampType.SUNLIGHT);
+        String id = lampIdLiveData.getValue();
+        updatePPFD(lux, id != null ? id : growLightManager.getActiveLampProfile().id);
     }
 
-    private void updatePPFD(float lux, LampType lampType) {
-        float ppfd = lux * lampType.luxToPPFD;
+    private void updatePPFD(float lux, String lampId) {
+        float factor = calibrationManager.getCalibrationFactor(lampId);
+        LampProduct def = growLightManager.getById(lampId);
+        if (factor == CalibrationManager.DEFAULT_FACTOR && def != null) {
+            factor = def.calibrationFactor;
+        }
+        calibrationFactorLiveData.setValue(factor);
+
+        float ppfd = lux * factor;
         ppfdLiveData.setValue(ppfd);
         updateDLI(ppfd, getHoursValue());
     }

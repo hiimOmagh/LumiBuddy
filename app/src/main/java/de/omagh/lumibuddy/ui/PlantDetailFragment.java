@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,11 @@ import org.jspecify.annotations.Nullable;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
+import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
+import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
+import de.omagh.lumibuddy.feature_plantdb.PlantStage;
 
 /**
  * Fragment to display details of a single plant and allow editing.
@@ -33,6 +39,9 @@ public class PlantDetailFragment extends Fragment {
 
     private PlantDetailViewModel viewModel;
     private ImageView plantImageView;
+    private PlantDatabaseManager dbManager;
+    private PlantIdentifier identifier;
+    private TextView careInfoView;
 
     @Nullable
     @Override
@@ -44,9 +53,12 @@ public class PlantDetailFragment extends Fragment {
         // UI elements
         TextView nameView = view.findViewById(R.id.detailPlantName);
         TextView typeView = view.findViewById(R.id.detailPlantType);
+        careInfoView = view.findViewById(R.id.detailCareInfo);
         plantImageView = view.findViewById(R.id.detailPlantImage);
         FloatingActionButton editFab = view.findViewById(R.id.editPlantFab);
 
+        dbManager = new PlantDatabaseManager();
+        identifier = new PlantIdentifier(dbManager);
         // ViewModel
         viewModel = new ViewModelProvider(this).get(PlantDetailViewModel.class);
 
@@ -64,11 +76,27 @@ public class PlantDetailFragment extends Fragment {
         viewModel.getPlant().observe(getViewLifecycleOwner(), plant -> {
             nameView.setText(plant.getName());
             typeView.setText("Type: " + plant.getType());
-
             if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()) {
                 plantImageView.setImageURI(Uri.parse(plant.getImageUri()));
             } else {
                 plantImageView.setImageResource(R.drawable.ic_eco);
+            }
+            PlantInfo info = identifier.identifyByName(plant.getType());
+            if (info != null) {
+                PlantCareProfile profile = info.getProfileForStage(PlantStage.VEGETATIVE);
+                if (profile != null) {
+                    String careText = String.format(java.util.Locale.US,
+                            "Light %.0f-%.0f μmol/m²/s\nWater every %d d\nTemp %.0f-%.0f°C\nHumidity %.0f-%.0f%%",
+                            profile.getMinPPFD(), profile.getMaxPPFD(),
+                            profile.getWaterFrequencyDays(),
+                            profile.getMinTemperature(), profile.getMaxTemperature(),
+                            profile.getMinHumidity(), profile.getMaxHumidity());
+                    careInfoView.setText(careText);
+                } else {
+                    careInfoView.setText(R.string.care_info_placeholder);
+                }
+            } else {
+                careInfoView.setText(R.string.care_info_placeholder);
             }
         });
 
@@ -90,6 +118,10 @@ public class PlantDetailFragment extends Fragment {
         EditText nameInput = dialogView.findViewById(R.id.editPlantName);
         EditText typeInput = dialogView.findViewById(R.id.editPlantType);
         ImageView imagePreview = dialogView.findViewById(R.id.plantImagePreview);
+        Button searchPlantBtn = dialogView.findViewById(R.id.searchPlantBtn);
+
+        PlantDatabaseManager db = new PlantDatabaseManager();
+        PlantIdentifier ider = new PlantIdentifier(db);
 
         nameInput.setText(current.getName());
         typeInput.setText(current.getType());
@@ -97,6 +129,29 @@ public class PlantDetailFragment extends Fragment {
         if (imagePreview != null && current.getImageUri() != null && !current.getImageUri().isEmpty()) {
             imagePreview.setImageURI(Uri.parse(current.getImageUri()));
         }
+
+        searchPlantBtn.setOnClickListener(v -> {
+            String query = nameInput.getText().toString().trim();
+            PlantInfo match = ider.identifyByName(query);
+            if (match != null) {
+                nameInput.setText(match.commonName);
+                typeInput.setText(match.scientificName);
+                Toast.makeText(getContext(), "Loaded profile for " + match.commonName, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            java.util.List<PlantInfo> all = db.getAllPlants();
+            String[] names = new String[all.size()];
+            for (int i = 0; i < all.size(); i++) names[i] = all.get(i).commonName;
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Select Plant")
+                    .setItems(names, (d, which) -> {
+                        PlantInfo info = all.get(which);
+                        nameInput.setText(info.commonName);
+                        typeInput.setText(info.scientificName);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
 
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setTitle("Edit Plant")

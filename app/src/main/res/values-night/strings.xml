@@ -25,4 +25,5 @@
     <string name="homeWelcomeText">Welcome</string>
     <string name="_12_h">12 h</string>
     <string name="_18_h">18 h</string>
+    <string name="lamp_types">lamp_types</string>
 </resources>

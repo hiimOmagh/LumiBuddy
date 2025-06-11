@@ -27,6 +27,8 @@ import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
+import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
 
 /**
  * Fragment displaying a list of plants with add, delete, and detail support.
@@ -104,6 +106,10 @@ public class PlantListFragment extends Fragment {
         EditText typeInput = dialogView.findViewById(R.id.editPlantType);
         plantImagePreview = dialogView.findViewById(R.id.plantImagePreview);
         Button pickImageBtn = dialogView.findViewById(R.id.pickImageBtn);
+        Button searchPlantBtn = dialogView.findViewById(R.id.searchPlantBtn);
+
+        PlantDatabaseManager dbManager = new PlantDatabaseManager();
+        PlantIdentifier identifier = new PlantIdentifier(dbManager);
 
         pickedImageUri = null;
         if (plantImagePreview != null) {
@@ -111,6 +117,32 @@ public class PlantListFragment extends Fragment {
         }
 
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
+        searchPlantBtn.setOnClickListener(v -> {
+            String query = nameInput.getText().toString().trim();
+            de.omagh.lumibuddy.feature_plantdb.PlantInfo match = identifier.identifyByName(query);
+            if (match != null) {
+                nameInput.setText(match.commonName);
+                typeInput.setText(match.scientificName);
+                Toast.makeText(getContext(), "Loaded profile for " + match.commonName, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            java.util.List<de.omagh.lumibuddy.feature_plantdb.PlantInfo> all = dbManager.getAllPlants();
+            String[] names = new String[all.size()];
+            for (int i = 0; i < all.size(); i++) {
+                names[i] = all.get(i).commonName;
+            }
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Select Plant")
+                    .setItems(names, (d, which) -> {
+                        de.omagh.lumibuddy.feature_plantdb.PlantInfo info = all.get(which);
+                        nameInput.setText(info.commonName);
+                        typeInput.setText(info.scientificName);
+                        Toast.makeText(getContext(), "Loaded profile for " + info.commonName, Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
 
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setTitle("Add New Plant")

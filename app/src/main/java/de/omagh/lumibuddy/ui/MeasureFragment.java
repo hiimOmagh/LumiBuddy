@@ -21,15 +21,19 @@ import org.jspecify.annotations.Nullable;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.util.OnSwipeTouchListener;
+import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
+import de.omagh.lumibuddy.feature_growlight.LampProduct;
 
 public class MeasureFragment extends Fragment {
     private MeasureViewModel mViewModel;
 
     // Lamp type selection
     private Spinner lampTypeSpinner;
+    private TextView calibrationFactorText;
     private ViewFlipper measureFlipper;
     private View dliWidget;
-
+    private GrowLightProfileManager lampManager;
+    private java.util.List<LampProduct> lampList;
     // DLI widget controls
     private Button preset12h, preset18h, preset24h, plusHour, minusHour;
     private TextView hourValue, dliWidgetValue;
@@ -52,7 +56,25 @@ public class MeasureFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
 
+        // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);
+        calibrationFactorText = view.findViewById(R.id.calibrationFactorText);
+        lampManager = new GrowLightProfileManager(requireContext());
+        lampList = lampManager.getAllProfiles();
+
+        android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        for (LampProduct p : lampList) {
+            adapter.add(p.name);
+        }
+        lampTypeSpinner.setAdapter(adapter);
+        String activeId = lampManager.getActiveLampProfile().id;
+        for (int i = 0; i < lampList.size(); i++) {
+            if (lampList.get(i).id.equalsIgnoreCase(activeId)) {
+                lampTypeSpinner.setSelection(i);
+                break;
+            }
+        }
         measureFlipper = view.findViewById(R.id.measureFlipper);
         dliWidget = view.findViewById(R.id.dliWidget);
 
@@ -66,7 +88,7 @@ public class MeasureFragment extends Fragment {
         ppfdValue = ppfdCard.findViewById(R.id.metricValue);
         dliValue = dliCard.findViewById(R.id.metricValue);
 
-        // Set up icons, units, and colors for each card (do this once)
+        // Set up icons, units, and colors for each card
         setupCard(luxCard, R.drawable.ic_lux, "Lux", "lx", R.color.luxColor);
         setupCard(ppfdCard, R.drawable.ic_ppfd, "PPFD", "μmol/m²/s", R.color.ppfdColor);
         setupCard(dliCard, R.drawable.ic_dli, "DLI", "mol/m²/d", R.color.dliColor);
@@ -140,25 +162,37 @@ public class MeasureFragment extends Fragment {
             dliWidgetValue.setText(String.format("%.2f", dli));
         });
 
+        // Show calibration factor used for PPFD conversion
+        mViewModel.getCalibrationFactor().observe(getViewLifecycleOwner(), factor ->
+                calibrationFactorText.setText(getString(R.string.calibration_factor, factor)));
+
         // Lamp type spinner: update ViewModel when user selects an item
         lampTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View v, int position, long id) {
-                MeasureViewModel.LampType type = MeasureViewModel.LampType.values()[position];
-                mViewModel.setLampType(type);
+                if (position >= 0 && position < lampList.size()) {
+                    mViewModel.setLampProfileId(lampList.get(position).id);
+                }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+                // no-op
             }
         });
 
         // Ensure spinner stays in sync with ViewModel state
-        mViewModel.getLampType().observe(getViewLifecycleOwner(), lampType -> {
-            if (lampType != null && lampTypeSpinner.getSelectedItemPosition() != lampType.ordinal()) {
-                lampTypeSpinner.setSelection(lampType.ordinal());
+        mViewModel.getLampProfileId().observe(getViewLifecycleOwner(), id -> {
+            if (id == null) return;
+            for (int i = 0; i < lampList.size(); i++) {
+                if (id.equalsIgnoreCase(lampList.get(i).id)) {
+                    if (lampTypeSpinner.getSelectedItemPosition() != i) {
+                        lampTypeSpinner.setSelection(i);
+                    }
+                    break;
+                }
             }
-        });
+        }); // <-- All brackets closed correctly here!
 
         // --- CameraX Measurement Integration ---
         cameraLightMeterX = new CameraLightMeterX(requireActivity(), cameraPreview);
@@ -248,6 +282,11 @@ public class MeasureFragment extends Fragment {
     }
 
     // --- Utility methods ---
+
+    /**
+     * Attempts to auto-detect the lamp spectrum type based on mean RGB values.
+     * Returns: [lampTypeString, warningStringOrNull]
+     */
     private String[] autoDetectLampType(float meanR, float meanG, float meanB) {
         float sum = meanR + meanG + meanB;
         if (sum == 0) return new String[]{"Unknown", "Sensor reading error."};
@@ -276,22 +315,16 @@ public class MeasureFragment extends Fragment {
         return new String[]{type, warning};
     }
 
+    /** Tries to match the suggested lamp type string to a lampList index. Returns -1 if not found. */
     private int lampTypeStringToIndex(String suggestion) {
-        switch (suggestion) {
-            case "Sunlight":
-            case "White/Sunlight":
-                return 0;
-            case "White LED (neutral)":
-                return 1;
-            case "Warm LED":
-                return 2;
-            case "Blurple LED":
-                return 3;
-            case "HPS":
-                return 4;
-            default:
-                return -1;
+        if (suggestion == null) return -1;
+        String lower = suggestion.toLowerCase();
+        for (int i = 0; i < lampList.size(); i++) {
+            if (lampList.get(i).name.toLowerCase().contains(lower)) {
+                return i;
+            }
         }
+        return -1;
     }
 
     // Helper to DRY card setup

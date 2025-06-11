@@ -1,4 +1,10 @@
 package de.omagh.lumibuddy.feature_plantdb;
 
-public class PlantStage {
+/**
+ * Growth stages used when defining plant care requirements.
+ */
+public enum PlantStage {
+    SEEDLING,
+    VEGETATIVE,
+    FLOWERING
 }

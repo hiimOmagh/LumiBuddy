@@ -60,6 +60,13 @@
                     android:textColor="#616161"
                     android:textSize="18sp" />
 
+                <TextView
+                    android:id="@+id/detailCareInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:text="@string/care_info_placeholder" />
+
                 <!-- Add more plant details/info as needed here -->
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
