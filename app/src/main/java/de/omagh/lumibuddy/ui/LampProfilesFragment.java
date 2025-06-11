@@ -1,66 +1,98 @@
 package de.omagh.lumibuddy.ui;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.feature_growlight.LampProduct;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link LampProfilesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Screen for managing grow light profiles.
  */
 public class LampProfilesFragment extends Fragment {
+    private LampProfilesViewModel viewModel;
+    private LampProfileAdapter adapter;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public LampProfilesFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LampProfilesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static LampProfilesFragment newInstance(String param1, String param2) {
-        LampProfilesFragment fragment = new LampProfilesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_lamp_profiles, container, false);
+
+        RecyclerView rv = view.findViewById(R.id.lampProfilesRecyclerView);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        adapter = new LampProfileAdapter(new ArrayList<>());
+        rv.setAdapter(adapter);
+
+        adapter.setOnLampClickListener(lamp -> {
+            viewModel.selectProfile(lamp);
+            Toast.makeText(getContext(), "Selected " + lamp.name, Toast.LENGTH_SHORT).show();
+        });
+
+        adapter.setOnLampDeleteListener(lamp -> {
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Delete")
+                    .setMessage("Delete " + lamp.name + "?")
+                    .setPositiveButton("Delete", (d, w) -> viewModel.removeProfile(lamp))
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
+        FloatingActionButton fab = view.findViewById(R.id.addLampProfileFab);
+        fab.setOnClickListener(v -> showAddDialog());
+
+        viewModel = new ViewModelProvider(this,
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(LampProfilesViewModel.class);
+
+        viewModel.getProfiles().observe(getViewLifecycleOwner(), adapter::update);
+
+        return view;
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lamp_profiles, container, false);
+    private void showAddDialog() {
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_lamp_profile, null);
+        EditText name = dialogView.findViewById(R.id.editLampName);
+        EditText brand = dialogView.findViewById(R.id.editLampBrand);
+        EditText type = dialogView.findViewById(R.id.editLampType);
+        EditText spec = dialogView.findViewById(R.id.editLampSpectrum);
+        EditText watt = dialogView.findViewById(R.id.editLampWattage);
+        EditText factor = dialogView.findViewById(R.id.editLampFactor);
+        EditText ppfd = dialogView.findViewById(R.id.editLampPPFD);
+
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Add Lamp")
+                .setView(dialogView)
+                .setPositiveButton("Add", (d, w) -> {
+                    try {
+                        String id = UUID.randomUUID().toString();
+                        int wv = Integer.parseInt(watt.getText().toString());
+                        float f = Float.parseFloat(factor.getText().toString());
+                        float p = Float.parseFloat(ppfd.getText().toString());
+                        LampProduct lp = new LampProduct(id, name.getText().toString(), brand.getText().toString(),
+                                type.getText().toString(), spec.getText().toString(), wv, f, p);
+                        viewModel.addProfile(lp);
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getContext(), "Invalid number", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

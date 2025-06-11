@@ -1,0 +1,62 @@
+[
+  {
+    "id": "SUN",
+    "name": "Sunlight",
+    "brand": "Nature",
+    "type": "Natural",
+    "spectrum": "Full spectrum",
+    "wattage": 0,
+    "calibrationFactor": 0.0185,
+    "ppfdAt30cm": 2000
+  },
+  {
+    "id": "LED1",
+    "name": "Generic White LED",
+    "brand": "Generic",
+    "type": "LED",
+    "spectrum": "4000K",
+    "wattage": 12,
+    "calibrationFactor": 0.019,
+    "ppfdAt30cm": 800
+  },
+  {
+    "id": "LED2",
+    "name": "Warm LED Bulb",
+    "brand": "Generic",
+    "type": "LED",
+    "spectrum": "3000K",
+    "wattage": 10,
+    "calibrationFactor": 0.021,
+    "ppfdAt30cm": 700
+  },
+  {
+    "id": "BLURPLE1",
+    "name": "Blurple Panel",
+    "brand": "BudgetGrow",
+    "type": "LED",
+    "spectrum": "450nm/660nm",
+    "wattage": 45,
+    "calibrationFactor": 0.045,
+    "ppfdAt30cm": 900
+  },
+  {
+    "id": "HPS1",
+    "name": "150W HPS",
+    "brand": "Acme",
+    "type": "HPS",
+    "spectrum": "Yellow/Orange",
+    "wattage": 150,
+    "calibrationFactor": 0.014,
+    "ppfdAt30cm": 600
+  },
+  {
+    "id": "CMH1",
+    "name": "315W CMH",
+    "brand": "ProGrow",
+    "type": "CMH",
+    "spectrum": "4200K",
+    "wattage": 315,
+    "calibrationFactor": 0.018,
+    "ppfdAt30cm": 1100
+  }
+]

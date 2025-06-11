@@ -1,5 +1,13 @@
 package de.omagh.lumibuddy.feature_growlight;
 
+import android.content.Context;
+import android.content.res.AssetManager;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,17 +19,37 @@ import java.util.List;
 public class LampProductDB {
     private final List<LampProduct> lamps = new ArrayList<>();
 
-    public LampProductDB() {
+    private final Context context;
+
+    public LampProductDB(Context ctx) {
+        this.context = ctx.getApplicationContext();
         loadSampleData();
     }
 
     private void loadSampleData() {
-        lamps.add(new LampProduct("SUN", "Sunlight", "Natural", "Full spectrum", 0.0185f, 2000));
-        lamps.add(new LampProduct("LED1", "Generic White LED", "LED", "4000K", 0.019f, 800));
-        lamps.add(new LampProduct("LED2", "Warm LED Bulb", "LED", "3000K", 0.021f, 700));
-        lamps.add(new LampProduct("BLURPLE1", "Blurple Panel", "LED", "450nm/660nm", 0.045f, 900));
-        lamps.add(new LampProduct("HPS1", "150W HPS", "HPS", "Yellow/Orange", 0.014f, 600));
-        lamps.add(new LampProduct("CMH1", "315W CMH", "CMH", "4200K", 0.018f, 1100));
+        try {
+            AssetManager am = context.getAssets();
+            InputStream is = am.open("grow_lights.json");
+            byte[] buf = new byte[is.available()];
+            int read = is.read(buf);
+            is.close();
+            if (read <= 0) return;
+            String json = new String(buf);
+            JSONArray arr = new JSONArray(json);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject o = arr.getJSONObject(i);
+                lamps.add(new LampProduct(
+                        o.getString("id"),
+                        o.getString("name"),
+                        o.optString("brand"),
+                        o.getString("type"),
+                        o.getString("spectrum"),
+                        o.optInt("wattage"),
+                        (float) o.optDouble("calibrationFactor"),
+                        (float) o.optDouble("ppfdAt30cm")));
+            }
+        } catch (IOException | org.json.JSONException ignored) {
+        }
     }
 
     /**
@@ -48,6 +76,28 @@ public class LampProductDB {
         String lower = name.toLowerCase();
         for (LampProduct p : lamps) {
             if (p.name.toLowerCase().contains(lower)) return p;
+        }
+        return null;
+    }
+
+    /**
+     * Case-insensitive search by brand.
+     */
+    public LampProduct findByBrand(String brand) {
+        String lower = brand.toLowerCase();
+        for (LampProduct p : lamps) {
+            if (p.brand != null && p.brand.toLowerCase().contains(lower)) return p;
+        }
+        return null;
+    }
+
+    /**
+     * Case-insensitive search by spectrum.
+     */
+    public LampProduct findBySpectrum(String spectrum) {
+        String lower = spectrum.toLowerCase();
+        for (LampProduct p : lamps) {
+            if (p.spectrum.toLowerCase().contains(lower)) return p;
         }
         return null;
     }

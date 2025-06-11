@@ -15,11 +15,12 @@ public class GrowLightProfileManager {
     private static final String KEY_CUSTOM = "custom_lamps";
 
     private final SharedPreferences prefs;
-    private final LampProductDB productDB = new LampProductDB();
+    private final LampProductDB productDB;
     private final List<LampProduct> customProfiles = new ArrayList<>();
 
     public GrowLightProfileManager(Context context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        productDB = new LampProductDB(context);
         loadCustomProfiles();
     }
 
@@ -61,12 +62,54 @@ public class GrowLightProfileManager {
         return null;
     }
 
+    public LampProduct findByName(String name) {
+        LampProduct p = productDB.findByName(name);
+        if (p != null) return p;
+        for (LampProduct lp : customProfiles) {
+            if (lp.name.toLowerCase().contains(name.toLowerCase())) return lp;
+        }
+        return null;
+    }
+
+    public LampProduct findByBrand(String brand) {
+        LampProduct p = productDB.findByBrand(brand);
+        if (p != null) return p;
+        for (LampProduct lp : customProfiles) {
+            if (lp.brand != null && lp.brand.toLowerCase().contains(brand.toLowerCase()))
+                return lp;
+        }
+        return null;
+    }
+
+    public LampProduct findBySpectrum(String spectrum) {
+        LampProduct p = productDB.findBySpectrum(spectrum);
+        if (p != null) return p;
+        for (LampProduct lp : customProfiles) {
+            if (lp.spectrum.toLowerCase().contains(spectrum.toLowerCase()))
+                return lp;
+        }
+        return null;
+    }
+
     /**
      * Add a user-defined lamp profile and persist it.
      */
     public void addCustomProfile(LampProduct lamp) {
         customProfiles.add(lamp);
         saveCustomProfiles();
+    }
+
+    /**
+     * Remove a custom lamp profile by ID.
+     */
+    public void removeCustomProfile(String id) {
+        for (int i = 0; i < customProfiles.size(); i++) {
+            if (customProfiles.get(i).id.equalsIgnoreCase(id)) {
+                customProfiles.remove(i);
+                saveCustomProfiles();
+                break;
+            }
+        }
     }
 
     // --- Persistence helpers ---
@@ -76,11 +119,12 @@ public class GrowLightProfileManager {
         String[] entries = serialized.split("\\|");
         for (String entry : entries) {
             String[] parts = entry.split(",");
-            if (parts.length < 6) continue;
+            if (parts.length < 8) continue;
             try {
                 customProfiles.add(new LampProduct(
-                        parts[0], parts[1], parts[2], parts[3],
-                        Float.parseFloat(parts[4]), Float.parseFloat(parts[5])));
+                        parts[0], parts[1], parts[2], parts[3], parts[4],
+                        Integer.parseInt(parts[5]),
+                        Float.parseFloat(parts[6]), Float.parseFloat(parts[7])));
             } catch (NumberFormatException ignored) {
             }
         }
@@ -93,8 +137,10 @@ public class GrowLightProfileManager {
             if (i > 0) sb.append("|");
             sb.append(p.id).append(",")
                     .append(p.name).append(",")
+                    .append(p.brand == null ? "" : p.brand).append(",")
                     .append(p.type).append(",")
                     .append(p.spectrum).append(",")
+                    .append(p.wattage).append(",")
                     .append(p.calibrationFactor).append(",")
                     .append(p.ppfdAt30cm);
         }

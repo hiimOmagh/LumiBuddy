@@ -24,6 +24,10 @@
         android:name="de.omagh.lumibuddy.ui.SettingsFragment"
         android:label="Settings" />
     <fragment
+        android:id="@+id/lampProfilesFragment"
+        android:name="de.omagh.lumibuddy.ui.LampProfilesFragment"
+        android:label="Lamp Profiles" />
+    <fragment
         android:id="@+id/plantDetailFragment"
         android:name="de.omagh.lumibuddy.ui.PlantDetailFragment"
         android:label="Plant Detail">

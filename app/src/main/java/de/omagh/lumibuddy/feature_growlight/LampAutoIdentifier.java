@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
  * Utility to identify lamps by name or in the future via photo/barcode.
  */
 public class LampAutoIdentifier {
-    private final LampProductDB db = new LampProductDB();
+    private final LampProductDB db;
 
+    public LampAutoIdentifier(android.content.Context context) {
+        this.db = new LampProductDB(context);
+    }
     /**
      * Simple name lookup (case-insensitive).
      */

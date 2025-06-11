@@ -22,6 +22,9 @@
     <string name="welcome_subtitle">Your all-in-one smart plant light and care companion.</string>
     <string name="lamp_profiles_title">Lamp Profiles</string>
     <string name="add_lamp_profile">Add Lamp Profile</string>
+    <string name="delete_lamp_profile">Delete Lamp Profile</string>
+    <string name="add_lamp">Add Lamp</string>
+    <string name="invalid_number">Invalid number</string>
     <string name="lamp_type">"Lamp Type : "</string>
     <string name="calibration_factor_placeholder">Factor: —</string>
     <string name="calibration_factor">Factor: %1$.3f</string>

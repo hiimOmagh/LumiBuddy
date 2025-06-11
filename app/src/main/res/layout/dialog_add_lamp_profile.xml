@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <EditText
+        android:id="@+id/editLampName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Lamp name"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editLampBrand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Brand"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editLampType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Type"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editLampSpectrum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Spectrum"
+        android:inputType="text" />
+
+    <EditText
+        android:id="@+id/editLampWattage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Wattage"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/editLampFactor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Calibration factor"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/editLampPPFD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="PPFD @30cm"
+        android:inputType="numberDecimal" />
+</LinearLayout>
