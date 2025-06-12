@@ -11,25 +11,25 @@
         android:id="@+id/editPlantName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:hint="@string/plant_name_input_desc"
-        android:inputType="textPersonName"
-        android:importantForAccessibility="yes"
-        android:contentDescription="@string/plant_name_input_desc"
         android:layout_marginBottom="12dp"
-        android:backgroundTint="?attr/colorPrimary" />
+        android:autofillHints=""
+        android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="@string/plant_name_input_desc"
+        android:hint="@string/plant_name_input_desc"
+        android:importantForAccessibility="yes"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/editPlantType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:hint="@string/plant_type_input_desc"
-        android:inputType="text"
-        android:importantForAccessibility="yes"
-        android:contentDescription="@string/plant_type_input_desc"
         android:layout_marginBottom="18dp"
-        android:backgroundTint="?attr/colorPrimary" />
+        android:autofillHints=""
+        android:backgroundTint="?attr/colorPrimary"
+        android:contentDescription="@string/plant_type_input_desc"
+        android:hint="@string/plant_type_input_desc"
+        android:importantForAccessibility="yes"
+        android:inputType="text" />
 
     <ImageView
         android:id="@+id/plantImagePreview"

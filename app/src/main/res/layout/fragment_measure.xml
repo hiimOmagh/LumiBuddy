@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="?android:colorBackground"
     android:paddingTop="16dp"
     android:paddingBottom="24dp">
@@ -11,26 +11,26 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <!-- Lamp type selector -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
             android:text="@string/lamp_type"
-            android:textStyle="bold"
             android:textSize="18sp"
-            android:layout_marginBottom="6dp" />
+            android:textStyle="bold" />
 
         <Spinner
             android:id="@+id/lampTypeSpinner"
-            android:text="@array/lamp_types"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:minHeight="48dp" />
+            android:minHeight="48dp"
+            android:text="@array/lamp_types" />
 
         <TextView
             android:id="@+id/calibrationFactorText"
@@ -44,10 +44,10 @@
             android:id="@+id/cameraPreview"
             android:layout_width="300dp"
             android:layout_height="220dp"
-            android:background="@android:color/darker_gray"
+            android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
-            android:visibility="gone"
-            android:layout_gravity="center_horizontal" />
+            android:background="@android:color/darker_gray"
+            android:visibility="gone" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cameraMeasureButton"
@@ -73,9 +73,9 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="18dp"
             app:cardCornerRadius="18dp"
-            app:cardElevation="6dp"
-            android:layout_marginBottom="18dp">
+            app:cardElevation="6dp">
 
             <ViewFlipper
                 android:id="@+id/measureFlipper"
@@ -98,27 +98,27 @@
             android:id="@+id/dliWidget"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:gravity="center_horizontal"
+                android:orientation="vertical"
                 android:padding="18dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
                     android:text="@string/dli_calculator"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
                     android:textColor="@color/dliColor"
-                    android:layout_marginBottom="6dp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/dliValue"
@@ -134,57 +134,57 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_marginBottom="12dp"
                     android:gravity="center"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/minusHour"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:contentDescription="@string/decrease_hours"
                         android:text="@string/placeholder_minus"
                         android:textSize="24sp"
-                        app:cornerRadius="24dp"
-                        android:contentDescription="@string/decrease_hours" />
+                        app:cornerRadius="24dp" />
 
                     <TextView
                         android:id="@+id/hourValue"
                         android:layout_width="64dp"
                         android:layout_height="48dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:gravity="center"
                         android:text="@string/_24_h"
                         android:textSize="24sp"
-                        android:textStyle="bold"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp" />
+                        android:textStyle="bold" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/plusHour"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
+                        android:contentDescription="@string/increase_hours"
                         android:text="@string/placeholder_plus"
                         android:textSize="24sp"
-                        app:cornerRadius="24dp"
-                        android:contentDescription="@string/increase_hours" />
+                        app:cornerRadius="24dp" />
                 </LinearLayout>
 
                 <!-- Preset Chips Row -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/preset12h"
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
                         android:text="@string/_12_h"
                         android:textAllCaps="false"
-                        android:layout_marginEnd="8dp"
                         app:cornerRadius="18dp" />
 
                     <com.google.android.material.button.MaterialButton
@@ -192,9 +192,9 @@
                         style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
+                        android:layout_marginEnd="8dp"
                         android:text="@string/_18_h"
                         android:textAllCaps="false"
-                        android:layout_marginEnd="8dp"
                         app:cornerRadius="18dp" />
 
                     <com.google.android.material.button.MaterialButton

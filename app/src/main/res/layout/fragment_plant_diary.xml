@@ -39,6 +39,7 @@
         <ImageView
             android:layout_width="96dp"
             android:layout_height="96dp"
+            android:contentDescription="@string/ic_eco"
             android:src="@drawable/ic_eco" />
 
         <TextView
@@ -57,6 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="28dp"
-        android:src="@drawable/ic_add"
-        android:contentDescription="@string/add_diary_entry" />
+        android:contentDescription="@string/add_diary_entry"
+        android:src="@drawable/ic_add" />
 </FrameLayout>

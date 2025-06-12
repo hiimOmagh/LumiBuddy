@@ -3,45 +3,46 @@
     android:id="@+id/dliCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/card_bg"
-    android:padding="18dp"
     android:layout_marginBottom="18dp"
-    android:elevation="4dp">
+    android:background="@drawable/card_bg"
+    android:elevation="4dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="18dp">
 
     <ImageView
         android:id="@+id/metricIcon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:src="@drawable/ic_dli"
         android:layout_gravity="center"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/dli_icon"
+        android:src="@drawable/ic_dli" />
 
     <TextView
         android:id="@+id/metricValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="--"
+        android:textColor="@color/dliColor"
         android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/dliColor" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/metricUnit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="2dp"
         android:text="mol/m²/d"
-        android:textSize="16sp"
         android:textColor="@color/secondaryText"
-        android:layout_marginBottom="2dp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/metricLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="DLI"
-        android:textSize="18sp"
         android:textColor="@color/dliColor"
+        android:textSize="18sp"
         android:textStyle="bold" />
 </LinearLayout>

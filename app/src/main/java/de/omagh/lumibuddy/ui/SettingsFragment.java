@@ -33,7 +33,6 @@ public class SettingsFragment extends Fragment {
     private Spinner unitsSpinner;
     private EditText hoursInput;
     private Spinner calibrationSpinner;
-    private View addCalibrationBtn;
     private android.widget.TextView calibrationInfoText;
     private android.widget.Switch careReminderSwitch;
     private View syncNowBtn;
@@ -54,7 +53,7 @@ public class SettingsFragment extends Fragment {
         unitsSpinner = view.findViewById(R.id.unitsSpinner);
         hoursInput = view.findViewById(R.id.lightDurationInput);
         calibrationSpinner = view.findViewById(R.id.calibrationSpinner);
-        addCalibrationBtn = view.findViewById(R.id.addCalibrationBtn);
+        View addCalibrationBtn = view.findViewById(R.id.addCalibrationBtn);
         calibrationInfoText = view.findViewById(R.id.calibrationInfoText);
         careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
         syncNowBtn = view.findViewById(R.id.syncNowBtn);

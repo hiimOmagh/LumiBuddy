@@ -28,7 +28,8 @@ public class CalibrationManager {
      */
     public float getCalibrationFactor(String lampProfileId) {
         if (cache.containsKey(lampProfileId)) {
-            return cache.get(lampProfileId);
+            Float v = cache.get(lampProfileId);
+            return v;
         }
         float factor = prefs.getFloat(KEY_PREFIX + lampProfileId, DEFAULT_FACTOR);
         cache.put(lampProfileId, factor);

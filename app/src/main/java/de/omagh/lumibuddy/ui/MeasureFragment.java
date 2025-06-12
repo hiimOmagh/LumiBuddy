@@ -25,6 +25,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 
+import java.util.Objects;
+
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.util.OnSwipeTouchListener;
@@ -308,7 +310,7 @@ public class MeasureFragment extends Fragment {
                                         if (index >= 0) lampTypeSpinner.setSelection(index);
 
                                         if (warning != null) {
-                                            new androidx.appcompat.app.AlertDialog.Builder(getContext())
+                                            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                                                     .setTitle("Spectrum Warning")
                                                     .setMessage(warning)
                                                     .setPositiveButton("OK", null)

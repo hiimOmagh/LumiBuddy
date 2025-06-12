@@ -99,6 +99,8 @@
     <string name="sync_now">Sync Now</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_summary">Your data is stored only on your device. When cloud sync is enabled, plant logs and photos will be uploaded securely.</string>
+    <string name="dli_icon">dli icon</string>
+    <string name="ic_eco">ic_eco</string>
 
     <string-array name="calibration_sources">
         <item>ALS</item>
