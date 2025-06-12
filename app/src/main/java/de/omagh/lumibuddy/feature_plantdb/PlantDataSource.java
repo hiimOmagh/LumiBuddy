@@ -1,0 +1,22 @@
+package de.omagh.lumibuddy.feature_plantdb;
+
+import androidx.lifecycle.LiveData;
+
+import java.util.List;
+
+import de.omagh.lumibuddy.data.model.Plant;
+
+/**
+ * Abstraction for plant data operations used by ViewModels.
+ */
+public interface PlantDataSource {
+    LiveData<List<Plant>> getAllPlants();
+
+    LiveData<Plant> getPlant(long id);
+
+    void insertPlant(Plant plant);
+
+    void updatePlant(Plant plant);
+
+    void deletePlant(Plant plant);
+}

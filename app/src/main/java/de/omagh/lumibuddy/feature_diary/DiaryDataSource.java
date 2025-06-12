@@ -1,0 +1,18 @@
+package de.omagh.lumibuddy.feature_diary;
+
+import androidx.lifecycle.LiveData;
+
+import java.util.List;
+
+/**
+ * Interface for diary data operations used by view models.
+ */
+public interface DiaryDataSource {
+    LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId);
+
+    List<DiaryEntry> getEntriesForPlantSync(String plantId);
+
+    void insert(DiaryEntry entry);
+
+    void delete(DiaryEntry entry);
+}

@@ -20,12 +20,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 
 import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
-import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
-import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
-import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
-import de.omagh.lumibuddy.data.db.AppDatabase;
-import de.omagh.lumibuddy.ui.PlantListViewModel;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
 
 import org.jspecify.annotations.NonNull;
@@ -37,12 +31,7 @@ import de.omagh.lumibuddy.R;
  * HomeFragment displays the home screen and summary metrics.
  */
 public class HomeFragment extends Fragment {
-    /**
-     * Temporarily stores the plant list while waiting for notification
-     * permission to be granted. The list is cleared once the daily check
-     * has been executed.
-     */
-    private java.util.List<Plant> pendingPlants;
+    // Executor no longer used, but kept for potential future background tasks
     private final java.util.concurrent.ExecutorService lightCheckExecutor =
             java.util.concurrent.Executors.newSingleThreadExecutor();
 
@@ -64,25 +53,15 @@ public class HomeFragment extends Fragment {
 
         final SettingsManager settingsManager = new SettingsManager(requireContext());
 
-        RecommendationEngine engine = new RecommendationEngine();
-        NotificationManager nm = new NotificationManager(requireContext());
-        WateringScheduler scheduler = new WateringScheduler(engine, nm,
-                AppDatabase.getInstance(requireContext()).diaryDao());
-        DiaryViewModel diaryVm = new ViewModelProvider(this,
-                new DiaryViewModel.Factory(requireActivity().getApplication()))
-                .get(DiaryViewModel.class);
+        HomeViewModel viewModel = new ViewModelProvider(requireActivity(),
+                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+                .get(HomeViewModel.class);
 
         ActivityResultLauncher<String> notifPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
-                    if (granted && pendingPlants != null) {
-                        // Double-check permission before triggering the scheduler
-                        if (ContextCompat.checkSelfPermission(requireContext(),
-                                Manifest.permission.POST_NOTIFICATIONS)
-                                == PackageManager.PERMISSION_GRANTED) {
-                            scheduler.runDailyCheck(pendingPlants);
-                        }
-                        pendingPlants = null;
+                    if (granted) {
+                        viewModel.refresh();
                     }
                 });
 
@@ -97,7 +76,7 @@ public class HomeFragment extends Fragment {
                 v -> dliValue.setText(String.format(Locale.getDefault(), "%.1f", v)));
 
         // Fix: Don't re-declare or re-assign inflater! Use the one provided by the method parameter.
-        viewModel.getTasks().observe(getViewLifecycleOwner(), tasks -> {
+        viewModel.getUpcomingReminders().observe(getViewLifecycleOwner(), tasks -> {
             taskList.removeAllViews();
             for (String t : tasks) {
                 TextView tv = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, taskList, false);
@@ -106,30 +85,15 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        PlantListViewModel plantVm = new ViewModelProvider(requireActivity(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
-                .get(PlantListViewModel.class);
-
-        plantVm.getPlants().observe(getViewLifecycleOwner(), plants -> {
+        viewModel.getPlants().observe(getViewLifecycleOwner(), plants -> {
             if (!settingsManager.isCareRemindersEnabled()) return;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
-                        == PackageManager.PERMISSION_GRANTED) {
-                    scheduler.runDailyCheck(plants);
-                    lightCheckExecutor.execute(() ->
-                            engine.checkLightRecommendations(plants,
-                                    diaryVm::getDiaryEntriesForPlantSync,
-                                    diaryVm::addEntry));
-                } else {
-                    pendingPlants = plants;
-                    notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
-                }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
+                    ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                            != PackageManager.PERMISSION_GRANTED) {
+                notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
-                scheduler.runDailyCheck(plants);
-                lightCheckExecutor.execute(() ->
-                        engine.checkLightRecommendations(plants,
-                                diaryVm::getDiaryEntriesForPlantSync,
-                                diaryVm::addEntry));
+                viewModel.refresh();
+
             }
         });
 
