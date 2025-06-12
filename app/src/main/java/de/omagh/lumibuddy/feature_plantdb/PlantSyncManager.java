@@ -1,49 +1,47 @@
 package de.omagh.lumibuddy.feature_plantdb;
 
-import java.io.IOException;
+import android.util.Log;
+
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import androidx.lifecycle.LiveData;
-
-import de.omagh.lumibuddy.data.db.AppDatabase;
-import de.omagh.lumibuddy.data.db.PlantDao;
 import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.network.PlantApiService;
-import de.omagh.lumibuddy.network.RetrofitClient;
-import retrofit2.Response;
 
 /**
- * Handles syncing plant data between the remote API and local Room DB.
- */
+ * Manager responsible for synchronizing the user's plant database with a cloud
+ * backend. All methods are currently stubs and should be extended when a real
+ * backend service is integrated.
+ * */
 public class PlantSyncManager {
-    private final PlantDao plantDao;
-    private final PlantApiService api;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static final String TAG = "PlantSyncManager";
 
-    public PlantSyncManager(AppDatabase db) {
-        this.plantDao = db.plantDao();
-        this.api = RetrofitClient.getInstance().create(PlantApiService.class);
-    }
-
-    public LiveData<List<Plant>> getPlants() {
-        return plantDao.getAll();
+    /**
+     * Pushes local plant data to the cloud backend.
+     * <p>
+     * Future implementations should send the locally stored plants to a
+     * remote server for backup and multi-device synchronization.
+     * </p>
+     */
+    public void syncToCloud() {
+        Log.d(TAG, "syncToCloud: not implemented");
     }
 
     /**
-     * Fetches plant data from the API and stores it locally.
+     * Loads plant data from the cloud backend and merges it with the local
+     * database.
      */
-    public void syncPlants() {
-        executor.execute(() -> {
-            try {
-                Response<List<Plant>> resp = api.getPlants().execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    plantDao.insertAll(resp.body());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+    public void loadFromCloud() {
+        Log.d(TAG, "loadFromCloud: not implemented");
+    }
+
+    /**
+     * Resolves conflicts between local and remote plant lists.
+     *
+     * @param local  plants stored on the device
+     * @param remote plants retrieved from the cloud
+     * @return the list that should be kept after conflict resolution
+     * */
+    public List<Plant> resolveConflicts(List<Plant> local, List<Plant> remote) {
+        Log.d(TAG, "resolveConflicts: not implemented");
+        return local;
     }
 }

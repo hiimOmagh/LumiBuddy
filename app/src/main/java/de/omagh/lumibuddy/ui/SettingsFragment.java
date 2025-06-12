@@ -36,6 +36,7 @@ public class SettingsFragment extends Fragment {
     private View addCalibrationBtn;
     private android.widget.TextView calibrationInfoText;
     private android.widget.Switch careReminderSwitch;
+    private View syncNowBtn;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -55,6 +56,7 @@ public class SettingsFragment extends Fragment {
         addCalibrationBtn = view.findViewById(R.id.addCalibrationBtn);
         calibrationInfoText = view.findViewById(R.id.calibrationInfoText);
         careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
+        syncNowBtn = view.findViewById(R.id.syncNowBtn);
 
         // Unit spinner values from resources
         ArrayAdapter<CharSequence> unitAdapter = ArrayAdapter.createFromResource(
@@ -128,6 +130,13 @@ public class SettingsFragment extends Fragment {
         }
 
         view.findViewById(R.id.saveSettingsBtn).setOnClickListener(v -> saveSettings());
+
+        syncNowBtn.setOnClickListener(v -> {
+            // Trigger stub sync managers
+            new de.omagh.lumibuddy.feature_plantdb.PlantSyncManager().syncToCloud();
+            new de.omagh.lumibuddy.feature_diary.DiarySyncManager().syncToCloud();
+            Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+        });
 
         return view;
     }
