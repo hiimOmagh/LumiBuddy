@@ -3,24 +3,16 @@ package de.omagh.lumibuddy.feature_ml;
 import android.graphics.Bitmap;
 
 /**
- * Dummy implementation of {@link LampClassifierModel}.
+ * Interface for grow light type classifiers.
  */
-public class LampTypeClassifier implements LampClassifierModel {
-    private String result = "Unknown Lamp";
+public interface LampTypeClassifier {
+    /**
+     * Analyze a photo of a lamp and update the classification result.
+     */
+    void classify(Bitmap bitmap);
 
-    @Override
-    public void loadModel() {
-        // No-op for now
-    }
-
-    @Override
-    public void analyzeImage(Bitmap input) {
-        // Placeholder classification
-        result = "Generic Lamp";
-    }
-
-    @Override
-    public String getResult() {
-        return result;
-    }
+    /**
+     * Returns the last detected lamp type.
+     */
+    String getLastResult();
 }

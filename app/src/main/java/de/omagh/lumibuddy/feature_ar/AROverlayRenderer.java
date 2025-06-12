@@ -5,21 +5,28 @@ import android.graphics.Canvas;
 import de.omagh.lumibuddy.data.model.Measurement;
 
 /**
- * Interface for rendering AR measurement overlays.
- */
+ * Contract for components that render augmented reality overlays on top
+ * of live measurement data.
+ * <p>
+ * Production implementations may use ARCore to draw guides or visual cues
+ * that help users align sensors or visualize growth. The stub implementation
+ * simply logs calls without performing any drawing.
+ * */
 public interface AROverlayRenderer {
     /**
-     * Initialize any resources needed for rendering.
+     * Initialize any resources required for rendering.
      */
     void init();
 
     /**
-     * Render the overlay for the given measurement on the supplied canvas.
-     */
+     * Render the overlay using the provided canvas and measurement.
+     *
+     * @param canvas      canvas to draw on
+     * @param measurement most recent light/environment measurement
+     * */
     void renderOverlay(Canvas canvas, Measurement measurement);
 
-    /**
-     * Clean up any resources.
-     */
+    /** Release allocated resources when no longer needed. */
+
     void cleanup();
 }

@@ -51,7 +51,7 @@ public class MeasureFragment extends Fragment {
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
     // AR overlay integration
-    private final boolean enableAROverlay = false;
+    private boolean enableAROverlay = false;
     private de.omagh.lumibuddy.feature_ar.AROverlayRenderer arOverlayRenderer;
 
     // Modern card views
@@ -67,6 +67,7 @@ public class MeasureFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
         settingsManager = new SettingsManager(requireContext());
+        enableAROverlay = settingsManager.isArOverlayEnabled();
 
         // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);

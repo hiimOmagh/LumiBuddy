@@ -3,24 +3,16 @@ package de.omagh.lumibuddy.feature_ml;
 import android.graphics.Bitmap;
 
 /**
- * Dummy implementation of {@link HealthModel}.
+ * Interface for plant health status classifiers.
  */
-public class HealthStatusClassifier implements HealthModel {
-    private String status = "Healthy";
+public interface HealthStatusClassifier {
+    /**
+     * Analyze a plant image to detect its health condition.
+     */
+    void classify(Bitmap bitmap);
 
-    @Override
-    public void loadModel() {
-        // No-op for now
-    }
-
-    @Override
-    public void analyzeImage(Bitmap input) {
-        // Placeholder always returns healthy
-        status = "Healthy";
-    }
-
-    @Override
-    public String getResult() {
-        return status;
-    }
+    /**
+     * Returns the last detected health status string.
+     */
+    String getLastResult();
 }

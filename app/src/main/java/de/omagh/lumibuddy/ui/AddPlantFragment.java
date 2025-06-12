@@ -48,8 +48,7 @@ public class AddPlantFragment extends Fragment {
     private String existingPlantId = null;
 
     // ML plant recognition
-    private de.omagh.lumibuddy.feature_ml.PlantRecognitionModel plantRecognizer;
-
+    private de.omagh.lumibuddy.feature_ml.PlantClassifier plantClassifier;
     public static final String ARG_PLANT_ID = "plant_id";
     public static final String ARG_NAME = "plant_name";
     public static final String ARG_TYPE = "plant_type";
@@ -117,8 +116,7 @@ public class AddPlantFragment extends Fragment {
         de.omagh.lumibuddy.feature_user.SettingsManager sm =
                 new de.omagh.lumibuddy.feature_user.SettingsManager(requireContext());
         if (sm.isMlFeaturesEnabled()) {
-            plantRecognizer = new de.omagh.lumibuddy.feature_ml.PlantClassifier();
-            plantRecognizer.loadModel();
+            plantClassifier = new de.omagh.lumibuddy.feature_ml.BasicPlantClassifier();
         }
         // Check for edit mode
         Bundle args = getArguments();
@@ -177,9 +175,9 @@ public class AddPlantFragment extends Fragment {
     }
 
     private void recognizePlant(android.graphics.Bitmap bitmap) {
-        if (plantRecognizer == null) return;
-        plantRecognizer.analyzeImage(bitmap);
-        String result = plantRecognizer.getResult();
+        if (plantClassifier == null) return;
+        plantClassifier.classify(bitmap);
+        String result = plantClassifier.getLastResult();
         android.widget.Toast.makeText(getContext(), "Recognized: " + result,
                 android.widget.Toast.LENGTH_SHORT).show();
         if (!android.text.TextUtils.isEmpty(result)) {
