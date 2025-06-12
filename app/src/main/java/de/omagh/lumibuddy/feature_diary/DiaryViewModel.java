@@ -60,6 +60,7 @@ public class DiaryViewModel extends AndroidViewModel {
             this.application = app;
         }
 
+        @androidx.annotation.NonNull
         @SuppressWarnings("unchecked")
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {

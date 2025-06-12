@@ -95,8 +95,9 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
     }
 
     static class LampViewHolder extends RecyclerView.ViewHolder {
-        TextView name, details;
-        android.widget.ImageButton editButton;
+        final TextView name;
+        final TextView details;
+        final android.widget.ImageButton editButton;
 
         LampViewHolder(@NonNull View itemView) {
             super(itemView);

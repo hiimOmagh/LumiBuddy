@@ -110,8 +110,9 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
      * ViewHolder for plant items.
      */
     static class PlantViewHolder extends RecyclerView.ViewHolder {
-        TextView plantName, plantType;
-        ImageView plantImage;
+        final TextView plantName;
+        final TextView plantType;
+        final ImageView plantImage;
 
         PlantViewHolder(@NonNull View itemView) {
             super(itemView);

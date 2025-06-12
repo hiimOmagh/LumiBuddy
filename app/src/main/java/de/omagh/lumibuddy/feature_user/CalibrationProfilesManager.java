@@ -94,7 +94,7 @@ public class CalibrationProfilesManager {
     private void loadProfiles() {
         profiles.clear();
         String serialized = prefs.getString(KEY_LIST, "");
-        if (serialized == null || serialized.isEmpty()) return;
+        if (serialized.isEmpty()) return;
         String[] entries = serialized.split("\\|");
         for (String entry : entries) {
             String[] parts = entry.split(",", -1);

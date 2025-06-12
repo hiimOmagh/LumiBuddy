@@ -36,7 +36,7 @@ public class NotificationManager {
                 "Care Reminders",
                 android.app.NotificationManager.IMPORTANCE_DEFAULT);
         android.app.NotificationManager nm =
-                (android.app.NotificationManager) context.getSystemService(android.app.NotificationManager.class);
+                context.getSystemService(android.app.NotificationManager.class);
         if (nm != null) {
             nm.createNotificationChannel(channel);
         }

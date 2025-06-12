@@ -9,6 +9,7 @@
         android:id="@+id/editProfileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Profile name"
         android:inputType="text" />
 
@@ -22,6 +23,7 @@
         android:id="@+id/editProfileFactor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Calibration factor"
         android:inputType="numberDecimal"
         android:layout_marginTop="8dp" />
@@ -30,6 +32,7 @@
         android:id="@+id/editProfileNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Note (optional)"
         android:inputType="text"
         android:layout_marginTop="8dp" />

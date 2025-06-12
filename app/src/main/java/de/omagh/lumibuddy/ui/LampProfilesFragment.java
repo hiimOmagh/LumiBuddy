@@ -45,14 +45,12 @@ public class LampProfilesFragment extends Fragment {
             Toast.makeText(getContext(), "Selected " + lamp.name, Toast.LENGTH_SHORT).show();
         });
 
-        adapter.setOnLampDeleteListener(lamp -> {
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                    .setTitle("Delete")
-                    .setMessage("Delete " + lamp.name + "?")
-                    .setPositiveButton("Delete", (d, w) -> viewModel.removeProfile(lamp))
-                    .setNegativeButton("Cancel", null)
-                    .show();
-        });
+        adapter.setOnLampDeleteListener(lamp -> new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Delete")
+                .setMessage("Delete " + lamp.name + "?")
+                .setPositiveButton("Delete", (d, w) -> viewModel.removeProfile(lamp))
+                .setNegativeButton("Cancel", null)
+                .show());
 
         adapter.setOnLampEditListener(this::showEditDialog);
 

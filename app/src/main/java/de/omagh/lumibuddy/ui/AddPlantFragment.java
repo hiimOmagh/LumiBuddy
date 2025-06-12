@@ -60,14 +60,9 @@ public class AddPlantFragment extends Fragment {
                     imagePreview.setImageURI(uri);
                     try {
                         android.graphics.Bitmap bmp;
-                        if (android.os.Build.VERSION.SDK_INT >= 28) {
-                            bmp = android.graphics.ImageDecoder.decodeBitmap(
-                                    android.graphics.ImageDecoder.createSource(
-                                            requireActivity().getContentResolver(), uri));
-                        } else {
-                            bmp = android.provider.MediaStore.Images.Media.getBitmap(
-                                    requireActivity().getContentResolver(), uri);
-                        }
+                        bmp = android.graphics.ImageDecoder.decodeBitmap(
+                                android.graphics.ImageDecoder.createSource(
+                                        requireActivity().getContentResolver(), uri));
                         recognizePlant(bmp);
                     } catch (java.io.IOException e) {
                         e.printStackTrace();

@@ -52,8 +52,10 @@ public class DiaryEntryAdapter extends RecyclerView.Adapter<DiaryEntryAdapter.Di
     }
 
     static class DiaryViewHolder extends RecyclerView.ViewHolder {
-        TextView timestampView, noteView, typeView;
-        ImageView imageView;
+        final TextView timestampView;
+        final TextView noteView;
+        final TextView typeView;
+        final ImageView imageView;
 
         DiaryViewHolder(@NonNull View itemView) {
             super(itemView);

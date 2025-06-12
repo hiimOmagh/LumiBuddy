@@ -3,7 +3,7 @@ package de.omagh.lumibuddy.feature_ml;
 import android.graphics.Bitmap;
 
 /**
- * Dummy implementation of {@linkPlantRecognitionModel}.
+ * Dummy implementation of {@link PlantRecognitionModel}.
  */
 public class PlantClassifier implements PlantRecognitionModel {
     private String result = "Unknown";

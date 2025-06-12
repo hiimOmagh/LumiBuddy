@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import de.omagh.lumibuddy.data.model.Measurement;
 
 /**
- * Stub implementation of {@linkAROverlayRenderer}.
+ * Stub implementation of {@link AROverlayRenderer}.
  * Currently draws nothing but provides a hook for future AR overlays.
  */
 public class ARMeasureOverlay implements AROverlayRenderer {

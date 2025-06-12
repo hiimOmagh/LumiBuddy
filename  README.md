@@ -76,17 +76,17 @@ de.omagh.lumibud/
 
 ## Core Modules and Responsibilities
 
-| Module                  | Responsibility                                             | Example Classes                   |
-|-------------------------|-----------------------------------------------------------|-----------------------------------|
-| Measurement             | All light/temp/humidity measurements, calibration         | `MeasurementEngine`, `CameraLightMeter`, `ALSManager`, `CalibrationManager` |
-| Plant DB                | Plant info, identification, care profiles                 | `PlantDatabaseManager`, `PlantIdentifier`, `PlantCareProfile`               |
-| Diary                   | Plant logs, growth photos, calendar/agenda                | `PlantLogManager`, `DiaryEntry`, `AgendaManager`                            |
-| Recommendation          | Care recommendations, scheduling, notifications           | `RecommendationEngine`, `WateringScheduler`                                 |
-| Grow Light              | Lamp profiles, auto-ID, calibration, manual entry         | `GrowLightProfileManager`, `LampAutoIdentifier`                             |
-| User/Settings           | User profile, preferences, calibration profiles           | `UserProfileManager`, `SettingsManager`                                     |
-| AR                      | (Future) AR overlays/visuals for measurement/growth scan  | `ARMeasureOverlay`, `ARGrowthTracker`                                       |
-| ML                      | (Future) Plant/lamp/health recognition via ML             | `PlantClassifier`, `LampTypeClassifier`                                     |
-| External Hardware       | (Future) BLE/USB/IoT sensors, smart pots, etc             | `BluetoothPARMeterSource`, `USBQuantumSensorSource`, `HardwareManager`      |
+| Module            | Responsibility                                           | Example Classes                                                             |
+|-------------------|----------------------------------------------------------|-----------------------------------------------------------------------------|
+| Measurement       | All light/temp/humidity measurements, calibration        | `MeasurementEngine`, `CameraLightMeter`, `ALSManager`, `CalibrationManager` |
+| Plant DB          | Plant info, identification, care profiles                | `PlantDatabaseManager`, `PlantIdentifier`, `PlantCareProfile`               |
+| Diary             | Plant logs, growth photos, calendar/agenda               | `PlantLogManager`, `DiaryEntry`, `AgendaManager`                            |
+| Recommendation    | Care recommendations, scheduling, notifications          | `RecommendationEngine`, `WateringScheduler`                                 |
+| Grow Light        | Lamp profiles, auto-ID, calibration, manual entry        | `GrowLightProfileManager`, `LampAutoIdentifier`                             |
+| User/Settings     | User profile, preferences, calibration profiles          | `UserProfileManager`, `SettingsManager`                                     |
+| AR                | (Future) AR overlays/visuals for measurement/growth scan | `ARMeasureOverlay`, `ARGrowthTracker`                                       |
+| ML                | (Future) Plant/lamp/health recognition via ML            | `PlantClassifier`, `LampTypeClassifier`                                     |
+| External Hardware | (Future) BLE/USB/IoT sensors, smart pots, etc            | `BluetoothPARMeterSource`, `USBQuantumSensorSource`, `HardwareManager`      |
 
 ---
 

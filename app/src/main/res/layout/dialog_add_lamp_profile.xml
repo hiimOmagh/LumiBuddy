@@ -9,6 +9,7 @@
         android:id="@+id/editLampName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Lamp name"
         android:inputType="text" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/editLampBrand"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Brand"
         android:inputType="text" />
 
@@ -23,6 +25,7 @@
         android:id="@+id/editLampType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Type"
         android:inputType="text" />
 
@@ -30,6 +33,7 @@
         android:id="@+id/editLampSpectrum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Spectrum"
         android:inputType="text" />
 
@@ -37,6 +41,7 @@
         android:id="@+id/editLampWattage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Wattage"
         android:inputType="number" />
 
@@ -44,6 +49,7 @@
         android:id="@+id/editLampFactor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="Calibration factor"
         android:inputType="numberDecimal" />
 
@@ -51,6 +57,7 @@
         android:id="@+id/editLampPPFD"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:autofillHints=""
         android:hint="PPFD @30cm"
         android:inputType="numberDecimal" />
 </LinearLayout>

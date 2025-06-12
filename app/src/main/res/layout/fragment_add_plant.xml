@@ -61,7 +61,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:autofillHints=""
             android:hint="Plant Type"
+            android:inputType="text"
             android:minHeight="48dp"
             android:textColorHint="#546E7A" />
 

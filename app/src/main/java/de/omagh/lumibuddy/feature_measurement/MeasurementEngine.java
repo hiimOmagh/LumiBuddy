@@ -16,7 +16,7 @@ public class MeasurementEngine {
     /**
      * Start ALS measurement and receive results via callback.
      *
-     * @paramlistener Callback for new lux values.
+     * @param listener Callback for new lux values.
      */
     public void startALS(ALSManager.OnLuxChangedListener listener) {
         alsManager.start(listener);

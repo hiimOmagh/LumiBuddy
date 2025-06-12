@@ -3,6 +3,7 @@ package de.omagh.lumibuddy.feature_recommendation;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -212,9 +213,8 @@ public class RecommendationEngine {
             Consumer<DiaryEntry> entryInserter) {
         if (plants == null || entryFetcher == null || entryInserter == null) return;
 
-        executor.execute(() -> {
-            performLightCheck(plants, entryFetcher, entryInserter);
-        });
+        executor.execute(() ->
+                performLightCheck(plants, entryFetcher, entryInserter));
     }
 
     private void performLightCheck(List<Plant> plants,
@@ -287,7 +287,7 @@ public class RecommendationEngine {
                 .matcher(note);
         if (m.find()) {
             try {
-                dli = Float.parseFloat(m.group(1));
+                dli = Float.parseFloat(Objects.requireNonNull(m.group(1)));
             } catch (NumberFormatException ignored) {
             }
         }
@@ -297,7 +297,7 @@ public class RecommendationEngine {
                 .matcher(note);
         if (m.find()) {
             try {
-                ppfd = Float.parseFloat(m.group(1));
+                ppfd = Float.parseFloat(Objects.requireNonNull(m.group(1)));
             } catch (NumberFormatException ignored) {
             }
         }
@@ -308,7 +308,7 @@ public class RecommendationEngine {
                     .matcher(note);
             if (m.find()) {
                 try {
-                    dli = Float.parseFloat(m.group(1));
+                    dli = Float.parseFloat(Objects.requireNonNull(m.group(1)));
                 } catch (NumberFormatException ignored) {
                 }
             }

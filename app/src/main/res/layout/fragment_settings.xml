@@ -153,6 +153,7 @@
                     android:id="@+id/lightDurationInput"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
+                    android:autofillHints=""
                     android:inputType="number"
                     android:gravity="center" />
             </LinearLayout>

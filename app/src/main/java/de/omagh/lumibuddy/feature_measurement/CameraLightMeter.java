@@ -15,11 +15,13 @@ import android.os.HandlerThread;
 import android.util.Size;
 
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresPermission;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  * Camera-based light meter. Takes a photo through a diffuser and analyzes mean RGB.
@@ -75,7 +77,7 @@ public class CameraLightMeter {
             String cameraId = manager.getCameraIdList()[0]; // Use the first camera (usually rear)
             CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
             StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-            Size[] sizes = map.getOutputSizes(ImageFormat.JPEG);
+            Size[] sizes = Objects.requireNonNull(map).getOutputSizes(ImageFormat.JPEG);
             Size selectedSize = sizes[0];
 
             imageReader = ImageReader.newInstance(selectedSize.getWidth(), selectedSize.getHeight(), ImageFormat.JPEG, 1);
@@ -90,14 +92,14 @@ public class CameraLightMeter {
 
             manager.openCamera(cameraId, new CameraDevice.StateCallback() {
                 @Override
-                public void onOpened(CameraDevice camera) {
+                public void onOpened(@NonNull CameraDevice camera) {
                     cameraDevice = camera;
                     try {
                         camera.createCaptureSession(
                                 Collections.singletonList(imageReader.getSurface()),
                                 new CameraCaptureSession.StateCallback() {
                                     @Override
-                                    public void onConfigured(CameraCaptureSession session) {
+                                    public void onConfigured(@NonNull CameraCaptureSession session) {
                                         captureSession = session;
                                         try {
                                             CaptureRequest.Builder builder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
@@ -109,7 +111,7 @@ public class CameraLightMeter {
                                     }
 
                                     @Override
-                                    public void onConfigureFailed(CameraCaptureSession session) {
+                                    public void onConfigureFailed(@NonNull CameraCaptureSession session) {
                                         callback.onError("Camera session config failed");
                                     }
                                 },
@@ -121,12 +123,12 @@ public class CameraLightMeter {
                 }
 
                 @Override
-                public void onDisconnected(CameraDevice camera) {
+                public void onDisconnected(@NonNull CameraDevice camera) {
                     camera.close();
                 }
 
                 @Override
-                public void onError(CameraDevice camera, int error) {
+                public void onError(@NonNull CameraDevice camera, int error) {
                     camera.close();
                     callback.onError("Camera error");
                 }

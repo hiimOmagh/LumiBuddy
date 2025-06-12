@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import java.util.Objects;
+
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.util.OnSwipeTouchListener;
@@ -46,7 +48,7 @@ public class MeasureFragment extends Fragment {
     private CameraLightMeterX cameraLightMeterX;
 
     // AR overlay integration
-    private boolean enableAROverlay = false;
+    private final boolean enableAROverlay = false;
     private de.omagh.lumibuddy.feature_ar.AROverlayRenderer arOverlayRenderer;
 
     // Modern card views
@@ -181,9 +183,8 @@ public class MeasureFragment extends Fragment {
         });
 
         // DLI observer (widget)
-        mViewModel.getDLI().observe(getViewLifecycleOwner(), dli -> {
-            dliWidgetValue.setText(String.format("%.2f", dli));
-        });
+        mViewModel.getDLI().observe(getViewLifecycleOwner(), dli ->
+                dliWidgetValue.setText(String.format("%.2f", dli)));
 
         // Show calibration factor used for PPFD conversion
         mViewModel.getCalibrationFactor().observe(getViewLifecycleOwner(), factor ->
@@ -225,53 +226,52 @@ public class MeasureFragment extends Fragment {
             cameraLightMeterX.startCamera();
 
             // Show tip dialog for user (diffuser advice)
-            new androidx.appcompat.app.AlertDialog.Builder(getContext())
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Tip")
                     .setMessage("Place a single white sheet of paper over the camera for best accuracy, then tap OK.")
-                    .setPositiveButton("OK", (d, w) -> {
-                        cameraLightMeterX.analyzeFrame(new CameraLightMeterX.ResultCallback() {
-                            @Override
-                            public void onResult(float meanR, float meanG, float meanB) {
-                                float pseudoLux = meanR + meanG + meanB;
-                                requireActivity().runOnUiThread(() -> {
-                                    mViewModel.setLux(pseudoLux, "Camera");
-                                    cameraPreview.setVisibility(View.GONE);
+                    .setPositiveButton("OK", (d, w) ->
+                            cameraLightMeterX.analyzeFrame(new CameraLightMeterX.ResultCallback() {
+                                @Override
+                                public void onResult(float meanR, float meanG, float meanB) {
+                                    float pseudoLux = meanR + meanG + meanB;
+                                    requireActivity().runOnUiThread(() -> {
+                                        mViewModel.setLux(pseudoLux, "Camera");
+                                        cameraPreview.setVisibility(View.GONE);
 
-                                    if (enableAROverlay && arOverlayRenderer != null) {
-                                        de.omagh.lumibuddy.data.model.Measurement m =
-                                                new de.omagh.lumibuddy.data.model.Measurement();
-                                        m.lux = pseudoLux;
-                                        arOverlayRenderer.renderOverlay(new android.graphics.Canvas(), m);
-                                    }
+                                        if (enableAROverlay && arOverlayRenderer != null) {
+                                            de.omagh.lumibuddy.data.model.Measurement m =
+                                                    new de.omagh.lumibuddy.data.model.Measurement();
+                                            m.lux = pseudoLux;
+                                            arOverlayRenderer.renderOverlay(new android.graphics.Canvas(), m);
+                                        }
 
-                                    // Auto-detect lamp type and show warning if needed
-                                    String[] analysis = autoDetectLampType(meanR, meanG, meanB);
-                                    String lampSuggestion = analysis[0];
-                                    String warning = analysis[1];
+                                        // Auto-detect lamp type and show warning if needed
+                                        String[] analysis = autoDetectLampType(meanR, meanG, meanB);
+                                        String lampSuggestion = analysis[0];
+                                        String warning = analysis[1];
 
-                                    int index = lampTypeStringToIndex(lampSuggestion);
-                                    if (index >= 0) lampTypeSpinner.setSelection(index);
+                                        int index = lampTypeStringToIndex(lampSuggestion);
+                                        if (index >= 0) lampTypeSpinner.setSelection(index);
 
-                                    if (warning != null) {
-                                        new androidx.appcompat.app.AlertDialog.Builder(getContext())
-                                                .setTitle("Spectrum Warning")
-                                                .setMessage(warning)
-                                                .setPositiveButton("OK", null)
-                                                .show();
-                                    }
-                                    android.widget.Toast.makeText(getContext(), "Measurement complete!", android.widget.Toast.LENGTH_SHORT).show();
-                                });
-                            }
+                                        if (warning != null) {
+                                            new androidx.appcompat.app.AlertDialog.Builder(getContext())
+                                                    .setTitle("Spectrum Warning")
+                                                    .setMessage(warning)
+                                                    .setPositiveButton("OK", null)
+                                                    .show();
+                                        }
+                                        android.widget.Toast.makeText(getContext(), "Measurement complete!", android.widget.Toast.LENGTH_SHORT).show();
+                                    });
+                                }
 
-                            @Override
-                            public void onError(String message) {
-                                requireActivity().runOnUiThread(() -> {
-                                    android.widget.Toast.makeText(getContext(), "Camera error: " + message, android.widget.Toast.LENGTH_LONG).show();
-                                    cameraPreview.setVisibility(View.GONE);
-                                });
-                            }
-                        });
-                    })
+                                @Override
+                                public void onError(String message) {
+                                    requireActivity().runOnUiThread(() -> {
+                                        android.widget.Toast.makeText(getContext(), "Camera error: " + message, android.widget.Toast.LENGTH_LONG).show();
+                                        cameraPreview.setVisibility(View.GONE);
+                                    });
+                                }
+                            }))
                     .show();
         });
     }

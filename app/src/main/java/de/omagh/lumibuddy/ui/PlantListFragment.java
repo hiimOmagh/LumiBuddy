@@ -75,14 +75,13 @@ public class PlantListFragment extends Fragment {
         });
 
         // On long press → delete with confirmation
-        adapter.setOnPlantDeleteListener(plant -> {
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                    .setTitle("Delete Plant")
-                    .setMessage("Delete " + plant.getName() + "?")
-                    .setPositiveButton("Delete", (dialog, which) -> viewModel.deletePlant(plant))
-                    .setNegativeButton("Cancel", null)
-                    .show();
-        });
+        adapter.setOnPlantDeleteListener(plant ->
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Plant")
+                        .setMessage("Delete " + plant.getName() + "?")
+                        .setPositiveButton("Delete", (dialog, which) -> viewModel.deletePlant(plant))
+                        .setNegativeButton("Cancel", null)
+                        .show());
 
         // FAB to add new plant
         FloatingActionButton addFab = view.findViewById(R.id.addPlantFab);

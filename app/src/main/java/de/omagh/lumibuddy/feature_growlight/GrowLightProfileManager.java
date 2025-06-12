@@ -128,7 +128,7 @@ public class GrowLightProfileManager {
     // --- Persistence helpers ---
     private void loadCustomProfiles() {
         String serialized = prefs.getString(KEY_CUSTOM, "");
-        if (serialized == null || serialized.isEmpty()) return;
+        if (serialized.isEmpty()) return;
         String[] entries = serialized.split("\\|");
         for (String entry : entries) {
             String[] parts = entry.split(",");
