@@ -37,6 +37,7 @@ public class SettingsFragment extends Fragment {
     private android.widget.TextView calibrationInfoText;
     private android.widget.Switch careReminderSwitch;
     private View syncNowBtn;
+    private View privacyPolicyBtn;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -57,6 +58,7 @@ public class SettingsFragment extends Fragment {
         calibrationInfoText = view.findViewById(R.id.calibrationInfoText);
         careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
         syncNowBtn = view.findViewById(R.id.syncNowBtn);
+        privacyPolicyBtn = view.findViewById(R.id.privacyPolicyBtn);
 
         // Unit spinner values from resources
         ArrayAdapter<CharSequence> unitAdapter = ArrayAdapter.createFromResource(
@@ -137,6 +139,13 @@ public class SettingsFragment extends Fragment {
             new de.omagh.lumibuddy.feature_diary.DiarySyncManager().syncToCloud();
             Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
         });
+
+        privacyPolicyBtn.setOnClickListener(v ->
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle(R.string.privacy_policy)
+                        .setMessage(R.string.privacy_summary)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show());
 
         return view;
     }

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import android.Manifest;
 
 import androidx.camera.view.PreviewView;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.util.OnSwipeTouchListener;
+import de.omagh.lumibuddy.util.PermissionUtils;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
@@ -46,6 +48,7 @@ public class MeasureFragment extends Fragment {
     private PreviewView cameraPreview;
     private Button cameraMeasureButton;
     private CameraLightMeterX cameraLightMeterX;
+    private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
     // AR overlay integration
     private final boolean enableAROverlay = false;
@@ -220,8 +223,26 @@ public class MeasureFragment extends Fragment {
 
         // --- CameraX Measurement Integration ---
         cameraLightMeterX = new CameraLightMeterX(requireActivity(), cameraPreview);
+        cameraPermissionLauncher = registerForActivityResult(
+                new androidx.activity.result.contract.ActivityResultContracts.RequestPermission(),
+                granted -> {
+                    if (granted) {
+                        cameraMeasureButton.performClick();
+                    } else {
+                        PermissionUtils.showPermissionDenied(this,
+                                getString(R.string.camera_permission_required));
+                    }
+                });
 
         cameraMeasureButton.setOnClickListener(v -> {
+            if (!PermissionUtils.hasPermission(requireContext(), Manifest.permission.CAMERA)) {
+                PermissionUtils.requestPermissionWithRationale(
+                        this,
+                        Manifest.permission.CAMERA,
+                        getString(R.string.camera_permission_rationale),
+                        cameraPermissionLauncher);
+                return;
+            }
             cameraPreview.setVisibility(View.VISIBLE);
             cameraLightMeterX.startCamera();
 

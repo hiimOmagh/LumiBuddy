@@ -18,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import de.omagh.lumibuddy.util.PermissionUtils;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -34,6 +36,7 @@ public class ProfileFragment extends Fragment {
     private ImageView avatarView;
     private TextView nameView;
     private ActivityResultLauncher<String> imagePickerLauncher;
+    private ActivityResultLauncher<String> imagePermissionLauncher;
 
     public ProfileFragment() {
         super(R.layout.fragment_profile);
@@ -64,6 +67,17 @@ public class ProfileFragment extends Fragment {
                     }
                 });
 
+        imagePermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                granted -> {
+                    if (granted) {
+                        imagePickerLauncher.launch("image/*");
+                    } else {
+                        PermissionUtils.showPermissionDenied(this,
+                                getString(R.string.storage_permission_denied));
+                    }
+                });
+
         viewModel.getUsername().observe(getViewLifecycleOwner(), nameView::setText);
         viewModel.getAvatarUri().observe(getViewLifecycleOwner(), this::loadAvatar);
     }
@@ -77,15 +91,17 @@ public class ProfileFragment extends Fragment {
     }
 
     private void pickImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES)
-                    != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 1001);
-                return;
-            }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                !PermissionUtils.hasPermission(requireContext(), Manifest.permission.READ_MEDIA_IMAGES)) {
+            PermissionUtils.requestPermissionWithRationale(
+                    this,
+                    Manifest.permission.READ_MEDIA_IMAGES,
+                    getString(R.string.storage_permission_rationale),
+                    imagePermissionLauncher);
+        } else {
+            imagePickerLauncher.launch("image/*");
         }
-        imagePickerLauncher.launch("image/*");
-    }
+    } // <-- FIX: This closes pickImage()
 
     private void showEditNameDialog() {
         final EditText input = new EditText(requireContext());

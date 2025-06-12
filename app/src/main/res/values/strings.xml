@@ -46,6 +46,11 @@
     <string name="dli_calculator">DLI Calculator</string>
     <string name="measure_with_camera">Measure with Camera</string>
     <string name="camera_permission_required">Camera permission required</string>
+    <string name="camera_permission_rationale">Camera access is needed to capture plant photos and measure light.</string>
+    <string name="notification_permission_rationale">Notification permission lets LumiBuddy remind you about watering and care tasks.</string>
+    <string name="notification_permission_denied">Notifications disabled - reminders won\'t appear.</string>
+    <string name="storage_permission_rationale">Allow access to your images to set a profile picture.</string>
+    <string name="storage_permission_denied">Cannot access photos without permission.</string>
     <string name="type_herb">Type: Herb</string>
     <string name="plant_name">Plant Name</string>
     <string name="plant_diary_title">Plant Diary Title</string>
@@ -89,6 +94,8 @@
 
     <string name="care_reminders">Care Reminders</string>
     <string name="sync_now">Sync Now</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_summary">Your data is stored only on your device. When cloud sync is enabled, plant logs and photos will be uploaded securely.</string>
 
     <string-array name="calibration_sources">
         <item>ALS</item>

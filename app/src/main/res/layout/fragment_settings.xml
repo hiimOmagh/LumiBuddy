@@ -236,5 +236,13 @@
             android:layout_marginTop="12dp"
             android:text="@string/sync_now" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/privacyPolicyBtn"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/privacy_policy" />
+
     </LinearLayout>
 </ScrollView>

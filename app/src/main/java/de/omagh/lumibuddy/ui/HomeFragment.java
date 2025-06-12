@@ -19,6 +19,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 
+import de.omagh.lumibuddy.util.PermissionUtils;
+
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
 
@@ -66,6 +68,9 @@ public class HomeFragment extends Fragment {
                         } catch (SecurityException ignored) {
                             // Permission may still be denied
                         }
+                    } else {
+                        PermissionUtils.showPermissionDenied(this,
+                                getString(R.string.notification_permission_denied));
                     }
                 });
 
@@ -90,9 +95,12 @@ public class HomeFragment extends Fragment {
         viewModel.getPlants().observe(getViewLifecycleOwner(), plants -> {
             if (!settingsManager.isCareRemindersEnabled()) return;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
-                    ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
-                            != PackageManager.PERMISSION_GRANTED) {
-                notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                    !PermissionUtils.hasPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)) {
+                PermissionUtils.requestPermissionWithRationale(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS,
+                        getString(R.string.notification_permission_rationale),
+                        notifPermissionLauncher);
             } else {
                 try {
                     viewModel.refresh();

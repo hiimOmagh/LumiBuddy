@@ -17,6 +17,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 
+import de.omagh.lumibuddy.util.PermissionUtils;
+
 import android.Manifest;
 import android.content.pm.PackageManager;
 import androidx.fragment.app.Fragment;
@@ -84,8 +86,8 @@ public class AddPlantFragment extends Fragment {
                 if (granted) {
                     captureImageLauncher.launch(null);
                 } else {
-                    Toast.makeText(requireContext(), R.string.camera_permission_required,
-                            Toast.LENGTH_SHORT).show();
+                    PermissionUtils.showPermissionDenied(this,
+                            getString(R.string.camera_permission_required));
                 }
             });
 
@@ -134,11 +136,14 @@ public class AddPlantFragment extends Fragment {
         // Pick image button
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
         captureImageBtn.setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED) {
+            if (PermissionUtils.hasPermission(requireContext(), Manifest.permission.CAMERA)) {
                 captureImageLauncher.launch(null);
             } else {
-                cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+                PermissionUtils.requestPermissionWithRationale(
+                        this,
+                        Manifest.permission.CAMERA,
+                        getString(R.string.camera_permission_rationale),
+                        cameraPermissionLauncher);
             }
         });
         searchPlantBtn.setOnClickListener(v -> performPlantSearch());
@@ -223,7 +228,7 @@ public class AddPlantFragment extends Fragment {
                 info.getProfileForStage(de.omagh.lumibuddy.feature_plantdb.PlantStage.VEGETATIVE);
         if (p == null) return;
         String msg = String.format(java.util.Locale.US,
-                "Light %.0f-%.0f \u03bcmol/m\u00b2/s\nWater every %d d\nHumidity %.0f-%.0f%%",
+                "Light %.0f-%.0f μmol/m²/s\nWater every %d d\nHumidity %.0f-%.0f%%",
                 p.getMinPPFD(), p.getMaxPPFD(),
                 p.getWateringIntervalDays(),
                 p.getMinHumidity(), p.getMaxHumidity());
