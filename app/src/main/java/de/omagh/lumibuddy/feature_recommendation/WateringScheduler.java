@@ -47,7 +47,11 @@ public class WateringScheduler {
             }
             List<Plant> toWater = engine.getPlantsNeedingWater(plants, diaryMap);
             for (Plant plant : toWater) {
-                int days = engine.daysSinceLastWatering(plant, diaryMap.get(plant.getId()));
+                List<DiaryEntry> entries = diaryMap.get(plant.getId());
+                if (entries == null) {
+                    continue;
+                }
+                int days = engine.daysSinceLastWatering(plant, entries);
                 notificationManager.notifyWateringNeeded(plant, days);
                 DiaryEntry log = new DiaryEntry(
                         java.util.UUID.randomUUID().toString(),
@@ -62,6 +66,7 @@ public class WateringScheduler {
         });
     }
 
+    @SuppressWarnings("unused")
     public void shutdown() {
         executor.shutdown();
     }

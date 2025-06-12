@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.Manifest;
 import android.content.pm.PackageManager;
 
+import java.util.Locale;
+
 import androidx.navigation.Navigation;
 
 import androidx.fragment.app.Fragment;
@@ -34,9 +36,11 @@ import de.omagh.lumibuddy.R;
  * HomeFragment displays the home screen and summary metrics.
  */
 public class HomeFragment extends Fragment {
-    private HomeViewModel mViewModel;
-    private SettingsManager settingsManager;
-    private ActivityResultLauncher<String> notifPermissionLauncher;
+    /**
+     * Temporarily stores the plant list while waiting for notification
+     * permission to be granted. The list is cleared once the daily check
+     * has been executed.
+     */
     private java.util.List<Plant> pendingPlants;
 
     public HomeFragment() {
@@ -55,31 +59,39 @@ public class HomeFragment extends Fragment {
         TextView dliValue = view.findViewById(R.id.dliValueHome);
         LinearLayout taskList = view.findViewById(R.id.taskList);
 
-        settingsManager = new SettingsManager(requireContext());
+        final SettingsManager settingsManager = new SettingsManager(requireContext());
 
         RecommendationEngine engine = new RecommendationEngine();
         NotificationManager nm = new NotificationManager(requireContext());
         WateringScheduler scheduler = new WateringScheduler(engine, nm,
                 AppDatabase.getInstance(requireContext()).diaryDao());
 
-        notifPermissionLauncher = registerForActivityResult(
+        ActivityResultLauncher<String> notifPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
                     if (granted && pendingPlants != null) {
-                        scheduler.runDailyCheck(pendingPlants);
+                        // Double-check permission before triggering the scheduler
+                        if (ContextCompat.checkSelfPermission(requireContext(),
+                                Manifest.permission.POST_NOTIFICATIONS)
+                                == PackageManager.PERMISSION_GRANTED) {
+                            scheduler.runDailyCheck(pendingPlants);
+                        }
                         pendingPlants = null;
                     }
                 });
 
-        mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        HomeViewModel viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
-        mViewModel.getWelcomeText().observe(getViewLifecycleOwner(), welcomeText::setText);
-        mViewModel.getLux().observe(getViewLifecycleOwner(), v -> luxValue.setText(String.format("%.0f", v)));
-        mViewModel.getPpfd().observe(getViewLifecycleOwner(), v -> ppfdValue.setText(String.format("%.0f", v)));
-        mViewModel.getDli().observe(getViewLifecycleOwner(), v -> dliValue.setText(String.format("%.1f", v)));
+        viewModel.getWelcomeText().observe(getViewLifecycleOwner(), welcomeText::setText);
+        viewModel.getLux().observe(getViewLifecycleOwner(),
+                v -> luxValue.setText(String.format(Locale.getDefault(), "%.0f", v)));
+        viewModel.getPpfd().observe(getViewLifecycleOwner(),
+                v -> ppfdValue.setText(String.format(Locale.getDefault(), "%.0f", v)));
+        viewModel.getDli().observe(getViewLifecycleOwner(),
+                v -> dliValue.setText(String.format(Locale.getDefault(), "%.1f", v)));
 
         // Fix: Don't re-declare or re-assign inflater! Use the one provided by the method parameter.
-        mViewModel.getTasks().observe(getViewLifecycleOwner(), tasks -> {
+        viewModel.getTasks().observe(getViewLifecycleOwner(), tasks -> {
             taskList.removeAllViews();
             for (String t : tasks) {
                 TextView tv = (TextView) inflater.inflate(android.R.layout.simple_list_item_1, taskList, false);

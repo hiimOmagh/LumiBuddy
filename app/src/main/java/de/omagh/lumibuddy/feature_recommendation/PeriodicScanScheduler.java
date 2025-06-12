@@ -12,12 +12,16 @@ import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 public class PeriodicScanScheduler {
 
     private final WateringScheduler wateringScheduler;
+    private final LightRecommendationScheduler lightScheduler;
 
-    public PeriodicScanScheduler(WateringScheduler wateringScheduler) {
+    public PeriodicScanScheduler(WateringScheduler wateringScheduler,
+                                 LightRecommendationScheduler lightScheduler) {
         this.wateringScheduler = wateringScheduler;
+        this.lightScheduler = lightScheduler;
     }
 
     public void runWeekly(List<Plant> plants) {
         wateringScheduler.runDailyCheck(plants);
+        lightScheduler.runLightCheck(plants);
     }
 }

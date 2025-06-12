@@ -88,4 +88,42 @@ public class NotificationManager {
     public void notifyWateringNeeded(String plantName, int daysSince) {
         notifyWateringNeeded(new Plant("temp", plantName, "", ""), daysSince);
     }
+
+    /**
+     * Sends a notification with a light-related recommendation.
+     */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
+    public void notifyLightRecommendation(Plant plant, String message) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("openPlantId", plant.getId());
+        intent.putExtra("openPlantName", plant.getName());
+        intent.putExtra("openPlantType", plant.getType());
+        intent.putExtra("openPlantImageUri", plant.getImageUri());
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                context,
+                (plant.getId() + "light").hashCode(),
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_eco)
+                .setContentTitle("Light recommendation")
+                .setContentText(message)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()) {
+            try {
+                Uri uri = Uri.parse(plant.getImageUri());
+                builder.setLargeIcon(BitmapFactory.decodeStream(
+                        context.getContentResolver().openInputStream(uri)));
+            } catch (Exception ignored) {
+            }
+        }
+
+        NotificationManagerCompat.from(context)
+                .notify((plant.getId() + "light").hashCode(), builder.build());
+    }
 }

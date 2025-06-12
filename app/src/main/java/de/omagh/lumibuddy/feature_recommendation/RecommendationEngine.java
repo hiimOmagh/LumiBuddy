@@ -100,4 +100,115 @@ public class RecommendationEngine {
         }
         return needs;
     }
+
+    /**
+     * Generates a light-related recommendation for the plant if recent
+     * measurements fall outside the ideal DLI range.
+     *
+     * @param plant   Plant to evaluate.
+     * @param entries Diary entries for the plant.
+     * @return Recommendation text or {@code null} if no action is needed or a
+     * similar note was logged recently.
+     */
+    public String getLightRecommendation(Plant plant, List<DiaryEntry> entries) {
+        if (plant == null || entries == null) return null;
+
+        PlantInfo info = identifier.identifyByName(plant.getType());
+        if (info == null) return null;
+        PlantCareProfile profile = info.getProfileForStage(PlantStage.VEGETATIVE);
+        if (profile == null) return null;
+
+        float minDli = profile.getMinDLI();
+        float maxDli = profile.getMaxDLI();
+
+        DiaryEntry latestLight = null;
+        float latestDli = Float.NaN;
+        float latestPpfd = Float.NaN;
+        for (DiaryEntry e : entries) {
+            if ("light".equalsIgnoreCase(e.getEventType())) {
+                float[] vals = parseLightMetrics(e.getNote());
+                if (latestLight == null || e.getTimestamp() > latestLight.getTimestamp()) {
+                    latestLight = e;
+                    latestDli = vals[0];
+                    latestPpfd = vals[1];
+                }
+            }
+        }
+
+        if (latestLight == null) {
+            return null;
+        }
+
+        if (Float.isNaN(latestDli) && !Float.isNaN(latestPpfd)) {
+            // Estimate DLI from PPFD assuming a 24h photoperiod
+            latestDli = de.omagh.lumibuddy.feature_measurement.MeasurementUtils
+                    .ppfdToDLI(latestPpfd, 24);
+        }
+
+        if (Float.isNaN(latestDli)) {
+            return null;
+        }
+
+        long now = System.currentTimeMillis();
+        long recent = now - 3L * 24L * 60L * 60L * 1000L;
+        for (DiaryEntry e : entries) {
+            if ("recommendation".equalsIgnoreCase(e.getEventType())
+                    && e.getTimestamp() >= recent) {
+                String note = e.getNote() != null ? e.getNote().toLowerCase() : "";
+                if (note.contains("light")) {
+                    return null; // similar recommendation recently logged
+                }
+            }
+        }
+
+        if (latestDli < minDli) {
+            return "Light level low - move to brighter spot or increase lighting duration.";
+        } else if (latestDli > maxDli) {
+            return "Light level high - reduce exposure or consider diffusing light.";
+        }
+        return null;
+    }
+
+    /**
+     * Parses DLI and PPFD values from a diary note. If a value is missing,
+     * {@link Float#NaN} is returned for that element.
+     */
+    private float[] parseLightMetrics(String note) {
+        float dli = Float.NaN;
+        float ppfd = Float.NaN;
+        if (note == null) return new float[]{dli, ppfd};
+
+        java.util.regex.Matcher m = java.util.regex.Pattern
+                .compile("(?i)dli[:=\\s]*([0-9]+(?:\\.[0-9]+)?)")
+                .matcher(note);
+        if (m.find()) {
+            try {
+                dli = Float.parseFloat(m.group(1));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        m = java.util.regex.Pattern
+                .compile("(?i)ppfd[:=\\s]*([0-9]+(?:\\.[0-9]+)?)")
+                .matcher(note);
+        if (m.find()) {
+            try {
+                ppfd = Float.parseFloat(m.group(1));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        if (Float.isNaN(dli)) {
+            m = java.util.regex.Pattern
+                    .compile("([0-9]+(?:\\.[0-9]+)?)")
+                    .matcher(note);
+            if (m.find()) {
+                try {
+                    dli = Float.parseFloat(m.group(1));
+                } catch (NumberFormatException ignored) {
+                }
+            }
+        }
+        return new float[]{dli, ppfd};
+    }
 }
