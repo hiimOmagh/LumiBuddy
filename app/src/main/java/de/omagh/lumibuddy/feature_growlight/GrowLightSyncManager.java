@@ -42,7 +42,7 @@ public class GrowLightSyncManager {
                     dao.insertAll(resp.body());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                android.util.Log.e("GrowLightSync", "sync error", e);
             }
         });
     }

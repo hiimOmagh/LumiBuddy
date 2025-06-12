@@ -16,10 +16,14 @@ import androidx.camera.view.PreviewView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.ContextCompat;
 
-import java.util.Objects;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.util.Log;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
@@ -28,6 +32,8 @@ import de.omagh.lumibuddy.util.PermissionUtils;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
+import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
+import de.omagh.lumibuddy.feature_ml.BasicLampTypeClassifier;
 
 public class MeasureFragment extends Fragment {
     private MeasureViewModel mViewModel;
@@ -50,6 +56,9 @@ public class MeasureFragment extends Fragment {
     private CameraLightMeterX cameraLightMeterX;
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
+    private SwitchCompat arToggle;
+    private LampTypeClassifier lampTypeClassifier;
+
     // AR overlay integration
     private boolean enableAROverlay = false;
     private de.omagh.lumibuddy.feature_ar.AROverlayRenderer arOverlayRenderer;
@@ -68,6 +77,9 @@ public class MeasureFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
         settingsManager = new SettingsManager(requireContext());
         enableAROverlay = settingsManager.isArOverlayEnabled();
+        if (settingsManager.isMlFeaturesEnabled()) {
+            lampTypeClassifier = new BasicLampTypeClassifier();
+        }
 
         // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);
@@ -128,6 +140,24 @@ public class MeasureFragment extends Fragment {
 
         cameraMeasureButton = view.findViewById(R.id.cameraMeasureButton);
         cameraPreview = view.findViewById(R.id.cameraPreview);
+        arToggle = view.findViewById(R.id.arToggle);
+        arToggle.setChecked(enableAROverlay);
+        arToggle.setOnCheckedChangeListener((btn, checked) -> {
+            enableAROverlay = checked;
+            settingsManager.setArOverlayEnabled(checked);
+            if (checked) {
+                if (arOverlayRenderer == null) {
+                    arOverlayRenderer = new de.omagh.lumibuddy.feature_ar.ARMeasureOverlay();
+                    arOverlayRenderer.init();
+                }
+                android.widget.Toast.makeText(getContext(), "AR overlay enabled (stub)", android.widget.Toast.LENGTH_SHORT).show();
+            } else {
+                if (arOverlayRenderer != null) {
+                    arOverlayRenderer.cleanup();
+                    arOverlayRenderer = null;
+                }
+            }
+        });
 
         // Swiping for measurement selection
         view.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
@@ -179,12 +209,7 @@ public class MeasureFragment extends Fragment {
                 dliValue.setText(String.format("%.2f", dli)));
 
         // DLI hour observer
-        mViewModel.getHours().observe(getViewLifecycleOwner(), hours -> {
-            hourValue.setText(hours + " h");
-            preset12h.setBackgroundResource(hours == 12 ? R.drawable.chip_selected : R.drawable.chip_unselected);
-            preset18h.setBackgroundResource(hours == 18 ? R.drawable.chip_selected : R.drawable.chip_unselected);
-            preset24h.setBackgroundResource(hours == 24 ? R.drawable.chip_selected : R.drawable.chip_unselected);
-        });
+        mViewModel.getHours().observe(getViewLifecycleOwner(), this::onChanged);
 
         // DLI observer (widget)
         mViewModel.getDLI().observe(getViewLifecycleOwner(), dli ->
@@ -271,6 +296,13 @@ public class MeasureFragment extends Fragment {
                                         String[] analysis = autoDetectLampType(meanR, meanG, meanB);
                                         String lampSuggestion = analysis[0];
                                         String warning = analysis[1];
+
+                                        if (lampTypeClassifier != null) {
+                                            Bitmap sample = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+                                            sample.eraseColor(Color.rgb((int) Math.min(255, meanR), (int) Math.min(255, meanG), (int) Math.min(255, meanB)));
+                                            lampTypeClassifier.classify(sample);
+                                            Log.d("MeasureFragment", "Lamp classifier result=" + lampTypeClassifier.getLastResult());
+                                        }
 
                                         int index = lampTypeStringToIndex(lampSuggestion);
                                         if (index >= 0) lampTypeSpinner.setSelection(index);
@@ -385,6 +417,14 @@ public class MeasureFragment extends Fragment {
         ((TextView) card.findViewById(R.id.metricLabel)).setText(label);
         ((TextView) card.findViewById(R.id.metricUnit)).setText(unit);
         ((ImageView) card.findViewById(R.id.metricIcon)).setImageResource(iconRes);
-        ((TextView) card.findViewById(R.id.metricValue)).setTextColor(getResources().getColor(valueColorRes));
+        ((TextView) card.findViewById(R.id.metricValue)).setTextColor(
+                ContextCompat.getColor(requireContext(), valueColorRes));
+    }
+
+    private void onChanged(Integer hours) {
+        hourValue.setText(hours + " h");
+        preset12h.setBackgroundResource(hours == 12 ? R.drawable.chip_selected : R.drawable.chip_unselected);
+        preset18h.setBackgroundResource(hours == 18 ? R.drawable.chip_selected : R.drawable.chip_unselected);
+        preset24h.setBackgroundResource(hours == 24 ? R.drawable.chip_selected : R.drawable.chip_unselected);
     }
 }

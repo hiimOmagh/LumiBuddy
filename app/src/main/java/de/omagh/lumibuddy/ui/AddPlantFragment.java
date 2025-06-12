@@ -24,13 +24,20 @@ import android.content.pm.PackageManager;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 
+import android.util.Log;
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.feature_ml.PlantClassifier;
+import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
+import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
+import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
+import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
 
 /**
  * Fragment to add or edit a plant.
@@ -48,37 +55,52 @@ public class AddPlantFragment extends Fragment {
     private String existingPlantId = null;
 
     // ML plant recognition
-    private de.omagh.lumibuddy.feature_ml.PlantClassifier plantClassifier;
-    public static final String ARG_PLANT_ID = "plant_id";
-    public static final String ARG_NAME = "plant_name";
-    public static final String ARG_TYPE = "plant_type";
-    public static final String ARG_IMAGE_URI = "plant_image_uri";
-
+    private PlantClassifier plantClassifier;
+    private HealthStatusClassifier healthClassifier;
+    private DummyARGrowthTracker growthTracker;
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
                     selectedImageUri = uri;
                     imagePreview.setImageURI(uri);
                     try {
-                        android.graphics.Bitmap bmp;
-                        bmp = android.graphics.ImageDecoder.decodeBitmap(
+                        android.graphics.Bitmap bmp = android.graphics.ImageDecoder.decodeBitmap(
                                 android.graphics.ImageDecoder.createSource(
                                         requireActivity().getContentResolver(), uri));
                         recognizePlant(bmp);
+                        if (healthClassifier != null) {
+                            healthClassifier.classify(bmp);
+                            Log.d("AddPlant", "Health result=" + healthClassifier.getLastResult());
+                        }
+                        if (growthTracker != null) {
+                            growthTracker.trackGrowth(bmp);
+                        }
                     } catch (java.io.IOException e) {
-                        e.printStackTrace();
+                        Log.e("AddPlant", "Image decode error", e);
                     }
                 }
             });
-
     private final ActivityResultLauncher<Void> captureImageLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bmp -> {
                 if (bmp != null) {
                     imagePreview.setImageBitmap(bmp);
                     recognizePlant(bmp);
+                    if (healthClassifier != null) {
+                        healthClassifier.classify(bmp);
+                        Log.d("AddPlant", "Health result=" + healthClassifier.getLastResult());
+                    }
+                    if (growthTracker != null) {
+                        growthTracker.trackGrowth(bmp);
+                    }
                     selectedImageUri = null;
                 }
             });
+    public static final String ARG_PLANT_ID = "plant_id";
+    public static final String ARG_NAME = "plant_name";
+    public static final String ARG_TYPE = "plant_type";
+    public static final String ARG_IMAGE_URI = "plant_image_uri";
+    private SwitchCompat mlToggle;
+    private SwitchCompat arGrowthToggle;
 
     private final ActivityResultLauncher<String> cameraPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
@@ -109,15 +131,48 @@ public class AddPlantFragment extends Fragment {
         pickImageBtn = view.findViewById(R.id.pickImageBtn);
         captureImageBtn = view.findViewById(R.id.captureImageBtn);
         searchPlantBtn = view.findViewById(R.id.searchPlantBtn);
+        mlToggle = view.findViewById(R.id.mlToggle);
+        arGrowthToggle = view.findViewById(R.id.arGrowthToggle);
 
         // Init ViewModel
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
 
         de.omagh.lumibuddy.feature_user.SettingsManager sm =
                 new de.omagh.lumibuddy.feature_user.SettingsManager(requireContext());
-        if (sm.isMlFeaturesEnabled()) {
-            plantClassifier = new de.omagh.lumibuddy.feature_ml.BasicPlantClassifier();
+        mlToggle.setChecked(sm.isMlFeaturesEnabled());
+        arGrowthToggle.setChecked(sm.isArOverlayEnabled());
+        if (mlToggle.isChecked()) {
+            plantClassifier = new BasicPlantClassifier();
+            healthClassifier = new BasicHealthStatusClassifier();
         }
+        if (arGrowthToggle.isChecked()) {
+            growthTracker = new DummyARGrowthTracker();
+            growthTracker.init();
+        }
+
+        mlToggle.setOnCheckedChangeListener((b, checked) -> {
+            sm.setMlFeaturesEnabled(checked);
+            if (checked) {
+                plantClassifier = new BasicPlantClassifier();
+                healthClassifier = new BasicHealthStatusClassifier();
+                Toast.makeText(getContext(), "ML features enabled (stub)", Toast.LENGTH_SHORT).show();
+            } else {
+                plantClassifier = null;
+                healthClassifier = null;
+            }
+        });
+
+        arGrowthToggle.setOnCheckedChangeListener((b, checked) -> {
+            sm.setArOverlayEnabled(checked);
+            if (checked) {
+                growthTracker = new DummyARGrowthTracker();
+                growthTracker.init();
+                Toast.makeText(getContext(), "AR growth tracking enabled (stub)", Toast.LENGTH_SHORT).show();
+            } else if (growthTracker != null) {
+                growthTracker.cleanup();
+                growthTracker = null;
+            }
+        });
         // Check for edit mode
         Bundle args = getArguments();
         if (args != null) {
