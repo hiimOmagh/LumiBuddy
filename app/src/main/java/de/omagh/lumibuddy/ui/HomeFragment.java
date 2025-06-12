@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
 
 import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
 import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
 import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
 import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
@@ -42,6 +43,8 @@ public class HomeFragment extends Fragment {
      * has been executed.
      */
     private java.util.List<Plant> pendingPlants;
+    private final java.util.concurrent.ExecutorService lightCheckExecutor =
+            java.util.concurrent.Executors.newSingleThreadExecutor();
 
     public HomeFragment() {
         super(R.layout.fragment_home);
@@ -65,6 +68,9 @@ public class HomeFragment extends Fragment {
         NotificationManager nm = new NotificationManager(requireContext());
         WateringScheduler scheduler = new WateringScheduler(engine, nm,
                 AppDatabase.getInstance(requireContext()).diaryDao());
+        DiaryViewModel diaryVm = new ViewModelProvider(this,
+                new DiaryViewModel.Factory(requireActivity().getApplication()))
+                .get(DiaryViewModel.class);
 
         ActivityResultLauncher<String> notifPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
@@ -110,12 +116,20 @@ public class HomeFragment extends Fragment {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
                         == PackageManager.PERMISSION_GRANTED) {
                     scheduler.runDailyCheck(plants);
+                    lightCheckExecutor.execute(() ->
+                            engine.checkLightRecommendations(plants,
+                                    diaryVm::getDiaryEntriesForPlantSync,
+                                    diaryVm::addEntry));
                 } else {
                     pendingPlants = plants;
                     notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                 }
             } else {
                 scheduler.runDailyCheck(plants);
+                lightCheckExecutor.execute(() ->
+                        engine.checkLightRecommendations(plants,
+                                diaryVm::getDiaryEntriesForPlantSync,
+                                diaryVm::addEntry));
             }
         });
 
@@ -128,5 +142,11 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.viewTimelineButton).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.plantListFragment));
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        lightCheckExecutor.shutdown();
     }
 }

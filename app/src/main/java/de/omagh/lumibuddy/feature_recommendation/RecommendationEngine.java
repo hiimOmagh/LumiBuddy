@@ -3,6 +3,9 @@ package de.omagh.lumibuddy.feature_recommendation;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
@@ -20,6 +23,8 @@ public class RecommendationEngine {
 
     private final PlantDatabaseManager db = new PlantDatabaseManager();
     private final PlantIdentifier identifier = new PlantIdentifier(db);
+    private final java.util.concurrent.ExecutorService executor =
+            java.util.concurrent.Executors.newSingleThreadExecutor();
 
     /**
      * Determines if the given plant should be watered based on its diary
@@ -170,6 +175,105 @@ public class RecommendationEngine {
     }
 
     /**
+     * Calculates the average DLI from the given light diary entries. Entries
+     * may contain DLI or PPFD values in the note text.
+     */
+    float computeAverageDli(List<DiaryEntry> lightEntries) {
+        if (lightEntries == null || lightEntries.isEmpty()) return Float.NaN;
+        float sum = 0f;
+        int count = 0;
+        for (DiaryEntry e : lightEntries) {
+            float[] vals = parseLightMetrics(e.getNote());
+            float dli = vals[0];
+            if (Float.isNaN(dli) && !Float.isNaN(vals[1])) {
+                dli = de.omagh.lumibuddy.feature_measurement.MeasurementUtils
+                        .ppfdToDLI(vals[1], 24);
+            }
+            if (!Float.isNaN(dli)) {
+                sum += dli;
+                count++;
+            }
+        }
+        return count > 0 ? sum / count : Float.NaN;
+    }
+
+    /**
+     * Checks recent light measurements for each plant and logs a recommendation
+     * if the average DLI over the last 3 days is outside the plant's ideal
+     * range.
+     *
+     * @param plants        plants to evaluate
+     * @param entryFetcher  function to fetch diary entries for a plant id
+     * @param entryInserter function to insert a new diary entry
+     */
+    public void checkLightRecommendations(
+            List<Plant> plants,
+            Function<String, List<DiaryEntry>> entryFetcher,
+            Consumer<DiaryEntry> entryInserter) {
+        if (plants == null || entryFetcher == null || entryInserter == null) return;
+
+        executor.execute(() -> {
+            performLightCheck(plants, entryFetcher, entryInserter);
+        });
+    }
+
+    private void performLightCheck(List<Plant> plants,
+                                   Function<String, List<DiaryEntry>> entryFetcher,
+                                   Consumer<DiaryEntry> entryInserter) {
+
+        long now = System.currentTimeMillis();
+        long cutoff = now - 3L * 24L * 60L * 60L * 1000L;
+
+        for (Plant plant : plants) {
+            List<DiaryEntry> entries = entryFetcher.apply(plant.getId());
+            if (entries == null) continue;
+
+            PlantInfo info = identifier.identifyByName(plant.getType());
+            if (info == null) continue;
+            PlantCareProfile profile = info.getProfileForStage(PlantStage.VEGETATIVE);
+            if (profile == null) continue;
+
+            boolean hasRecent = false;
+            List<DiaryEntry> lightEntries = new ArrayList<>();
+            for (DiaryEntry e : entries) {
+                if (e.getTimestamp() < cutoff) continue;
+                if ("recommendation".equalsIgnoreCase(e.getEventType())) {
+                    String note = e.getNote() != null ? e.getNote().toLowerCase() : "";
+                    if (note.contains("light low") || note.contains("light high")) {
+                        hasRecent = true;
+                    }
+                } else if ("light".equalsIgnoreCase(e.getEventType())) {
+                    lightEntries.add(e);
+                }
+            }
+
+            if (hasRecent || lightEntries.isEmpty()) continue;
+
+            float avg = computeAverageDli(lightEntries);
+            if (Float.isNaN(avg)) continue;
+
+            String note = null;
+            if (avg < profile.getMinDLI()) {
+                note = "Light low: consider moving plant to a brighter spot or increasing light duration.";
+            } else if (avg > profile.getMaxDLI()) {
+                note = "Light high: consider reducing exposure or diffusing light.";
+            }
+
+            if (note != null) {
+                DiaryEntry rec = new DiaryEntry(
+                        UUID.randomUUID().toString(),
+                        plant.getId(),
+                        now,
+                        note,
+                        "",
+                        "recommendation"
+                );
+                entryInserter.accept(rec);
+            }
+        }
+    }
+
+    /**
      * Parses DLI and PPFD values from a diary note. If a value is missing,
      * {@link Float#NaN} is returned for that element.
      */
@@ -210,5 +314,10 @@ public class RecommendationEngine {
             }
         }
         return new float[]{dli, ppfd};
+    }
+
+    @SuppressWarnings("unused")
+    public void shutdown() {
+        executor.shutdown();
     }
 }
