@@ -23,6 +23,12 @@ public interface DiaryDao {
     @Query("SELECT * FROM diary_entries WHERE plantId = :plantId AND eventType = 'watering' ORDER BY timestamp DESC LIMIT 1")
     DiaryEntry getLastWateringEvent(String plantId);
 
+    @Query("SELECT * FROM diary_entries ORDER BY timestamp DESC")
+    LiveData<List<DiaryEntry>> getAllEntries();
+
+    @Query("SELECT * FROM diary_entries ORDER BY timestamp DESC")
+    List<DiaryEntry> getAllEntriesSync();
+
     @Insert
     void insert(DiaryEntry entry);
 

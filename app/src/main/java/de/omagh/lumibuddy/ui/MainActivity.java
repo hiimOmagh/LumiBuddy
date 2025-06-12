@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         // Setup BottomNavigationView with NavController
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navController);
+        bottomNav.setOnItemReselectedListener(item ->
+                navController.popBackStack(item.getItemId(), false));
 
         if (getIntent() != null && getIntent().hasExtra("openPlantId")) {
             Bundle args = new Bundle();

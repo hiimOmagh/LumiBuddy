@@ -20,6 +20,16 @@
         android:label="Plants" />
 
     <fragment
+        android:id="@+id/diaryFragment"
+        android:name="de.omagh.lumibuddy.ui.PlantDiaryFragment"
+        android:label="Diary" />
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="de.omagh.lumibuddy.ui.ProfileFragment"
+        android:label="Profile" />
+
+    <fragment
         android:id="@+id/settingsFragment"
         android:name="de.omagh.lumibuddy.ui.SettingsFragment"
         android:label="Settings" />

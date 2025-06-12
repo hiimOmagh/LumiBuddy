@@ -33,8 +33,16 @@ public class DiaryViewModel extends AndroidViewModel {
         return repository.getEntriesForPlant(plantId);
     }
 
+    public LiveData<List<DiaryEntry>> getAllEntries() {
+        return repository.getAllEntries();
+    }
+
     public List<DiaryEntry> getDiaryEntriesForPlantSync(String plantId) {
         return repository.getEntriesForPlantSync(plantId);
+    }
+
+    public List<DiaryEntry> getAllEntriesSync() {
+        return repository.getAllEntriesSync();
     }
     public void addEntry(DiaryEntry entry) {
         repository.insert(entry);

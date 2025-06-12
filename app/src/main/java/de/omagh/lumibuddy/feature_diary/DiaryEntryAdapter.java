@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jspecify.annotations.NonNull;
@@ -23,13 +25,25 @@ import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 /**
  * Adapter for displaying a list of DiaryEntry items in a RecyclerView (growth timeline).
  */
-public class DiaryEntryAdapter extends RecyclerView.Adapter<DiaryEntryAdapter.DiaryViewHolder> {
+public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, DiaryEntryAdapter.DiaryViewHolder> {
 
-    private List<DiaryEntry> entries = new ArrayList<>();
+    private static final DiffUtil.ItemCallback<DiaryEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<DiaryEntry>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull DiaryEntry oldItem, @NonNull DiaryEntry newItem) {
+            return oldItem.getId().equals(newItem.getId());
+        }
 
-    public void submitList(List<DiaryEntry> newEntries) {
-        this.entries = newEntries != null ? newEntries : new ArrayList<>();
-        notifyDataSetChanged();
+        @Override
+        public boolean areContentsTheSame(@NonNull DiaryEntry oldItem, @NonNull DiaryEntry newItem) {
+            return oldItem.getTimestamp() == newItem.getTimestamp()
+                    && oldItem.getNote().equals(newItem.getNote())
+                    && oldItem.getImageUri().equals(newItem.getImageUri())
+                    && oldItem.getEventType().equals(newItem.getEventType());
+        }
+    };
+
+    public DiaryEntryAdapter() {
+        super(DIFF_CALLBACK);
     }
 
     @NonNull
@@ -42,13 +56,8 @@ public class DiaryEntryAdapter extends RecyclerView.Adapter<DiaryEntryAdapter.Di
 
     @Override
     public void onBindViewHolder(@NonNull DiaryViewHolder holder, int position) {
-        DiaryEntry entry = entries.get(position);
+        DiaryEntry entry = getItem(position);
         holder.bind(entry);
-    }
-
-    @Override
-    public int getItemCount() {
-        return entries.size();
     }
 
     static class DiaryViewHolder extends RecyclerView.ViewHolder {

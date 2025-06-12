@@ -9,7 +9,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -121,7 +122,7 @@ public class PlantGrowthTimelineFragment extends Fragment {
                     );
                     diaryViewModel.addEntry(entry);
                     selectedImageUri = null;
-                    Toast.makeText(getContext(), R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(requireView(), R.string.add_diary_entry, Snackbar.LENGTH_SHORT).show();
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();

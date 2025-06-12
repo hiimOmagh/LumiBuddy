@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_bg"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <Spinner
+        android:id="@+id/plantSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp" />
+
+    <Spinner
+        android:id="@+id/eventTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:entries="@array/diary_event_types" />
+
+    <EditText
+        android:id="@+id/editDiaryNote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:autofillHints=""
+        android:backgroundTint="?attr/colorPrimary"
+        android:hint="@string/plant_diary_title"
+        android:inputType="text" />
+
+    <ImageView
+        android:id="@+id/diaryImagePreview"
+        android:layout_width="112dp"
+        android:layout_height="112dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/card_bg"
+        android:contentDescription="@string/plant_image_desc"
+        android:elevation="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_eco" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pickImageBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/pick_image" />
+</LinearLayout>

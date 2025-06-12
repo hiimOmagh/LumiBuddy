@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:colorBackground">
 
     <!-- Title -->
@@ -28,15 +29,26 @@
         android:paddingBottom="90dp"
         tools:listitem="@layout/item_diary_entry" />
 
-    <!-- Placeholder when diary feature is not ready -->
-    <TextView
-        android:id="@+id/diaryPlaceholder"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/coming_soon"
-        android:textColor="@color/darker_gray"
-        android:textSize="18sp"
-        android:layout_gravity="center" />
+    <LinearLayout
+        android:id="@+id/emptyState"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_eco" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/no_diary_entries"
+            android:textColor="@color/darker_gray"
+            android:textSize="18sp" />
+    </LinearLayout>
 
     <!-- FloatingActionButton for adding new diary entries -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton

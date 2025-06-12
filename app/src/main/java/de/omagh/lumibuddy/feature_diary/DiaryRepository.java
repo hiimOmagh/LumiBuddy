@@ -28,6 +28,14 @@ public class DiaryRepository implements DiaryDataSource {
         return diaryDao.getEntriesForPlantSync(plantId);
     }
 
+    public LiveData<List<DiaryEntry>> getAllEntries() {
+        return diaryDao.getAllEntries();
+    }
+
+    public List<DiaryEntry> getAllEntriesSync() {
+        return diaryDao.getAllEntriesSync();
+    }
+
     public void insert(DiaryEntry entry) {
         executor.execute(() -> diaryDao.insert(entry));
     }

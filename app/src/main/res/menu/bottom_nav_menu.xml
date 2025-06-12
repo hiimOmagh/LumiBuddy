@@ -13,6 +13,14 @@
         android:icon="@drawable/ic_eco"
         android:title="Plants" />
     <item
+        android:id="@+id/diaryFragment"
+        android:icon="@drawable/ic_edit"
+        android:title="Diary" />
+    <item
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_person"
+        android:title="Profile" />
+    <item
         android:id="@+id/settingsFragment"
         android:icon="@drawable/ic_settings"
         android:title="Settings" />
