@@ -136,23 +136,43 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:padding="20dp">
 
-                <TextView
-                    android:id="@+id/calibrationLabel"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/calibration_profile"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                <Spinner
-                    android:id="@+id/calibrationSpinner"
+                    <TextView
+                        android:id="@+id/calibrationLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/calibration_profile"
+                        android:textSize="18sp" />
+
+                    <Spinner
+                        android:id="@+id/calibrationSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:minHeight="48dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/addCalibrationBtn"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/add" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/calibrationInfoText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:minHeight="48dp" />
+                    android:layout_marginTop="8dp"
+                    android:text="" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

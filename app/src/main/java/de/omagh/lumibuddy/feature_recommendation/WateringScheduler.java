@@ -1,5 +1,9 @@
 package de.omagh.lumibuddy.feature_recommendation;
 
+import android.Manifest;
+
+import androidx.annotation.RequiresPermission;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,6 +36,7 @@ public class WateringScheduler {
      * Iterates over the given plants and diary entries and sends a notification
      * if any plant is overdue for watering.
      */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void runDailyCheck(List<Plant> plants) {
         executor.execute(() -> {
             for (Plant plant : plants) {

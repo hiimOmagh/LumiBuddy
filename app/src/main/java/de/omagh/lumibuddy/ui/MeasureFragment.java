@@ -234,7 +234,7 @@ public class MeasureFragment extends Fragment {
                             public void onResult(float meanR, float meanG, float meanB) {
                                 float pseudoLux = meanR + meanG + meanB;
                                 requireActivity().runOnUiThread(() -> {
-                                    mViewModel.setLux(pseudoLux);
+                                    mViewModel.setLux(pseudoLux, "Camera");
                                     cameraPreview.setVisibility(View.GONE);
 
                                     if (enableAROverlay && arOverlayRenderer != null) {

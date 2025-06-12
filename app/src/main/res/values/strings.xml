@@ -26,6 +26,10 @@
     <string name="delete_lamp_profile">Delete Lamp Profile</string>
     <string name="add_lamp">Add Lamp</string>
     <string name="edit_lamp">Edit Lamp</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">add</string>
     <string name="invalid_number">Invalid number</string>
     <string name="lamp_type">"Lamp Type : "</string>
     <string name="calibration_factor_placeholder">Factor: —</string>
@@ -81,6 +85,11 @@
     <string name="add_plant">Add Plant</string>
     <string name="view_timeline">View Timeline</string>
     <string name="coming_soon">Coming soon</string>
+
+    <string-array name="calibration_sources">
+        <item>ALS</item>
+        <item>Camera</item>
+    </string-array>
 
     <string-array name="measurement_units">
         <item>Lux</item>

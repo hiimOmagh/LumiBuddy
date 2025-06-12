@@ -11,6 +11,8 @@ import org.jspecify.annotations.NonNull;
 import de.omagh.lumibuddy.feature_measurement.ALSManager;
 import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
 import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
+import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
+import de.omagh.lumibuddy.data.model.CalibrationProfile;
 import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
@@ -44,15 +46,18 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
     private final MeasurementEngine measurementEngine;
     private final CalibrationManager calibrationManager;
+    private final CalibrationProfilesManager profileManager;
     private final GrowLightProfileManager growLightManager;
     private final SettingsManager settingsManager;
     private final MutableLiveData<String> lampIdLiveData;
+    private String currentSource = "ALS";
 
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
         measurementEngine = new MeasurementEngine(application.getApplicationContext());
         calibrationManager = new CalibrationManager(application.getApplicationContext());
+        profileManager = new CalibrationProfilesManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());
         settingsManager = new SettingsManager(application.getApplicationContext());
 
@@ -112,7 +117,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
     // --- ALS management ---
     public void startMeasuring() {
-        measurementEngine.startALS(this::setLux);
+        measurementEngine.startALS(lux -> setLux(lux, "ALS"));
     }
 
     public void stopMeasuring() {
@@ -121,6 +126,11 @@ public class MeasureViewModel extends AndroidViewModel {
 
     // --- Data updaters ---
     public void setLux(float lux) {
+        setLux(lux, "ALS");
+    }
+
+    public void setLux(float lux, String source) {
+        currentSource = source;
         luxLiveData.postValue(lux);
         updatePPFD(lux);
     }
@@ -147,11 +157,13 @@ public class MeasureViewModel extends AndroidViewModel {
     }
 
     private void updatePPFD(float lux, String lampId) {
-        float factor = calibrationManager.getCalibrationFactor(lampId);
+        float lampFactor = CalibrationManager.DEFAULT_FACTOR;
         LampProduct def = growLightManager.getById(lampId);
-        if (factor == CalibrationManager.DEFAULT_FACTOR && def != null) {
-            factor = def.calibrationFactor;
+        if (def != null) {
+            lampFactor = def.calibrationFactor;
         }
+        float deviceFactor = profileManager.getCalibrationFactorForSource(currentSource);
+        float factor = lampFactor * deviceFactor;
         calibrationFactorLiveData.setValue(factor);
 
         float ppfd = MeasurementUtils.luxToPPFD(lux, factor);
