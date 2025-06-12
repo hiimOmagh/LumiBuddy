@@ -105,6 +105,7 @@
         <item>watering</item>
         <item>light</item>
         <item>note</item>
+        <item>recommendation</item>
     </string-array>
     <!-- Lamp types -->
     <string-array name="lamp_types">

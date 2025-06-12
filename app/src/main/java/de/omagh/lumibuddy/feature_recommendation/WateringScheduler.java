@@ -49,6 +49,15 @@ public class WateringScheduler {
             for (Plant plant : toWater) {
                 int days = engine.daysSinceLastWatering(plant, diaryMap.get(plant.getId()));
                 notificationManager.notifyWateringNeeded(plant, days);
+                DiaryEntry log = new DiaryEntry(
+                        java.util.UUID.randomUUID().toString(),
+                        plant.getId(),
+                        System.currentTimeMillis(),
+                        "Watering reminder triggered",
+                        "",
+                        "recommendation"
+                );
+                diaryDao.insert(log);
             }
         });
     }

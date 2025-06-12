@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.Manifest;
+import android.content.pm.PackageManager;
 
 import androidx.navigation.Navigation;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.Observer;
-
-import java.util.List;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
@@ -34,6 +36,8 @@ import de.omagh.lumibuddy.R;
 public class HomeFragment extends Fragment {
     private HomeViewModel mViewModel;
     private SettingsManager settingsManager;
+    private ActivityResultLauncher<String> notifPermissionLauncher;
+    private java.util.List<Plant> pendingPlants;
 
     public HomeFragment() {
         super(R.layout.fragment_home);
@@ -52,6 +56,20 @@ public class HomeFragment extends Fragment {
         LinearLayout taskList = view.findViewById(R.id.taskList);
 
         settingsManager = new SettingsManager(requireContext());
+
+        RecommendationEngine engine = new RecommendationEngine();
+        NotificationManager nm = new NotificationManager(requireContext());
+        WateringScheduler scheduler = new WateringScheduler(engine, nm,
+                AppDatabase.getInstance(requireContext()).diaryDao());
+
+        notifPermissionLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                granted -> {
+                    if (granted && pendingPlants != null) {
+                        scheduler.runDailyCheck(pendingPlants);
+                        pendingPlants = null;
+                    }
+                });
 
         mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -73,13 +91,18 @@ public class HomeFragment extends Fragment {
         PlantListViewModel plantVm = new ViewModelProvider(requireActivity(),
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
                 .get(PlantListViewModel.class);
-        RecommendationEngine engine = new RecommendationEngine();
-        NotificationManager nm = new NotificationManager(requireContext());
-        WateringScheduler scheduler = new WateringScheduler(engine, nm,
-                AppDatabase.getInstance(requireContext()).diaryDao());
 
         plantVm.getPlants().observe(getViewLifecycleOwner(), plants -> {
-            if (settingsManager.isCareRemindersEnabled()) {
+            if (!settingsManager.isCareRemindersEnabled()) return;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)
+                        == PackageManager.PERMISSION_GRANTED) {
+                    scheduler.runDailyCheck(plants);
+                } else {
+                    pendingPlants = plants;
+                    notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                }
+            } else {
                 scheduler.runDailyCheck(plants);
             }
         });
