@@ -16,6 +16,7 @@ public class SettingsManager {
     private static final String KEY_CALIB_ID = "selected_calibration_profile";
     private static final String KEY_ENABLE_AR = "enable_ar_overlay";
     private static final String KEY_ENABLE_ML = "enable_ml_features";
+    private static final String KEY_CARE_REMINDERS = "care_reminders_enabled";
     private final SharedPreferences prefs;
 
     public SettingsManager(Context context) {
@@ -90,5 +91,19 @@ public class SettingsManager {
      */
     public void setMlFeaturesEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_ENABLE_ML, enabled).apply();
+    }
+
+    /**
+     * Returns true if care reminder notifications are enabled.
+     */
+    public boolean isCareRemindersEnabled() {
+        return prefs.getBoolean(KEY_CARE_REMINDERS, true);
+    }
+
+    /**
+     * Enable or disable care reminder notifications.
+     */
+    public void setCareRemindersEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_CARE_REMINDERS, enabled).apply();
     }
 }

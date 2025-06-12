@@ -21,6 +21,7 @@ import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
 import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.ui.PlantListViewModel;
+import de.omagh.lumibuddy.feature_user.SettingsManager;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
@@ -32,6 +33,7 @@ import de.omagh.lumibuddy.R;
  */
 public class HomeFragment extends Fragment {
     private HomeViewModel mViewModel;
+    private SettingsManager settingsManager;
 
     public HomeFragment() {
         super(R.layout.fragment_home);
@@ -48,6 +50,8 @@ public class HomeFragment extends Fragment {
         TextView ppfdValue = view.findViewById(R.id.ppfdValue);
         TextView dliValue = view.findViewById(R.id.dliValueHome);
         LinearLayout taskList = view.findViewById(R.id.taskList);
+
+        settingsManager = new SettingsManager(requireContext());
 
         mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
@@ -74,7 +78,11 @@ public class HomeFragment extends Fragment {
         WateringScheduler scheduler = new WateringScheduler(engine, nm,
                 AppDatabase.getInstance(requireContext()).diaryDao());
 
-        plantVm.getPlants().observe(getViewLifecycleOwner(), scheduler::runDailyCheck);
+        plantVm.getPlants().observe(getViewLifecycleOwner(), plants -> {
+            if (settingsManager.isCareRemindersEnabled()) {
+                scheduler.runDailyCheck(plants);
+            }
+        });
 
         view.findViewById(R.id.startMeasureButton).setOnClickListener(v ->
                 Navigation.findNavController(v).navigate(R.id.measureFragment));

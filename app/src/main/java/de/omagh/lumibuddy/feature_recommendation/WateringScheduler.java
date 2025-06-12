@@ -5,6 +5,8 @@ import android.Manifest;
 import androidx.annotation.RequiresPermission;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,12 +41,14 @@ public class WateringScheduler {
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void runDailyCheck(List<Plant> plants) {
         executor.execute(() -> {
+            Map<String, List<DiaryEntry>> diaryMap = new HashMap<>();
             for (Plant plant : plants) {
-                List<DiaryEntry> entriesForPlant = diaryDao.getEntriesForPlantSync(plant.getId());
-                if (engine.shouldWater(plant, entriesForPlant)) {
-                    int days = engine.daysSinceLastWatering(plant, entriesForPlant);
-                    notificationManager.notifyWateringNeeded(plant.getName(), days);
-                }
+                diaryMap.put(plant.getId(), diaryDao.getEntriesForPlantSync(plant.getId()));
+            }
+            List<Plant> toWater = engine.getPlantsNeedingWater(plants, diaryMap);
+            for (Plant plant : toWater) {
+                int days = engine.daysSinceLastWatering(plant, diaryMap.get(plant.getId()));
+                notificationManager.notifyWateringNeeded(plant, days);
             }
         });
     }

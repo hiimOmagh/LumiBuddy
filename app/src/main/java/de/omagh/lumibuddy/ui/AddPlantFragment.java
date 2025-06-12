@@ -15,6 +15,10 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -80,6 +84,16 @@ public class AddPlantFragment extends Fragment {
                 }
             });
 
+    private final ActivityResultLauncher<String> cameraPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                if (granted) {
+                    captureImageLauncher.launch(null);
+                } else {
+                    Toast.makeText(requireContext(), R.string.camera_permission_required,
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -124,7 +138,14 @@ public class AddPlantFragment extends Fragment {
 
         // Pick image button
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
-        captureImageBtn.setOnClickListener(v -> captureImageLauncher.launch(null));
+        captureImageBtn.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                    == PackageManager.PERMISSION_GRANTED) {
+                captureImageLauncher.launch(null);
+            } else {
+                cameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            }
+        });
         searchPlantBtn.setOnClickListener(v -> performPlantSearch());
 
         // Save button

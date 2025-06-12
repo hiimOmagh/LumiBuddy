@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.jspecify.annotations.Nullable;
 
 import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.ui.PlantDetailFragment;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -29,5 +30,15 @@ public class MainActivity extends AppCompatActivity {
         // Setup BottomNavigationView with NavController
         BottomNavigationView bottomNav = findViewById(R.id.bottomNavigationView);
         NavigationUI.setupWithNavController(bottomNav, navController);
+
+        if (getIntent() != null && getIntent().hasExtra("openPlantId")) {
+            Bundle args = new Bundle();
+            args.putString(PlantDetailFragment.ARG_ID, getIntent().getStringExtra("openPlantId"));
+            args.putString(PlantDetailFragment.ARG_NAME, getIntent().getStringExtra("openPlantName"));
+            args.putString(PlantDetailFragment.ARG_TYPE, getIntent().getStringExtra("openPlantType"));
+            args.putString(PlantDetailFragment.ARG_IMAGE_URI, getIntent().getStringExtra("openPlantImageUri"));
+            navController.navigate(R.id.plantDetailFragment, args);
+        }
+
     }
 }

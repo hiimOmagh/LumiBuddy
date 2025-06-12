@@ -35,6 +35,7 @@ public class SettingsFragment extends Fragment {
     private Spinner calibrationSpinner;
     private View addCalibrationBtn;
     private android.widget.TextView calibrationInfoText;
+    private android.widget.Switch careReminderSwitch;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -53,6 +54,7 @@ public class SettingsFragment extends Fragment {
         calibrationSpinner = view.findViewById(R.id.calibrationSpinner);
         addCalibrationBtn = view.findViewById(R.id.addCalibrationBtn);
         calibrationInfoText = view.findViewById(R.id.calibrationInfoText);
+        careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
 
         // Unit spinner values from resources
         ArrayAdapter<CharSequence> unitAdapter = ArrayAdapter.createFromResource(
@@ -104,6 +106,10 @@ public class SettingsFragment extends Fragment {
         });
 
         addCalibrationBtn.setOnClickListener(v -> showAddProfileDialog());
+
+        careReminderSwitch.setChecked(settingsManager.isCareRemindersEnabled());
+        careReminderSwitch.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> settingsManager.setCareRemindersEnabled(isChecked));
 
         // Set current values
         String unit = settingsManager.getPreferredUnit();

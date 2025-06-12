@@ -45,6 +45,7 @@
     <string name="decrease_hours">Decrease Hours\n</string>
     <string name="dli_calculator">DLI Calculator</string>
     <string name="measure_with_camera">Measure with Camera</string>
+    <string name="camera_permission_required">Camera permission required</string>
     <string name="type_herb">Type: Herb</string>
     <string name="plant_name">Plant Name</string>
     <string name="plant_diary_title">Plant Diary Title</string>
@@ -85,6 +86,8 @@
     <string name="add_plant">Add Plant</string>
     <string name="view_timeline">View Timeline</string>
     <string name="coming_soon">Coming soon</string>
+
+    <string name="care_reminders">Care Reminders</string>
 
     <string-array name="calibration_sources">
         <item>ALS</item>
