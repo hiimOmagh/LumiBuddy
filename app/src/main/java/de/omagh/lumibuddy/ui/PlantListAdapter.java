@@ -16,6 +16,7 @@ import java.util.List;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
 
+
 /**
  * Adapter for displaying a list of plants in a RecyclerView.
  * Supports click for details and long-press for deletion.

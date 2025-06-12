@@ -12,6 +12,8 @@ import org.jspecify.annotations.NonNull;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
 
 /**
  * ViewModel for managing the user's plant list.
@@ -21,6 +23,7 @@ import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
 public class PlantListViewModel extends AndroidViewModel {
     private final LiveData<List<Plant>> plants;
     private final PlantRepository repository;
+    private final PlantInfoRepository infoRepository;
 
     /**
      * Initializes the ViewModel and loads LiveData from Room DB.
@@ -31,6 +34,7 @@ public class PlantListViewModel extends AndroidViewModel {
         super(application);
         AppDatabase db = AppDatabase.getInstance(application);
         repository = new PlantRepository(db);
+        infoRepository = new PlantInfoRepository();
         plants = repository.getAllPlants();
     }
 
@@ -67,6 +71,25 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public void deletePlant(Plant plant) {
         repository.deletePlant(plant);
+    }
+
+    /**
+     * Returns plant information for the given name using the sample database.
+     *
+     * @param name search query
+     * @return matching PlantInfo or null
+     */
+    public PlantInfo searchPlantInfo(String name) {
+        return infoRepository.identifyPlant(name);
+    }
+
+    /**
+     * Provides the full list of sample plant information.
+     *
+     * @return immutable list of PlantInfo entries
+     */
+    public List<PlantInfo> getAllPlantInfo() {
+        return infoRepository.getAllPlantInfo();
     }
 // Repository manages its own executor; nothing to clean up here.
 }

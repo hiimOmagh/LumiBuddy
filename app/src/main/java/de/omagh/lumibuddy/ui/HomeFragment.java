@@ -61,11 +61,13 @@ public class HomeFragment extends Fragment {
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
                     if (granted) {
-                        viewModel.refresh();
+                        try {
+                            viewModel.refresh();
+                        } catch (SecurityException ignored) {
+                            // Permission may still be denied
+                        }
                     }
                 });
-
-        HomeViewModel viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         viewModel.getWelcomeText().observe(getViewLifecycleOwner(), welcomeText::setText);
         viewModel.getLux().observe(getViewLifecycleOwner(),
@@ -92,8 +94,11 @@ public class HomeFragment extends Fragment {
                             != PackageManager.PERMISSION_GRANTED) {
                 notifPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
             } else {
-                viewModel.refresh();
-
+                try {
+                    viewModel.refresh();
+                } catch (SecurityException ignored) {
+                    // Permission might still be missing
+                }
             }
         });
 

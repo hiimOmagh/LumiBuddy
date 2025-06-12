@@ -27,8 +27,9 @@ import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
-import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
+import de.omagh.lumibuddy.ui.PlantListAdapter;
+import de.omagh.lumibuddy.ui.PlantListViewModel;
 
 /**
  * Fragment displaying a list of plants with add, delete, and detail support.
@@ -109,9 +110,6 @@ public class PlantListFragment extends Fragment {
         Button pickImageBtn = dialogView.findViewById(R.id.pickImageBtn);
         Button searchPlantBtn = dialogView.findViewById(R.id.searchPlantBtn);
 
-        PlantDatabaseManager dbManager = new PlantDatabaseManager();
-        PlantIdentifier identifier = new PlantIdentifier(dbManager);
-
         pickedImageUri = null;
         if (plantImagePreview != null) {
             plantImagePreview.setImageResource(R.drawable.ic_eco); // Default icon
@@ -120,7 +118,7 @@ public class PlantListFragment extends Fragment {
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
         searchPlantBtn.setOnClickListener(v -> {
             String query = nameInput.getText().toString().trim();
-            de.omagh.lumibuddy.feature_plantdb.PlantInfo match = identifier.identifyByName(query);
+            PlantInfo match = viewModel.searchPlantInfo(query);
             if (match != null) {
                 nameInput.setText(match.commonName);
                 typeInput.setText(match.scientificName);
@@ -128,7 +126,7 @@ public class PlantListFragment extends Fragment {
                 return;
             }
 
-            java.util.List<de.omagh.lumibuddy.feature_plantdb.PlantInfo> all = dbManager.getAllPlants();
+            java.util.List<PlantInfo> all = viewModel.getAllPlantInfo();
             String[] names = new String[all.size()];
             for (int i = 0; i < all.size(); i++) {
                 names[i] = all.get(i).commonName;
@@ -136,7 +134,7 @@ public class PlantListFragment extends Fragment {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Select Plant")
                     .setItems(names, (d, which) -> {
-                        de.omagh.lumibuddy.feature_plantdb.PlantInfo info = all.get(which);
+                        PlantInfo info = all.get(which);
                         nameInput.setText(info.commonName);
                         typeInput.setText(info.scientificName);
                         Toast.makeText(getContext(), "Loaded profile for " + info.commonName, Toast.LENGTH_SHORT).show();

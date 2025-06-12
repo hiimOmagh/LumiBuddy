@@ -22,8 +22,6 @@ import org.jspecify.annotations.Nullable;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
-import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
-import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantStage;
 import de.omagh.lumibuddy.ui.PlantListViewModel;
@@ -39,12 +37,9 @@ public class PlantDetailFragment extends Fragment {
     public static final String ARG_NAME = "plant_name";
     public static final String ARG_TYPE = "plant_type";
     public static final String ARG_IMAGE_URI = "plant_image_uri";
-
     private PlantDetailViewModel viewModel;
     private PlantListViewModel listViewModel;
     private ImageView plantImageView;
-    private PlantDatabaseManager dbManager;
-    private PlantIdentifier identifier;
     private TextView careInfoView;
 
     @Nullable
@@ -62,8 +57,6 @@ public class PlantDetailFragment extends Fragment {
         FloatingActionButton editFab = view.findViewById(R.id.editPlantFab);
         View timelineButton = view.findViewById(R.id.viewTimelineButton);
 
-        dbManager = new PlantDatabaseManager();
-        identifier = new PlantIdentifier(dbManager);
         // ViewModels
         viewModel = new ViewModelProvider(this).get(PlantDetailViewModel.class);
         listViewModel = new ViewModelProvider(requireActivity(),
@@ -89,9 +82,9 @@ public class PlantDetailFragment extends Fragment {
             } else {
                 plantImageView.setImageResource(R.drawable.ic_eco);
             }
-            PlantInfo info = identifier.identifyByName(plant.getType());
+            PlantInfo info = viewModel.getPlantInfo(plant.getType());
             if (info != null) {
-                PlantCareProfile profile = info.getProfileForStage(PlantStage.VEGETATIVE);
+                PlantCareProfile profile = viewModel.getCareProfile(plant.getType(), PlantStage.VEGETATIVE);
                 if (profile != null) {
                     String careText = String.format(java.util.Locale.US,
                             "Light %.0f-%.0f μmol/m²/s\nWater every %d d\nTemp %.0f-%.0f°C\nHumidity %.0f-%.0f%%",
@@ -139,9 +132,6 @@ public class PlantDetailFragment extends Fragment {
         ImageView imagePreview = dialogView.findViewById(R.id.plantImagePreview);
         Button searchPlantBtn = dialogView.findViewById(R.id.searchPlantBtn);
 
-        PlantDatabaseManager db = new PlantDatabaseManager();
-        PlantIdentifier ider = new PlantIdentifier(db);
-
         nameInput.setText(current.getName());
         typeInput.setText(current.getType());
 
@@ -151,14 +141,14 @@ public class PlantDetailFragment extends Fragment {
 
         searchPlantBtn.setOnClickListener(v -> {
             String query = nameInput.getText().toString().trim();
-            PlantInfo match = ider.identifyByName(query);
+            PlantInfo match = viewModel.getPlantInfo(query);
             if (match != null) {
                 nameInput.setText(match.commonName);
                 typeInput.setText(match.scientificName);
                 Toast.makeText(getContext(), "Loaded profile for " + match.commonName, Toast.LENGTH_SHORT).show();
                 return;
             }
-            java.util.List<PlantInfo> all = db.getAllPlants();
+            java.util.List<PlantInfo> all = viewModel.getAllPlantInfo();
             String[] names = new String[all.size()];
             for (int i = 0; i < all.size(); i++) names[i] = all.get(i).commonName;
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
