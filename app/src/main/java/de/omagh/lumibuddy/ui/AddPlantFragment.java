@@ -1,5 +1,6 @@
 package de.omagh.lumibuddy.ui;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -34,7 +35,7 @@ public class AddPlantFragment extends Fragment {
 
     private EditText nameInput, typeInput;
     private ImageView imagePreview;
-    private MaterialButton saveBtn, pickImageBtn;
+    private MaterialButton saveBtn, pickImageBtn, captureImageBtn, searchPlantBtn;
 
     private PlantListViewModel plantListViewModel;
     private Uri selectedImageUri = null;
@@ -70,6 +71,15 @@ public class AddPlantFragment extends Fragment {
                 }
             });
 
+    private final ActivityResultLauncher<Void> captureImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bmp -> {
+                if (bmp != null) {
+                    imagePreview.setImageBitmap(bmp);
+                    recognizePlant(bmp);
+                    selectedImageUri = null;
+                }
+            });
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -87,6 +97,8 @@ public class AddPlantFragment extends Fragment {
         imagePreview = view.findViewById(R.id.plantImagePreview);
         saveBtn = view.findViewById(R.id.savePlantBtn);
         pickImageBtn = view.findViewById(R.id.pickImageBtn);
+        captureImageBtn = view.findViewById(R.id.captureImageBtn);
+        searchPlantBtn = view.findViewById(R.id.searchPlantBtn);
 
         // Init ViewModel
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
@@ -112,6 +124,8 @@ public class AddPlantFragment extends Fragment {
 
         // Pick image button
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
+        captureImageBtn.setOnClickListener(v -> captureImageLauncher.launch(null));
+        searchPlantBtn.setOnClickListener(v -> performPlantSearch());
 
         // Save button
         saveBtn.setOnClickListener(v -> {
@@ -147,5 +161,60 @@ public class AddPlantFragment extends Fragment {
         String result = plantRecognizer.getResult();
         android.widget.Toast.makeText(getContext(), "Recognized: " + result,
                 android.widget.Toast.LENGTH_SHORT).show();
+        if (!android.text.TextUtils.isEmpty(result)) {
+            nameInput.setText(result);
+            typeInput.setText(result);
+            de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager db =
+                    new de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager();
+            de.omagh.lumibuddy.feature_plantdb.PlantIdentifier ider =
+                    new de.omagh.lumibuddy.feature_plantdb.PlantIdentifier(db);
+            de.omagh.lumibuddy.feature_plantdb.PlantInfo info = ider.identifyByName(result);
+            if (info != null) showCareProfileDialog(info);
+        }
+    }
+
+    private void performPlantSearch() {
+        de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager db =
+                new de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager();
+        de.omagh.lumibuddy.feature_plantdb.PlantIdentifier ider =
+                new de.omagh.lumibuddy.feature_plantdb.PlantIdentifier(db);
+        String query = nameInput.getText().toString().trim();
+        de.omagh.lumibuddy.feature_plantdb.PlantInfo match = ider.identifyByName(query);
+        if (match != null) {
+            nameInput.setText(match.commonName);
+            typeInput.setText(match.scientificName);
+            showCareProfileDialog(match);
+            return;
+        }
+
+        java.util.List<de.omagh.lumibuddy.feature_plantdb.PlantInfo> all = db.getAllPlants();
+        String[] names = new String[all.size()];
+        for (int i = 0; i < all.size(); i++) names[i] = all.get(i).commonName;
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Select Plant")
+                .setItems(names, (d, which) -> {
+                    de.omagh.lumibuddy.feature_plantdb.PlantInfo info = all.get(which);
+                    nameInput.setText(info.commonName);
+                    typeInput.setText(info.scientificName);
+                    showCareProfileDialog(info);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showCareProfileDialog(de.omagh.lumibuddy.feature_plantdb.PlantInfo info) {
+        de.omagh.lumibuddy.feature_plantdb.PlantCareProfile p =
+                info.getProfileForStage(de.omagh.lumibuddy.feature_plantdb.PlantStage.VEGETATIVE);
+        if (p == null) return;
+        String msg = String.format(java.util.Locale.US,
+                "Light %.0f-%.0f \u03bcmol/m\u00b2/s\nWater every %d d\nHumidity %.0f-%.0f%%",
+                p.getMinPPFD(), p.getMaxPPFD(),
+                p.getWateringIntervalDays(),
+                p.getMinHumidity(), p.getMaxHumidity());
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(info.commonName)
+                .setMessage(msg)
+                .setPositiveButton("OK", null)
+                .show();
     }
 }

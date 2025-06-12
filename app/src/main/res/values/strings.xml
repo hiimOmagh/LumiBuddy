@@ -12,6 +12,7 @@
     <string name="plant_image_desc">Plant image preview</string>
     <string name="pick_image">Pick Image</string>
     <string name="search_plant_db">Search Plant DB</string>
+    <string name="capture_photo">Take Photo</string>
     <string name="agenda_title">My Plant Agenda</string>
     <string name="add_agenda_event">Add agenda event</string>
     <string name="calibration">Calibration</string>
