@@ -32,6 +32,7 @@ public class PlantDetailViewModel extends AndroidViewModel {
         repository = new PlantRepository(AppDatabase.getInstance(application));
         infoRepository = new PlantInfoRepository();
     }
+
     /**
      * Returns observable plant data for the detail screen.
      */

@@ -3,21 +3,21 @@
     android:id="@+id/luxCard"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:background="@drawable/card_bg"
-    android:padding="18dp"
     android:layout_marginBottom="18dp"
-    android:elevation="4dp">
+    android:background="@drawable/card_bg"
+    android:elevation="4dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="18dp">
 
     <ImageView
         android:id="@+id/metricIcon"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:contentDescription="@string/lux_measurement_icon"
-        android:src="@drawable/ic_lux"
         android:layout_gravity="center"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:contentDescription="@string/lux_measurement_icon"
+        android:src="@drawable/ic_lux" />
 
     <TextView
         android:id="@+id/metricValue"

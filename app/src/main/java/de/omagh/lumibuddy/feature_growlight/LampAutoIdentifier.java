@@ -11,6 +11,7 @@ public class LampAutoIdentifier {
     public LampAutoIdentifier(android.content.Context context) {
         this.db = new LampProductDB(context);
     }
+
     /**
      * Simple name lookup (case-insensitive).
      */

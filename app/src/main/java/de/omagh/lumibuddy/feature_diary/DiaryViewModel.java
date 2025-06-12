@@ -44,6 +44,7 @@ public class DiaryViewModel extends AndroidViewModel {
     public List<DiaryEntry> getAllEntriesSync() {
         return repository.getAllEntriesSync();
     }
+
     public void addEntry(DiaryEntry entry) {
         repository.insert(entry);
     }

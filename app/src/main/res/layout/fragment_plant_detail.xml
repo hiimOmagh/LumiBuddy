@@ -13,16 +13,16 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="24dp"
-            app:cardElevation="4dp"
             android:layout_margin="20dp"
-            android:backgroundTint="@color/background">
+            android:backgroundTint="@color/background"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:gravity="center_horizontal"
+                android:orientation="vertical"
                 android:padding="24dp">
 
                 <!-- Plant Image -->
@@ -30,24 +30,24 @@
                     android:id="@+id/detailPlantImage"
                     android:layout_width="120dp"
                     android:layout_height="120dp"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_eco"
-                    android:contentDescription="@string/plant_image_desc"
                     android:layout_marginBottom="20dp"
-                    android:background="@drawable/card_bg" />
+                    android:background="@drawable/card_bg"
+                    android:contentDescription="@string/plant_image_desc"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_eco" />
 
                 <!-- Plant Name -->
                 <TextView
                     android:id="@+id/detailPlantName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/plant_name"
-                    android:textSize="26sp"
-                    android:textStyle="bold"
-                    android:textColor="?android:textColorPrimary"
                     android:layout_marginBottom="6dp"
+                    android:contentDescription="@string/plant_name_label"
                     android:importantForAccessibility="yes"
-                    android:contentDescription="@string/plant_name_label" />
+                    android:text="@string/plant_name"
+                    android:textColor="?android:textColorPrimary"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
 
                 <!-- Plant Type -->
                 <TextView
@@ -86,9 +86,9 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="28dp"
         android:layout_marginBottom="90dp"
-        android:src="@drawable/ic_edit"
         android:contentDescription="@string/edit_plant"
-        app:tint="@color/white"
-        app:backgroundTint="@color/colorAccent" />
+        android:src="@drawable/ic_edit"
+        app:backgroundTint="@color/colorAccent"
+        app:tint="@color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

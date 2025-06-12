@@ -27,30 +27,16 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
     private OnPlantClickListener clickListener;
     private OnPlantDeleteListener deleteListener;
 
-    /**
-     * Interface for handling plant item clicks (navigate to details).
-     */
-    public interface OnPlantClickListener {
-        void onPlantClick(Plant plant);
+    public PlantListAdapter(List<Plant> plants) {
+        this.plants = plants;
     }
 
     public void setOnPlantClickListener(OnPlantClickListener listener) {
         this.clickListener = listener;
     }
 
-    /**
-     * Interface for handling long-press deletions.
-     */
-    public interface OnPlantDeleteListener {
-        void onPlantDelete(Plant plant);
-    }
-
     public void setOnPlantDeleteListener(OnPlantDeleteListener listener) {
         this.deleteListener = listener;
-    }
-
-    public PlantListAdapter(List<Plant> plants) {
-        this.plants = plants;
     }
 
     /**
@@ -104,6 +90,20 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
     @Override
     public int getItemCount() {
         return (plants != null) ? plants.size() : 0;
+    }
+
+    /**
+     * Interface for handling plant item clicks (navigate to details).
+     */
+    public interface OnPlantClickListener {
+        void onPlantClick(Plant plant);
+    }
+
+    /**
+     * Interface for handling long-press deletions.
+     */
+    public interface OnPlantDeleteListener {
+        void onPlantDelete(Plant plant);
     }
 
     /**

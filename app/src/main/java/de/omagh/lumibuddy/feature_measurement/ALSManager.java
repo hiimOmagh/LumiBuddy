@@ -15,13 +15,6 @@ public class ALSManager implements SensorEventListener {
     private final Sensor lightSensor;
     private OnLuxChangedListener listener;
 
-    /**
-     * Listener interface for reporting new lux values.
-     */
-    public interface OnLuxChangedListener {
-        void onLuxChanged(float lux);
-    }
-
     public ALSManager(Context context) {
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
         lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
@@ -56,4 +49,11 @@ public class ALSManager implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { /* not used */ }
+
+    /**
+     * Listener interface for reporting new lux values.
+     */
+    public interface OnLuxChangedListener {
+        void onLuxChanged(float lux);
+    }
 }

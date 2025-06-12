@@ -10,7 +10,7 @@ import de.omagh.lumibuddy.data.model.Plant;
  * Manager responsible for synchronizing the user's plant database with a cloud
  * backend. All methods are currently stubs and should be extended when a real
  * backend service is integrated.
- * */
+ */
 public class PlantSyncManager {
     private static final String TAG = "PlantSyncManager";
 
@@ -39,7 +39,7 @@ public class PlantSyncManager {
      * @param local  plants stored on the device
      * @param remote plants retrieved from the cloud
      * @return the list that should be kept after conflict resolution
-     * */
+     */
     public List<Plant> resolveConflicts(List<Plant> local, List<Plant> remote) {
         Log.d(TAG, "resolveConflicts: not implemented");
         return local;

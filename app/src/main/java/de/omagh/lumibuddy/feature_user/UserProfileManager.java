@@ -14,7 +14,9 @@ public class UserProfileManager {
      * SharedPreferences key for the stored username.
      */
     private static final String KEY_NAME = "profile_name";
-    /** SharedPreferences key for the stored avatar image URI. */
+    /**
+     * SharedPreferences key for the stored avatar image URI.
+     */
     private static final String KEY_AVATAR = "profile_avatar";
     /**
      * SharedPreferences key for the selected UI theme.
@@ -53,7 +55,9 @@ public class UserProfileManager {
      * @deprecated use {@link #setUsername(String)} instead.
      */
     @Deprecated
-    public void setName(String name) { setUsername(name); }
+    public void setName(String name) {
+        setUsername(name);
+    }
 
     public String getAvatarUri() {
         return prefs.getString(KEY_AVATAR, null);

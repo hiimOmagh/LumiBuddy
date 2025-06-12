@@ -30,12 +30,6 @@ public class CameraLightMeterX {
     private ExecutorService cameraExecutor;
     private boolean analysisActive = false;
 
-    public interface ResultCallback {
-        void onResult(float meanR, float meanG, float meanB);
-
-        void onError(String message);
-    }
-
     public CameraLightMeterX(Activity activity, PreviewView previewView) {
         this.activity = activity;
         this.previewView = previewView;
@@ -163,5 +157,11 @@ public class CameraLightMeterX {
         float meanB = bSum / (float) pixelCount;
 
         return new float[]{meanR, meanG, meanB};
+    }
+
+    public interface ResultCallback {
+        void onResult(float meanR, float meanG, float meanB);
+
+        void onError(String message);
     }
 }

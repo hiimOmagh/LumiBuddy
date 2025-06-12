@@ -9,10 +9,10 @@
         android:id="@+id/plantRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="12dp"
-        android:paddingBottom="100dp"
         android:clipToPadding="false"
-        android:contentDescription="@string/plant_list_desc" />
+        android:contentDescription="@string/plant_list_desc"
+        android:paddingTop="12dp"
+        android:paddingBottom="100dp" />
 
     <!-- Single floating action button for "Add Plant" -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -21,6 +21,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="32dp"
-        android:src="@drawable/ic_add"
-        android:contentDescription="@string/add_plant_fab_desc" />
+        android:contentDescription="@string/add_plant_fab_desc"
+        android:src="@drawable/ic_add" />
 </FrameLayout>

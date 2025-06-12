@@ -14,6 +14,7 @@ import de.omagh.lumibuddy.feature_plantdb.PlantDataSource;
 public class PlantRepository implements PlantDataSource {
     private final PlantDao plantDao;
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     public PlantRepository(AppDatabase db) {
         this.plantDao = db.plantDao();
     }

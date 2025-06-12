@@ -402,7 +402,9 @@ public class MeasureFragment extends Fragment {
         return new String[]{type, warning};
     }
 
-    /** Tries to match the suggested lamp type string to a lampList index. Returns -1 if not found. */
+    /**
+     * Tries to match the suggested lamp type string to a lampList index. Returns -1 if not found.
+     */
     private int lampTypeStringToIndex(String suggestion) {
         if (suggestion == null) return -1;
         String lower = suggestion.toLowerCase();

@@ -12,14 +12,14 @@ public class RetrofitClient {
     private RetrofitClient() {
     }
 
+    public static Retrofit getInstance() {
+        return InstanceHolder.instance;
+    }
+
     private static final class InstanceHolder {
         private static final Retrofit instance = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-    }
-
-    public static Retrofit getInstance() {
-        return InstanceHolder.instance;
     }
 }

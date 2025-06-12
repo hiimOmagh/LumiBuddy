@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="24dp"
     android:background="@drawable/dialog_bg"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="24dp">
 
     <EditText
         android:id="@+id/editPlantName"
@@ -36,30 +36,30 @@
         android:layout_width="112dp"
         android:layout_height="112dp"
         android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_eco"
-        android:contentDescription="@string/plant_image_desc"
-        android:scaleType="centerCrop"
-        android:background="@drawable/card_bg"
-        android:elevation="6dp"
+        android:layout_marginTop="6dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="6dp" />
+        android:background="@drawable/card_bg"
+        android:contentDescription="@string/plant_image_desc"
+        android:elevation="6dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_eco" />
 
     <!-- Material style button for picking image -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/pickImageBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pick_image"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="4dp"
-        style="@style/Widget.MaterialComponents.Button.TextButton" />
+        android:text="@string/pick_image" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/searchPlantBtn"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/search_plant_db"
         android:layout_gravity="center_horizontal"
-        style="@style/Widget.MaterialComponents.Button.TextButton" />
+        android:text="@string/search_plant_db" />
 
 </LinearLayout>

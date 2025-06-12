@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.button.MaterialButton;
+
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ import de.omagh.lumibuddy.util.PermissionUtils;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -29,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 
 import android.util.Log;
+
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
@@ -46,14 +49,16 @@ import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
 
 public class AddPlantFragment extends Fragment {
 
+    public static final String ARG_PLANT_ID = "plant_id";
+    public static final String ARG_NAME = "plant_name";
+    public static final String ARG_TYPE = "plant_type";
+    public static final String ARG_IMAGE_URI = "plant_image_uri";
     private EditText nameInput, typeInput;
     private ImageView imagePreview;
     private MaterialButton saveBtn, pickImageBtn, captureImageBtn, searchPlantBtn;
-
     private PlantListViewModel plantListViewModel;
     private Uri selectedImageUri = null;
     private String existingPlantId = null;
-
     // ML plant recognition
     private PlantClassifier plantClassifier;
     private HealthStatusClassifier healthClassifier;
@@ -95,13 +100,6 @@ public class AddPlantFragment extends Fragment {
                     selectedImageUri = null;
                 }
             });
-    public static final String ARG_PLANT_ID = "plant_id";
-    public static final String ARG_NAME = "plant_name";
-    public static final String ARG_TYPE = "plant_type";
-    public static final String ARG_IMAGE_URI = "plant_image_uri";
-    private SwitchCompat mlToggle;
-    private SwitchCompat arGrowthToggle;
-
     private final ActivityResultLauncher<String> cameraPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
                 if (granted) {
@@ -111,6 +109,8 @@ public class AddPlantFragment extends Fragment {
                             getString(R.string.camera_permission_required));
                 }
             });
+    private SwitchCompat mlToggle;
+    private SwitchCompat arGrowthToggle;
 
     @Nullable
     @Override

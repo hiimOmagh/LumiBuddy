@@ -22,22 +22,6 @@ import de.omagh.lumibuddy.feature_user.SettingsManager;
  * ViewModel for light measurement, lamp type selection, and calculation of PPFD/DLI.
  */
 public class MeasureViewModel extends AndroidViewModel {
-    // Enum for lamp types and their lux-to-PPFD factors
-    public enum LampType {
-        SUNLIGHT(0.0185f),
-        WHITE_LED(0.019f),
-        WARM_LED(0.021f),
-        BLURPLE_LED(0.045f),
-        HPS(0.014f);
-
-        public final float luxToPPFD;
-
-
-        LampType(float factor) {
-            this.luxToPPFD = factor;
-        }
-    }
-
     private final MutableLiveData<Float> luxLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<Float> ppfdLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<Integer> hoursLiveData = new MutableLiveData<>(24);
@@ -51,7 +35,6 @@ public class MeasureViewModel extends AndroidViewModel {
     private final SettingsManager settingsManager;
     private final MutableLiveData<String> lampIdLiveData;
     private String currentSource = "ALS";
-
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
@@ -80,6 +63,11 @@ public class MeasureViewModel extends AndroidViewModel {
         return luxLiveData;
     }
 
+    // --- Data updaters ---
+    public void setLux(float lux) {
+        setLux(lux, "ALS");
+    }
+
     /**
      * LiveData for PPFD
      */
@@ -94,6 +82,14 @@ public class MeasureViewModel extends AndroidViewModel {
         return hoursLiveData;
     }
 
+    public void setHours(int hours) {
+        if (hours < 1) hours = 1;
+        if (hours > 24) hours = 24;
+        hoursLiveData.postValue(hours);
+        settingsManager.setLightDuration(hours);
+        updateDLI(getPPFDValue(), hours);
+    }
+
     /**
      * LiveData for DLI
      */
@@ -103,9 +99,16 @@ public class MeasureViewModel extends AndroidViewModel {
 
     /**
      * LiveData for active lamp profile ID.
-     * */
+     */
     public LiveData<String> getLampProfileId() {
         return lampIdLiveData;
+    }
+
+    public void setLampProfileId(String id) {
+        growLightManager.setActiveLampProfile(id);
+        settingsManager.setSelectedCalibrationProfileId(id);
+        lampIdLiveData.setValue(id);
+        updatePPFD(getLuxValue());
     }
 
     /**
@@ -124,30 +127,10 @@ public class MeasureViewModel extends AndroidViewModel {
         measurementEngine.stopALS();
     }
 
-    // --- Data updaters ---
-    public void setLux(float lux) {
-        setLux(lux, "ALS");
-    }
-
     public void setLux(float lux, String source) {
         currentSource = source;
         luxLiveData.postValue(lux);
         updatePPFD(lux);
-    }
-
-    public void setHours(int hours) {
-        if (hours < 1) hours = 1;
-        if (hours > 24) hours = 24;
-        hoursLiveData.postValue(hours);
-        settingsManager.setLightDuration(hours);
-        updateDLI(getPPFDValue(), hours);
-    }
-
-    public void setLampProfileId(String id) {
-        growLightManager.setActiveLampProfile(id);
-        settingsManager.setSelectedCalibrationProfileId(id);
-        lampIdLiveData.setValue(id);
-        updatePPFD(getLuxValue());
     }
 
     // --- Internal calculations ---
@@ -189,5 +172,21 @@ public class MeasureViewModel extends AndroidViewModel {
     private float getPPFDValue() {
         Float v = ppfdLiveData.getValue();
         return (v == null ? 0f : v);
+    }
+
+    // Enum for lamp types and their lux-to-PPFD factors
+    public enum LampType {
+        SUNLIGHT(0.0185f),
+        WHITE_LED(0.019f),
+        WARM_LED(0.021f),
+        BLURPLE_LED(0.045f),
+        HPS(0.014f);
+
+        public final float luxToPPFD;
+
+
+        LampType(float factor) {
+            this.luxToPPFD = factor;
+        }
     }
 }

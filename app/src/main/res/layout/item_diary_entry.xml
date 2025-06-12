@@ -12,34 +12,34 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-    <TextView
-        android:id="@+id/entryTimestamp"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="14sp"
-        android:text="Jan 01, 1970"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/entryImage"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/entryTimestamp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Jan 01, 1970"
+            android:textColor="?android:textColorPrimary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@id/entryImage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/entryType"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="TYPE"
-        app:layout_constraintStart_toStartOf="@id/entryTimestamp"
-        app:layout_constraintTop_toBottomOf="@id/entryTimestamp" />
+        <TextView
+            android:id="@+id/entryType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TYPE"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@id/entryTimestamp"
+            app:layout_constraintTop_toBottomOf="@id/entryTimestamp" />
 
-    <TextView
-        android:id="@+id/entryNote"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Note"
-        app:layout_constraintStart_toStartOf="@id/entryType"
-        app:layout_constraintTop_toBottomOf="@id/entryType"
-        app:layout_constraintEnd_toStartOf="@id/entryImage" />
+        <TextView
+            android:id="@+id/entryNote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Note"
+            app:layout_constraintEnd_toStartOf="@id/entryImage"
+            app:layout_constraintStart_toStartOf="@id/entryType"
+            app:layout_constraintTop_toBottomOf="@id/entryType" />
 
         <ImageView
             android:id="@+id/entryImage"

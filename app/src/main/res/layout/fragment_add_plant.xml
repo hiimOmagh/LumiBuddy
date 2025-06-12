@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="24dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/plantImagePreview"
@@ -21,30 +21,30 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/pickImageBtn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
-            android:text="@string/pick_image"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            android:text="@string/pick_image" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/captureImageBtn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text="@string/capture_photo"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            android:text="@string/capture_photo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchPlantBtn"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="4dp"
-            android:text="@string/search_plant_db"
-            style="@style/Widget.MaterialComponents.Button.TextButton" />
+            android:text="@string/search_plant_db" />
 
         <Switch
             android:id="@+id/mlToggle"
@@ -90,10 +90,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/savePlantBtn"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Save Plant"
-            style="@style/Widget.MaterialComponents.Button" />
+            android:text="Save Plant" />
     </LinearLayout>
 </ScrollView>

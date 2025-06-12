@@ -10,7 +10,8 @@ import de.omagh.lumibuddy.data.model.Measurement;
  * <p>
  * This class does not perform any real AR rendering yet. It simply logs
  * the calls it receives and acts as an integration point for a future
- * ARCore based overlay renderer. */
+ * ARCore based overlay renderer.
+ */
 public class ARMeasureOverlay implements AROverlayRenderer {
 
     private static final String TAG = "ARMeasureOverlay";

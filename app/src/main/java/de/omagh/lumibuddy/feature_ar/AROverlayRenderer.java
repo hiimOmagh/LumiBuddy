@@ -11,7 +11,7 @@ import de.omagh.lumibuddy.data.model.Measurement;
  * Production implementations may use ARCore to draw guides or visual cues
  * that help users align sensors or visualize growth. The stub implementation
  * simply logs calls without performing any drawing.
- * */
+ */
 public interface AROverlayRenderer {
     /**
      * Initialize any resources required for rendering.
@@ -23,10 +23,12 @@ public interface AROverlayRenderer {
      *
      * @param canvas      canvas to draw on
      * @param measurement most recent light/environment measurement
-     * */
+     */
     void renderOverlay(Canvas canvas, Measurement measurement);
 
-    /** Release allocated resources when no longer needed. */
+    /**
+     * Release allocated resources when no longer needed.
+     */
 
     void cleanup();
 }

@@ -24,16 +24,8 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
     private OnLampDeleteListener deleteListener;
     private OnLampEditListener editListener;
 
-    public interface OnLampClickListener {
-        void onLampClick(LampProduct lamp);
-    }
-
-    public interface OnLampDeleteListener {
-        void onLampDelete(LampProduct lamp);
-    }
-
-    public interface OnLampEditListener {
-        void onLampEdit(LampProduct lamp);
+    public LampProfileAdapter(List<LampProduct> lamps) {
+        this.lamps = lamps;
     }
 
     public void setOnLampClickListener(OnLampClickListener l) {
@@ -46,10 +38,6 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
 
     public void setOnLampEditListener(OnLampEditListener l) {
         this.editListener = l;
-    }
-
-    public LampProfileAdapter(List<LampProduct> lamps) {
-        this.lamps = lamps;
     }
 
     public void update(List<LampProduct> newLamps) {
@@ -92,6 +80,18 @@ public class LampProfileAdapter extends RecyclerView.Adapter<LampProfileAdapter.
     @Override
     public int getItemCount() {
         return lamps != null ? lamps.size() : 0;
+    }
+
+    public interface OnLampClickListener {
+        void onLampClick(LampProduct lamp);
+    }
+
+    public interface OnLampDeleteListener {
+        void onLampDelete(LampProduct lamp);
+    }
+
+    public interface OnLampEditListener {
+        void onLampEdit(LampProduct lamp);
     }
 
     static class LampViewHolder extends RecyclerView.ViewHolder {

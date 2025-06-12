@@ -35,12 +35,6 @@ public class CameraLightMeter {
     private HandlerThread backgroundThread;
     private CameraCallback callback;
 
-    public interface CameraCallback {
-        void onResult(float meanR, float meanG, float meanB);
-
-        void onError(String error);
-    }
-
     public CameraLightMeter(Activity activity) {
         this.activity = activity;
     }
@@ -164,5 +158,11 @@ public class CameraLightMeter {
         float meanB = bSum / (float) n;
         stopBackgroundThread();
         callback.onResult(meanR, meanG, meanB);
+    }
+
+    public interface CameraCallback {
+        void onResult(float meanR, float meanG, float meanB);
+
+        void onError(String error);
     }
 }

@@ -4,21 +4,21 @@
     android:id="@+id/dliWidget"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
+    android:layout_margin="10dp"
     android:background="@drawable/card_bg"
     android:elevation="6dp"
-    android:padding="18dp"
-    android:layout_margin="10dp">
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="18dp">
 
     <!-- Preset hour buttons (use MaterialButton for chip style) -->
     <LinearLayout
         android:id="@+id/dliPresetLayout"
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp">
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/preset12h"
@@ -55,11 +55,11 @@
 
     <!-- Custom hour selector -->
     <LinearLayout
-        android:orientation="horizontal"
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="12dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/minusHour"
@@ -76,11 +76,11 @@
             android:id="@+id/hourValue"
             android:layout_width="64dp"
             android:layout_height="48dp"
+            android:contentDescription="@string/selected_light_hours"
             android:gravity="center"
             android:text="@string/_24_h"
-            android:textSize="28sp"
             android:textColor="@color/colorPrimaryDark"
-            android:contentDescription="@string/selected_light_hours" />
+            android:textSize="28sp" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/plusHour"
@@ -98,11 +98,11 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/orange_rounded_bg"
-        android:padding="6dp"
-        android:orientation="horizontal"
         android:gravity="center"
-        android:layout_marginBottom="10dp">
+        android:orientation="horizontal"
+        android:padding="6dp">
 
         <TextView
             android:id="@+id/dliInfo"
@@ -119,19 +119,19 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/white_rounded_border"
-        android:padding="12dp"
-        android:orientation="vertical"
         android:gravity="center"
-        android:layout_marginBottom="6dp">
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/dliValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dliValue"
-            android:textSize="48sp"
             android:textColor="@android:color/black"
+            android:textSize="48sp"
             android:textStyle="bold" />
     </LinearLayout>
 
@@ -140,9 +140,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/dli"
+        android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@android:color/black" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/dliUnit"

@@ -23,17 +23,17 @@
         android:id="@+id/editProfileFactor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:autofillHints=""
         android:hint="Calibration factor"
-        android:inputType="numberDecimal"
-        android:layout_marginTop="8dp" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/editProfileNote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:autofillHints=""
         android:hint="Note (optional)"
-        android:inputType="text"
-        android:layout_marginTop="8dp" />
+        android:inputType="text" />
 </LinearLayout>

@@ -20,11 +20,6 @@ import de.omagh.lumibuddy.data.model.GrowLightProfile;
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
-    public abstract PlantDao plantDao();
-
-    public abstract DiaryDao diaryDao();
-
-    public abstract GrowLightDao growLightDao();
     private static volatile AppDatabase instance;
 
     /**
@@ -45,4 +40,10 @@ public abstract class AppDatabase extends RoomDatabase {
         }
         return instance;
     }
+
+    public abstract PlantDao plantDao();
+
+    public abstract DiaryDao diaryDao();
+
+    public abstract GrowLightDao growLightDao();
 }
