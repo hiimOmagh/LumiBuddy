@@ -5,7 +5,7 @@ package de.omagh.lumibuddy.feature_growlight;
  */
 public class LampProduct {
     public final String id;
-    public final String name;
+    public String name;
     public final String brand;
     public final String type; // e.g. LED, HPS
     public final String spectrum; // description of spectrum

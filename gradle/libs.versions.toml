@@ -20,7 +20,7 @@ roomKtx = "2.7.1"
 roomRuntime = "2.7.1"
 retrofit = "2.11.0"
 gson = "2.11.0"
-
+mockito = "5.11.0"
 
 [libraries]
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
@@ -47,6 +47,7 @@ room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRunti
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
