@@ -1,11 +1,12 @@
 package de.omagh.lumibuddy.ui;
 
+import android.Manifest;
 import android.app.Application;
 
+import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModelKt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,12 +23,9 @@ import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
 import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
 import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
 import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
-import kotlin.Unit;
-import kotlin.coroutines.Continuation;
-import kotlin.jvm.functions.Function2;
-import kotlinx.coroutines.BuildersKt;
-import kotlinx.coroutines.CoroutineScope;
-import kotlinx.coroutines.Dispatchers;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * ViewModel coordinating home screen data and background recommendation logic.
@@ -46,6 +44,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     private final LiveData<List<Plant>> plantsLiveData;
     private final MutableLiveData<List<String>> reminders = new MutableLiveData<>();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     /**
      * Default constructor used by the app. It creates repositories and helpers
@@ -81,19 +80,12 @@ public class HomeViewModel extends AndroidViewModel {
         plantsLiveData.observeForever(this::launchChecks);
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void launchChecks(List<Plant> plants) {
-        CoroutineScope scope = ViewModelKt.getViewModelScope(this);
-        BuildersKt.launch$default(scope, Dispatchers.getIO(), null,
-                new Function2<CoroutineScope, Continuation<? super Unit>, Object>() {
-                    @Override
-                    public Object invoke(CoroutineScope coroutineScope, Continuation<? super Unit> continuation) {
-                        runChecks(plants);
-                        return Unit.INSTANCE;
-                    }
-                },
-                2, null);
+        executor.submit(() -> runChecks(plants));
     }
 
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     private void runChecks(List<Plant> plants) {
         if (plants == null || plants.isEmpty()) {
             reminders.postValue(new ArrayList<>());
@@ -135,6 +127,7 @@ public class HomeViewModel extends AndroidViewModel {
      * Triggers a manual refresh of reminder calculations using the currently
      * loaded plant list.
      */
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void refresh() {
         List<Plant> current = plantsLiveData.getValue();
         if (current != null) {
@@ -158,5 +151,6 @@ public class HomeViewModel extends AndroidViewModel {
         }
         wateringScheduler.shutdown();
         recommendationEngine.shutdown();
+        executor.shutdown();
     }
 }
