@@ -129,4 +129,6 @@
         <item>HPS</item>
     </string-array>
 
+    <string name="powered_by_plantid">Powered by Plant.id</string>
+
 </resources>

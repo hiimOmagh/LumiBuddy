@@ -95,5 +95,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:text="Save Plant" />
+
+        <TextView
+            android:id="@+id/plantIdAttribution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="@string/powered_by_plantid" />
+
     </LinearLayout>
 </ScrollView>

@@ -26,6 +26,8 @@ import android.content.pm.PackageManager;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.omagh.lumibuddy.network.plantid.PlantIdSuggestion;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
@@ -41,6 +43,7 @@ import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
 import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
+import de.omagh.lumibuddy.ui.AddPlantViewModel;
 
 /**
  * Fragment to add or edit a plant.
@@ -57,6 +60,7 @@ public class AddPlantFragment extends Fragment {
     private ImageView imagePreview;
     private MaterialButton saveBtn, pickImageBtn, captureImageBtn, searchPlantBtn;
     private PlantListViewModel plantListViewModel;
+    private AddPlantViewModel addPlantViewModel;
     private Uri selectedImageUri = null;
     private String existingPlantId = null;
     // ML plant recognition
@@ -73,6 +77,7 @@ public class AddPlantFragment extends Fragment {
                                 android.graphics.ImageDecoder.createSource(
                                         requireActivity().getContentResolver(), uri));
                         recognizePlant(bmp);
+                        identifyWithApi(bmp);
                         if (healthClassifier != null) {
                             healthClassifier.classify(bmp);
                             Log.d("AddPlant", "Health result=" + healthClassifier.getLastResult());
@@ -90,6 +95,7 @@ public class AddPlantFragment extends Fragment {
                 if (bmp != null) {
                     imagePreview.setImageBitmap(bmp);
                     recognizePlant(bmp);
+                    identifyWithApi(bmp);
                     if (healthClassifier != null) {
                         healthClassifier.classify(bmp);
                         Log.d("AddPlant", "Health result=" + healthClassifier.getLastResult());
@@ -136,6 +142,7 @@ public class AddPlantFragment extends Fragment {
 
         // Init ViewModel
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
+        addPlantViewModel = new ViewModelProvider(this).get(AddPlantViewModel.class);
 
         de.omagh.lumibuddy.feature_user.SettingsManager sm =
                 new de.omagh.lumibuddy.feature_user.SettingsManager(requireContext());
@@ -262,6 +269,19 @@ public class AddPlantFragment extends Fragment {
                     })
                     .setNegativeButton("Cancel", null)
                     .show();
+        });
+    }
+
+    private void identifyWithApi(Bitmap bmp) {
+        Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
+        addPlantViewModel.identifyPlant(bmp).observe(getViewLifecycleOwner(), result -> {
+            if (result != null) {
+                nameInput.setText(result.getCommonName());
+                typeInput.setText(result.getScientificName());
+                Toast.makeText(getContext(), getString(R.string.powered_by_plantid), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Identification failed", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 }

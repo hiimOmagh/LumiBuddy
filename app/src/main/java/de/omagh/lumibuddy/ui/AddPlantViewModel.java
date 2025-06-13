@@ -1,7 +1,27 @@
 package de.omagh.lumibuddy.ui;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
+import android.graphics.Bitmap;
 
-public class AddPlantViewModel extends ViewModel {
-    // Not used currently. All DB ops go through PlantListViewModel.
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
+import de.omagh.lumibuddy.feature_plantdb.PlantIdRepository;
+import de.omagh.lumibuddy.network.plantid.PlantIdSuggestion;
+
+/**
+ * ViewModel for AddPlantFragment handling photo identification via Plant.id.
+ */
+public class AddPlantViewModel extends AndroidViewModel {
+    private final PlantIdRepository plantIdRepository;
+
+    public AddPlantViewModel(@NonNull Application application) {
+        super(application);
+        plantIdRepository = new PlantIdRepository();
+    }
+
+    public LiveData<PlantIdSuggestion> identifyPlant(Bitmap bitmap) {
+        return plantIdRepository.identifyPlant(bitmap);
+    }
 }
