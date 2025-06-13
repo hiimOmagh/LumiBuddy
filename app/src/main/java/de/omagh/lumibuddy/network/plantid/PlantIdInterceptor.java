@@ -1,5 +1,7 @@
 package de.omagh.lumibuddy.network.plantid;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -16,6 +18,7 @@ public class PlantIdInterceptor implements Interceptor {
         this.apiKey = apiKey;
     }
 
+    @NonNull
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request().newBuilder()

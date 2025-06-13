@@ -35,9 +35,6 @@ public class SettingsFragment extends Fragment {
     private EditText hoursInput;
     private Spinner calibrationSpinner;
     private android.widget.TextView calibrationInfoText;
-    private SwitchCompat careReminderSwitch;
-    private View syncNowBtn;
-    private View privacyPolicyBtn;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -56,9 +53,9 @@ public class SettingsFragment extends Fragment {
         calibrationSpinner = view.findViewById(R.id.calibrationSpinner);
         View addCalibrationBtn = view.findViewById(R.id.addCalibrationBtn);
         calibrationInfoText = view.findViewById(R.id.calibrationInfoText);
-        careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
-        syncNowBtn = view.findViewById(R.id.syncNowBtn);
-        privacyPolicyBtn = view.findViewById(R.id.privacyPolicyBtn);
+        SwitchCompat careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
+        View syncNowBtn = view.findViewById(R.id.syncNowBtn);
+        View privacyPolicyBtn = view.findViewById(R.id.privacyPolicyBtn);
 
         // Unit spinner values from resources
         ArrayAdapter<CharSequence> unitAdapter = ArrayAdapter.createFromResource(

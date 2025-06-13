@@ -45,11 +45,12 @@ public class MeasureFragment extends Fragment {
     private TextView calibrationFactorText;
     private ViewFlipper measureFlipper;
     private View dliWidget;
-    private GrowLightProfileManager lampManager;
     private java.util.List<LampProduct> lampList;
     private SettingsManager settingsManager;
     // DLI widget controls
-    private Button preset12h, preset18h, preset24h, plusHour, minusHour;
+    private Button preset12h;
+    private Button preset18h;
+    private Button preset24h;
     private TextView hourValue, dliWidgetValue;
 
     // CameraX measurement
@@ -58,15 +59,12 @@ public class MeasureFragment extends Fragment {
     private CameraLightMeterX cameraLightMeterX;
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
-    private SwitchCompat arToggle;
     private LampTypeClassifier lampTypeClassifier;
 
     // AR overlay integration
     private boolean enableAROverlay = false;
     private de.omagh.lumibuddy.feature_ar.AROverlayRenderer arOverlayRenderer;
 
-    // Modern card views
-    private View luxCard, ppfdCard, dliCard;
     private TextView luxValue, ppfdValue, dliValue;
 
     public static MeasureFragment newInstance() {
@@ -86,7 +84,7 @@ public class MeasureFragment extends Fragment {
         // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);
         calibrationFactorText = view.findViewById(R.id.calibrationFactorText);
-        lampManager = new GrowLightProfileManager(requireContext());
+        GrowLightProfileManager lampManager = new GrowLightProfileManager(requireContext());
         lampList = lampManager.getAllProfiles();
 
         android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
@@ -117,9 +115,10 @@ public class MeasureFragment extends Fragment {
         updateDLIWidgetVisibility(measureFlipper.getDisplayedChild());
 
         // Bind cards for modern UI
-        luxCard = view.findViewById(R.id.luxCard);
-        ppfdCard = view.findViewById(R.id.ppfdCard);
-        dliCard = view.findViewById(R.id.dliCard);
+        // Modern card views
+        View luxCard = view.findViewById(R.id.luxCard);
+        View ppfdCard = view.findViewById(R.id.ppfdCard);
+        View dliCard = view.findViewById(R.id.dliCard);
 
         // Bind value TextViews in each card
         luxValue = luxCard.findViewById(R.id.metricValue);
@@ -135,14 +134,14 @@ public class MeasureFragment extends Fragment {
         preset12h = dliWidget.findViewById(R.id.preset12h);
         preset18h = dliWidget.findViewById(R.id.preset18h);
         preset24h = dliWidget.findViewById(R.id.preset24h);
-        plusHour = dliWidget.findViewById(R.id.plusHour);
-        minusHour = dliWidget.findViewById(R.id.minusHour);
+        Button plusHour = dliWidget.findViewById(R.id.plusHour);
+        Button minusHour = dliWidget.findViewById(R.id.minusHour);
         hourValue = dliWidget.findViewById(R.id.hourValue);
         dliWidgetValue = dliWidget.findViewById(R.id.dliValue);
 
         cameraMeasureButton = view.findViewById(R.id.cameraMeasureButton);
         cameraPreview = view.findViewById(R.id.cameraPreview);
-        arToggle = view.findViewById(R.id.arToggle);
+        SwitchCompat arToggle = view.findViewById(R.id.arToggle);
         arToggle.setChecked(enableAROverlay);
         arToggle.setOnCheckedChangeListener((btn, checked) -> {
             enableAROverlay = checked;

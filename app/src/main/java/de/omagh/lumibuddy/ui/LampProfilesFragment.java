@@ -29,7 +29,6 @@ import de.omagh.lumibuddy.data.model.GrowLightProduct;
  */
 public class LampProfilesFragment extends Fragment {
     private LampProfilesViewModel viewModel;
-    private LampProfileAdapter adapter;
 
     @Nullable
     @Override
@@ -39,7 +38,7 @@ public class LampProfilesFragment extends Fragment {
 
         RecyclerView rv = view.findViewById(R.id.lampProfilesRecyclerView);
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LampProfileAdapter(new ArrayList<>());
+        LampProfileAdapter adapter = new LampProfileAdapter(new ArrayList<>());
         rv.setAdapter(adapter);
         View searchBtn = view.findViewById(R.id.searchProductsButton);
 
@@ -144,7 +143,7 @@ public class LampProfilesFragment extends Fragment {
                 .setView(query)
                 .setPositiveButton("Search", (d, w) -> {
                     String q = query.getText().toString();
-                    viewModel.searchProducts(q).observe(this, products -> {
+                    viewModel.searchProducts(q).observe(getViewLifecycleOwner(), products -> {
                         if (products == null || products.isEmpty()) {
                             Toast.makeText(getContext(), "No results", Toast.LENGTH_SHORT).show();
                             return;

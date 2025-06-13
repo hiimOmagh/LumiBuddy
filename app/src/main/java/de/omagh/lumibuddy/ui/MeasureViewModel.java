@@ -29,7 +29,6 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
     private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
     private final MeasurementEngine measurementEngine;
-    private final CalibrationManager calibrationManager;
     private final CalibrationProfilesManager profileManager;
     private final GrowLightProfileManager growLightManager;
     private final SettingsManager settingsManager;
@@ -39,7 +38,7 @@ public class MeasureViewModel extends AndroidViewModel {
     public MeasureViewModel(@NonNull Application application) {
         super(application);
         measurementEngine = new MeasurementEngine(application.getApplicationContext());
-        calibrationManager = new CalibrationManager(application.getApplicationContext());
+        CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
         profileManager = new CalibrationProfilesManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());
         settingsManager = new SettingsManager(application.getApplicationContext());

@@ -18,8 +18,6 @@ import de.omagh.lumibuddy.R;
 
 public class AgendaFragment extends Fragment {
 
-    private AgendaViewModel mViewModel;
-
     public static AgendaFragment newInstance() {
         return new AgendaFragment();
     }
@@ -33,7 +31,7 @@ public class AgendaFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(AgendaViewModel.class);
+        AgendaViewModel mViewModel = new ViewModelProvider(this).get(AgendaViewModel.class);
         // TODO: Use the ViewModel
     }
 

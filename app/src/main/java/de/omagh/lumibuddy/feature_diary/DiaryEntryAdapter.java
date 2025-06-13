@@ -27,7 +27,7 @@ import de.omagh.lumibuddy.feature_diary.DiaryEntry;
  */
 public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, DiaryEntryAdapter.DiaryViewHolder> {
 
-    private static final DiffUtil.ItemCallback<DiaryEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<DiaryEntry>() {
+    private static final DiffUtil.ItemCallback<DiaryEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areItemsTheSame(@NonNull DiaryEntry oldItem, @NonNull DiaryEntry newItem) {
             return oldItem.getId().equals(newItem.getId());

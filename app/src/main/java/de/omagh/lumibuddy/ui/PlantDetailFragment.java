@@ -152,7 +152,7 @@ public class PlantDetailFragment extends Fragment {
         searchPlantBtn.setOnClickListener(v -> {
             // Trigger remote species search using the ViewModel
             String query = nameInput.getText().toString().trim();
-            viewModel.searchSpecies(query).observe(this, results -> {
+            viewModel.searchSpecies(query).observe(getViewLifecycleOwner(), results -> {
                 if (results == null || results.isEmpty()) return;
                 String[] names = new String[results.size()];
                 for (int i = 0; i < results.size(); i++) names[i] = results.get(i).getCommonName();

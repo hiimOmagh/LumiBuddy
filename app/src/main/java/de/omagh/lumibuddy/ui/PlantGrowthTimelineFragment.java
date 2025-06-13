@@ -36,7 +36,6 @@ public class PlantGrowthTimelineFragment extends Fragment {
     private String plantId;
 
     private DiaryViewModel diaryViewModel;
-    private DiaryEntryAdapter adapter;
     private Uri selectedImageUri = null;
     private ImageView dialogImagePreview;
 
@@ -83,7 +82,7 @@ public class PlantGrowthTimelineFragment extends Fragment {
         // Setup RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.growthTimelineRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new DiaryEntryAdapter();
+        DiaryEntryAdapter adapter = new DiaryEntryAdapter();
         recyclerView.setAdapter(adapter);
 
         // ViewModel

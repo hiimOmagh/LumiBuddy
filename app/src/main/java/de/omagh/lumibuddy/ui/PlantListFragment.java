@@ -40,7 +40,6 @@ import de.omagh.lumibuddy.ui.PlantListViewModel;
  */
 public class PlantListFragment extends Fragment {
     private PlantListViewModel viewModel;
-    private PlantListAdapter adapter;
     private Uri pickedImageUri = null;
     private ImageView plantImagePreview = null;
 
@@ -62,7 +61,7 @@ public class PlantListFragment extends Fragment {
         // RecyclerView setup
         RecyclerView recyclerView = view.findViewById(R.id.plantRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new PlantListAdapter(new ArrayList<>());
+        PlantListAdapter adapter = new PlantListAdapter(new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
         // On plant click → navigate to details

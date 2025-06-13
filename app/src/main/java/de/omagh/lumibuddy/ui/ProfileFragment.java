@@ -110,9 +110,7 @@ public class ProfileFragment extends Fragment {
         new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.edit_profile)
                 .setView(input)
-                .setPositiveButton(android.R.string.ok, (d, w) -> {
-                    viewModel.setUsername(input.getText().toString().trim());
-                })
+                .setPositiveButton(android.R.string.ok, (d, w) -> viewModel.setUsername(input.getText().toString().trim()))
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
     }

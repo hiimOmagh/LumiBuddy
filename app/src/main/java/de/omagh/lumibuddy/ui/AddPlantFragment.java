@@ -58,7 +58,6 @@ public class AddPlantFragment extends Fragment {
     public static final String ARG_IMAGE_URI = "plant_image_uri";
     private EditText nameInput, typeInput;
     private ImageView imagePreview;
-    private MaterialButton saveBtn, pickImageBtn, captureImageBtn, searchPlantBtn;
     private PlantListViewModel plantListViewModel;
     private AddPlantViewModel addPlantViewModel;
     private Uri selectedImageUri = null;
@@ -115,8 +114,6 @@ public class AddPlantFragment extends Fragment {
                             getString(R.string.camera_permission_required));
                 }
             });
-    private SwitchCompat mlToggle;
-    private SwitchCompat arGrowthToggle;
 
     @Nullable
     @Override
@@ -133,12 +130,12 @@ public class AddPlantFragment extends Fragment {
         nameInput = view.findViewById(R.id.editPlantName);
         typeInput = view.findViewById(R.id.editPlantType);
         imagePreview = view.findViewById(R.id.plantImagePreview);
-        saveBtn = view.findViewById(R.id.savePlantBtn);
-        pickImageBtn = view.findViewById(R.id.pickImageBtn);
-        captureImageBtn = view.findViewById(R.id.captureImageBtn);
-        searchPlantBtn = view.findViewById(R.id.searchPlantBtn);
-        mlToggle = view.findViewById(R.id.mlToggle);
-        arGrowthToggle = view.findViewById(R.id.arGrowthToggle);
+        MaterialButton saveBtn = view.findViewById(R.id.savePlantBtn);
+        MaterialButton pickImageBtn = view.findViewById(R.id.pickImageBtn);
+        MaterialButton captureImageBtn = view.findViewById(R.id.captureImageBtn);
+        MaterialButton searchPlantBtn = view.findViewById(R.id.searchPlantBtn);
+        SwitchCompat mlToggle = view.findViewById(R.id.mlToggle);
+        SwitchCompat arGrowthToggle = view.findViewById(R.id.arGrowthToggle);
 
         // Init ViewModel
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);

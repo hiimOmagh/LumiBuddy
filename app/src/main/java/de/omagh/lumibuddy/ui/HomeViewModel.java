@@ -37,7 +37,6 @@ public class HomeViewModel extends AndroidViewModel {
     private final MutableLiveData<Float> ppfd = new MutableLiveData<>(35f);
     private final MutableLiveData<Float> dli = new MutableLiveData<>(12.0f);
 
-    private final PlantDataSource plantRepository;
     private final DiaryDataSource diaryRepository;
     private final RecommendationEngine recommendationEngine;
     private final WateringScheduler wateringScheduler;
@@ -72,7 +71,6 @@ public class HomeViewModel extends AndroidViewModel {
                          RecommendationEngine engine,
                          WateringScheduler scheduler) {
         super(application);
-        this.plantRepository = plantRepository;
         this.diaryRepository = diaryRepository;
         this.recommendationEngine = engine;
         this.wateringScheduler = scheduler;
