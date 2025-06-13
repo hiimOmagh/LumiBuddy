@@ -13,6 +13,8 @@ import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
+import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.data.model.PlantSpecies;
 import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
 
@@ -25,6 +27,7 @@ public class PlantListViewModel extends AndroidViewModel {
     private final LiveData<List<Plant>> plants;
     private final PlantRepository repository;
     private final PlantInfoRepository infoRepository;
+    private final PlantDatabaseManager sampleDb;
 
     /**
      * Initializes the ViewModel and loads LiveData from Room DB.
@@ -36,6 +39,7 @@ public class PlantListViewModel extends AndroidViewModel {
         AppDatabase db = AppDatabase.getInstance(application);
         repository = new PlantRepository(db);
         infoRepository = new PlantInfoRepository(application);
+        sampleDb = new PlantDatabaseManager();
         plants = repository.getAllPlants();
     }
 
@@ -86,6 +90,15 @@ public class PlantListViewModel extends AndroidViewModel {
 
     public LiveData<List<PlantCareProfileEntity>> getCareProfile(String speciesId) {
         return infoRepository.getCareProfile(speciesId);
+    }
+
+    /**
+     * Returns a list of all built-in plant info records.
+     *
+     * @return immutable list of {@link PlantInfo} objects
+     */
+    public List<PlantInfo> getAllPlantInfo() {
+        return sampleDb.getAllPlants();
     }
 // Repository manages its own executor; nothing to clean up here.
 }

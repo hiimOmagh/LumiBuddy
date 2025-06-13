@@ -118,9 +118,10 @@ public class PlantDetailFragment extends Fragment {
                         p.getSunlightRequirement());
                 android.widget.TextView tv = new android.widget.TextView(requireContext());
                 tv.setText(msg);
-                new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext())
-                        .setContentView(tv)
-                        .show();
+                com.google.android.material.bottomsheet.BottomSheetDialog dialog =
+                        new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext());
+                dialog.setContentView(tv);
+                dialog.show();
             });
         });
 

@@ -3,6 +3,7 @@ package de.omagh.lumibuddy.network;
 import java.util.List;
 
 import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.lumibuddy.data.model.GrowLightProfile;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -17,6 +18,12 @@ public interface GrowLightApiService {
      */
     @GET("lamps")
     Call<List<GrowLightProduct>> searchLamps(@Query("q") String query, @Query("token") String apiKey);
+
+    /**
+     * Retrieve the list of lamp profiles without filtering.
+     */
+    @GET("lamps")
+    Call<List<GrowLightProfile>> getLamps();
     /**
      * Details for a specific lamp by id.
      */

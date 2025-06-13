@@ -120,29 +120,31 @@ public class PlantListFragment extends Fragment {
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
         searchPlantBtn.setOnClickListener(v -> {
             String query = nameInput.getText().toString().trim();
-            LiveData<List<PlantSpecies>> match = viewModel.searchPlantInfo(query);
-            if (match != null) {
-                nameInput.setText(match.commonName);
-                typeInput.setText(match.scientificName);
-                Toast.makeText(getContext(), "Loaded profile for " + match.commonName, Toast.LENGTH_SHORT).show();
-                return;
-            }
+            viewModel.searchPlantInfo(query).observe(getViewLifecycleOwner(), results -> {
+                if (results != null && !results.isEmpty()) {
+                    PlantSpecies species = results.get(0);
+                    nameInput.setText(species.getCommonName());
+                    typeInput.setText(species.getScientificName());
+                    Toast.makeText(getContext(), "Loaded profile for " + species.getCommonName(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            java.util.List<PlantInfo> all = viewModel.getAllPlantInfo();
-            String[] names = new String[all.size()];
-            for (int i = 0; i < all.size(); i++) {
-                names[i] = all.get(i).commonName;
-            }
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                    .setTitle("Select Plant")
-                    .setItems(names, (d, which) -> {
-                        PlantInfo info = all.get(which);
-                        nameInput.setText(info.commonName);
-                        typeInput.setText(info.scientificName);
-                        Toast.makeText(getContext(), "Loaded profile for " + info.commonName, Toast.LENGTH_SHORT).show();
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
+                java.util.List<PlantInfo> all = viewModel.getAllPlantInfo();
+                String[] names = new String[all.size()];
+                for (int i = 0; i < all.size(); i++) {
+                    names[i] = all.get(i).commonName;
+                }
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Select Plant")
+                        .setItems(names, (d, which) -> {
+                            PlantInfo info = all.get(which);
+                            nameInput.setText(info.commonName);
+                            typeInput.setText(info.scientificName);
+                            Toast.makeText(getContext(), "Loaded profile for " + info.commonName, Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            });
         });
 
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
