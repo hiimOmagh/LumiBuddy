@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import de.omagh.lumibuddy.R;
@@ -34,7 +35,7 @@ public class SettingsFragment extends Fragment {
     private EditText hoursInput;
     private Spinner calibrationSpinner;
     private android.widget.TextView calibrationInfoText;
-    private android.widget.Switch careReminderSwitch;
+    private SwitchCompat careReminderSwitch;
     private View syncNowBtn;
     private View privacyPolicyBtn;
 

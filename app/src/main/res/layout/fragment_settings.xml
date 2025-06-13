@@ -51,7 +51,7 @@
                     android:text="@string/dark_mode"
                     android:textSize="18sp" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/darkModeSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                     android:text="@string/care_reminders"
                     android:textSize="18sp" />
 
-                <Switch
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/careReminderSwitch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                     android:id="@+id/lightDurationInput"
                     android:layout_width="64dp"
                     android:layout_height="wrap_content"
-                    android:autofillHints=""
+                    android:autofillHints="Total hours of light exposure"
                     android:gravity="center"
                     android:inputType="number" />
             </LinearLayout>
