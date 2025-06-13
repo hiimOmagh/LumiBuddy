@@ -18,9 +18,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.List;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
+import de.omagh.lumibuddy.data.model.GrowLightProduct;
 
 /**
  * Screen for managing grow light profiles.
@@ -39,6 +41,7 @@ public class LampProfilesFragment extends Fragment {
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LampProfileAdapter(new ArrayList<>());
         rv.setAdapter(adapter);
+        View searchBtn = view.findViewById(R.id.searchProductsButton);
 
         adapter.setOnLampClickListener(lamp -> {
             viewModel.selectProfile(lamp);
@@ -56,6 +59,7 @@ public class LampProfilesFragment extends Fragment {
 
         FloatingActionButton fab = view.findViewById(R.id.addLampProfileFab);
         fab.setOnClickListener(v -> showAddDialog());
+        searchBtn.setOnClickListener(v -> showSearchDialog());
 
         viewModel = new ViewModelProvider(this,
                 ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
@@ -128,6 +132,36 @@ public class LampProfilesFragment extends Fragment {
                     } catch (NumberFormatException ex) {
                         Toast.makeText(getContext(), R.string.invalid_number, Toast.LENGTH_SHORT).show();
                     }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showSearchDialog() {
+        final EditText query = new EditText(getContext());
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Search Lamps")
+                .setView(query)
+                .setPositiveButton("Search", (d, w) -> {
+                    String q = query.getText().toString();
+                    viewModel.searchProducts(q).observe(this, products -> {
+                        if (products == null || products.isEmpty()) {
+                            Toast.makeText(getContext(), "No results", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        String[] names = new String[products.size()];
+                        for (int i = 0; i < products.size(); i++)
+                            names[i] = products.get(i).getModel();
+                        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                                .setTitle("Results")
+                                .setItems(names, (dd, which) -> {
+                                    GrowLightProduct p = products.get(which);
+                                    LampProduct lp = new LampProduct(p.getId(), p.getModel(), p.getBrand(), p.getSpectrumType(), p.getSpectrum(), p.getWattage(), 1f, p.getPpfd());
+                                    viewModel.addProfile(lp);
+                                })
+                                .setNegativeButton("Cancel", null)
+                                .show();
+                    });
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

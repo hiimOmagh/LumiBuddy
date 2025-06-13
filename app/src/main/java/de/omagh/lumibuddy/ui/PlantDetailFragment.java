@@ -21,6 +21,7 @@ import org.jspecify.annotations.Nullable;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
 import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantStage;
@@ -56,6 +57,7 @@ public class PlantDetailFragment extends Fragment {
         plantImageView = view.findViewById(R.id.detailPlantImage);
         FloatingActionButton editFab = view.findViewById(R.id.editPlantFab);
         View timelineButton = view.findViewById(R.id.viewTimelineButton);
+        View fetchDetails = view.findViewById(R.id.fetchMoreInfoButton);
 
         // ViewModels
         viewModel = new ViewModelProvider(this).get(PlantDetailViewModel.class);
@@ -82,23 +84,7 @@ public class PlantDetailFragment extends Fragment {
             } else {
                 plantImageView.setImageResource(R.drawable.ic_eco);
             }
-            PlantInfo info = viewModel.getPlantInfo(plant.getType());
-            if (info != null) {
-                PlantCareProfile profile = viewModel.getCareProfile(plant.getType(), PlantStage.VEGETATIVE);
-                if (profile != null) {
-                    String careText = String.format(java.util.Locale.US,
-                            "Light %.0f-%.0f μmol/m²/s\nWater every %d d\nTemp %.0f-%.0f°C\nHumidity %.0f-%.0f%%",
-                            profile.getMinPPFD(), profile.getMaxPPFD(),
-                            profile.getWateringIntervalDays(),
-                            profile.getMinTemperature(), profile.getMaxTemperature(),
-                            profile.getMinHumidity(), profile.getMaxHumidity());
-                    careInfoView.setText(careText);
-                } else {
-                    careInfoView.setText(R.string.care_info_placeholder);
-                }
-            } else {
-                careInfoView.setText(R.string.care_info_placeholder);
-            }
+            careInfoView.setText(R.string.care_info_placeholder);
         });
 
         // Edit FAB
@@ -113,6 +99,29 @@ public class PlantDetailFragment extends Fragment {
                 androidx.navigation.Navigation.findNavController(v)
                         .navigate(R.id.plantGrowthTimelineFragment, b);
             }
+        });
+
+        fetchDetails.setOnClickListener(v -> {
+            Plant current = viewModel.getPlant().getValue();
+            if (current == null) return;
+            viewModel.getCareProfile(current.getType()).observe(getViewLifecycleOwner(), profiles -> {
+                if (profiles == null || profiles.isEmpty()) {
+                    Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                PlantCareProfileEntity p = profiles.get(0);
+                String msg = String.format(java.util.Locale.US,
+                        "Water every %d d\nTemp %.0f-%.0f°C\nHumidity %.0f-%.0f%%\nSunlight %s",
+                        p.getWateringIntervalDays(),
+                        p.getMinTemperature(), p.getMaxTemperature(),
+                        p.getMinHumidity(), p.getMaxHumidity(),
+                        p.getSunlightRequirement());
+                android.widget.TextView tv = new android.widget.TextView(requireContext());
+                tv.setText(msg);
+                new com.google.android.material.bottomsheet.BottomSheetDialog(requireContext())
+                        .setContentView(tv)
+                        .show();
+            });
         });
 
         return view;
@@ -140,26 +149,22 @@ public class PlantDetailFragment extends Fragment {
         }
 
         searchPlantBtn.setOnClickListener(v -> {
+            // Trigger remote species search using the ViewModel
             String query = nameInput.getText().toString().trim();
-            PlantInfo match = viewModel.getPlantInfo(query);
-            if (match != null) {
-                nameInput.setText(match.commonName);
-                typeInput.setText(match.scientificName);
-                Toast.makeText(getContext(), "Loaded profile for " + match.commonName, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            java.util.List<PlantInfo> all = viewModel.getAllPlantInfo();
-            String[] names = new String[all.size()];
-            for (int i = 0; i < all.size(); i++) names[i] = all.get(i).commonName;
-            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                    .setTitle("Select Plant")
-                    .setItems(names, (d, which) -> {
-                        PlantInfo info = all.get(which);
-                        nameInput.setText(info.commonName);
-                        typeInput.setText(info.scientificName);
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
+            viewModel.searchSpecies(query).observe(this, results -> {
+                if (results == null || results.isEmpty()) return;
+                String[] names = new String[results.size()];
+                for (int i = 0; i < results.size(); i++) names[i] = results.get(i).getCommonName();
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setTitle("Select Plant")
+                        .setItems(names, (d, which) -> {
+                            de.omagh.lumibuddy.data.model.PlantSpecies info = results.get(which);
+                            nameInput.setText(info.getCommonName());
+                            typeInput.setText(info.getScientificName());
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show();
+            });
         });
 
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())

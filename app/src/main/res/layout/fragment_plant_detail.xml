@@ -73,6 +73,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/view_timeline" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/fetchMoreInfoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Fetch Details" />
+
                 <!-- Add more plant details/info as needed here -->
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

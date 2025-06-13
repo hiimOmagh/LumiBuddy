@@ -238,57 +238,30 @@ public class AddPlantFragment extends Fragment {
         if (!android.text.TextUtils.isEmpty(result)) {
             nameInput.setText(result);
             typeInput.setText(result);
-            de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager db =
-                    new de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager();
-            de.omagh.lumibuddy.feature_plantdb.PlantIdentifier ider =
-                    new de.omagh.lumibuddy.feature_plantdb.PlantIdentifier(db);
-            de.omagh.lumibuddy.feature_plantdb.PlantInfo info = ider.identifyByName(result);
-            if (info != null) showCareProfileDialog(info);
+            performPlantSearch();
         }
     }
 
     private void performPlantSearch() {
-        de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager db =
-                new de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager();
-        de.omagh.lumibuddy.feature_plantdb.PlantIdentifier ider =
-                new de.omagh.lumibuddy.feature_plantdb.PlantIdentifier(db);
         String query = nameInput.getText().toString().trim();
-        de.omagh.lumibuddy.feature_plantdb.PlantInfo match = ider.identifyByName(query);
-        if (match != null) {
-            nameInput.setText(match.commonName);
-            typeInput.setText(match.scientificName);
-            showCareProfileDialog(match);
-            return;
-        }
-
-        java.util.List<de.omagh.lumibuddy.feature_plantdb.PlantInfo> all = db.getAllPlants();
-        String[] names = new String[all.size()];
-        for (int i = 0; i < all.size(); i++) names[i] = all.get(i).commonName;
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Select Plant")
-                .setItems(names, (d, which) -> {
-                    de.omagh.lumibuddy.feature_plantdb.PlantInfo info = all.get(which);
-                    nameInput.setText(info.commonName);
-                    typeInput.setText(info.scientificName);
-                    showCareProfileDialog(info);
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
-
-    private void showCareProfileDialog(de.omagh.lumibuddy.feature_plantdb.PlantInfo info) {
-        de.omagh.lumibuddy.feature_plantdb.PlantCareProfile p =
-                info.getProfileForStage(de.omagh.lumibuddy.feature_plantdb.PlantStage.VEGETATIVE);
-        if (p == null) return;
-        String msg = String.format(java.util.Locale.US,
-                "Light %.0f-%.0f μmol/m²/s\nWater every %d d\nHumidity %.0f-%.0f%%",
-                p.getMinPPFD(), p.getMaxPPFD(),
-                p.getWateringIntervalDays(),
-                p.getMinHumidity(), p.getMaxHumidity());
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(info.commonName)
-                .setMessage(msg)
-                .setPositiveButton("OK", null)
-                .show();
+        plantListViewModel.searchPlantInfo(query).observe(getViewLifecycleOwner(), results -> {
+            if (results == null || results.isEmpty()) {
+                Toast.makeText(getContext(), "No match", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String[] names = new String[results.size()];
+            for (int i = 0; i < results.size(); i++) {
+                names[i] = results.get(i).getCommonName();
+            }
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Select Plant")
+                    .setItems(names, (d, which) -> {
+                        de.omagh.lumibuddy.data.model.PlantSpecies s = results.get(which);
+                        nameInput.setText(s.getCommonName());
+                        typeInput.setText(s.getScientificName());
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
     }
 }

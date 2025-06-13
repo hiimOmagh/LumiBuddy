@@ -9,14 +9,23 @@ import androidx.room.RoomDatabase;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry; // ✅ Correct import
 import de.omagh.lumibuddy.data.model.GrowLightProfile;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
+import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.lumibuddy.data.db.PlantSpeciesDao;
+import de.omagh.lumibuddy.data.db.PlantCareProfileDao;
+import de.omagh.lumibuddy.data.db.GrowLightProductDao;
 
 @Database(
         entities = {
                 Plant.class,
                 DiaryEntry.class,
-                GrowLightProfile.class
+                GrowLightProfile.class,
+                PlantSpecies.class,
+                PlantCareProfileEntity.class,
+                GrowLightProduct.class
         },
-        version = 3,
+        version = 4,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -46,4 +55,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DiaryDao diaryDao();
 
     public abstract GrowLightDao growLightDao();
+
+    public abstract PlantSpeciesDao plantSpeciesDao();
+
+    public abstract PlantCareProfileDao plantCareProfileDao();
+
+    public abstract GrowLightProductDao growLightProductDao();
 }

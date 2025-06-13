@@ -2,26 +2,28 @@ package de.omagh.lumibuddy.network;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Retrofit interface for the remote Plant Database API.
  */
 public interface PlantApiService {
-    /**
-     * Returns a list of supported plant species.
-     */
-    @GET("plants")
-    Call<List<Plant>> getPlants();
 
     /**
-     * Returns a detailed care profile for a plant by id.
+     * Search plant species from Trefle/Perenual APIs.
+     * Requires API key passed via query parameter.
+     */
+    @GET("plants/search")
+    Call<List<PlantSpecies>> searchSpecies(@Query("q") String query, @Query("token") String apiKey);
+
+    /**
+     * Fetch detailed care profile for the given species ID.
      */
     @GET("plants/{id}")
-    Call<Plant> getPlant(@Path("id") String id);
-
-    // Future: image-based identification
+    Call<List<PlantCareProfileEntity>> getCareProfile(@Path("id") String id, @Query("token") String apiKey);
 }

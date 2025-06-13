@@ -6,13 +6,15 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
 import de.omagh.lumibuddy.feature_plantdb.PlantStage;
-import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
 
 import org.jspecify.annotations.NonNull;
 
@@ -30,7 +32,7 @@ public class PlantDetailViewModel extends AndroidViewModel {
     public PlantDetailViewModel(@NonNull Application application) {
         super(application);
         repository = new PlantRepository(AppDatabase.getInstance(application));
-        infoRepository = new PlantInfoRepository();
+        infoRepository = new PlantInfoRepository(application);
     }
 
     /**
@@ -75,28 +77,11 @@ public class PlantDetailViewModel extends AndroidViewModel {
      * @param name plant name
      * @return matching PlantInfo or null
      */
-    public PlantInfo getPlantInfo(String name) {
-        return infoRepository.identifyPlant(name);
+    public LiveData<List<PlantSpecies>> searchSpecies(String name) {
+        return infoRepository.searchSpecies(name);
     }
 
-    /**
-     * Returns a care profile for the specified stage if available.
-     *
-     * @param name  plant name
-     * @param stage desired growth stage
-     * @return care profile or null
-     */
-    public PlantCareProfile getCareProfile(String name, PlantStage stage) {
-        PlantInfo info = infoRepository.identifyPlant(name);
-        return info != null ? info.getProfileForStage(stage) : null;
-    }
-
-    /**
-     * Returns all available sample plant information.
-     *
-     * @return immutable list of PlantInfo entries
-     */
-    public java.util.List<PlantInfo> getAllPlantInfo() {
-        return infoRepository.getAllPlantInfo();
+    public LiveData<List<PlantCareProfileEntity>> getCareProfile(String speciesId) {
+        return infoRepository.getCareProfile(speciesId);
     }
 }

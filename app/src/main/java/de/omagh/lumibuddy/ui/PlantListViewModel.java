@@ -12,8 +12,9 @@ import org.jspecify.annotations.NonNull;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
 
 /**
  * ViewModel for managing the user's plant list.
@@ -34,7 +35,7 @@ public class PlantListViewModel extends AndroidViewModel {
         super(application);
         AppDatabase db = AppDatabase.getInstance(application);
         repository = new PlantRepository(db);
-        infoRepository = new PlantInfoRepository();
+        infoRepository = new PlantInfoRepository(application);
         plants = repository.getAllPlants();
     }
 
@@ -79,17 +80,12 @@ public class PlantListViewModel extends AndroidViewModel {
      * @param name search query
      * @return matching PlantInfo or null
      */
-    public PlantInfo searchPlantInfo(String name) {
-        return infoRepository.identifyPlant(name);
+    public LiveData<List<PlantSpecies>> searchPlantInfo(String name) {
+        return infoRepository.searchSpecies(name);
     }
 
-    /**
-     * Provides the full list of sample plant information.
-     *
-     * @return immutable list of PlantInfo entries
-     */
-    public List<PlantInfo> getAllPlantInfo() {
-        return infoRepository.getAllPlantInfo();
+    public LiveData<List<PlantCareProfileEntity>> getCareProfile(String speciesId) {
+        return infoRepository.getCareProfile(speciesId);
     }
 // Repository manages its own executor; nothing to clean up here.
 }

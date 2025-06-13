@@ -12,6 +12,8 @@ import java.util.List;
 
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
+import de.omagh.lumibuddy.feature_growlight.GrowLightProductRepository;
+import de.omagh.lumibuddy.data.model.GrowLightProduct;
 
 /**
  * ViewModel for lamp profile list management.
@@ -19,10 +21,12 @@ import de.omagh.lumibuddy.feature_growlight.LampProduct;
 public class LampProfilesViewModel extends AndroidViewModel {
     private final MutableLiveData<List<LampProduct>> profiles = new MutableLiveData<>();
     private final GrowLightProfileManager manager;
+    private final GrowLightProductRepository productRepository;
 
     public LampProfilesViewModel(@NonNull Application application) {
         super(application);
         manager = new GrowLightProfileManager(application.getApplicationContext());
+        productRepository = new GrowLightProductRepository(application.getApplicationContext());
         profiles.setValue(manager.getAllProfiles());
     }
 
@@ -47,5 +51,9 @@ public class LampProfilesViewModel extends AndroidViewModel {
 
     public void selectProfile(LampProduct p) {
         manager.setActiveLampProfile(p.id);
+    }
+
+    public LiveData<List<GrowLightProduct>> searchProducts(String query) {
+        return productRepository.searchGrowLights(query);
     }
 }

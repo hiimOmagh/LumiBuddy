@@ -11,19 +11,16 @@ material = "1.12.0"
 activity = "1.10.1"
 constraintlayout = "2.2.1"
 legacySupportV4 = "1.0.0"
-lifecycleLivedataKtx = "2.9.1"
-lifecycleViewmodelKtx = "2.9.1"
 navigationFragment = "2.9.0"
 navigationUi = "2.9.0"
 roomCompiler = "2.7.1"
-roomKtx = "2.7.1"
 roomRuntime = "2.7.1"
 retrofit = "2.11.0"
 gson = "2.11.0"
 mockito = "5.11.0"
+androidxTestCore = "1.6.1"
 
 [libraries]
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
 camera-core = { module = "androidx.camera:camera-core", version.ref = "cameraCore" }
 camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = "cameraCore" }
@@ -33,13 +30,12 @@ jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "a
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 legacy-support-v4 = { group = "androidx.legacy", name = "legacy-support-v4", version.ref = "legacySupportV4" }
-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 navigation-fragment = { group = "androidx.navigation", name = "navigation-fragment", version.ref = "navigationFragment" }
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "roomCompiler" }
