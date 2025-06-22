@@ -2,13 +2,12 @@ package de.omagh.lumibuddy.feature_growlight;
 
 import android.content.Context;
 
-import java.util.Collections;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.db.GrowLightProductDao;

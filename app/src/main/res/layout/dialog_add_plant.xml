@@ -9,27 +9,29 @@
 
     <EditText
         android:id="@+id/editPlantName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:autofillHints=""
-        android:backgroundTint="?attr/colorPrimary"
-        android:contentDescription="@string/plant_name_input_desc"
+        android:backgroundTint="@color/black"
         android:hint="@string/plant_name_input_desc"
         android:importantForAccessibility="yes"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
 
     <EditText
         android:id="@+id/editPlantType"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
         android:autofillHints=""
         android:backgroundTint="?attr/colorPrimary"
-        android:contentDescription="@string/plant_type_input_desc"
         android:hint="@string/plant_type_input_desc"
         android:importantForAccessibility="yes"
-        android:inputType="text" />
+        android:inputType="text"
+        android:minHeight="48dp"
+        android:textColorHint="#757575" />
 
     <ImageView
         android:id="@+id/plantImagePreview"
@@ -38,7 +40,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/card_bg"
+        android:background="@color/black"
         android:contentDescription="@string/plant_image_desc"
         android:elevation="6dp"
         android:scaleType="centerCrop"
@@ -52,7 +54,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="4dp"
-        android:text="@string/pick_image" />
+        android:text="@string/pick_image"
+        android:textColor="#2E7D32" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/searchPlantBtn"
@@ -60,6 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/search_plant_db" />
+        android:text="@string/search_plant_db"
+        android:textColor="#2E7D32" />
 
 </LinearLayout>

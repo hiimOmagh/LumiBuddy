@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.model.Plant;
@@ -23,9 +25,6 @@ import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
 import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
 import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
 import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * ViewModel coordinating home screen data and background recommendation logic.

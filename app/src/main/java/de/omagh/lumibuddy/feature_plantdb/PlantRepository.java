@@ -9,7 +9,6 @@ import java.util.concurrent.Executors;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.db.PlantDao;
 import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.feature_plantdb.PlantDataSource;
 
 public class PlantRepository implements PlantDataSource {
     private final PlantDao plantDao;

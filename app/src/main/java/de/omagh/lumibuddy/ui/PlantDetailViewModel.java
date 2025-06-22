@@ -6,17 +6,16 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.data.db.AppDatabase;
-import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
-import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
-import de.omagh.lumibuddy.feature_plantdb.PlantStage;
-
-import org.jspecify.annotations.NonNull;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
+import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
 
 /**
  * ViewModel for PlantDetailFragment.

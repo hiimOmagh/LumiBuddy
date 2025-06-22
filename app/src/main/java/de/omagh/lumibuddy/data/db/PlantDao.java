@@ -5,9 +5,9 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import de.omagh.lumibuddy.data.model.Plant;
-
 import java.util.List;
+
+import de.omagh.lumibuddy.data.model.Plant;
 
 @Dao
 public interface PlantDao {

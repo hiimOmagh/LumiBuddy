@@ -1,7 +1,6 @@
 package de.omagh.lumibuddy.ui;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,16 +15,13 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
-import de.omagh.lumibuddy.util.PermissionUtils;
-
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.util.PermissionUtils;
 
 /**
  * Fragment displaying and editing the local user profile.

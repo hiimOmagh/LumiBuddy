@@ -13,7 +13,6 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,15 +23,12 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.data.model.PlantSpecies;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
-import de.omagh.lumibuddy.ui.PlantListAdapter;
-import de.omagh.lumibuddy.ui.PlantListViewModel;
 
 /**
  * Fragment displaying a list of plants with add, delete, and detail support.

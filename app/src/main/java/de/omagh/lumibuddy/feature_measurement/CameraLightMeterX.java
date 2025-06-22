@@ -1,18 +1,17 @@
 package de.omagh.lumibuddy.feature_measurement;
 
+import android.app.Activity;
 import android.util.Log;
 
 import androidx.camera.core.AspectRatio;
+import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
-import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.core.CameraSelector;
 import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LifecycleOwner;
-
-import android.app.Activity;
 
 import org.jspecify.annotations.NonNull;
 

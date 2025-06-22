@@ -40,7 +40,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 /**
  * Stub scheduler that could run periodic scans and care checks.

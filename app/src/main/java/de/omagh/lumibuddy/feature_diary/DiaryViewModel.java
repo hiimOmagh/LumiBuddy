@@ -7,14 +7,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.List;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.lumibuddy.data.db.DiaryDao;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
-import de.omagh.lumibuddy.feature_diary.DiaryRepository;
-
-import org.jspecify.annotations.NonNull;
 
 /**
  * ViewModel for managing diary entries (timeline) for a specific plant.

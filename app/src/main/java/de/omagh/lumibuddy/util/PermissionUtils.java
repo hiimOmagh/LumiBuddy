@@ -1,8 +1,6 @@
 package de.omagh.lumibuddy.util;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 
 import androidx.activity.result.ActivityResultLauncher;

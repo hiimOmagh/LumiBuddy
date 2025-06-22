@@ -2,8 +2,8 @@ package de.omagh.lumibuddy.network;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.PlantSpecies;
 import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

@@ -10,10 +10,10 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
+import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.lumibuddy.feature_growlight.GrowLightProductRepository;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
-import de.omagh.lumibuddy.feature_growlight.GrowLightProductRepository;
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
 
 /**
  * ViewModel for lamp profile list management.

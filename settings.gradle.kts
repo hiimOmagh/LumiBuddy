@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "LumiBuddy"
 include(":app")
+include(":core-domain")

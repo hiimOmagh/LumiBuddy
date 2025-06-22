@@ -24,6 +24,7 @@ public interface GrowLightApiService {
      */
     @GET("lamps")
     Call<List<GrowLightProfile>> getLamps();
+
     /**
      * Details for a specific lamp by id.
      */

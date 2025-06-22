@@ -1,49 +1,38 @@
 package de.omagh.lumibuddy.ui;
 
+import android.Manifest;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.google.android.material.button.MaterialButton;
-
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
-
-import de.omagh.lumibuddy.util.PermissionUtils;
-
-import android.Manifest;
-import android.content.pm.PackageManager;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
-import de.omagh.lumibuddy.network.plantid.PlantIdSuggestion;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.feature_ml.PlantClassifier;
+import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
+import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
 import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
-import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
-import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
-import de.omagh.lumibuddy.ui.AddPlantViewModel;
+import de.omagh.lumibuddy.feature_ml.PlantClassifier;
+import de.omagh.lumibuddy.util.PermissionUtils;
 
 /**
  * Fragment to add or edit a plant.

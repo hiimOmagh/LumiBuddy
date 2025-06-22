@@ -9,18 +9,15 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
-
-import de.omagh.lumibuddy.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
+import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.CalibrationProfile;
+import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
 
 /**

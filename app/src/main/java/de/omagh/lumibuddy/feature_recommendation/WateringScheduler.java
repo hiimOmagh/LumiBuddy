@@ -4,14 +4,14 @@ import android.Manifest;
 
 import androidx.annotation.RequiresPermission;
 
-import java.util.List;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.data.db.DiaryDao;
+import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 /**

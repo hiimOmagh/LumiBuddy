@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,11 +22,6 @@ import org.jspecify.annotations.Nullable;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.data.model.Plant;
 import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
-import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
-import de.omagh.lumibuddy.feature_plantdb.PlantStage;
-import de.omagh.lumibuddy.ui.PlantListViewModel;
-import de.omagh.lumibuddy.ui.PlantGrowthTimelineFragment;
 
 /**
  * Fragment to display details of a single plant and allow editing.

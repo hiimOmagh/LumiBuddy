@@ -8,14 +8,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
 
-import de.omagh.lumibuddy.feature_measurement.ALSManager;
-import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
-import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
-import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
-import de.omagh.lumibuddy.data.model.CalibrationProfile;
-import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
+import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
+import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
+import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
+import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
 
 /**

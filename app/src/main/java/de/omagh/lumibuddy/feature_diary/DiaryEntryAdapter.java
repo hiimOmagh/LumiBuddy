@@ -14,13 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jspecify.annotations.NonNull;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 /**
  * Adapter for displaying a list of DiaryEntry items in a RecyclerView (growth timeline).

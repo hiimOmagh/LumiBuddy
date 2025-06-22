@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omagh.lumibuddy.data.db.DiaryDao;
-import de.omagh.lumibuddy.feature_diary.DiaryDataSource;
 
 /**
  * Repository providing an abstraction over {@link DiaryDao}.

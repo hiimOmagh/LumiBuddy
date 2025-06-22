@@ -6,15 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry; // ✅ Correct import
-import de.omagh.lumibuddy.data.model.GrowLightProfile;
-import de.omagh.lumibuddy.data.model.PlantSpecies;
-import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
 import de.omagh.lumibuddy.data.model.GrowLightProduct;
-import de.omagh.lumibuddy.data.db.PlantSpeciesDao;
-import de.omagh.lumibuddy.data.db.PlantCareProfileDao;
-import de.omagh.lumibuddy.data.db.GrowLightProductDao;
+import de.omagh.lumibuddy.data.model.GrowLightProfile;
+import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
+import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 @Database(
         entities = {

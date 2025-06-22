@@ -1,6 +1,10 @@
 package de.omagh.lumibuddy.ui;
 
+import android.Manifest;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,32 +14,24 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
-import android.Manifest;
-
-import androidx.camera.view.PreviewView;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
-
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.util.Log;
-
-import java.util.Objects;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
-import de.omagh.lumibuddy.util.OnSwipeTouchListener;
-import de.omagh.lumibuddy.util.PermissionUtils;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
-import de.omagh.lumibuddy.feature_user.SettingsManager;
-import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
+import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.feature_ml.BasicLampTypeClassifier;
+import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
+import de.omagh.lumibuddy.feature_user.SettingsManager;
+import de.omagh.lumibuddy.util.OnSwipeTouchListener;
+import de.omagh.lumibuddy.util.PermissionUtils;
 
 public class MeasureFragment extends Fragment {
     private MeasureViewModel mViewModel;
