@@ -85,7 +85,11 @@ public class ProfileFragment extends Fragment {
         if (uri == null) {
             avatarView.setImageResource(R.drawable.ic_person);
         } else {
-            avatarView.setImageURI(Uri.parse(uri));
+            try {
+                avatarView.setImageURI(Uri.parse(uri));
+            } catch (Exception e) {
+                avatarView.setImageResource(R.drawable.ic_person);
+            }
         }
     }
 

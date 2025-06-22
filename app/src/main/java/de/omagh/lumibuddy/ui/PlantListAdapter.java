@@ -67,7 +67,12 @@ public class PlantListAdapter extends RecyclerView.Adapter<PlantListAdapter.Plan
         // Optional: Load image if present
         String imageUri = plant.getImageUri();
         if (imageUri != null && !imageUri.isEmpty()) {
-            holder.plantImage.setImageURI(Uri.parse(imageUri));
+            try {
+                holder.plantImage.setImageURI(Uri.parse(imageUri));
+            } catch (Exception e) {
+                // If we lost permission or file missing, show default icon
+                holder.plantImage.setImageResource(R.drawable.ic_eco);
+            }
         } else {
             holder.plantImage.setImageResource(R.drawable.ic_eco); // fallback/default
         }

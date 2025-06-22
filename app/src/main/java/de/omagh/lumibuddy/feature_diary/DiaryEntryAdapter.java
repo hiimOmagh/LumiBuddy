@@ -86,7 +86,11 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, DiaryEntryAdapter
             // Image (optional)
             if (entry.getImageUri() != null && !entry.getImageUri().isEmpty()) {
                 imageView.setVisibility(View.VISIBLE);
-                imageView.setImageURI(Uri.parse(entry.getImageUri()));
+                try {
+                    imageView.setImageURI(Uri.parse(entry.getImageUri()));
+                } catch (Exception e) {
+                    imageView.setImageResource(R.drawable.ic_eco);
+                }
             } else {
                 imageView.setVisibility(View.GONE);
             }

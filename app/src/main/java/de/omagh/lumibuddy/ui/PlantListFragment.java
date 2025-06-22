@@ -43,8 +43,10 @@ public class PlantListFragment extends Fragment {
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null && plantImagePreview != null) {
-                    pickedImageUri = uri;
-                    plantImagePreview.setImageURI(uri);
+// Copy to internal storage so permission persists
+                    pickedImageUri = de.omagh.lumibuddy.util.ImageUtils.copyUriToInternalStorage(
+                            requireContext(), uri);
+                    plantImagePreview.setImageURI(pickedImageUri);
                 }
             });
 

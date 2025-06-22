@@ -75,7 +75,11 @@ public class PlantDetailFragment extends Fragment {
             nameView.setText(plant.getName());
             typeView.setText("Type: " + plant.getType());
             if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()) {
-                plantImageView.setImageURI(Uri.parse(plant.getImageUri()));
+                try {
+                    plantImageView.setImageURI(Uri.parse(plant.getImageUri()));
+                } catch (Exception e) {
+                    plantImageView.setImageResource(R.drawable.ic_eco);
+                }
             } else {
                 plantImageView.setImageResource(R.drawable.ic_eco);
             }
@@ -141,7 +145,11 @@ public class PlantDetailFragment extends Fragment {
         typeInput.setText(current.getType());
 
         if (imagePreview != null && current.getImageUri() != null && !current.getImageUri().isEmpty()) {
-            imagePreview.setImageURI(Uri.parse(current.getImageUri()));
+            try {
+                imagePreview.setImageURI(Uri.parse(current.getImageUri()));
+            } catch (Exception e) {
+                imagePreview.setImageResource(R.drawable.ic_eco);
+            }
         }
 
         searchPlantBtn.setOnClickListener(v -> {
