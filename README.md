@@ -1,248 +1,565 @@
-# LumiBud 🌱 – Smart Plant Light Measurement & Care App
+# Plant Care Android App Roadmap
 
-## Overview
-
-**LumiBud** is a modular, future-proof Android app for plant lovers, hobby growers, and professionals.  
-It combines professional-grade light/environment measurement, plant identification, personalized care tracking, and actionable recommendations – all in a modern, beautiful UI.
-
-## Key Features
-
-- **Accurate plant-centric light measurement:** Lux, PPFD, DLI, spectrum, and CCT, using phone sensors/camera with calibration.
-- **Plant identification:** AI-powered auto-ID and manual search.
-- **Personalized diary:** Track growth, care events, watering, environment, and compare progress with calendar/agenda views.
-- **Smart recommendations:** Get actionable, plant-specific care advice (lighting, watering, humidity, temperature, interventions).
-- **Grow light auto-ID & calibration:** Scan/search for lamp type and specs or enter manually, supporting best measurement accuracy.
-- **Periodic scans:** Reminders and visual growth tracking with photos and metrics.
-- **Comprehensive settings:** All app, measurement, calibration, and profile preferences in one place.
-- **Planned:** AR overlays, ML-based plant/lamp recognition, and external hardware sensor support (Bluetooth/USB/IoT).
+A comprehensive, developer-grade roadmap for an Android-based plant care application unifying sensor integration, ML/AI, AR, cloud backend, and IoT. This guide outlines how to build a scalable, modular, performant, and maintainable solution with a user-friendly experience, extensibility, and cutting-edge capabilities.
 
 ---
 
 ## Table of Contents
 
-- [Project Vision](#project-vision)
-- [App Architecture](#app-architecture)
-- [Core Modules and Responsibilities](#core-modules-and-responsibilities)
-- [Major Features (Current & Planned)](#major-features-current--planned)
-- [Measurement Science & Algorithms](#measurement-science--algorithms)
-- [Plant Database & Care Recommendation System](#plant-database--care-recommendation-system)
-- [Grow Light Product Integration](#grow-light-product-integration)
-- [Modular Design for AR, ML, and Hardware](#modular-design-for-ar-ml-and-hardware)
-- [UI/UX Principles](#uiux-principles)
-- [Data Models](#data-models)
-- [Development Plan / Roadmap](#development-plan--roadmap)
-- [Contribution Guidelines](#contribution-guidelines)
-- [References](#references)
+1. [Vision & Objectives](#vision--objectives)  
+2. [Architecture & Module Concept](#architecture--module-concept)  
+   1. [Clean Architecture / Hexagonal Design](#clean-architecture--hexagonal-design)  
+   2. [Data Model Examples](#data-model-examples)  
+   3. [Repository Pattern](#repository-pattern)  
+   4. [Sensor Abstraction](#sensor-abstraction)  
+   5. [ML/AI Integration](#mlai-integration)  
+3. [AR Integration](#ar-integration)  
+4. [Backend & Cloud Architecture](#backend--cloud-architecture)  
+5. [Android-Specific Implementation Tips](#android-specific-implementation-tips)  
+6. [CI/CD & Release Management](#cicd--release-management)  
+7. [Project Management & Team Processes](#project-management--team-processes)  
+8. [Data Security & Privacy Strategy](#data-security--privacy-strategy)  
+9. [Monetization & Business Model](#monetization--business-model)  
+10. [Monitoring & Operations](#monitoring--operations)  
+11. [Future Extensions & Roadmap Beyond MVP](#future-extensions--roadmap-beyond-mvp)  
+12. [Example Code Snippets & Technical Tips](#example-code-snippets--technical-tips)  
+13. [Deployment & Release](#deployment--release)  
+14. [Monitoring & Logging in Production](#monitoring--logging-in-production)  
+15. [Quality Assurance & QA Processes](#quality-assurance--qa-processes)  
+16. [Risk Analysis & Mitigation Strategies](#risk-analysis--mitigation-strategies)  
+17. [Timeline & Milestones](#timeline--milestones)  
+18. [Team & Roles](#team--roles)  
+19. [Documentation & Knowledge Transfer](#documentation--knowledge-transfer)  
+20. [Success Metrics](#success-metrics)  
 
 ---
 
-## Project Vision
+## 1. Vision & Objectives
 
-LumiBud aims to **demystify indoor plant care**, putting expert-level light/environment analysis and plant-specific recommendations in every grower’s pocket – whether they use only their phone or add advanced sensors and AI.
+- **Mission**  
+  Provide plant enthusiasts (from hobbyists to professionals) an intelligent app that seamlessly integrates light and environment measurement, plant identification, health monitoring, predictive recommendations, and AR-powered visualizations.
 
----
+- **Target Audience**  
+  Indoor gardeners, hobby plant caretakers, hydroponics enthusiasts, small greenhouse operators, plant researchers.
 
-## App Architecture
-
-### Key Principles
-
-- **Feature modularization** for clean separation, testability, and scalability.
-- **MVVM/Clean Architecture**: ViewModels, repositories, data abstraction.
-- **Dependency injection** for swappable components.
-- **Pluggable sensor sources** (phone, Bluetooth, USB, cloud, etc).
-- **Interfaces for AR and ML modules** (can be stubbed at first, plugged in later).
-- **Room database** for user/plant/care/event storage.
-- **Abstracted network/API layer** for plant/lamp DBs, cloud sync, etc.
-- **All logic unit-testable and UI-independent.**
-
-### Directory Structure (Example)
-de.omagh.lumibud/
-├── core/ # Common utilities/constants
-├── feature_measurement/ # Light/Env measurement logic
-├── feature_plantdb/ # Plant database, ID, care
-├── feature_diary/ # Plant diary/growth tracking
-├── feature_recommendation/# Smart advice/scheduling
-├── feature_growlight/ # Grow light product/ID/calibration
-├── feature_user/ # User/profile/settings/calibration
-├── feature_ar/ # (Future) AR overlays & guides
-├── feature_ml/ # (Future) ML-based plant/light/health recognition
-├── data/ # Room DB, DAOs, entities
-├── network/ # Retrofit/API clients
-├── ui/ # Activities/Fragments/ViewModels
-├── util/ # Utility classes
-├── resources/ # Layouts, drawables, values
+- **Core Values**  
+  Accuracy, privacy & data protection, ease of use, modularity, innovation.
 
 ---
 
-## Core Modules and Responsibilities
+## 2. Architecture & Module Concept
 
-| Module            | Responsibility                                           | Example Classes                                                             |
-|-------------------|----------------------------------------------------------|-----------------------------------------------------------------------------|
-| Measurement       | All light/temp/humidity measurements, calibration        | `MeasurementEngine`, `CameraLightMeter`, `ALSManager`, `CalibrationManager` |
-| Plant DB          | Plant info, identification, care profiles                | `PlantDatabaseManager`, `PlantIdentifier`, `PlantCareProfile`               |
-| Diary             | Plant logs, growth photos, calendar/agenda               | `PlantLogManager`, `DiaryEntry`, `AgendaManager`                            |
-| Recommendation    | Care recommendations, scheduling, notifications          | `RecommendationEngine`, `WateringScheduler`                                 |
-| Grow Light        | Lamp profiles, auto-ID, calibration, manual entry        | `GrowLightProfileManager`, `LampAutoIdentifier`                             |
-| User/Settings     | User profile, preferences, calibration profiles          | `UserProfileManager`, `SettingsManager`                                     |
-| AR                | (Future) AR overlays/visuals for measurement/growth scan | `ARMeasureOverlay`, `ARGrowthTracker`                                       |
-| ML                | (Future) Plant/lamp/health recognition via ML            | `PlantClassifier`, `LampTypeClassifier`                                     |
-| External Hardware | (Future) BLE/USB/IoT sensors, smart pots, etc            | `BluetoothPARMeterSource`, `USBQuantumSensorSource`, `HardwareManager`      |
+### 2.1. Clean Architecture / Hexagonal Design
 
----
+- **Layers**  
+  - **Domain**: Pure business logic (use-cases, entities).  
+  - **Data**: Repository implementations (Room, Firestore/REST, local files), sensor data, ML model data.  
+  - **Presentation**: UI (Jetpack Compose), ViewModels.  
+  - **Infrastructure**: Android APIs (SensorManager, CameraX, ARCore), network (Retrofit), DI (Hilt).
 
-## Major Features (Current & Planned)
+- **Abstractions**  
+  Interfaces for repositories, `SensorProvider`, `MLInferenceProvider`, `ARProvider`, `NotificationScheduler`.
 
-### 🌟 **Current**
-- Modern home/dashboard, measure tab, plant diary, growth calendar/agenda
-- Accurate Lux, PPFD, DLI, CCT, spectrum measurement (camera/diffuser & ALS)
-- Auto/manual plant identification, database of care needs by species/stage
-- Watering schedule, care recommendations, notifications/reminders
-- Grow light product integration (search, scan, manual entry)
-- Periodic plant scan & visual growth tracking
+- **Dependency Injection**  
+  Hilt modules: `domainModule`, `dataModule`, `presentationModule`, `sensorModule`, `mlModule`, `arModule`, `networkModule`.
 
-### 🛠️ **Planned / Modular**
-- AR overlays (real-time optical indicators for measurement/growth)
-- ML-based plant and grow light auto-ID
-- External hardware support (Bluetooth/USB/IoT sensors, cloud)
-- Cloud backup/sync, multi-device profiles
-- Advanced diagnostics: ML for plant health/disease, leaf area, etc.
+- **Modularization**  
+```
 
----
+\:app
+\:core-domain
+\:core-data
+\:feature-plant
+\:feature-measurement
+\:feature-ar
+\:feature-community
+\:feature-settings
+\:shared-ml
+\:shared-sensor
 
-## Measurement Science & Algorithms
+````
 
-### Key Metrics
-- **Lux (Illuminance)**: Measured via ALS or camera.
-- **Foot-candles**: Optional imperial unit (1 fc = 10.764 lux).
-- **PPFD (μmol/m²/s)**: Core metric for plant photosynthesis.
-- **DLI (mol/m²/day)**: Total plant-usable light per day.
-- **CCT (Kelvin)**: Color temperature.
-- **Spectrum**: R/G/B proportion; spectrum type auto-identified or manually selected.
+- **Benefits**  
+Independent testability, clear responsibilities, parallel team development.
 
-### Algorithms/Approach
+### 2.2. Data Model Examples
 
-- **ALS (Ambient Light Sensor):** Direct lux reading; spectrum-dependent conversion to PPFD.
-- **Camera + Diffuser:** Average RGB, spectrum heuristics, per-lamp calibration factor or user-supplied calibration.
-- **Calibration:** Per-device, per-lamp, user-adjustable profiles; supports custom reference (sun, meter, manufacturer).
-- **Periodic logging:** For DLI and environment tracking.
-- **Spectral heuristics:** Rule-based RGB analysis for light type (Bluer, Redder, Full-spectrum, etc).
+#### Entity: `Plant`
+```kotlin
+@Entity(tableName = "plants")
+data class Plant(
+  @PrimaryKey val id: String = UUID.randomUUID().toString(),
+  val name: String,
+  val speciesId: String?,
+  val nickname: String?,
+  val locationTagId: String?,
+  val datePlanted: Instant?,
+  val imageUri: String?,
+  val userNotes: String?
+)
+````
 
-### Modular Input Source Design
+#### Entity: `CareEvent`
 
-- All measurements via `LightMeasurementSource` interface (phone, BLE, USB, IoT, etc).
-- Easy to extend for hardware with minimal core code changes.
+```kotlin
+@Entity(
+  tableName = "care_events",
+  foreignKeys = [ForeignKey(entity = Plant::class,
+                            parentColumns = ["id"],
+                            childColumns = ["plantId"],
+                            onDelete = CASCADE)]
+)
+data class CareEvent(
+  @PrimaryKey val id: String = UUID.randomUUID().toString(),
+  val plantId: String,
+  val timestamp: Instant,
+  val type: CareType,
+  val details: String?,
+  val sensorReadingsId: String?
+)
 
----
+enum class CareType { WATERING, FERTILIZING, REPOTTING, PRUNING, CUSTOM }
+```
 
-## Plant Database & Care Recommendation System
+#### Entity: `SensorReading`
 
-- **Plant ID:** AI photo recognition (ML Kit, PlantID API), manual search/list as fallback.
-- **Plant DB:** Optimal DLI, PPFD, temp, humidity, watering by species/stage.
-- **Diary:** Growth scans, photos, measurements, notes, interventions.
-- **Care Recommendation Engine:** Matches logs/measurements to plant needs; gives user actionable, stage-specific advice.
-- **Watering/Fertilizer Scheduler:** Dynamic reminders, rescheduling based on log entries.
+```kotlin
+@Entity(tableName = "sensor_readings")
+data class SensorReading(
+    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    val plantId: String?,
+    val timestamp: Instant,
+    val locationTagId: String?,
+    val lux: Float?,
+    val ppfd: Float?,
+    val dli: Float?,
+    val cct: Float?,
+    val temperature: Float?,
+    val humidity: Float?,
+    val soilMoisture: Float?,
+    val externalSensorSource: String?
+)
+```
 
----
+#### Entity: `LocationTag`
 
-## Grow Light Product Integration
+```kotlin
+@Entity(tableName = "locations")
+data class LocationTag(
+  @PrimaryKey val id: String = UUID.randomUUID().toString(),
+  val name: String,
+  val description: String?
+)
+```
 
-- **Auto-ID:** Scan/search lamp brand/model/barcode or take photo; fetch lamp specs from DB/online.
-- **Manual Entry:** User can specify lamp type, spectrum, wattage, PPFD at distance.
-- **Calibration:** Each lamp/profile can have unique calibration factor.
+#### Entity: `LightFixture`
 
----
+```kotlin
+@Entity(tableName = "light_fixtures")
+data class LightFixture(
+  @PrimaryKey val id: String = UUID.randomUUID().toString(),
+  val name: String,
+  val brand: String?,
+  val model: String?,
+  val spectralProfileUrl: String?,
+  val typicalPPFDAtHeight: Map<Int, Float>?,
+  val notes: String?
+)
+```
 
-## Modular Design for AR, ML, and Hardware
+*Additional entities*: `UserProfile`, `CommunityPost`, `ModelVersion`, `CalibrationEntry`, `DeviceCalibration`.
 
-- **AR Module:** Overlays for live measurement, growth alignment, plant care suggestions (via ARCore or compatible tech).
-- **ML Module:** Plant/lamp recognition, health status detection (modular, replaceable, updatable as tech advances).
-- **External Hardware Module:** Bluetooth/USB/IoT sensors; plug-and-play via interface and HardwareManager.
+### 2.3. Repository Pattern
 
----
+```kotlin
+interface PlantRepository {
+  suspend fun getAllPlants(): List<Plant>
+  suspend fun getPlantById(id: String): Plant?
+  suspend fun insertPlant(plant: Plant)
+  suspend fun updatePlant(plant: Plant)
+  suspend fun deletePlant(id: String)
+}
+```
 
-## UI/UX Principles
+*Impl*: `PlantRepositoryImpl` uses Room DAO + remote sync via WorkManager.
 
-- Modern, clean, minimal UI (Material 3 style)
-- Dashboard with today’s status, reminders, quick actions
-- Diary/calendar/agenda for all logs and tasks
-- Simple and attractive “Add Plant”/“Scan Now” flows
-- Visual spectrum, DLI, and growth charts (with photo before/after)
-- All preferences/calibration/settings easily discoverable
-- All features accessible without AR/ML/hardware, but ready for them
+### 2.4. Sensor Abstraction
 
----
+#### Interfaces
 
-## Data Models (Example)
-
-```java
-class Plant {
-    String id, nickname, scientificName, commonName, photoUri;
-    PlantStage currentStage;
-    PlantCareProfile careProfile;
-    List<PlantLogEntry> diary;
+```kotlin
+interface LightSensorProvider {
+  fun startListening(callback: (lux: Float) -> Unit)
+  fun stopListening()
 }
 
-class PlantLogEntry {
-    Date timestamp;
-    Measurement measurement;
-    String note;
-    String photoUri;
-    boolean watered, interventionRequired;
+interface CameraSpectralProvider {
+  suspend fun measureCCT(bitmap: Bitmap): Float?
 }
 
-class Measurement {
-    float lux, footcandles, ppfd, dli, cct, temperature, humidity;
-    SpectrumEstimate spectrum;
-    String source; // "Phone Camera", "BLE PAR Meter", etc
-    String calibrationProfileId;
+interface ExternalSensorProvider {
+  suspend fun readSensorData(): ExternalSensorResult
 }
-Development Plan / Roadmap
-Project foundation: App skeleton, navigation, MVVM, Room DB
+```
 
-Measurement MVP: ALS/camera/diffuser, core metric display
+#### Implementations
 
-Plant DB/Diary: Plant add/ID/search, care DB, logs, timeline/calendar
+* **Phone Light Sensor** via `SensorManager.TYPE_LIGHT`
+* **Camera-based** with CameraX ImageAnalysis
+* **External BLE sensors** for moisture, temp/humidity
+* **Calibration**: Wizard for device-specific and dynamic correction factors
 
-Grow light/lamp integration: Search/scan/manual entry, calibration manager
+### 2.5. ML/AI Integration
 
-Care recommendations & reminders: Scheduler, notifications
+#### 2.5.1. Plant Identification
 
-UI/UX polish: Modern dashboard, diary, photo comparison
+* **Model**: TFLite (MobileNet) on-device; cloud fallback on low confidence
+* **Pipeline**: Photo → preprocess → TFLite inference → top-K
+* **Updates**: Remote Config or backend for new models; optional federated learning
 
-AR/ML stubs: Placeholders for future overlays/recognition
+#### 2.5.2. Disease & Deficiency Detection
 
-Hardware modularization: Interface and code for external sensor expansion
+* **Model**: EfficientNet-Lite for symptoms
+* **Pipeline**: Photo → segment → inference → heatmap (Grad-CAM)
+* **Explainability**: Overlay highlighted regions
 
-Advanced features: AR overlays, ML health/plant/lamp recognition, cloud sync, export/import
+#### 2.5.3. Health Scoring & Predictive Analytics
 
-Contribution Guidelines
-Keep all new features modular (new package/module per major feature)
+* **Inputs**: Sensor time series, care events, ML results
+* **Algorithm**:
 
-Use interfaces for all external services (easy to mock/replace)
+  ```kotlin
+  fun computeHealthScore(params: List<ParameterCompliance>, diseaseRisk: Float): Float { … }
+  ```
+* **UI**: Traffic-light score, trend charts; alerts on threshold breaches
 
-Document all new public methods and data flows
+#### 2.5.4. Grow Light Database & PPFD Simulator
 
-Write and run unit tests for each feature
+* **Database**: Spectral JSON/CSV + PPFD metrics
+* **Simulator**: Inverse-square law ± simple cloud ray-trace; AR overlay via ARCore mesh
 
-Update README with all major changes or planned extensions
+---
 
-References
-Photone Whitepaper (iOS/Android Light Meter Science)
+## 3. AR Integration
 
-[Smartphone-Based Light Measurement for Indoor Plant Care (Research PDF)]
+### 3.1. ARCore Setup
 
-growlightmeter.com
+* **Dependencies**: ARCore SDK, Sceneform/Filament
+* **Manifest**:
 
-PlantID API
+  ```xml
+  <uses-feature android:name="android.hardware.camera.ar" android:required="false"/>
+  ```
+* **Session Lifecycle** in Compose or Fragment
 
-PlantNet
+### 3.2. AR Features
 
-ARCore for Android
+* **Light Heatmap**: Sample ambient light → heatmap overlay on planes
+* **Growth Projection**: 3D model scaled over time
+* **Setup Assistant**: Virtual light placement guidance
+* **Educational Overlays**: Disease schematics on leaves
+* **Optimizations**: Depth API, LOD, anchor limits
 
-Android ML Kit
+---
 
-Notes
-This README is a living document.
-As LumiBud evolves, update this file to reflect architecture, data model, and major feature additions or changes.
+## 4. Backend & Cloud Architecture
 
-For questions, ideas, or collaboration, [contact project owner] or open an issue.
+### 4.1. Platform Choice
+
+* **Firebase** (Firestore, Functions, Storage, Auth, Remote Config)
+  or **Google Cloud** (Cloud Run, Cloud SQL)
+
+### 4.2. Authentication
+
+* **Firebase Auth**: Email/password, Google, Apple
+* **Roles**: User, Beta tester, Admin
+
+### 4.3. Data Synchronization
+
+* **Offline-First** with Room + WorkManager
+* **Conflict Resolution**: Last-write-wins or merge by timestamp
+
+### 4.4. ML Model Distribution
+
+* Remote Config or custom endpoint; version & checksum
+
+### 4.5. Community & Social Features
+
+* Firestore posts/comments; Cloud Functions for moderation; FCM notifications
+
+### 4.6. Analytics & Monitoring
+
+* Crashlytics, Firebase Analytics, Performance Monitoring, Timber logs
+
+### 4.7. Serverless Logic
+
+* Cloud Functions: training triggers, REST API, webhooks
+
+### 4.8. Media Storage
+
+* Firebase Storage for images, spectral data, models (WebP compression)
+
+---
+
+## 5. Android-Specific Implementation Tips
+
+### 5.1. Project Setup
+
+* Gradle multi-module, semantic versioning, build variants, ProGuard/R8 rules
+
+### 5.2. Hilt DI
+
+* Modules: Data, Network, Sensor, ML, AR
+* Scopes: `@Singleton`, `@ActivityRetained`
+* Qualifiers for fakes in tests
+
+### 5.3. SensorManager & CameraX
+
+* Check sensor availability; manage sampling rates
+* Use CameraX `ImageAnalysis` for CCT
+
+### 5.4. Jetpack Compose UI
+
+* Theming, screens (PlantList, Detail, Measurement, AR, Diary, Community)
+* State via ViewModel + StateFlow; Navigation Compose
+
+### 5.5. WorkManager
+
+* Periodic health-check (every 6 h)
+* One-off uploads, sync tasks
+
+### 5.6. TFLite Integration
+
+* `Interpreter` with NNAPI/GPU delegates; preprocess bitmaps
+
+### 5.7. ARCore in Compose
+
+* Lifecycle in `onResume`/`onPause`; use Filament/Sceneform
+
+### 5.8. Networking
+
+* Retrofit + OkHttp with interceptors; error handling; WebSocket for real-time
+
+### 5.9. Persistence & Migrations
+
+* Room migrations with tests; JSON export/import
+
+### 5.10. Notifications
+
+* Channels for Health Alerts, Reminders, Community; deep links
+
+### 5.11. Security
+
+* EncryptedSharedPreferences, SQLCipher; network security config; Keystore
+
+### 5.12. Testing
+
+* JUnit, Instrumented, UI (Compose Test, Espresso); CI on GitHub Actions/CIℂ
+
+### 5.13. Performance
+
+* Profiling, LeakCanary, defer heavy init, background threads
+
+### 5.14. I18n & L10n
+
+* `strings.xml`, locale formats (Europe/Berlin), RTL support
+
+### 5.15. Accessibility
+
+* TalkBack labels, contrast, scalable fonts, 48 dp targets
+
+---
+
+## 6. CI/CD & Release Management
+
+* **Git Strategy**: Git-flow or trunk-based
+* **CI**: Build, lint, tests, security scans
+* **CD**: Firebase App Distribution, staged rollouts on Play Store
+* **Changelog**: Automated from PRs/commits
+
+---
+
+## 7. Project Management & Team Processes
+
+* **Methodology**: Scrum or Kanban
+* **Backlog**: Epics for MVP → Intelligence → AR → Premium
+* **Definition of Done**: Tests, reviews, docs, QA
+* **Docs**: C4 diagrams, OpenAPI specs, dev guides, user docs
+
+---
+
+## 8. Data Security & Privacy Strategy
+
+* **Classification**: Sensitive vs. personal vs. telemetry
+* **Storage**: Local encryption; HTTPS/TLS + Firestore Rules
+* **Consent**: Before telemetry/photos/location
+* **Policy**: GDPR-compliant, data retention & deletion
+* **Anonymization**: For community & ML use
+
+---
+
+## 9. Monetization & Business Model
+
+* **Freemium**: Basic vs. premium (AR, advanced analytics, cloud backup)
+* **IAP**: One-time modules (calibration pack, extended DB)
+* **Partnerships**: External sensors, affiliate links
+* **Ads**: Minimal, clearly labeled
+* **A/B Testing**: Pricing & bundles
+
+---
+
+## 10. Monitoring & Operations
+
+* **App**: Crashlytics, Perf Monitoring
+* **Backend**: Cloud Monitoring/Stackdriver
+* **Dashboards**: Engagement, retention, conversion, usage
+* **Support**: In-app feedback, ticketing, KB
+
+---
+
+## 11. Future Extensions & Roadmap Beyond MVP
+
+* **iOS/Web**: SwiftUI, CoreML, ARKit, React/Vue
+* **Edge Compute**: Raspberry Pi for local ML
+* **Advanced ML**: Hyperspectral, deeper forecasting
+* **AI Assistant**: Chatbot in-app
+* **Smart Home**: ZigBee/Z-Wave integration
+* **3D Printing**: CAD templates for mounts
+* **AR Glasses**: Headset support
+
+---
+
+## 12. Example Code Snippets & Technical Tips
+
+### 12.1. Reading Light Sensor
+
+```kotlin
+class PhoneLightSensorProvider @Inject constructor(
+  private val context: Context
+) : LightSensorProvider, SensorEventListener { … }
+```
+
+### 12.2. CameraX ImageAnalysis (Pseudocode)
+
+```kotlin
+fun setupCameraAnalysis(lifecycleOwner: LifecycleOwner, analyzer: ImageAnalysis.Analyzer) { … }
+```
+
+### 12.3. TFLite Inference
+
+```kotlin
+class PlantClassifier(private val interpreter: Interpreter, private val labels: List<String>) { … }
+```
+
+### 12.4. ARCore Session in Compose
+
+```kotlin
+@Composable
+fun ARViewComposable(onInitialized: (Session) -> Unit) { … }
+```
+
+### 12.5. WorkManager for Health Check
+
+```kotlin
+class HealthCheckWorker : CoroutineWorker { … }
+```
+
+### 12.6. Retrofit Service
+
+```kotlin
+interface ApiService { … }
+```
+
+---
+
+## 13. Deployment & Release
+
+* **Beta**: Firebase App Distribution / Play Beta
+* **Release**: RC → smoke tests → staged rollout (10%→25%→100%)
+* **Changelog**: In-app notes, email newsletters
+
+---
+
+## 14. Monitoring & Logging in Production
+
+* **Alerts**: Crash rate spikes, API latency, AR failures
+* **User Feedback**: In-app widget, dashboard
+
+---
+
+## 15. Quality Assurance & QA Processes
+
+* **Test Plans**: Measurement accuracy, ML inference
+* **Beta Program**: Engage testers, detailed feedback
+* **Usability Testing**: A/B UI, onboarding flows
+* **Performance**: Benchmark on low-end devices
+
+---
+
+## 16. Risk Analysis & Mitigation Strategies
+
+| Risk                    | Likelihood | Impact      | Mitigation                                    |
+| ----------------------- | ---------- | ----------- | --------------------------------------------- |
+| Inaccurate measurements | Medium     | High        | Calibration wizard, reference device guidance |
+| Poor ML accuracy        | Medium     | Medium-High | Continuous data collection, retraining        |
+| AR performance limits   | High       | Medium      | Feature flags, capability checks              |
+| Privacy concerns        | Medium     | High        | Consent flows, local processing               |
+| Moderation overhead     | Medium     | Medium      | Automated filtering, reputation system        |
+| Monetization backlash   | Low-Medium | Medium      | Clear free vs. premium differentiation        |
+
+---
+
+## 17. Timeline & Milestones
+
+1. **Phase 1 (3–4 mo)**: Module scaffolding, core features (sensors, diary, basic ML, local persistence).
+2. **Phase 2 (2–3 mo)**: Enhanced ML, cloud sync, light DB & simulation, health scoring.
+3. **Phase 3 (2–3 mo)**: AR features, anomaly detection, external sensors, optimizations.
+4. **Phase 4 (1–2 mo)**: Community, premium launch, i18n, polish.
+   *Buffer time included per phase.*
+
+---
+
+## 18. Team & Roles
+
+* **Product Manager**
+* **Lead Developer / Architect**
+* **Android Devs (2–3)**
+* **Backend Devs (1–2)**
+* **ML Engineers (1–2)**
+* **AR Developer (1)**
+* **QA Engineers (1–2)**
+* **DevOps/CI-CD Engineer (1)**
+* **UI/UX Designer (1)**
+* **Data Protection Officer**
+
+---
+
+## 19. Documentation & Knowledge Transfer
+
+* **Diagrams**: C4 model in Confluence/Markdown
+* **API Specs**: OpenAPI/Swagger
+* **Guides**: Kotlin style, commit conventions
+* **Onboarding**: Dev setup, emulators, devices
+* **Training**: ML & AR workshops
+* **Knowledge Base**: Calibration, common issues
+
+---
+
+## 20. Success Metrics
+
+* **Engagement**: DAU/WAU, plants added, measurements
+* **Retention**: D1, D7, D30 rates
+* **Conversion**: Free→paid, A/B pricing results
+* **Performance**: Startup time, inference latency
+* **Quality**: Crash & error rates
+* **Community**: Posts, upvotes, moderation
+* **Feedback**: Surveys, reviews
+
+---
+
+> **Next Steps:**
+>
+> 1. Kickoff: Define Phase 1 user stories
+> 2. Prototype: Sensor light measurement & plant ID
+> 3. Scaffold initial modules per this roadmap
+> 4. Sprint planning aligned with phases above
