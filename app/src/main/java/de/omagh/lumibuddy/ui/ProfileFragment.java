@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.util.PermissionUtils;
+import de.omagh.lumibuddy.util.ImageUtils;
 
 /**
  * Fragment displaying and editing the local user profile.
@@ -60,7 +61,8 @@ public class ProfileFragment extends Fragment {
                 new ActivityResultContracts.GetContent(),
                 uri -> {
                     if (uri != null) {
-                        viewModel.setAvatarUri(uri.toString());
+                        Uri internalUri = ImageUtils.copyUriToInternalStorage(requireContext(), uri);
+                        viewModel.setAvatarUri(internalUri.toString());
                     }
                 });
 

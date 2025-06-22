@@ -22,11 +22,19 @@ import de.omagh.lumibuddy.feature_diary.DiaryEntry;
                 PlantCareProfileEntity.class,
                 GrowLightProduct.class
         },
-        version = 4,
+        version = 5,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase instance;
+    private static final androidx.room.migration.Migration MIGRATION_4_5 =
+            new androidx.room.migration.Migration(4, 5) {
+                @Override
+                public void migrate(androidx.sqlite.db.SupportSQLiteDatabase database) {
+                    // No schema changes. Potential place to migrate stored image URIs
+                    // to internal storage if needed in future versions.
+                }
+            };
 
     /**
      * Returns the singleton instance of the database.
@@ -39,6 +47,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     context.getApplicationContext(),
                                     AppDatabase.class,
                                     "lumibuddy.db")
+                            .addMigrations(MIGRATION_4_5)
                             .fallbackToDestructiveMigration()
                             .build();
                 }

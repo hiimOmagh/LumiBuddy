@@ -33,6 +33,7 @@ import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
 import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.PlantClassifier;
 import de.omagh.lumibuddy.util.PermissionUtils;
+import de.omagh.lumibuddy.util.ImageUtils;
 
 /**
  * Fragment to add or edit a plant.
@@ -58,12 +59,13 @@ public class AddPlantFragment extends Fragment {
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
-                    selectedImageUri = uri;
-                    imagePreview.setImageURI(uri);
+                    selectedImageUri = de.omagh.lumibuddy.util.ImageUtils.copyUriToInternalStorage(
+                            requireContext(), uri);
+                    imagePreview.setImageURI(selectedImageUri);
                     try {
                         android.graphics.Bitmap bmp = android.graphics.ImageDecoder.decodeBitmap(
                                 android.graphics.ImageDecoder.createSource(
-                                        requireActivity().getContentResolver(), uri));
+                                        requireActivity().getContentResolver(), selectedImageUri));
                         recognizePlant(bmp);
                         identifyWithApi(bmp);
                         if (healthClassifier != null) {

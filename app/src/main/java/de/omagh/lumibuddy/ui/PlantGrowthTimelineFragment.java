@@ -26,6 +26,7 @@ import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 import de.omagh.lumibuddy.feature_diary.DiaryEntryAdapter;
 import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
+import de.omagh.lumibuddy.util.ImageUtils;
 
 
 public class PlantGrowthTimelineFragment extends Fragment {
@@ -40,9 +41,10 @@ public class PlantGrowthTimelineFragment extends Fragment {
     private final androidx.activity.result.ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
-                    selectedImageUri = uri;
+                    selectedImageUri = de.omagh.lumibuddy.util.ImageUtils.copyUriToInternalStorage(
+                            requireContext(), uri);
                     if (dialogImagePreview != null) {
-                        dialogImagePreview.setImageURI(uri);
+                        dialogImagePreview.setImageURI(selectedImageUri);
                     }
                 }
             });
