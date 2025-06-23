@@ -30,8 +30,8 @@ android {
 
 dependencies {
     implementation(project(":core-domain"))
-    implementation(libs.appcompat)
-    implementation(libs.material)
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

@@ -16,14 +16,14 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven {
+            url = uri("https://jitpack.io")
+        }
     }
 }
 
 rootProject.name = "LumiBuddy"
 include(":app")
-include(":app:core-infra")
-include(":feature_measurement")
-include(":core_data")
 include(":core-domain")
 include(":core-data")
 include(":core-infra")

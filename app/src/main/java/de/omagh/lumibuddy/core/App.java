@@ -5,6 +5,8 @@ import android.app.Application;
 import timber.log.Timber;
 import de.omagh.lumibuddy.BuildConfig;
 
+import com.squareup.leakcanary.LeakCanary;
+
 /**
  * Custom Application class that sets up Dagger and logging.
  */
@@ -19,6 +21,7 @@ public class App extends Application {
                 .build();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
+            LeakCanary.INSTANCE.install(this);
         }
     }
 

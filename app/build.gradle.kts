@@ -32,6 +32,14 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-domain"))
+    implementation(project(":core-data"))
+    implementation(project(":core-infra"))
+    implementation(project(":feature-measurement"))
+    implementation(project(":feature-plantdb"))
+    implementation(project(":feature-diary"))
+    implementation(project(":feature-growschedule"))
+    implementation(project(":feature-ar"))
     // Material Design
     implementation(libs.material)
     // Navigation
@@ -46,9 +54,6 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.jetbrains.annotations)
 
-    implementation(libs.room.runtime)
-    annotationProcessor(libs.room.compiler)
-    //implementation(project(":feature-measurement"))
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava2)
@@ -66,9 +71,6 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.gson)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.androidx.test.core)
