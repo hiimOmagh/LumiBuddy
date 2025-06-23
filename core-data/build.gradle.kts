@@ -30,7 +30,7 @@ android {
 
 dependencies {
     implementation(project(":core-domain"))
-    implementation(libs.room.runtime)
+    api(libs.room.runtime)
     implementation(libs.androidx.lifecycle.livedata.core)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)

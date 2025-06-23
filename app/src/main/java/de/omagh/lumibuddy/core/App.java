@@ -2,10 +2,10 @@ package de.omagh.lumibuddy.core;
 
 import android.app.Application;
 
-import timber.log.Timber;
-import de.omagh.lumibuddy.BuildConfig;
-
 import com.squareup.leakcanary.LeakCanary;
+
+import de.omagh.lumibuddy.BuildConfig;
+import timber.log.Timber;
 
 /**
  * Custom Application class that sets up Dagger and logging.
