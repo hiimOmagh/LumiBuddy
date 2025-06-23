@@ -4,28 +4,31 @@ import android.app.Application;
 
 import javax.inject.Singleton;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
-import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
-import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
+import de.omagh.core_data.repo.PlantDataSource;
+import de.omagh.core_data.repo.PlantRepository;
+import de.omagh.lumibuddy.data.db.AppDatabase;
 
+/**
+ * Provides data layer dependencies.
+ */
 @Module
-public class DataModule {
+public abstract class DataModule {
     @Provides
     @Singleton
-    AppDatabase provideDatabase(Application app) {
+    static AppDatabase provideDatabase(Application app) {
         return AppDatabase.getInstance(app);
     }
 
     @Provides
-    PlantDao providePlantDao(AppDatabase db) {
+    static PlantDao providePlantDao(AppDatabase db) {
         return db.plantDao();
     }
 
-    @Provides
+    @Binds
     @Singleton
-    PlantRepository providePlantRepository(AppDatabase db) {
-        return new PlantRepository(db);
-    }
+    abstract PlantDataSource bindPlantRepository(PlantRepository impl);
 }

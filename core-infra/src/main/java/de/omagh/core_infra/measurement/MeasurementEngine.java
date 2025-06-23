@@ -1,31 +1,28 @@
 package de.omagh.core_infra.measurement;
 
-import android.content.Context;
+import io.reactivex.Observable;
 
 /**
- * Orchestrates measurement sources (ALS, Camera, etc).
- * Currently wraps ALSManager for live light readings.
+ * Orchestrates measurement sources such as the ambient light sensor.
  */
+import javax.inject.Inject;
+
 public class MeasurementEngine {
-    private final ALSManager alsManager;
+    private final LightSensorProvider lightSensorProvider;
 
-    public MeasurementEngine(Context context) {
-        alsManager = new ALSManager(context);
+    @Inject
+    public MeasurementEngine(LightSensorProvider provider) {
+        this.lightSensorProvider = provider;
     }
 
     /**
-     * Start ALS measurement and receive results via callback.
-     *
-     * @param listener Callback for new lux values.
+     * Observe lux readings from the sensor.
      */
-    public void startALS(ALSManager.OnLuxChangedListener listener) {
-        alsManager.start(listener);
+    public Observable<Float> observeLux() {
+        return lightSensorProvider.observeLux();
     }
 
-    /**
-     * Stop ALS measurement.
-     */
     public void stopALS() {
-        alsManager.stop();
+        lightSensorProvider.stop();
     }
 }

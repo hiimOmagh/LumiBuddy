@@ -17,7 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent = DaggerAppComponent.builder()
-                .sensorModule(new de.omagh.lumibuddy.core_infra.di.SensorModule(this))
+                .sensorModule(new de.omagh.core_infra.di.SensorModule())
                 .build();
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());

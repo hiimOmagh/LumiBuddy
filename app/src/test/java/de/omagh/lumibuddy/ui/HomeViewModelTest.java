@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryDataSource;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
-import de.omagh.lumibuddy.feature_plantdb.PlantDataSource;
+import de.omagh.core_data.repo.PlantDataSource;
 import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
 import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
 

@@ -17,7 +17,7 @@ import timber.log.Timber;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
-import de.omagh.core_infra.measurement.MeasurementEngine;
+import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
 import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
@@ -33,7 +33,7 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
     private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
     @Inject
-    MeasurementEngine measurementEngine;
+    GetCurrentLuxUseCase getCurrentLuxUseCase;
     private Disposable luxDisposable;
     private final CalibrationProfilesManager profileManager;
     private final GrowLightProfileManager growLightManager;
@@ -125,7 +125,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
     // --- ALS management ---
     public void startMeasuring() {
-        luxDisposable = measurementEngine.observeLux()
+        luxDisposable = getCurrentLuxUseCase.execute()
                 .subscribe(lux -> setLux(lux, "ALS"), throwable -> Timber.e(throwable));
     }
 
@@ -133,7 +133,7 @@ public class MeasureViewModel extends AndroidViewModel {
         if (luxDisposable != null && !luxDisposable.isDisposed()) {
             luxDisposable.dispose();
         }
-        measurementEngine.stopALS();
+        getCurrentLuxUseCase.stop();
     }
 
     public void setLux(float lux, String source) {

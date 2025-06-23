@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_plantdb;
+package de.omagh.core_data.repo;
 
 import androidx.lifecycle.LiveData;
 

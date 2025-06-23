@@ -15,7 +15,7 @@ import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
-import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
+import de.omagh.core_data.repo.PlantRepository;
 import de.omagh.lumibuddy.LumiBuddyApplication;
 
 import javax.inject.Inject;
