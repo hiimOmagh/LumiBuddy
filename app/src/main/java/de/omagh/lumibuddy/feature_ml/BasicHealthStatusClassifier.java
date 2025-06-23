@@ -16,7 +16,7 @@ public class BasicHealthStatusClassifier implements HealthStatusClassifier {
 
     @Override
     public void classify(Bitmap bitmap) {
-        Log.d(TAG, "classify() called with bitmap=" + bitmap);
+        Timber.tag(TAG).d("classify() called with bitmap=" + bitmap);
         lastResult = "Healthy";
     }
 

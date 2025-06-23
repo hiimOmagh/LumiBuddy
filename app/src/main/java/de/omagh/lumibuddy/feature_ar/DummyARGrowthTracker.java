@@ -15,16 +15,16 @@ public class DummyARGrowthTracker implements ARGrowthTracker {
 
     @Override
     public void init() {
-        Log.d(TAG, "init() called");
+        Timber.tag(TAG).d("init() called");
     }
 
     @Override
     public void trackGrowth(Bitmap currentView) {
-        Log.d(TAG, "trackGrowth() called with bitmap=" + currentView);
+        Timber.tag(TAG).d("trackGrowth() called with bitmap=" + currentView);
     }
 
     @Override
     public void cleanup() {
-        Log.d(TAG, "cleanup() called");
+        Timber.tag(TAG).d("cleanup() called");
     }
 }

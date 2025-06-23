@@ -126,7 +126,7 @@ public class MeasureViewModel extends AndroidViewModel {
     // --- ALS management ---
     public void startMeasuring() {
         luxDisposable = getCurrentLuxUseCase.execute()
-                .subscribe(lux -> setLux(lux, "ALS"), throwable -> Timber.e(throwable));
+                .subscribe(lux -> setLux(lux, "ALS"), Timber::e);
     }
 
     public void stopMeasuring() {

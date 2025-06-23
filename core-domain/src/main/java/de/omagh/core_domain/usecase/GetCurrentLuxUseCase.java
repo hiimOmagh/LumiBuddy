@@ -1,7 +1,5 @@
 package de.omagh.core_domain.usecase;
 
-import androidx.databinding.Observable;
-
 import javax.inject.Inject;
 
 import de.omagh.core_domain.repository.MeasurementRepository;

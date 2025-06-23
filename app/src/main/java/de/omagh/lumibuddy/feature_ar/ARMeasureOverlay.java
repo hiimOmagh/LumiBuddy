@@ -18,16 +18,16 @@ public class ARMeasureOverlay implements AROverlayRenderer {
 
     @Override
     public void init() {
-        Log.d(TAG, "init() called");
+        Timber.tag(TAG).d("init() called");
     }
 
     @Override
     public void renderOverlay(Canvas canvas, Measurement measurement) {
-        Log.d(TAG, "renderOverlay() called with measurement=" + measurement);
+        Timber.tag(TAG).d("renderOverlay() called with measurement=" + measurement);
     }
 
     @Override
     public void cleanup() {
-        Log.d(TAG, "cleanup() called");
+        Timber.tag(TAG).d("cleanup() called");
     }
 }

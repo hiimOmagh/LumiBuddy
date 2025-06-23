@@ -70,13 +70,13 @@ public class AddPlantFragment extends Fragment {
                         identifyWithApi(bmp);
                         if (healthClassifier != null) {
                             healthClassifier.classify(bmp);
-                            Log.d("AddPlant", "Health result=" + healthClassifier.getLastResult());
+                            Timber.tag("AddPlant").d("Health result=" + healthClassifier.getLastResult());
                         }
                         if (growthTracker != null) {
                             growthTracker.trackGrowth(bmp);
                         }
                     } catch (java.io.IOException e) {
-                        Log.e("AddPlant", "Image decode error", e);
+                        Timber.tag("AddPlant").e(e, "Image decode error");
                     }
                 }
             });
@@ -88,7 +88,7 @@ public class AddPlantFragment extends Fragment {
                     identifyWithApi(bmp);
                     if (healthClassifier != null) {
                         healthClassifier.classify(bmp);
-                        Log.d("AddPlant", "Health result=" + healthClassifier.getLastResult());
+                        Timber.tag("AddPlant").d("Health result=" + healthClassifier.getLastResult());
                     }
                     if (growthTracker != null) {
                         growthTracker.trackGrowth(bmp);

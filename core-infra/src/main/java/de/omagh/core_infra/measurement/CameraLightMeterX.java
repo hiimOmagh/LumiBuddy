@@ -59,7 +59,7 @@ public class CameraLightMeterX {
                         preview, imageAnalysis);
 
             } catch (Exception e) {
-                Log.e("CameraLightMeterX", "Failed to start camera", e);
+                Timber.tag("CameraLightMeterX").e(e, "Failed to start camera");
             }
         }, ContextCompat.getMainExecutor(activity));
     }

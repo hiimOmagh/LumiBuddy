@@ -299,7 +299,7 @@ public class MeasureFragment extends Fragment {
                                             Bitmap sample = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
                                             sample.eraseColor(Color.rgb((int) Math.min(255, meanR), (int) Math.min(255, meanG), (int) Math.min(255, meanB)));
                                             lampTypeClassifier.classify(sample);
-                                            Log.d("MeasureFragment", "Lamp classifier result=" + lampTypeClassifier.getLastResult());
+                                            Timber.tag("MeasureFragment").d("Lamp classifier result=" + lampTypeClassifier.getLastResult());
                                         }
 
                                         int index = lampTypeStringToIndex(lampSuggestion);

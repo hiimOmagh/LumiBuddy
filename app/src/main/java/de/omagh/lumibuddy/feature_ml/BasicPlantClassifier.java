@@ -16,7 +16,7 @@ public class BasicPlantClassifier implements PlantClassifier {
 
     @Override
     public void classify(Bitmap bitmap) {
-        Log.d(TAG, "classify() called with bitmap=" + bitmap);
+        Timber.tag(TAG).d("classify() called with bitmap=" + bitmap);
         lastResult = "Unknown";
     }
 

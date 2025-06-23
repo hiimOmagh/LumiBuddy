@@ -17,7 +17,7 @@ public class DiarySyncManager {
      * Uploads local diary entries to the cloud backend.
      */
     public void syncToCloud() {
-        Log.d(TAG, "syncToCloud: not implemented");
+        Timber.tag(TAG).d("syncToCloud: not implemented");
     }
 
     /**
@@ -25,7 +25,7 @@ public class DiarySyncManager {
      * local database.
      */
     public void loadFromCloud() {
-        Log.d(TAG, "loadFromCloud: not implemented");
+        Timber.tag(TAG).d("loadFromCloud: not implemented");
     }
 
     /**
@@ -36,7 +36,7 @@ public class DiarySyncManager {
      * @return the list that should be kept after conflict resolution
      */
     public List<DiaryEntry> resolveConflicts(List<DiaryEntry> local, List<DiaryEntry> remote) {
-        Log.d(TAG, "resolveConflicts: not implemented");
+        Timber.tag(TAG).d("resolveConflicts: not implemented");
         return local;
     }
 }

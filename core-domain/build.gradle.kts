@@ -9,5 +9,6 @@ dependencies {
     implementation(libs.androidx.annotation.jvm)
     implementation(libs.androidx.room.common.jvm)
     implementation(libs.androidx.baselibrary)
+    implementation(libs.rxjava2)
     // no AndroidX here—just pure-Java dependencies if needed
 }

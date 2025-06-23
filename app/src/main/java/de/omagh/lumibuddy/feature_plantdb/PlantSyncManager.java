@@ -22,7 +22,7 @@ public class PlantSyncManager {
      * </p>
      */
     public void syncToCloud() {
-        Log.d(TAG, "syncToCloud: not implemented");
+        Timber.tag(TAG).d("syncToCloud: not implemented");
     }
 
     /**
@@ -30,7 +30,7 @@ public class PlantSyncManager {
      * database.
      */
     public void loadFromCloud() {
-        Log.d(TAG, "loadFromCloud: not implemented");
+        Timber.tag(TAG).d("loadFromCloud: not implemented");
     }
 
     /**
@@ -41,7 +41,7 @@ public class PlantSyncManager {
      * @return the list that should be kept after conflict resolution
      */
     public List<Plant> resolveConflicts(List<Plant> local, List<Plant> remote) {
-        Log.d(TAG, "resolveConflicts: not implemented");
+        Timber.tag(TAG).d("resolveConflicts: not implemented");
         return local;
     }
 }

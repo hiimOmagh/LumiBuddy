@@ -3,8 +3,8 @@ package de.omagh.core_infra.measurement;
 import io.reactivex.Observable;
 import de.omagh.core_domain.repository.MeasurementRepository;
 
-/**
- * Orchestrates measurement sources such as the ambient light sensor.
+/*
+  Orchestrates measurement sources such as the ambient light sensor.
  */
 import javax.inject.Inject;
 
