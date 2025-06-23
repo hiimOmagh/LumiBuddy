@@ -2,7 +2,7 @@ package de.omagh.lumibuddy.feature_plantdb;
 
 import androidx.lifecycle.MutableLiveData;
 
-import de.omagh.core_data.repo.PlantRepository;
+import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_domain.model.Plant;

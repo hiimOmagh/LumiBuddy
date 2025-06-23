@@ -8,8 +8,8 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_data.db.PlantDao;
-import de.omagh.core_data.repo.PlantDataSource;
-import de.omagh.core_data.repo.PlantRepository;
+import de.omagh.core_data.repository.PlantDataSource;
+import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.lumibuddy.data.db.AppDatabase;
 
 /**

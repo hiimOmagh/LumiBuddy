@@ -30,7 +30,6 @@ android {
 
 dependencies {
     implementation(project(":core-domain"))
-    implementation(project(":core-data"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.dagger)

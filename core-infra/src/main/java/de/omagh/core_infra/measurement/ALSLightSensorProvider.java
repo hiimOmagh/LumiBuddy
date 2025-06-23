@@ -1,6 +1,6 @@
 package de.omagh.core_infra.measurement;
 
-import android.app.Application;
+import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
@@ -10,8 +10,9 @@ import io.reactivex.Observable;
 public class ALSLightSensorProvider implements LightSensorProvider {
     private final ALSManager alsManager;
 
-    public ALSLightSensorProvider(Application app) {
-        this.alsManager = new ALSManager(app);
+    @Inject
+    public ALSLightSensorProvider(ALSManager alsManager) {
+        this.alsManager = alsManager;
     }
 
     @Override

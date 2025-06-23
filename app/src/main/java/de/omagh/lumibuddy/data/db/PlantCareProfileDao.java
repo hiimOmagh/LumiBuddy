@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.omagh.core_domain.model.PlantCareProfileEntity;
+import de.omagh.core_data.model.PlantCareProfileEntity;
 
 /**
  * DAO for plant care profiles cached locally.

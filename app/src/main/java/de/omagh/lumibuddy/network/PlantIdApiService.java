@@ -2,7 +2,7 @@ package de.omagh.lumibuddy.network;
 
 import java.util.List;
 
-import de.omagh.core_domain.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpecies;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Multipart;

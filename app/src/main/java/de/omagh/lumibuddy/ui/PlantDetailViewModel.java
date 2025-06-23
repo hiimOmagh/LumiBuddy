@@ -11,10 +11,10 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 import de.omagh.core_domain.model.Plant;
-import de.omagh.core_domain.model.PlantCareProfileEntity;
-import de.omagh.core_domain.model.PlantSpecies;
+import de.omagh.core_data.model.PlantCareProfileEntity;
+import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
-import de.omagh.core_data.repo.PlantRepository;
+import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.lumibuddy.LumiBuddyApplication;
 
 import javax.inject.Inject;

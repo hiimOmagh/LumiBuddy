@@ -1,4 +1,4 @@
-package de.omagh.core_data.repo;
+package de.omagh.core_data.repository;
 
 import androidx.lifecycle.LiveData;
 

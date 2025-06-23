@@ -19,10 +19,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import de.omagh.core_domain.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.lumibuddy.R;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.core_domain.model.PlantCareProfileEntity;
+import de.omagh.core_data.model.PlantCareProfileEntity;
 
 /**
  * Fragment to display details of a single plant and allow editing.

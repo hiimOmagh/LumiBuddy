@@ -8,5 +8,6 @@ java {
 dependencies {
     implementation(libs.androidx.annotation.jvm)
     implementation(libs.androidx.room.common.jvm)
+    implementation(libs.androidx.baselibrary)
     // no AndroidX here—just pure-Java dependencies if needed
 }

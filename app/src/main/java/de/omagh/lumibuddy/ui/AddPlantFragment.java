@@ -25,7 +25,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.UUID;
 
-import de.omagh.core_domain.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.lumibuddy.R;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;

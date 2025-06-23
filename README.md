@@ -36,16 +36,18 @@ LumiBuddy strictly follows a **Clean/Hexagonal Architecture** approach, designed
 
 * **Domain Layer (`:core-domain`)**:
 
-  * Pure Java models, entities, business logic, use cases.
+  * Pure Java models and business use cases.
+  * Absolutely no Android or Room dependencies.
 
 * **Data Layer (`:core-data`)**:
 
-  * Data repositories, Room database entities and DAOs, data synchronization logic.
+  * Room database entities, DAOs and repositories.
+  * Depends only on `:core-domain`.
 
 * **Infrastructure Layer (`:core-infra`)**:
 
-  * Android-specific implementations (SensorManager, CameraX, Retrofit network services).
-  * Dependency Injection (Dagger 2).
+  * Android implementations of domain interfaces (sensors, networking).
+  * Provides Dagger modules and other platform services.
 
 * **Presentation Layer (`:feature-*`)**:
 
@@ -76,6 +78,12 @@ LumiBuddy/
 └── README.md                    // Project documentation
 ```
 
+Module dependencies:
+
+- `:core-data` depends on `:core-domain`.
+- `:core-infra` depends on `:core-domain` and Android libraries.
+- `:app` pulls in all three cores and each feature module.
+
 ---
 
 ## Technology Stack
@@ -91,6 +99,37 @@ LumiBuddy/
 * **MPAndroidChart**: Data visualization
 * **Timber**: Structured logging
 * **LeakCanary**: Memory leak detection (debug builds)
+
+---
+
+## DI Setup
+
+LumiBuddy uses **Dagger 2** with two main components.
+
+- **CoreComponent** (in `:core-infra`) provides network, database and sensor services via
+  `NetworkModule`, `DataModule` and `SensorModule`.
+- **AppComponent** (in `:app`) depends on `CoreComponent` to wire feature modules.
+
+Example:
+
+```java
+
+@Singleton
+@Component(modules = {NetworkModule.class, DataModule.class, SensorModule.class})
+public interface CoreComponent {
+  void inject(LumiBuddyApplication app);
+
+  void inject(MeasureViewModel viewModel);
+}
+
+@Component(dependencies = CoreComponent.class)
+public interface AppComponent {
+  void inject(HomeActivity activity);
+}
+```
+
+`LumiBuddyApplication` initializes `coreComponent = DaggerCoreComponent.create()` in `onCreate` and
+exposes it to ViewModels.
 
 ---
 
