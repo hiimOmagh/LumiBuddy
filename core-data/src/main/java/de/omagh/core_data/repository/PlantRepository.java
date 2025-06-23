@@ -22,7 +22,7 @@ public class PlantRepository implements PlantDataSource {
         return plantDao.getAll();
     }
 
-    public LiveData<Plant> getPlant(long id) {
+    public LiveData<Plant> getPlant(String id) {
         return plantDao.getById(id);
     }
 

@@ -1,7 +1,8 @@
 package de.omagh.core_infra.measurement;
 
 import android.app.Activity;
-import android.util.Log;
+
+import timber.log.Timber;
 
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;

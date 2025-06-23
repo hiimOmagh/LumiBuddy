@@ -74,7 +74,7 @@ public class HomeViewModelTest {
         }
 
         @Override
-        public MutableLiveData<Plant> getPlant(long id) {
+        public MutableLiveData<Plant> getPlant(String id) {
             return new MutableLiveData<>();
         }
 

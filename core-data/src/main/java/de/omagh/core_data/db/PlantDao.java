@@ -25,7 +25,7 @@ public interface PlantDao {
      * @param plantId The unique ID of the plant.
      */
     @Query("SELECT * FROM plants WHERE id = :plantId LIMIT 1")
-    LiveData<Plant> getById(long plantId);
+    LiveData<Plant> getById(String plantId);
 
     @Insert
     void insert(Plant plant);

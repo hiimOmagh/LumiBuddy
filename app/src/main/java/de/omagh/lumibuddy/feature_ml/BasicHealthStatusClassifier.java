@@ -1,7 +1,8 @@
 package de.omagh.lumibuddy.feature_ml;
 
 import android.graphics.Bitmap;
-import android.util.Log;
+
+import timber.log.Timber;
 
 /**
  * Stub implementation of {@link HealthStatusClassifier}.

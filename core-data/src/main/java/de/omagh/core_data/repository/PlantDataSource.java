@@ -12,7 +12,7 @@ import de.omagh.core_domain.model.Plant;
 public interface PlantDataSource {
     LiveData<List<Plant>> getAllPlants();
 
-    LiveData<Plant> getPlant(long id);
+    LiveData<Plant> getPlant(String id);
 
     void insertPlant(Plant plant);
 

@@ -13,6 +13,7 @@ import de.omagh.lumibuddy.data.model.GrowLightProfile;
 import de.omagh.lumibuddy.network.GrowLightApiService;
 import de.omagh.lumibuddy.network.RetrofitClient;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Syncs grow light data from the API to the local DB.

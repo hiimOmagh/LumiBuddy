@@ -1,6 +1,6 @@
 package de.omagh.lumibuddy.feature_diary;
 
-import android.util.Log;
+import timber.log.Timber;
 
 import java.util.List;
 

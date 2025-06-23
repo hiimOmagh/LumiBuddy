@@ -39,6 +39,7 @@ dependencies {
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)
+    implementation(libs.timber)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

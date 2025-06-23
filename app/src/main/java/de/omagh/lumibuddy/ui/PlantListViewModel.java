@@ -55,7 +55,7 @@ public class PlantListViewModel extends AndroidViewModel {
     /**
      * Gets a plant by its ID (for detail view).
      */
-    public LiveData<Plant> getPlantById(long id) {
+    public LiveData<Plant> getPlantById(String id) {
         return repository.getPlant(id);
     }
 

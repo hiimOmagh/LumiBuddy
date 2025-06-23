@@ -1,7 +1,8 @@
 package de.omagh.lumibuddy.feature_ar;
 
 import android.graphics.Canvas;
-import android.util.Log;
+
+import timber.log.Timber;
 
 import de.omagh.core_domain.model.Measurement;
 

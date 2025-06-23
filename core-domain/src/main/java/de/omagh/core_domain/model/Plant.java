@@ -1,11 +1,18 @@
 package de.omagh.core_domain.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * Domain model representing a plant.
- * This version has no Android dependencies.
- */
+ * Stored in Room database and used across the app.
+ * */
 
+@Entity(tableName = "plants")
 public class Plant {
+    @PrimaryKey
+    @NonNull
     private final String id;
     private final String name;
     private final String type;
