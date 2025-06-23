@@ -43,7 +43,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        ((LumiBuddyApplication) application).getCoreComponent().inject(this);
+        ((LumiBuddyApplication) application).getAppComponent().inject(this);
         CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
         profileManager = new CalibrationProfilesManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());

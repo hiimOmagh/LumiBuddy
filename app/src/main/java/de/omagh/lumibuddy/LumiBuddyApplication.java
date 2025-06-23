@@ -5,22 +5,33 @@ import android.app.Application;
 import timber.log.Timber;
 import de.omagh.core_infra.di.DaggerCoreComponent;
 import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.lumibuddy.core.AppComponent;
+import de.omagh.lumibuddy.core.DaggerAppComponent;
 
 /**
  * Simplified Application setup used for instrumentation tests.
  */
 public class LumiBuddyApplication extends Application {
     private CoreComponent coreComponent;
+    private AppComponent appComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        coreComponent = DaggerCoreComponent.create();
-        coreComponent.inject(this);
+        coreComponent = DaggerCoreComponent.builder()
+                .application(this)
+                .build();
+        appComponent = DaggerAppComponent.builder()
+                .coreComponent(coreComponent)
+                .build();
         Timber.plant(new Timber.DebugTree());
     }
 
     public CoreComponent getCoreComponent() {
         return coreComponent;
+    }
+
+    public AppComponent getAppComponent() {
+        return appComponent;
     }
 }

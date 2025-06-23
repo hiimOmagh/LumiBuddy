@@ -113,7 +113,6 @@ LumiBuddy uses **Dagger 2** with two main components.
 Example:
 
 ```java
-
 @Singleton
 @Component(modules = {NetworkModule.class, DataModule.class, SensorModule.class})
 public interface CoreComponent {
@@ -122,14 +121,18 @@ public interface CoreComponent {
   void inject(MeasureViewModel viewModel);
 }
 
+@Singleton
 @Component(dependencies = CoreComponent.class)
 public interface AppComponent {
-  void inject(HomeActivity activity);
+  void inject(MeasureViewModel vm);
+
+  void inject(PlantDetailViewModel vm);
+
+  void inject(PlantListViewModel vm);
 }
 ```
 
-`LumiBuddyApplication` initializes `coreComponent = DaggerCoreComponent.create()` in `onCreate` and
-exposes it to ViewModels.
+`LumiBuddyApplication` builds both components and exposes `getAppComponent()` for injection.
 
 ---
 

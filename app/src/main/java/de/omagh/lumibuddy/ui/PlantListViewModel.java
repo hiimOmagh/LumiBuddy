@@ -39,7 +39,7 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public PlantListViewModel(@NonNull Application application) {
         super(application);
-        ((LumiBuddyApplication) application).getCoreComponent().inject(this);
+        ((LumiBuddyApplication) application).getAppComponent().inject(this);
         infoRepository = new PlantInfoRepository(application);
         sampleDb = new PlantDatabaseManager();
         plants = repository.getAllPlants();
