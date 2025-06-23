@@ -3,8 +3,8 @@ package de.omagh.lumibuddy.feature_plantdb;
 import androidx.lifecycle.MutableLiveData;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
-import de.omagh.lumibuddy.data.db.PlantDao;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_data.db.PlantDao;
+import de.omagh.core_domain.model.Plant;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;

@@ -6,11 +6,12 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import de.omagh.core_data.db.PlantDao;
 import de.omagh.lumibuddy.data.model.GrowLightProduct;
 import de.omagh.lumibuddy.data.model.GrowLightProfile;
-import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
-import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.model.PlantCareProfileEntity;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 @Database(

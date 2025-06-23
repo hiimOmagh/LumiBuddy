@@ -2,7 +2,7 @@ package de.omagh.lumibuddy.feature_ar;
 
 import android.graphics.Canvas;
 
-import de.omagh.lumibuddy.data.model.Measurement;
+import de.omagh.core_domain.model.Measurement;
 
 /**
  * Contract for components that render augmented reality overlays on top

@@ -14,7 +14,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 
 
 /**

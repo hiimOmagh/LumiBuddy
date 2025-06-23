@@ -13,7 +13,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.ui.MainActivity;
 
 /**

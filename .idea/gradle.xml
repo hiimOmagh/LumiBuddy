@@ -11,7 +11,14 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/core-data" />
             <option value="$PROJECT_DIR$/core-domain" />
+            <option value="$PROJECT_DIR$/core-infra" />
+            <option value="$PROJECT_DIR$/feature-ar" />
+            <option value="$PROJECT_DIR$/feature-diary" />
+            <option value="$PROJECT_DIR$/feature-growschedule" />
+            <option value="$PROJECT_DIR$/feature-measurement" />
+            <option value="$PROJECT_DIR$/feature-plantdb" />
           </set>
         </option>
       </GradleProjectSettings>

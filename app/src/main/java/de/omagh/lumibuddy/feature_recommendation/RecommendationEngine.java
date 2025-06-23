@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
 import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;

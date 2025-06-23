@@ -3,7 +3,7 @@ package de.omagh.lumibuddy.feature_ar;
 import android.graphics.Canvas;
 import android.util.Log;
 
-import de.omagh.lumibuddy.data.model.Measurement;
+import de.omagh.core_domain.model.Measurement;
 
 /**
  * Stub implementation of {@link AROverlayRenderer}.

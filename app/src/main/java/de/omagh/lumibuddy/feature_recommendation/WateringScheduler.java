@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omagh.lumibuddy.data.db.DiaryDao;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 /**

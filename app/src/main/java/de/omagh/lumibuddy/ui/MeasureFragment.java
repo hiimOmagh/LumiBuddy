@@ -23,10 +23,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.omagh.core_domain.model.Measurement;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
-import de.omagh.lumibuddy.feature_measurement.CameraLightMeterX;
+import de.omagh.core_infra.measurement.CameraLightMeterX;
 import de.omagh.lumibuddy.feature_ml.BasicLampTypeClassifier;
 import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
@@ -283,8 +284,8 @@ public class MeasureFragment extends Fragment {
                                         cameraPreview.setVisibility(View.GONE);
 
                                         if (enableAROverlay && arOverlayRenderer != null) {
-                                            de.omagh.lumibuddy.data.model.Measurement m =
-                                                    new de.omagh.lumibuddy.data.model.Measurement();
+                                            Measurement m =
+                                                    new Measurement();
                                             m.lux = pseudoLux;
                                             arOverlayRenderer.renderOverlay(new android.graphics.Canvas(), m);
                                         }

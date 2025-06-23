@@ -11,15 +11,11 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import de.omagh.lumibuddy.data.db.DiaryDao;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**

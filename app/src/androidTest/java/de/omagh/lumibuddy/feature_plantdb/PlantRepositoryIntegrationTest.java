@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.omagh.lumibuddy.data.db.AppDatabase;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;

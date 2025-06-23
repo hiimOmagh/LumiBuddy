@@ -19,9 +19,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
+import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.model.PlantCareProfileEntity;
 
 /**
  * Fragment to display details of a single plant and allow editing.
@@ -162,7 +163,7 @@ public class PlantDetailFragment extends Fragment {
                 new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                         .setTitle("Select Plant")
                         .setItems(names, (d, which) -> {
-                            de.omagh.lumibuddy.data.model.PlantSpecies info = results.get(which);
+                            PlantSpecies info = results.get(which);
                             nameInput.setText(info.getCommonName());
                             typeInput.setText(info.getScientificName());
                         })

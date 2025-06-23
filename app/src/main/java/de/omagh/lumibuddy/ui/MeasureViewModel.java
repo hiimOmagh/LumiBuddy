@@ -10,12 +10,14 @@ import org.jspecify.annotations.NonNull;
 
 import javax.inject.Inject;
 
+import de.omagh.lumibuddy.LumiBuddyApplication;
+
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
-import de.omagh.lumibuddy.feature_measurement.MeasurementEngine;
+import de.omagh.core_infra.measurement.MeasurementEngine;
 import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
 import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
@@ -41,7 +43,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        ((de.omagh.lumibuddy.core.App) application).getAppComponent().inject(this);
+        ((LumiBuddyApplication) application).getCoreComponent().inject(this);
         CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
         profileManager = new CalibrationProfilesManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());

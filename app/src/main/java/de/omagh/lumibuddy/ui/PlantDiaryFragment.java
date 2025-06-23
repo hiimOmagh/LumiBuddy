@@ -26,11 +26,10 @@ import java.util.List;
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 import de.omagh.lumibuddy.feature_diary.DiaryEntryAdapter;
 import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
-import de.omagh.lumibuddy.util.ImageUtils;
 
 /**
  * Diary tab showing all diary entries across plants.

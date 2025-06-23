@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_measurement;
+package de.omagh.core_infra.measurement;
 
 import android.app.Activity;
 import android.util.Log;

@@ -1,26 +1,23 @@
-package de.omagh.lumibuddy.data.model;
+package de.omagh.core_domain.model;
 
-import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+/**
+ * Domain model representing a plant.
+ * This version has no Android dependencies.
+ */
 
-@Entity(tableName = "plants")
 public class Plant {
-    @PrimaryKey
-    @NonNull
     private final String id;
     private final String name;
     private final String type;
     private final String imageUri; // <-- NEW
 
-    public Plant(@NonNull String id, String name, String type, String imageUri) {
+    public Plant(String id, String name, String type, String imageUri) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.imageUri = imageUri;
     }
 
-    @NonNull
     public String getId() {
         return id;
     }

@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantSpecies;
 
 /**
  * DAO for plant species cached locally.

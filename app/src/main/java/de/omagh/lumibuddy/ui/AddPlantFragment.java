@@ -25,15 +25,15 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.UUID;
 
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
 import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
 import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.PlantClassifier;
 import de.omagh.lumibuddy.util.PermissionUtils;
-import de.omagh.lumibuddy.util.ImageUtils;
 
 /**
  * Fragment to add or edit a plant.
@@ -251,7 +251,7 @@ public class AddPlantFragment extends Fragment {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Select Plant")
                     .setItems(names, (d, which) -> {
-                        de.omagh.lumibuddy.data.model.PlantSpecies s = results.get(which);
+                        PlantSpecies s = results.get(which);
                         nameInput.setText(s.getCommonName());
                         typeInput.setText(s.getScientificName());
                     })

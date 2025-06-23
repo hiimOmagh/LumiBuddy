@@ -9,14 +9,16 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.db.AppDatabase;
-import de.omagh.lumibuddy.data.model.Plant;
-import de.omagh.lumibuddy.data.model.PlantCareProfileEntity;
-import de.omagh.lumibuddy.data.model.PlantSpecies;
+import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.model.PlantCareProfileEntity;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
 import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
+import de.omagh.lumibuddy.LumiBuddyApplication;
+
+import javax.inject.Inject;
 
 /**
  * ViewModel for managing the user's plant list.
@@ -25,7 +27,8 @@ import de.omagh.lumibuddy.feature_plantdb.PlantRepository;
  */
 public class PlantListViewModel extends AndroidViewModel {
     private final LiveData<List<Plant>> plants;
-    private final PlantRepository repository;
+    @Inject
+    PlantRepository repository;
     private final PlantInfoRepository infoRepository;
     private final PlantDatabaseManager sampleDb;
 
@@ -36,8 +39,7 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public PlantListViewModel(@NonNull Application application) {
         super(application);
-        AppDatabase db = AppDatabase.getInstance(application);
-        repository = new PlantRepository(db);
+        ((LumiBuddyApplication) application).getCoreComponent().inject(this);
         infoRepository = new PlantInfoRepository(application);
         sampleDb = new PlantDatabaseManager();
         plants = repository.getAllPlants();

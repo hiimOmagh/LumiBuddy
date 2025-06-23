@@ -4,7 +4,7 @@ import android.util.Log;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.Plant;
+import de.omagh.core_domain.model.Plant;
 
 /**
  * Manager responsible for synchronizing the user's plant database with a cloud
