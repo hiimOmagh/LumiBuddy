@@ -11,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.db.AppDatabase;
+import de.omagh.core_data.db.AppDatabase;
 import de.omagh.lumibuddy.data.db.DiaryDao;
 
 /**

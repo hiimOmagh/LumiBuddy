@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import de.omagh.core_data.repository.PlantRepository;
-import de.omagh.lumibuddy.data.db.AppDatabase;
+import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_domain.model.Plant;
 
 import java.util.List;

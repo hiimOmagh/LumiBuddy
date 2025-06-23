@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.data.db;
+package de.omagh.core_data.db;
 
 import android.content.Context;
 
@@ -9,13 +9,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import de.omagh.core_data.db.PlantDao;
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
-import de.omagh.lumibuddy.data.model.GrowLightProfile;
+//import de.omagh.lumibuddy.data.model.GrowLightProduct;
+//import de.omagh.lumibuddy.data.model.GrowLightProfile;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+//import de.omagh.lumibuddy.feature_diary.DiaryEntry;
 
 @Database(
         entities = {

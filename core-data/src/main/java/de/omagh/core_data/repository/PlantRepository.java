@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import de.omagh.lumibuddy.data.db.AppDatabase;
+import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_domain.model.Plant;
 
