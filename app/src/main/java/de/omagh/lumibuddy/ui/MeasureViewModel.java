@@ -8,6 +8,10 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
 
+import javax.inject.Inject;
+
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
@@ -26,7 +30,9 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<Float> dliLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
     private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
-    private final MeasurementEngine measurementEngine;
+    @Inject
+    MeasurementEngine measurementEngine;
+    private Disposable luxDisposable;
     private final CalibrationProfilesManager profileManager;
     private final GrowLightProfileManager growLightManager;
     private final SettingsManager settingsManager;
@@ -35,7 +41,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        measurementEngine = new MeasurementEngine(application.getApplicationContext());
+        ((de.omagh.lumibuddy.core.App) application).getAppComponent().inject(this);
         CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
         profileManager = new CalibrationProfilesManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());
@@ -117,10 +123,14 @@ public class MeasureViewModel extends AndroidViewModel {
 
     // --- ALS management ---
     public void startMeasuring() {
-        measurementEngine.startALS(lux -> setLux(lux, "ALS"));
+        luxDisposable = measurementEngine.observeLux()
+                .subscribe(lux -> setLux(lux, "ALS"), throwable -> Timber.e(throwable));
     }
 
     public void stopMeasuring() {
+        if (luxDisposable != null && !luxDisposable.isDisposed()) {
+            luxDisposable.dispose();
+        }
         measurementEngine.stopALS();
     }
 

@@ -21,4 +21,14 @@ dependencyResolutionManagement {
 
 rootProject.name = "LumiBuddy"
 include(":app")
+include(":app:core-infra")
+include(":feature_measurement")
+include(":core_data")
 include(":core-domain")
+include(":core-data")
+include(":core-infra")
+include(":feature-measurement")
+include(":feature-plantdb")
+include(":feature-diary")
+include(":feature-growschedule")
+include(":feature-ar")
