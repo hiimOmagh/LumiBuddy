@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.data.db;
+package de.omagh.core_data.db;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -7,7 +7,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.core_data.model.GrowLightProduct;
 
 /**
  * DAO for caching grow light product information.

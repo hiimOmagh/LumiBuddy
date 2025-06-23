@@ -1,5 +1,6 @@
 package de.omagh.lumibuddy.feature_diary;
 
+import de.omagh.core_data.model.DiaryEntry;
 import timber.log.Timber;
 
 import java.util.List;

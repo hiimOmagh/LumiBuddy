@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_diary;
+package de.omagh.core_data.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

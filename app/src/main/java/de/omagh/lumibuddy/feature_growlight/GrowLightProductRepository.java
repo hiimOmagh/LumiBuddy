@@ -10,8 +10,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omagh.core_data.db.AppDatabase;
-import de.omagh.lumibuddy.data.db.GrowLightProductDao;
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.core_data.db.GrowLightProductDao;
+import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.lumibuddy.network.GrowLightApiService;
 import de.omagh.lumibuddy.network.RetrofitClient;
 import retrofit2.Call;

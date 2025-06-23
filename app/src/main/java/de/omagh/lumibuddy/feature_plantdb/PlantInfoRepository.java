@@ -12,8 +12,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omagh.core_data.db.AppDatabase;
-import de.omagh.lumibuddy.data.db.PlantCareProfileDao;
-import de.omagh.lumibuddy.data.db.PlantSpeciesDao;
+import de.omagh.core_data.db.PlantCareProfileDao;
+import de.omagh.core_data.db.PlantSpeciesDao;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.lumibuddy.network.PlantApiService;

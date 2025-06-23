@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 import java.util.*;
 
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 
 public class RecommendationEngineTest {
 

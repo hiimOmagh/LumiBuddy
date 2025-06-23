@@ -12,9 +12,9 @@ import org.junit.runner.RunWith;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import de.omagh.lumibuddy.data.db.DiaryDao;
+import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 
 import static org.mockito.Mockito.*;
 

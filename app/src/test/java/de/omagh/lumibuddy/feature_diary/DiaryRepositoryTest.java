@@ -2,7 +2,8 @@ package de.omagh.lumibuddy.feature_diary;
 
 import androidx.lifecycle.MutableLiveData;
 
-import de.omagh.lumibuddy.data.db.DiaryDao;
+import de.omagh.core_data.db.DiaryDao;
+import de.omagh.core_data.model.DiaryEntry;
 
 import org.junit.Before;
 import org.junit.Test;

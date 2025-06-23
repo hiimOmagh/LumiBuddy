@@ -2,7 +2,7 @@ package de.omagh.lumibuddy.network;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;

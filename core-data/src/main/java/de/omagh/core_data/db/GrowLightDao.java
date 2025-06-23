@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.data.db;
+package de.omagh.core_data.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -8,7 +8,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.GrowLightProfile;
+import de.omagh.core_data.model.GrowLightProfile;
 
 @Dao
 public interface GrowLightDao {

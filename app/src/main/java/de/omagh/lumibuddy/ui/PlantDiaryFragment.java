@@ -27,7 +27,7 @@ import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.lumibuddy.feature_diary.DiaryEntryAdapter;
 import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
 

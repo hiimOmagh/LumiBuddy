@@ -12,7 +12,8 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 import de.omagh.core_data.db.AppDatabase;
-import de.omagh.lumibuddy.data.db.DiaryDao;
+import de.omagh.core_data.db.DiaryDao;
+import de.omagh.core_data.model.DiaryEntry;
 
 /**
  * ViewModel for managing diary entries (timeline) for a specific plant.

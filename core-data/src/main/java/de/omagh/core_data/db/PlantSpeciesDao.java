@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.data.db;
+package de.omagh.core_data.db;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

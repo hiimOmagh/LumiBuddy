@@ -2,8 +2,8 @@ package de.omagh.lumibuddy.network;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
-import de.omagh.lumibuddy.data.model.GrowLightProfile;
+import de.omagh.core_data.model.GrowLightProduct;
+import de.omagh.core_data.model.GrowLightProfile;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;

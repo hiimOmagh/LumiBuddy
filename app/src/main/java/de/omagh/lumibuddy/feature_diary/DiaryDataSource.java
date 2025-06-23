@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import de.omagh.core_data.model.DiaryEntry;
+
 /**
  * Interface for diary data operations used by view models.
  */

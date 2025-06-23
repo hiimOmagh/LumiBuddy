@@ -9,12 +9,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-//import de.omagh.lumibuddy.data.model.GrowLightProduct;
-//import de.omagh.lumibuddy.data.model.GrowLightProfile;
+import de.omagh.core_data.model.GrowLightProduct;
+import de.omagh.core_data.model.GrowLightProfile;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
-//import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 
 @Database(
         entities = {
@@ -29,7 +29,6 @@ import de.omagh.core_data.model.PlantSpecies;
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
-    private static volatile AppDatabase instance;
     private static final Migration MIGRATION_4_5 =
             new Migration(4, 5) {
                 @Override
@@ -38,6 +37,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     // to internal storage if needed in future versions.
                 }
             };
+    private static volatile AppDatabase instance;
 
     /**
      * Returns the singleton instance of the database.

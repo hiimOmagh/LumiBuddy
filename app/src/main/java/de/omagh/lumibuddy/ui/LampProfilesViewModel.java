@@ -10,7 +10,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProductRepository;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;

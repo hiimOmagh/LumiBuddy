@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.data.model.GrowLightProduct;
+import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 
 /**

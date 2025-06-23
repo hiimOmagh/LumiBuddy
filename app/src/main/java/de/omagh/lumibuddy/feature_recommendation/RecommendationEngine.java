@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
 import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
 import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;

@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.data.db;
+package de.omagh.core_data.db;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.feature_diary.DiaryEntry;
+import de.omagh.core_data.model.DiaryEntry;
 
 @Dao
 public interface DiaryDao {

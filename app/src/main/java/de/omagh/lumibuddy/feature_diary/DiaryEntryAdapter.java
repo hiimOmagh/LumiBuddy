@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.lumibuddy.R;
 
 /**
