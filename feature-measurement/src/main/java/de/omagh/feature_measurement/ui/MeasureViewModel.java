@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import de.omagh.feature_measurement.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;
-import de.omagh.lumibuddy.core.AppComponent;
+import de.omagh.core_infra.di.ApplicationComponent;
 import de.omagh.core_infra.di.AppComponentProvider;
 import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;
@@ -43,7 +43,7 @@ public class MeasureViewModel extends AndroidViewModel {
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        AppComponent component = (AppComponent) ((AppComponentProvider) application).getAppComponent();
+        ApplicationComponent component = ((AppComponentProvider) application).getAppComponent();
         component.inject(this);
         CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
         profileManager = new CalibrationProfilesManager(application.getApplicationContext());

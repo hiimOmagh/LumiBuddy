@@ -6,6 +6,7 @@ import timber.log.Timber;
 import de.omagh.core_infra.di.DaggerCoreComponent;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.lumibuddy.core.AppComponent;
+import de.omagh.core_infra.di.ApplicationComponent;
 import de.omagh.lumibuddy.core.DaggerAppComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.AppComponentProvider;
@@ -15,7 +16,7 @@ import de.omagh.core_infra.di.AppComponentProvider;
  */
 public class LumiBuddyApplication extends Application implements CoreComponentProvider, AppComponentProvider {
     private CoreComponent coreComponent;
-    private AppComponent appComponent;
+    private ApplicationComponent appComponent;
 
     @Override
     public void onCreate() {
@@ -35,7 +36,7 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
     }
 
     @Override
-    public AppComponent getAppComponent() {
+    public ApplicationComponent getAppComponent() {
         return appComponent;
     }
 }
