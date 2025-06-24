@@ -11,8 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import de.omagh.feature_growschedule.R;
-
 public class AgendaFragment extends Fragment {
 
     public static AgendaFragment newInstance() {

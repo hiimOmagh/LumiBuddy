@@ -7,10 +7,10 @@ import javax.inject.Singleton;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.PlantRepository;
-import de.omagh.core_data.db.AppDatabase;
 
 /**
  * Provides data layer dependencies.

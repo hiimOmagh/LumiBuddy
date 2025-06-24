@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-
-import timber.log.Timber;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +25,15 @@ import com.google.android.material.button.MaterialButton;
 import java.util.UUID;
 
 import de.omagh.core_data.model.PlantSpecies;
-import de.omagh.lumibuddy.R;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
 import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
 import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.PlantClassifier;
 import de.omagh.lumibuddy.util.PermissionUtils;
+import timber.log.Timber;
 
 /**
  * Fragment to add or edit a plant.

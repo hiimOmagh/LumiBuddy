@@ -2,8 +2,6 @@ package de.omagh.core_infra.measurement;
 
 import android.app.Activity;
 
-import timber.log.Timber;
-
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageAnalysis;
@@ -19,6 +17,8 @@ import org.jspecify.annotations.NonNull;
 import java.nio.ByteBuffer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import timber.log.Timber;
 
 /**
  * CameraX helper for analyzing a single frame and reporting mean RGB.

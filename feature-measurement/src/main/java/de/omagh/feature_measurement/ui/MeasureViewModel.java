@@ -10,17 +10,16 @@ import org.jspecify.annotations.NonNull;
 
 import javax.inject.Inject;
 
+import de.omagh.MeasurementUtils;
+import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
+import de.omagh.feature_measurement.CalibrationManager;
 import de.omagh.lumibuddy.LumiBuddyApplication;
-
-import io.reactivex.disposables.Disposable;
-import timber.log.Timber;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
-import de.omagh.feature_measurement.CalibrationManager;
-import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
-import de.omagh.MeasurementUtils;
 import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
+import io.reactivex.disposables.Disposable;
+import timber.log.Timber;
 
 /**
  * ViewModel for light measurement, lamp type selection, and calculation of PPFD/DLI.
@@ -32,13 +31,13 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<Float> dliLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
     private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
-    @Inject
-    GetCurrentLuxUseCase getCurrentLuxUseCase;
-    private Disposable luxDisposable;
     private final CalibrationProfilesManager profileManager;
     private final GrowLightProfileManager growLightManager;
     private final SettingsManager settingsManager;
     private final MutableLiveData<String> lampIdLiveData;
+    @Inject
+    GetCurrentLuxUseCase getCurrentLuxUseCase;
+    private Disposable luxDisposable;
     private String currentSource = "ALS";
 
     public MeasureViewModel(@NonNull Application application) {

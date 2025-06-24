@@ -10,14 +10,14 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.core_domain.model.Plant;
+import javax.inject.Inject;
+
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
 import de.omagh.core_data.repository.PlantRepository;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.LumiBuddyApplication;
-
-import javax.inject.Inject;
+import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
 
 /**
  * ViewModel for PlantDetailFragment.
@@ -27,9 +27,9 @@ import javax.inject.Inject;
 public class PlantDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
+    private final PlantInfoRepository infoRepository;
     @Inject
     PlantRepository repository;
-    private final PlantInfoRepository infoRepository;
 
     public PlantDetailViewModel(@NonNull Application application) {
         super(application);

@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.omagh.core_data.R;
+import de.omagh.lumibuddy.R;
 
 /**
  * Adapter for displaying a list of DiaryEntry items in a RecyclerView (growth timeline).

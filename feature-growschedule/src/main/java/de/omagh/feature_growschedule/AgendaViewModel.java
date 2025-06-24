@@ -1,9 +1,8 @@
 package de.omagh.feature_growschedule;
 
-import androidx.lifecycle.ViewModel;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.Collections;
 import java.util.List;

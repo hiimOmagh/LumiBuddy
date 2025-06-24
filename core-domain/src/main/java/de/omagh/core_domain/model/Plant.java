@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey;
 /**
  * Domain model representing a plant.
  * Stored in Room database and used across the app.
- * */
+ */
 
 @Entity(tableName = "plants")
 public class Plant {

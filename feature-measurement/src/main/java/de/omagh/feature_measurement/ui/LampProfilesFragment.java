@@ -19,8 +19,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import de.omagh.feature_measurement.R;
 import de.omagh.core_data.model.GrowLightProduct;
+import de.omagh.feature_measurement.R;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 
 /**

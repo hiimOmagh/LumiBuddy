@@ -1,12 +1,9 @@
 package de.omagh.core_infra.measurement;
 
-import io.reactivex.Observable;
-import de.omagh.core_domain.repository.MeasurementRepository;
-
-/*
-  Orchestrates measurement sources such as the ambient light sensor.
- */
 import javax.inject.Inject;
+
+import de.omagh.core_domain.repository.MeasurementRepository;
+import io.reactivex.Observable;
 
 public class MeasurementEngine implements MeasurementRepository {
     private final LightSensorProvider lightSensorProvider;

@@ -9,12 +9,12 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.core_data.model.GrowLightProfile;
-import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
-import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_domain.model.Plant;
 
 @Database(
         entities = {

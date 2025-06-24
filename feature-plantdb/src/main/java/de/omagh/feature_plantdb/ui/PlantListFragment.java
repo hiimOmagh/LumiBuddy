@@ -25,9 +25,9 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import de.omagh.lumibuddy.R;
-import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.Plant;
+import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 
 /**
