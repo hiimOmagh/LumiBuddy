@@ -32,6 +32,8 @@ dependencies {
     implementation(project(":core-domain"))
     api(libs.room.runtime)
     implementation(libs.androidx.lifecycle.livedata.core)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.recyclerview)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
