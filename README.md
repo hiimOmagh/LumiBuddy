@@ -138,8 +138,9 @@ public interface AppComponent {
 }
 ```
 
-`LumiBuddyApplication` builds both components and exposes `getAppComponent()` for injection.
-
+`LumiBuddyApplication` builds both components and exposes
+`getAppComponent()` for injection. Feature modules should cast their `Application` instance to
+`AppComponentProvider` to access the component.
 ---
 
 ## Development Guidelines & Best Practices

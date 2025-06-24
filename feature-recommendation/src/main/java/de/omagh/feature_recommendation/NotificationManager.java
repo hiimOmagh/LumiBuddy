@@ -12,7 +12,7 @@ import androidx.annotation.RequiresPermission;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_recommendation.R;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.ui.MainActivity;
 

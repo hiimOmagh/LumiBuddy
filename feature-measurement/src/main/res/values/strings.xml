@@ -130,5 +130,6 @@
     </string-array>
 
     <string name="powered_by_plantid">Powered by Plant.id</string>
+    <string name="total_time_exposure">Total Light-Time Exposure</string>
 
 </resources>

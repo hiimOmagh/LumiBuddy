@@ -8,11 +8,12 @@ import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.lumibuddy.core.AppComponent;
 import de.omagh.lumibuddy.core.DaggerAppComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.AppComponentProvider;
 
 /**
  * Simplified Application setup used for instrumentation tests.
  */
-public class LumiBuddyApplication extends Application implements CoreComponentProvider {
+public class LumiBuddyApplication extends Application implements CoreComponentProvider, AppComponentProvider {
     private CoreComponent coreComponent;
     private AppComponent appComponent;
 
@@ -33,6 +34,7 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
         return coreComponent;
     }
 
+    @Override
     public AppComponent getAppComponent() {
         return appComponent;
     }
