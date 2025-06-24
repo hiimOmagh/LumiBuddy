@@ -44,7 +44,7 @@ public class PlantListFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null && plantImagePreview != null) {
 // Copy to internal storage so permission persists
-                    pickedImageUri = de.omagh.lumibuddy.util.ImageUtils.copyUriToInternalStorage(
+                    pickedImageUri = de.omagh.core_infra.util.ImageUtils.copyUriToInternalStorage(
                             requireContext(), uri);
                     plantImagePreview.setImageURI(pickedImageUri);
                 }

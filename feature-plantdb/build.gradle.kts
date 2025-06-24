@@ -42,6 +42,8 @@ dependencies {
     implementation(libs.rxandroid2)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.timber)

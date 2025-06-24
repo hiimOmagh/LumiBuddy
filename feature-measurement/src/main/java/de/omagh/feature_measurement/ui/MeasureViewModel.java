@@ -10,14 +10,14 @@ import org.jspecify.annotations.NonNull;
 
 import javax.inject.Inject;
 
-import de.omagh.MeasurementUtils;
+import de.omagh.feature_measurement.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;
 import de.omagh.lumibuddy.LumiBuddyApplication;
 import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;
-import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
-import de.omagh.lumibuddy.feature_user.SettingsManager;
+import de.omagh.core_infra.user.CalibrationProfilesManager;
+import de.omagh.core_infra.user.SettingsManager;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
