@@ -16,7 +16,7 @@ public class Plant {
     private final String type;
     private final String imageUri;
 
-    public Plant(String id, String name, String type, String imageUri) {
+    public Plant(@NonNull String id, String name, String type, String imageUri) {
         this.id = id;
         this.name = name;
         this.type = type;

@@ -16,9 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.omagh.feature_measurement.R;
-import de.omagh.lumibuddy.data.model.CalibrationProfile;
-import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
-import de.omagh.lumibuddy.feature_user.SettingsManager;
+import de.omagh.core_domain.model.CalibrationProfile;
+import de.omagh.core_infra.user.CalibrationProfilesManager;
+import de.omagh.core_infra.user.SettingsManager;
 
 /**
  * Simple settings screen for user preferences.

@@ -132,8 +132,8 @@ public class AddPlantFragment extends Fragment {
         plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
         addPlantViewModel = new ViewModelProvider(this).get(AddPlantViewModel.class);
 
-        de.omagh.lumibuddy.feature_user.SettingsManager sm =
-                new de.omagh.lumibuddy.feature_user.SettingsManager(requireContext());
+        de.omagh.core_infra.user.SettingsManager sm =
+                new de.omagh.core_infra.user.SettingsManager(requireContext());
         mlToggle.setChecked(sm.isMlFeaturesEnabled());
         arGrowthToggle.setChecked(sm.isArOverlayEnabled());
         if (mlToggle.isChecked()) {

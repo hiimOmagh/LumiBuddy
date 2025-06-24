@@ -1,0 +1,133 @@
+<resources>
+    <string name="app_name">LumiBuddy</string>
+    <string name="ppfd_icon">PPFD icon</string>
+    <string name="plant_list_desc">List of your plants</string>
+    <string name="add_plant_fab_desc">Add new plant</string>
+    <string name="plant_name_input_desc">Plant name input field</string>
+    <string name="plant_type_input_desc">Plant type input field</string>
+    <string name="plant_name_label">Plant name</string>
+    <string name="plant_type_label">Plant type</string>
+    <string name="edit_plant">Edit plant</string>
+    <string name="plant_image_desc">Plant image preview</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="search_plant_db">Search Plant DB</string>
+    <string name="capture_photo">Take Photo</string>
+    <string name="agenda_title">My Plant Agenda</string>
+    <string name="add_agenda_event">Add agenda event</string>
+    <string name="calibration">Calibration</string>
+    <string name="calibration_info">Calibrate your light sensor for accurate readings. Place your phone under a known reference light source and tap "Start Calibration" to begin.</string>
+    <string name="start_calibration">Start Calibration</string>
+    <string name="app_icon">App icon</string>
+    <string name="welcome_title">Welcome to LumiBuddy!</string>
+    <string name="welcome_subtitle">Your all-in-one smart plant light and care companion.</string>
+    <string name="lamp_profiles_title">Lamp Profiles</string>
+    <string name="add_lamp_profile">Add Lamp Profile</string>
+    <string name="delete_lamp_profile">Delete Lamp Profile</string>
+    <string name="add_lamp">Add Lamp</string>
+    <string name="edit_lamp">Edit Lamp</string>
+    <string name="rename">Rename</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="add">add</string>
+    <string name="invalid_number">Invalid number</string>
+    <string name="lamp_type">"Lamp Type : "</string>
+    <string name="calibration_factor_placeholder">Factor: —</string>
+    <string name="calibration_factor">Factor: %1$.3f</string>
+    <string name="_24_h">24 h</string>
+    <string name="placeholder_dli_value">--</string>
+    <string name="placeholder_minus">−</string>
+    <string name="placeholder_24_h">24 h</string>
+    <string name="placeholder_18_h">18 h</string>
+    <string name="placeholder_12_h">12 h</string>
+    <string name="placeholder_plus">+</string>
+    <string name="increase_hours">Increase Hours</string>
+    <string name="decrease_hours">Decrease Hours\n</string>
+    <string name="dli_calculator">DLI Calculator</string>
+    <string name="measure_with_camera">Measure with Camera</string>
+    <string name="camera_permission_required">Camera permission required</string>
+    <string name="camera_permission_rationale">Camera access is needed to capture plant photos and measure light.</string>
+    <string name="notification_permission_rationale">Notification permission lets LumiBuddy remind you about watering and care tasks.</string>
+    <string name="notification_permission_denied">Notifications disabled - reminders won\'t appear.</string>
+    <string name="storage_permission_rationale">Allow access to your images to set a profile picture.</string>
+    <string name="storage_permission_denied">Cannot access photos without permission.</string>
+    <string name="type_herb">Type: Herb</string>
+    <string name="plant_name">Plant Name</string>
+    <string name="plant_diary_title">Plant Diary Title</string>
+    <string name="add_diary_entry">Add Diary Entry</string>
+    <string name="profile_avatar_desc">Profile avatar</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="settings">Settings</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="unit_of_measurement">Unit of Measurement</string>
+    <string name="version">v1.0.0</string>
+    <string name="lux_measurement_icon">Lux Measurement icon</string>
+    <string name="lux">Lux</string>
+    <string name="lx">lx</string>
+    <string name="_0_0">0.0</string>
+    <string name="add_growth_event">Add growth event</string>
+    <string name="growth_timeline_title">Growth Timeline Title</string>
+    <string name="your_name">Your Name</string>
+    <string name="user_email_com">user@email.com</string>
+    <string name="daily_light_amount">Daily Light Amount</string>
+    <string name="dli">DLI</string>
+    <string name="mol_m_d">mol/m²/d</string>
+    <string name="dliValue">0.000\n</string>
+    <string name="care_info_placeholder">Care info</string>
+    <string name="selected_light_hours">Selected light hours</string>
+    <string name="homeWelcomeText">Welcome</string>
+    <string name="_12_h">12 h</string>
+    <string name="_18_h">18 h</string>
+
+    <string name="light_duration_hours">Light Duration (h)</string>
+    <string name="calibration_profile">Calibration Profile</string>
+    <string name="save">Save</string>
+
+    <!-- Home dashboard strings -->
+    <string name="todays_conditions">Daily Conditions</string>
+    <string name="upcoming_tasks">Upcoming Tasks</string>
+    <string name="start_measurement">Start Measurement</string>
+    <string name="add_plant">Add Plant</string>
+    <string name="view_timeline">View Timeline</string>
+    <string name="coming_soon">Coming soon</string>
+    <string name="no_diary_entries">No diary entries yet</string>
+    <string name="enable_ar">Enable AR Overlay</string>
+    <string name="enable_ml">Enable ML Features</string>
+
+    <string name="care_reminders">Care Reminders</string>
+    <string name="sync_now">Sync Now</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_summary">Your data is stored only on your device. When cloud sync is enabled, plant logs and photos will be uploaded securely.</string>
+    <string name="dli_icon">dli icon</string>
+    <string name="ic_eco">ic_eco</string>
+
+    <string-array name="calibration_sources">
+        <item>ALS</item>
+        <item>Camera</item>
+    </string-array>
+
+    <string-array name="measurement_units">
+        <item>Lux</item>
+        <item>PPFD</item>
+        <item>DLI</item>
+    </string-array>
+
+    <!-- Diary event types -->
+    <string-array name="diary_event_types">
+        <item>watering</item>
+        <item>light</item>
+        <item>note</item>
+        <item>recommendation</item>
+    </string-array>
+    <!-- Lamp types -->
+    <string-array name="lamp_types">
+        <item>Sunlight</item>
+        <item>White LED (neutral)</item>
+        <item>Warm LED</item>
+        <item>Blurple LED</item>
+        <item>HPS</item>
+    </string-array>
+
+    <string name="powered_by_plantid">Powered by Plant.id</string>
+
+</resources>

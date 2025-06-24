@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import de.omagh.lumibuddy.feature_user.UserProfileManager;
+import de.omagh.core_infra.user.UserProfileManager;
 
 /**
  * ViewModel mediating access to {@link UserProfileManager}.
