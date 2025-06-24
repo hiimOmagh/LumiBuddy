@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.rxandroid2)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.timber)
     implementation(project(":core-data"))
     implementation(project(":core-domain"))
     testImplementation(libs.junit)

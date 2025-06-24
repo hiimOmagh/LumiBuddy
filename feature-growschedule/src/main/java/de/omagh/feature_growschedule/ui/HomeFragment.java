@@ -20,8 +20,8 @@ import org.jspecify.annotations.Nullable;
 import java.util.Locale;
 
 import de.omagh.feature_growschedule.R;
-import de.omagh.lumibuddy.feature_user.SettingsManager;
-import de.omagh.lumibuddy.util.PermissionUtils;
+import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.util.PermissionUtils;
 
 /**
  * HomeFragment displays the home screen and summary metrics.

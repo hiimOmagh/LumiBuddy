@@ -11,9 +11,7 @@ import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
 import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
 import de.omagh.lumibuddy.feature_ml.PlantClassifier;
-import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
-
-import static org.junit.Assert.*;
+import de.omagh.feature_ar.DummyARGrowthTracker;
 
 public class ARMLIntegrationTest {
 

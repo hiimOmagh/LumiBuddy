@@ -40,7 +40,7 @@ public class PlantGrowthTimelineFragment extends Fragment {
     private final androidx.activity.result.ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
-                    selectedImageUri = de.omagh.lumibuddy.util.ImageUtils.copyUriToInternalStorage(
+                    selectedImageUri = de.omagh.core_infra.util.ImageUtils.copyUriToInternalStorage(
                             requireContext(), uri);
                     if (dialogImagePreview != null) {
                         dialogImagePreview.setImageURI(selectedImageUri);

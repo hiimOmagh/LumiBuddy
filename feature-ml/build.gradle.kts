@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "de.omagh.feature_measurement"
+    namespace = "de.omagh.feature_ml"
     compileSdk = 35
 
     defaultConfig {
@@ -29,23 +29,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-domain"))
-    implementation(project(":core-infra"))
-    implementation(project(":core-data"))
-    implementation(project(":feature-ml"))
-    implementation(project(":feature-ar"))
-    implementation(libs.dagger)
-    annotationProcessor(libs.dagger.compiler)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
     implementation(libs.timber)
-    implementation(libs.camera.core)
-    implementation(libs.camera.camera2)
-    implementation(libs.camera.lifecycle)
-    implementation(libs.camera.view)
-    implementation(libs.rxjava2)
-    implementation(libs.rxandroid2)
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)

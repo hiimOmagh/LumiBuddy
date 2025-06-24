@@ -27,12 +27,12 @@ import java.util.UUID;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_plantdb.R;
-import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
-import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
-import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
-import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
-import de.omagh.lumibuddy.feature_ml.PlantClassifier;
-import de.omagh.lumibuddy.util.PermissionUtils;
+import de.omagh.feature_ar.DummyARGrowthTracker;
+import de.omagh.feature_ml.BasicHealthStatusClassifier;
+import de.omagh.feature_ml.BasicPlantClassifier;
+import de.omagh.feature_ml.HealthStatusClassifier;
+import de.omagh.feature_ml.PlantClassifier;
+import de.omagh.core_infra.util.PermissionUtils;
 import timber.log.Timber;
 
 /**
