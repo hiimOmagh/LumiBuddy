@@ -2,7 +2,6 @@ package de.omagh.core_infra.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
