@@ -23,7 +23,6 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
-import de.omagh.feature_diary.ui.PlantGrowthTimelineFragment;
 import de.omagh.feature_plantdb.R;
 
 /**
@@ -97,7 +96,7 @@ public class PlantDetailFragment extends Fragment {
             Plant current = viewModel.getPlant().getValue();
             if (current != null) {
                 Bundle b = new Bundle();
-                b.putString(PlantGrowthTimelineFragment.ARG_PLANT_ID, current.getId());
+                b.putString("plant_id", current.getId());
                 androidx.navigation.Navigation.findNavController(v)
                         .navigate(R.id.plantGrowthTimelineFragment, b);
             }

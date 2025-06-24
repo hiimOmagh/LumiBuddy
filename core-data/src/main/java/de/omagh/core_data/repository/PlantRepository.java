@@ -1,6 +1,7 @@
 package de.omagh.core_data.repository;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -19,23 +20,44 @@ public class PlantRepository implements PlantDataSource {
     }
 
     public LiveData<List<Plant>> getAllPlants() {
-        return plantDao.getAll();
+        return Transformations.map(plantDao.getAll(), list -> {
+            if (list == null) return null;
+            java.util.List<Plant> result = new java.util.ArrayList<>();
+            for (de.omagh.core_data.model.Plant p : list) {
+                result.add(toDomain(p));
+            }
+            return result;
+        });
     }
 
     public LiveData<Plant> getPlant(String id) {
-        return plantDao.getById(id);
+        return Transformations.map(plantDao.getById(id), this::toDomain);
     }
 
     public void insertPlant(Plant plant) {
-        executor.execute(() -> plantDao.insert(plant));
+        executor.execute(() -> plantDao.insert(toEntity(plant)));
     }
 
     public void updatePlant(Plant plant) {
-        executor.execute(() -> plantDao.update(plant));
+        executor.execute(() -> plantDao.update(toEntity(plant)));
     }
 
     public void deletePlant(Plant plant) {
-        executor.execute(() -> plantDao.delete(plant));
+        executor.execute(() -> plantDao.delete(toEntity(plant)));
+    }
+
+    private Plant toDomain(de.omagh.core_data.model.Plant entity) {
+        if (entity == null) return null;
+        return new Plant(entity.getId(), entity.getName(), entity.getType(), entity.getImageUri());
+    }
+
+    private de.omagh.core_data.model.Plant toEntity(Plant plant) {
+        return new de.omagh.core_data.model.Plant(
+                plant.getId(),
+                plant.getName(),
+                plant.getType(),
+                plant.getImageUri()
+        );
     }
 }
 

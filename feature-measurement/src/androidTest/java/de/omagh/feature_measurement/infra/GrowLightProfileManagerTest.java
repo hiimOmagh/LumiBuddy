@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_growlight;
+package de.omagh.feature_measurement.infra;
 
 import android.content.Context;
 
@@ -12,9 +12,6 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
-import de.omagh.feature_measurement.infra.GrowLightProfileManager;
-import de.omagh.feature_measurement.infra.LampProduct;
 
 /**
  * Integration tests for {@link GrowLightProfileManager} using real SharedPreferences.

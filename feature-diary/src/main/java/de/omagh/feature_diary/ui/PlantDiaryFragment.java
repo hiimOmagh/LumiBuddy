@@ -27,7 +27,8 @@ import java.util.UUID;
 
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.feature_plantdb.ui.PlantListViewModel;
+import de.omagh.core_data.db.AppDatabase;
+import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.feature_diary.R;
 import de.omagh.feature_diary.ui.DiaryEntryAdapter;
 import de.omagh.core_data.model.DiaryViewModel;
@@ -38,7 +39,6 @@ import de.omagh.core_data.model.DiaryViewModel;
 public class PlantDiaryFragment extends Fragment {
 
     private DiaryViewModel diaryViewModel;
-    private PlantListViewModel plantViewModel;
     private DiaryEntryAdapter adapter;
     private Uri selectedImageUri;
     private ImageView dialogImagePreview;
@@ -74,7 +74,6 @@ public class PlantDiaryFragment extends Fragment {
         diaryViewModel = new ViewModelProvider(this,
                 new DiaryViewModel.Factory(requireActivity().getApplication()))
                 .get(DiaryViewModel.class);
-        plantViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
 
         diaryViewModel.getAllEntries().observe(getViewLifecycleOwner(), entries -> {
             adapter.submitList(entries);
@@ -98,7 +97,8 @@ public class PlantDiaryFragment extends Fragment {
         dialogImagePreview = dialog.findViewById(R.id.diaryImagePreview);
         dialog.findViewById(R.id.pickImageBtn).setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
 
-        List<Plant> plants = plantViewModel.getPlants().getValue();
+        PlantRepository repository = new PlantRepository(AppDatabase.getInstance(requireContext()));
+        List<Plant> plants = repository.getAllPlants().getValue();
         List<Plant> safeList = plants != null ? plants : new ArrayList<>();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

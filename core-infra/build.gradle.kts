@@ -29,7 +29,8 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-domain"))
+
+implementation(project(":core-domain"))
     implementation(project(":core-data"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -37,11 +38,6 @@ dependencies {
     implementation(libs.camera.core)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
-    implementation(project(":feature-plantdb"))
-    implementation(project(":feature-diary"))
-    implementation(project(":feature-ar"))
-    implementation(project(":feature-measurement"))
-    implementation(project(":feature-growschedule"))
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)

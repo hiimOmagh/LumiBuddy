@@ -6,17 +6,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 dependencies {
-    implementation(libs.androidx.annotation.jvm)
-    implementation(libs.androidx.room.common.jvm)
-    implementation(libs.androidx.baselibrary)
     implementation(libs.rxjava2)
     implementation(libs.dagger)
-    implementation(project(":core-infra"))
-    implementation(project(":feature-plantdb"))
-    implementation(project(":feature-diary"))
-    implementation(project(":feature-ar"))
-    implementation(project(":feature-measurement"))
-    implementation(project(":core-data"))
-    implementation(project(":feature-growschedule"))
     // no AndroidX here—just pure-Java dependencies if needed
 }

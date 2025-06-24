@@ -1,10 +1,16 @@
-package de.omagh.core_domain.model;
+package de.omagh.core_data.model;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 /**
- * Simple domain model representing a plant.
+ * Room entity representing a plant stored in the database.
  */
-
+@Entity(tableName = "plants")
 public class Plant {
+    @PrimaryKey
+    @NonNull
     private final String id;
     private final String name;
     private final String type;
@@ -17,6 +23,7 @@ public class Plant {
         this.imageUri = imageUri;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }

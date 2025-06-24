@@ -24,9 +24,9 @@ import androidx.lifecycle.ViewModelProvider;
 
 import de.omagh.core_domain.model.Measurement;
 import de.omagh.core_infra.measurement.CameraLightMeterX;
-import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
-import de.omagh.lumibuddy.feature_growlight.LampProduct;
+import de.omagh.feature_measurement.R;
+import de.omagh.feature_measurement.infra.GrowLightProfileManager;
+import de.omagh.feature_measurement.infra.LampProduct;
 import de.omagh.lumibuddy.feature_ml.BasicLampTypeClassifier;
 import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
 import de.omagh.lumibuddy.feature_user.SettingsManager;

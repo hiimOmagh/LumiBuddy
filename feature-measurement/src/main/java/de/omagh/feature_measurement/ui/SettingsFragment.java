@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_measurement.R;
 import de.omagh.lumibuddy.data.model.CalibrationProfile;
 import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;

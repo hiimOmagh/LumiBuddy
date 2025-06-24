@@ -29,15 +29,10 @@ android {
 }
 
 dependencies {
-
     implementation(project(":core-domain"))
     implementation(project(":core-infra"))
     implementation(project(":core-data"))
     implementation(libs.dagger)
-    implementation(project(":feature-plantdb"))
-    implementation(project(":feature-diary"))
-    implementation(project(":feature-ar"))
-    implementation(project(":feature-growschedule"))
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

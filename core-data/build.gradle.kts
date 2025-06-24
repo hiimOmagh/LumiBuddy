@@ -29,17 +29,13 @@ android {
 }
 
 dependencies {
+
     implementation(project(":core-domain"))
     api(libs.room.runtime)
     implementation(libs.androidx.lifecycle.livedata.core)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.recyclerview)
-    implementation(project(":core-infra"))
-    implementation(project(":feature-plantdb"))
-    implementation(project(":feature-diary"))
-    implementation(project(":feature-ar"))
-    implementation(project(":feature-measurement"))
-    implementation(project(":feature-growschedule"))
+    implementation(libs.androidx.lifecycle.livedata)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

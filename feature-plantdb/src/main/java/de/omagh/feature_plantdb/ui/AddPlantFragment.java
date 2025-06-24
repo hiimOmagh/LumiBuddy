@@ -26,7 +26,7 @@ import java.util.UUID;
 
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_plantdb.R;
 import de.omagh.lumibuddy.feature_ar.DummyARGrowthTracker;
 import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
 import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;

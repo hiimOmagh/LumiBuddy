@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_plantdb.R;
 import de.omagh.lumibuddy.util.ImageUtils;
 import de.omagh.lumibuddy.util.PermissionUtils;
 

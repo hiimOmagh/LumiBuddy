@@ -29,7 +29,6 @@ android {
 }
 
 dependencies {
-
     implementation(project(":core-infra"))
     implementation(project(":core-data"))
     implementation(libs.rxjava2)
@@ -37,10 +36,6 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.android)
-    implementation(project(":feature-plantdb"))
-    implementation(project(":feature-diary"))
-    implementation(project(":feature-ar"))
-    implementation(project(":feature-measurement"))
     implementation(project(":core-domain"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

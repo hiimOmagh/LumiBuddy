@@ -9,7 +9,7 @@ import androidx.room.Update;
 
 import java.util.List;
 
-import de.omagh.core_domain.model.Plant;
+import de.omagh.core_data.model.Plant;
 
 @Dao
 public interface PlantDao {

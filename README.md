@@ -36,8 +36,8 @@ LumiBuddy strictly follows a **Clean/Hexagonal Architecture** approach, designed
 
 * **Domain Layer (`:core-domain`)**:
 
-  * Pure Java models and business use cases.
-  * Absolutely no Android or Room dependencies.
+* Domain entities are plain Java objects alongside business use cases.
+* Absolutely no Android or Room dependencies.
 
 * **Data Layer (`:core-data`)**:
 
@@ -48,6 +48,7 @@ LumiBuddy strictly follows a **Clean/Hexagonal Architecture** approach, designed
 
   * Android implementations of domain interfaces (sensors, networking).
   * Provides Dagger modules and other platform services.
+  * Depends on `:core-domain` and `:core-data`.
 
 * **Presentation Layer (`:feature-*`)**:
 
@@ -57,6 +58,8 @@ LumiBuddy strictly follows a **Clean/Hexagonal Architecture** approach, designed
 
   * Application entry point, initialization of core services (Dagger, LeakCanary, Timber).
   * Main navigation graph and high-level integration.
+
+*The core modules never depend on any `feature-*` modules.*
 
 ---
 
@@ -80,9 +83,11 @@ LumiBuddy/
 
 Module dependencies:
 
+- `:core-domain` is standalone.
 - `:core-data` depends on `:core-domain`.
-- `:core-infra` depends on `:core-domain` and Android libraries.
-- `:app` pulls in all three cores and each feature module.
+  `:core-infra` depends on `:core-domain` and `:core-data`.
+- `feature-*` modules depend only on the core modules.
+- `:app` pulls in all core and feature modules.
 
 ---
 
