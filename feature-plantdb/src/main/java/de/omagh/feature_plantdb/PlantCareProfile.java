@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_plantdb;
+package de.omagh.feature_plantdb;
 
 /**
  * Care parameters for a plant at a specific growth stage.

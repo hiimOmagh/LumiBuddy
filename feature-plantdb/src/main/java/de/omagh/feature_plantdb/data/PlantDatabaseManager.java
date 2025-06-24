@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.omagh.feature_plantdb.PlantCareProfile;
+import de.omagh.feature_plantdb.PlantStage;
+
 /**
  * Simple in-memory plant database used to provide example care profiles.
  * In the future this could be replaced by a Room database or remote API.

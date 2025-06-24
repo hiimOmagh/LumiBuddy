@@ -1,8 +1,6 @@
-package de.omagh.core_infra.network;
+package de.omagh.feature_plantdb.ui;
 
-import android.app.Application;
-
-import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -16,24 +14,22 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.LumiBuddyApplication;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
+import de.omagh.feature_plantdb.data.PlantInfoRepository;
 
 /**
  * ViewModel for PlantDetailFragment.
  * Holds LiveData for a single plant, supporting detail view and editing.
  * Can be extended to load/update a plant from Room database.
  */
-public class PlantDetailViewModel extends AndroidViewModel {
+public class PlantDetailViewModel extends ViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
     private final PlantInfoRepository infoRepository;
     @Inject
     PlantRepository repository;
 
-    public PlantDetailViewModel(@NonNull Application application) {
-        super(application);
-        ((LumiBuddyApplication) application).getAppComponent().inject(this);
+    public PlantDetailViewModel(@NonNull android.app.Application application) {
+        ((de.omagh.lumibuddy.LumiBuddyApplication) application).getAppComponent().inject(this);
         infoRepository = new PlantInfoRepository(application);
     }
 

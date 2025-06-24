@@ -32,6 +32,7 @@ lifecycleLivedataCore = "2.9.1"
 baselibrary = "3.2.0-alpha11"
 recyclerView = "1.3.2"
 lifecycleViewModel = "2.9.0"
+okhttp = "4.12.0"
 
 [libraries]
 camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
@@ -71,6 +72,7 @@ androidx-lifecycle-livedata-core = { group = "androidx.lifecycle", name = "lifec
 androidx-baselibrary = { group = "androidx.databinding", name = "baseLibrary", version.ref = "baselibrary" }
 recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "recyclerView" }
 androidx-lifecycle-viewmodel = { group = "androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "lifecycleViewModel" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

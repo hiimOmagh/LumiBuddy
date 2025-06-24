@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.dagger)
+    implementation(libs.okhttp)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)

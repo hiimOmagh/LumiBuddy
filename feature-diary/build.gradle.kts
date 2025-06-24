@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.rxandroid2)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(project(":core-domain"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

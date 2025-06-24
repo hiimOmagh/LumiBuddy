@@ -7,8 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import de.omagh.lumibuddy.feature_plantdb.PlantIdRepository;
-import de.omagh.lumibuddy.network.plantid.PlantIdSuggestion;
+import de.omagh.feature_plantdb.plantid.PlantIdRepository;
+import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 
 /**
  * ViewModel for AddPlantFragment handling photo identification via Plant.id.

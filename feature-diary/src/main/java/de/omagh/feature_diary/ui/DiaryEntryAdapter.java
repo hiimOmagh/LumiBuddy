@@ -1,4 +1,4 @@
-package de.omagh.core_data.model;
+package de.omagh.feature_diary.ui;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -17,7 +17,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.omagh.core_data.R;
+import de.omagh.feature_diary.R;
+import de.omagh.core_data.model.DiaryEntry;
 
 /**
  * Adapter for displaying a list of DiaryEntry items in a RecyclerView (growth timeline).

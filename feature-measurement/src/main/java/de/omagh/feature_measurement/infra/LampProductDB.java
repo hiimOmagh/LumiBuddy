@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_growlight;
+package de.omagh.feature_measurement.infra;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -11,8 +11,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import de.omagh.feature_measurement.infra.LampProduct;
 
 /**
  * Very small in-memory database of common grow lights.

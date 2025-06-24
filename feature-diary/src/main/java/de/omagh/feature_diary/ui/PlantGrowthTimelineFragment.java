@@ -23,7 +23,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.UUID;
 
 import de.omagh.core_data.model.DiaryEntry;
-import de.omagh.core_data.model.DiaryEntryAdapter;
+import de.omagh.feature_diary.ui.DiaryEntryAdapter;
 import de.omagh.core_data.model.DiaryViewModel;
 import de.omagh.feature_diary.R;
 

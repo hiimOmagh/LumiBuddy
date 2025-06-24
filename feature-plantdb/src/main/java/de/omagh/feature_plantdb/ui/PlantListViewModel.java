@@ -16,9 +16,9 @@ import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.lumibuddy.LumiBuddyApplication;
-import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfoRepository;
+import de.omagh.feature_plantdb.data.PlantDatabaseManager;
+import de.omagh.feature_plantdb.data.PlantInfo;
+import de.omagh.feature_plantdb.data.PlantInfoRepository;
 
 /**
  * ViewModel for managing the user's plant list.

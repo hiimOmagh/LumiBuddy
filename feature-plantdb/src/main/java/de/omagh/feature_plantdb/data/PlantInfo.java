@@ -2,6 +2,9 @@ package de.omagh.feature_plantdb.data;
 
 import java.util.List;
 
+import de.omagh.feature_plantdb.PlantCareProfile;
+import de.omagh.feature_plantdb.PlantStage;
+
 /**
  * Basic information about a plant species along with its care profiles.
  */

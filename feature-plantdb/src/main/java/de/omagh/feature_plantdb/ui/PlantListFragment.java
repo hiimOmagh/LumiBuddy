@@ -27,8 +27,8 @@ import java.util.UUID;
 
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.R;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
+import de.omagh.feature_plantdb.R;
+import de.omagh.feature_plantdb.data.PlantInfo;
 
 /**
  * Fragment displaying a list of plants with add, delete, and detail support.

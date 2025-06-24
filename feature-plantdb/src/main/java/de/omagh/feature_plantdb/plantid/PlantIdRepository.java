@@ -1,4 +1,4 @@
-package de.omagh.feature_plantdb.data;
+package de.omagh.feature_plantdb.plantid;
 
 import android.graphics.Bitmap;
 import android.util.Base64;
@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import de.omagh.lumibuddy.network.plantid.PlantIdInterceptor;
-import de.omagh.lumibuddy.network.plantid.PlantIdRequest;
-import de.omagh.lumibuddy.network.plantid.PlantIdResponse;
-import de.omagh.lumibuddy.network.plantid.PlantIdService;
-import de.omagh.lumibuddy.network.plantid.PlantIdSuggestion;
+import de.omagh.core_infra.network.plantid.PlantIdInterceptor;
+import de.omagh.core_infra.network.plantid.PlantIdRequest;
+import de.omagh.core_infra.network.plantid.PlantIdResponse;
+import de.omagh.core_infra.network.plantid.PlantIdService;
+import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
