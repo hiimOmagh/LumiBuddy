@@ -16,7 +16,7 @@
         android:layout_height="36dp"
         android:layout_gravity="center"
         android:layout_marginBottom="8dp"
-        android:contentDescription="TODO"
+        android:contentDescription="@string/ppfd_icon"
         android:src="@drawable/ic_ppfd" />
 
     <TextView

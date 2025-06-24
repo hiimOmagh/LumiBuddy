@@ -104,10 +104,11 @@ Module dependencies:
 
 ## DI Setup
 
-LumiBuddy uses **Dagger 2** with two main components.
+- LumiBuddy uses **Dagger 2** with two main components.
 
-- **CoreComponent** (in `:core-infra`) provides network, database and sensor services via
-  `NetworkModule`, `DataModule` and `SensorModule`.
+- **CoreComponent** (in `:core-infra`) is application scoped via `@Singleton` and
+  provides network, database and sensor services via `NetworkModule`, `DataModule`
+  and `SensorModule`.
 - **AppComponent** (in `:app`) depends on `CoreComponent` to wire feature modules.
 
 Example:

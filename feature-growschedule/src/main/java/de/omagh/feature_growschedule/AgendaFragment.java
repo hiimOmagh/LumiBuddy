@@ -29,7 +29,7 @@ public class AgendaFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         AgendaViewModel mViewModel = new ViewModelProvider(this).get(AgendaViewModel.class);
-        // TODO: Use the ViewModel
+        // Hook up ViewModel once agenda data is available
     }
 
 }

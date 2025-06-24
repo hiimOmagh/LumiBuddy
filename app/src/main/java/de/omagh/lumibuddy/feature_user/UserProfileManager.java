@@ -86,7 +86,7 @@ public class UserProfileManager {
      * No-op until cloud sync is implemented.
      */
     public void syncToCloud() {
-        // TODO: integrate Firebase/REST API
+        // Cloud sync not implemented yet; integrate Firebase/REST API in future
     }
 
     /**
@@ -94,6 +94,6 @@ public class UserProfileManager {
      * No-op until cloud sync is implemented.
      */
     public void loadFromCloud() {
-        // TODO: integrate Firebase/REST API
+        // Cloud sync not implemented yet; integrate Firebase/REST API in future
     }
 }

@@ -58,14 +58,10 @@ public class PeriodicScanScheduler extends Context {
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void runWeekly(List<Plant> plants) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Missing notification permission. Consider requesting it from the calling
+            // activity via ActivityCompat#requestPermissions.
             return;
         }
         wateringScheduler.runDailyCheck(plants);

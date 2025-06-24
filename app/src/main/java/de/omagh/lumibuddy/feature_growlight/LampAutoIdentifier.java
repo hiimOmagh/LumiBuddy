@@ -21,9 +21,9 @@ public class LampAutoIdentifier {
 
     /**
      * Stub for photo-based identification.
+     * Integration with ML or barcode scanning will be added later.
      */
     public LampProduct identifyLampByPhoto(Bitmap image) {
-        // TODO integrate ML or barcode scan
         return null;
     }
 }
