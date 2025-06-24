@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_diary;
+package de.omagh.core_data.model;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -17,7 +17,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.lumibuddy.R;
 
 /**

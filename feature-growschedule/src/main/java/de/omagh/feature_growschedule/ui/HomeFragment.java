@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_growschedule.ui;
 
 import android.Manifest;
 import android.os.Bundle;

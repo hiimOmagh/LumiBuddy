@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="de.omagh.lumibuddy.ui.HomeFragment"
+        android:name="de.omagh.feature_growschedule.ui.HomeFragment"
         android:label="Home" />
 
     <fragment
@@ -26,12 +26,12 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="de.omagh.lumibuddy.ui.ProfileFragment"
+        android:name="de.omagh.feature_plantdb.ui.ProfileFragment"
         android:label="Profile" />
 
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="de.omagh.lumibuddy.ui.SettingsFragment"
+        android:name="de.omagh.feature_measurement.ui.SettingsFragment"
         android:label="Settings" />
     <fragment
         android:id="@+id/lampProfilesFragment"

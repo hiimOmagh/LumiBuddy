@@ -3,6 +3,7 @@ package de.omagh.lumibuddy.ui;
 import androidx.lifecycle.MutableLiveData;
 
 import de.omagh.core_domain.model.Plant;
+import de.omagh.feature_growschedule.ui.HomeViewModel;
 import de.omagh.lumibuddy.feature_diary.DiaryDataSource;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.PlantDataSource;

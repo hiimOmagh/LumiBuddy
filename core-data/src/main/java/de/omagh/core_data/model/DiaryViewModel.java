@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_diary;
+package de.omagh.core_data.model;
 
 import android.app.Application;
 
@@ -13,7 +13,6 @@ import java.util.List;
 
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.DiaryDao;
-import de.omagh.core_data.model.DiaryEntry;
 
 /**
  * ViewModel for managing diary entries (timeline) for a specific plant.
