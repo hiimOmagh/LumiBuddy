@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <!-- Sun -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M48,19a11,11 0 1,0 0,22a11,11 0 1,0 0,-22z"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <!-- Sun rays -->
+    <path
+        android:pathData="M48,7v6"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M48,49v6"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M33,14l-4,-4"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M63,14l4,-4"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M33,46l-4,4"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M63,46l4,4"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M19,30h6"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:pathData="M71,30h6"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <!-- Dotted light rays (using path as circles) -->
+    <path
+        android:fillColor="#EF7C1C"
+        android:pathData="M48,61 m-1.3,0 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0" />
+    <path
+        android:fillColor="#EF7C1C"
+        android:pathData="M48,65 m-1.3,0 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0" />
+    <path
+        android:fillColor="#EF7C1C"
+        android:pathData="M48,69 m-1.3,0 a1.3,1.3 0 1,0 2.6,0 a1.3,1.3 0 1,0 -2.6,0" />
+    <!-- Plant leaves -->
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M48,80 Q63,74 62,64 Q48,65 48,80"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:pathData="M48,80 Q33,74 34,64 Q48,65 48,80"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <!-- Stem -->
+    <path
+        android:pathData="M48,80v6"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+    <!-- Ground line -->
+    <path
+        android:pathData="M32,86h32"
+        android:strokeWidth="2"
+        android:strokeColor="#EF7C1C" />
+</vector>
