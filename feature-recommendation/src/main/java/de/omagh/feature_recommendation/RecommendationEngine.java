@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_recommendation;
+package de.omagh.feature_recommendation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.feature_plantdb.PlantCareProfile;
 import de.omagh.feature_plantdb.data.PlantDatabaseManager;
-import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
 import de.omagh.feature_plantdb.data.PlantInfo;
 import de.omagh.feature_plantdb.PlantStage;
 
@@ -23,7 +22,6 @@ import de.omagh.feature_plantdb.PlantStage;
 public class RecommendationEngine {
 
     private final PlantDatabaseManager db = new PlantDatabaseManager();
-    private final PlantIdentifier identifier = new PlantIdentifier(db);
     private final java.util.concurrent.ExecutorService executor =
             java.util.concurrent.Executors.newSingleThreadExecutor();
 
@@ -36,7 +34,7 @@ public class RecommendationEngine {
      * @return true if watering is due, false otherwise.
      */
     public boolean shouldWater(Plant plant, List<DiaryEntry> entries) {
-        PlantInfo info = identifier.identifyByName(plant.getType());
+        PlantInfo info = db.getPlantByName(plant.getType());
         PlantCareProfile profile = null;
         if (info != null) {
             profile = info.getProfileForStage(PlantStage.VEGETATIVE);
@@ -119,7 +117,7 @@ public class RecommendationEngine {
     public String getLightRecommendation(Plant plant, List<DiaryEntry> entries) {
         if (plant == null || entries == null) return null;
 
-        PlantInfo info = identifier.identifyByName(plant.getType());
+        PlantInfo info = db.getPlantByName(plant.getType());
         if (info == null) return null;
         PlantCareProfile profile = info.getProfileForStage(PlantStage.VEGETATIVE);
         if (profile == null) return null;
@@ -228,7 +226,7 @@ public class RecommendationEngine {
             List<DiaryEntry> entries = entryFetcher.apply(plant.getId());
             if (entries == null) continue;
 
-            PlantInfo info = identifier.identifyByName(plant.getType());
+            PlantInfo info = db.getPlantByName(plant.getType());
             if (info == null) continue;
             PlantCareProfile profile = info.getProfileForStage(PlantStage.VEGETATIVE);
             if (profile == null) continue;

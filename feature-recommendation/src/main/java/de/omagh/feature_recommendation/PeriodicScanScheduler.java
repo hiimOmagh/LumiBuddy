@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_recommendation;
+package de.omagh.feature_recommendation;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;

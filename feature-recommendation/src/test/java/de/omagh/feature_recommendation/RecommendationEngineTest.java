@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_recommendation;
+package de.omagh.feature_recommendation;
 
 import org.junit.Test;
 
@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
-import de.omagh.MeasurementUtils;
+import de.omagh.feature_measurement.MeasurementUtils;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.DiaryEntry;
 

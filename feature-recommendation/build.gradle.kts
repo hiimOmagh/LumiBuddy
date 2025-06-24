@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "de.omagh.feature_growschedule"
+    namespace = "de.omagh.feature_recommendation"
     compileSdk = 35
 
     defaultConfig {
@@ -29,15 +29,18 @@ android {
 }
 
 dependencies {
-    implementation(project(":core-infra"))
+    implementation(project(":core-domain"))
     implementation(project(":core-data"))
-    implementation(project(":feature-recommendation"))
+    implementation(project(":feature-plantdb"))
+    implementation(project(":feature-measurement"))
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.navigation.runtime.android)
-    implementation(project(":core-domain"))
+    implementation(libs.navigation.fragment)
+    implementation(libs.navigation.ui)
+    implementation(libs.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

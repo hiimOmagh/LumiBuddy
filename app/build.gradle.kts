@@ -38,6 +38,7 @@ dependencies {
     implementation(project(":feature-measurement"))
     implementation(project(":feature-plantdb"))
     implementation(project(":feature-diary"))
+    implementation(project(":feature-recommendation"))
     implementation(project(":feature-growschedule"))
     implementation(project(":feature-ar"))
     // Material Design
