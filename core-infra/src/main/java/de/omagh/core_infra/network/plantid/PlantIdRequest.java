@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.network.plantid;
+package de.omagh.core_infra.network.plantid;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_plantdb;
+package de.omagh.feature_plantdb.data;
 
 import android.content.Context;
 

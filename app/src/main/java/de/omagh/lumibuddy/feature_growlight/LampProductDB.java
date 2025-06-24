@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import de.omagh.feature_measurement.infra.LampProduct;
+
 /**
  * Very small in-memory database of common grow lights.
  * In the future this could be replaced with a Room DB or online service.

@@ -2,6 +2,9 @@ package de.omagh.lumibuddy.feature_plantdb;
 
 import android.graphics.Bitmap;
 
+import de.omagh.feature_plantdb.data.PlantDatabaseManager;
+import de.omagh.feature_plantdb.data.PlantInfo;
+
 /**
  * Utility class for plant identification. Currently supports simple
  * name-based lookup and a stub for future photo identification.

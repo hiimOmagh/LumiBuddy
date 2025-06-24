@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.network.plantid;
+package de.omagh.core_infra.network.plantid;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.network;
+package de.omagh.core_infra.network;
 
 import java.util.List;
 

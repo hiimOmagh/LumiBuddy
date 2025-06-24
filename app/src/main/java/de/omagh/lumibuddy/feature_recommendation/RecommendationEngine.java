@@ -11,11 +11,11 @@ import java.util.function.Function;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.lumibuddy.feature_plantdb.PlantCareProfile;
-import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
+import de.omagh.feature_plantdb.data.PlantDatabaseManager;
 import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
-import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
+import de.omagh.feature_plantdb.data.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantStage;
-import de.omagh.feature_measurement.MeasurementUtils;
+
 /**
  * Simple recommendation engine used to provide plant care suggestions
  * based on diary history and care profiles.

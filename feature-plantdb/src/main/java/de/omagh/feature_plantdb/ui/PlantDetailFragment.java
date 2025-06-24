@@ -22,6 +22,7 @@ import org.jspecify.annotations.Nullable;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_infra.network.PlantDetailViewModel;
 import de.omagh.feature_diary.ui.PlantGrowthTimelineFragment;
 import de.omagh.lumibuddy.R;
 

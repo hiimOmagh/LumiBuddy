@@ -1,4 +1,4 @@
-package de.omagh.feature_plantdb.ui;
+package de.omagh.core_infra.network;
 
 import android.app.Application;
 

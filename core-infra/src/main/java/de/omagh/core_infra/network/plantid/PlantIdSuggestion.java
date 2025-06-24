@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.network.plantid;
+package de.omagh.core_infra.network.plantid;
 
 /**
  * Simplified representation of a Plant.id suggestion.

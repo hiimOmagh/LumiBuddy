@@ -13,6 +13,9 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+import de.omagh.feature_measurement.infra.GrowLightProfileManager;
+import de.omagh.feature_measurement.infra.LampProduct;
+
 /**
  * Integration tests for {@link GrowLightProfileManager} using real SharedPreferences.
  */

@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_growlight;
+package de.omagh.feature_measurement.infra;
 
 import android.content.Context;
 import android.content.SharedPreferences;
