@@ -19,7 +19,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.Locale;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_growschedule.R;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
 import de.omagh.lumibuddy.util.PermissionUtils;
 

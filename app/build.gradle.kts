@@ -32,7 +32,9 @@ android {
 }
 
 dependencies {
-
+    implementation(project(":core-domain"))
+    implementation(project(":core-data"))
+    implementation(project(":core-infra"))
     implementation(project(":feature-measurement"))
     implementation(project(":feature-plantdb"))
     implementation(project(":feature-diary"))

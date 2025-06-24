@@ -1,5 +1,7 @@
 package de.omagh.feature_plantdb.ui;
 
+import android.app.Application;
+
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,7 +16,9 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_plantdb.data.PlantInfoRepository;
+import de.omagh.core_infra.di.CoreComponentProvider;
 
 /**
  * ViewModel for PlantDetailFragment.
@@ -28,10 +32,13 @@ public class PlantDetailViewModel extends ViewModel {
     @Inject
     PlantRepository repository;
 
-    public PlantDetailViewModel(@NonNull android.app.Application application) {
-        ((de.omagh.lumibuddy.LumiBuddyApplication) application).getAppComponent().inject(this);
+    public PlantDetailViewModel(@NonNull Application application) {
+        CoreComponent core =
+                ((CoreComponentProvider) application).getCoreComponent();
+        repository = core.plantRepository();
         infoRepository = new PlantInfoRepository(application);
     }
+
 
     /**
      * Returns observable plant data for the detail screen.

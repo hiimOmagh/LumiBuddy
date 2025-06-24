@@ -15,11 +15,12 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.LumiBuddyApplication;
+import de.omagh.core_infra.di.CoreComponent;
+//import de.omagh.lumibuddy.LumiBuddyApplication;
 import de.omagh.feature_plantdb.data.PlantDatabaseManager;
 import de.omagh.feature_plantdb.data.PlantInfo;
 import de.omagh.feature_plantdb.data.PlantInfoRepository;
-
+import de.omagh.core_infra.di.CoreComponentProvider;
 /**
  * ViewModel for managing the user's plant list.
  * Uses Room database (AppDatabase) for persistence.
@@ -39,7 +40,9 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public PlantListViewModel(@NonNull Application application) {
         super(application);
-        ((LumiBuddyApplication) application).getAppComponent().inject(this);
+        CoreComponent core =
+                ((CoreComponentProvider) application).getCoreComponent();
+        repository = core.plantRepository();
         infoRepository = new PlantInfoRepository(application);
         sampleDb = new PlantDatabaseManager();
         plants = repository.getAllPlants();

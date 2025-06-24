@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.util;
+package de.omagh.core_infra.util;
 
 import android.content.Context;
 import android.net.Uri;

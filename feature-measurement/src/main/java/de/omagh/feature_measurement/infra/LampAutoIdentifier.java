@@ -1,9 +1,6 @@
-package de.omagh.lumibuddy.feature_growlight;
+package de.omagh.feature_measurement.infra;
 
 import android.graphics.Bitmap;
-
-import de.omagh.feature_measurement.infra.LampProduct;
-import de.omagh.feature_measurement.infra.LampProductDB;
 
 /**
  * Utility to identify lamps by name or in the future via photo/barcode.
