@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_plantdb.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.feature_diary.ui.PlantGrowthTimelineFragment;
 import de.omagh.lumibuddy.R;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.PlantCareProfileEntity;

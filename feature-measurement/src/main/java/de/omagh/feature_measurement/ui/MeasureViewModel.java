@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_measurement.ui;
 
 import android.app.Application;
 
@@ -16,9 +16,9 @@ import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 import de.omagh.lumibuddy.feature_growlight.GrowLightProfileManager;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
-import de.omagh.lumibuddy.feature_measurement.CalibrationManager;
+import de.omagh.feature_measurement.CalibrationManager;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
-import de.omagh.lumibuddy.feature_measurement.MeasurementUtils;
+import de.omagh.MeasurementUtils;
 import de.omagh.lumibuddy.feature_user.CalibrationProfilesManager;
 import de.omagh.lumibuddy.feature_user.SettingsManager;
 

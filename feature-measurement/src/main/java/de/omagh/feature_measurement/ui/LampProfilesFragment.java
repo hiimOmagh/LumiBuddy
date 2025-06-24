@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_measurement.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_measurement.R;
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 

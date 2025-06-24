@@ -7,11 +7,12 @@ import de.omagh.core_infra.di.DaggerCoreComponent;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.lumibuddy.core.AppComponent;
 import de.omagh.lumibuddy.core.DaggerAppComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
 
 /**
  * Simplified Application setup used for instrumentation tests.
  */
-public class LumiBuddyApplication extends Application {
+public class LumiBuddyApplication extends Application implements CoreComponentProvider {
     private CoreComponent coreComponent;
     private AppComponent appComponent;
 
@@ -27,6 +28,7 @@ public class LumiBuddyApplication extends Application {
         Timber.plant(new Timber.DebugTree());
     }
 
+    @Override
     public CoreComponent getCoreComponent() {
         return coreComponent;
     }

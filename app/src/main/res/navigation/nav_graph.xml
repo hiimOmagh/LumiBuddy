@@ -11,17 +11,17 @@
 
     <fragment
         android:id="@+id/measureFragment"
-        android:name="de.omagh.lumibuddy.ui.MeasureFragment"
+        android:name="de.omagh.feature_measurement.ui.MeasureFragment"
         android:label="Measure" />
 
     <fragment
         android:id="@+id/plantListFragment"
-        android:name="de.omagh.lumibuddy.ui.PlantListFragment"
+        android:name="de.omagh.feature_plantdb.ui.PlantListFragment"
         android:label="Plants" />
 
     <fragment
         android:id="@+id/diaryFragment"
-        android:name="de.omagh.lumibuddy.ui.PlantDiaryFragment"
+        android:name="de.omagh.feature_diary.ui.PlantDiaryFragment"
         android:label="Diary" />
 
     <fragment
@@ -35,22 +35,22 @@
         android:label="Settings" />
     <fragment
         android:id="@+id/lampProfilesFragment"
-        android:name="de.omagh.lumibuddy.ui.LampProfilesFragment"
+        android:name="de.omagh.feature_measurement.ui.LampProfilesFragment"
         android:label="Lamp Profiles" />
     <fragment
         android:id="@+id/plantDetailFragment"
-        android:name="de.omagh.lumibuddy.ui.PlantDetailFragment"
+        android:name="de.omagh.feature_plantdb.ui.PlantDetailFragment"
         android:label="Plant Detail">
         <!-- ...arguments... -->
     </fragment>
     <fragment
         android:id="@+id/addPlantFragment"
-        android:name="de.omagh.lumibuddy.ui.AddPlantFragment"
+        android:name="de.omagh.feature_plantdb.ui.AddPlantFragment"
         android:label="Add Plant" />
 
     <fragment
         android:id="@+id/plantGrowthTimelineFragment"
-        android:name="de.omagh.lumibuddy.ui.PlantGrowthTimelineFragment"
+        android:name="de.omagh.feature_diary.ui.PlantGrowthTimelineFragment"
         android:label="Diary">
         <argument
             android:name="plant_id"

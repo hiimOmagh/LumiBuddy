@@ -11,6 +11,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.jspecify.annotations.Nullable;
 
+import de.omagh.feature_plantdb.ui.PlantDetailFragment;
 import de.omagh.lumibuddy.R;
 
 public class MainActivity extends AppCompatActivity {

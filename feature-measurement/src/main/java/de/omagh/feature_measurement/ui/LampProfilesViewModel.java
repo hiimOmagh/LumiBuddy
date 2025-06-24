@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_measurement.ui;
 
 import android.app.Application;
 

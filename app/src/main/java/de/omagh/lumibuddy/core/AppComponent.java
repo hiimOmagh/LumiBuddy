@@ -4,9 +4,9 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.omagh.core_infra.di.CoreComponent;
-import de.omagh.lumibuddy.ui.MeasureViewModel;
-import de.omagh.lumibuddy.ui.PlantDetailViewModel;
-import de.omagh.lumibuddy.ui.PlantListViewModel;
+import de.omagh.feature_measurement.ui.MeasureViewModel;
+import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
+import de.omagh.feature_plantdb.ui.PlantListViewModel;
 
 /**
  * Application-level Dagger component.

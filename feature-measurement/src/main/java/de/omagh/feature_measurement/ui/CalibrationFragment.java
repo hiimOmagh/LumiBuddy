@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_measurement.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_measurement.R;
 
 /**
  * A simple {@link Fragment} subclass.

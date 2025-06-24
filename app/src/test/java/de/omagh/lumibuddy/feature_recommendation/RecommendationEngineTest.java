@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
+import de.omagh.MeasurementUtils;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.DiaryEntry;
 
@@ -21,7 +22,7 @@ public class RecommendationEngineTest {
                 new DiaryEntry("3", "p1", now - 3000, "PPFD:300", "", "light")
         );
         float expected = (10f + 20f +
-                de.omagh.lumibuddy.feature_measurement.MeasurementUtils.ppfdToDLI(300f, 24)) / 3f;
+                MeasurementUtils.ppfdToDLI(300f, 24)) / 3f;
         float avg = engine.computeAverageDli(entries);
         assertEquals(expected, avg, 0.01f);
     }

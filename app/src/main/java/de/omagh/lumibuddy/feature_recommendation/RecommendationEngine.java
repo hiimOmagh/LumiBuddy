@@ -15,7 +15,7 @@ import de.omagh.lumibuddy.feature_plantdb.PlantDatabaseManager;
 import de.omagh.lumibuddy.feature_plantdb.PlantIdentifier;
 import de.omagh.lumibuddy.feature_plantdb.PlantInfo;
 import de.omagh.lumibuddy.feature_plantdb.PlantStage;
-
+import de.omagh.feature_measurement.MeasurementUtils;
 /**
  * Simple recommendation engine used to provide plant care suggestions
  * based on diary history and care profiles.
@@ -147,7 +147,7 @@ public class RecommendationEngine {
 
         if (Float.isNaN(latestDli) && !Float.isNaN(latestPpfd)) {
             // Estimate DLI from PPFD assuming a 24h photoperiod
-            latestDli = de.omagh.lumibuddy.feature_measurement.MeasurementUtils
+            latestDli = de.omagh.feature_measurement.MeasurementUtils
                     .ppfdToDLI(latestPpfd, 24);
         }
 
@@ -187,7 +187,7 @@ public class RecommendationEngine {
             float[] vals = parseLightMetrics(e.getNote());
             float dli = vals[0];
             if (Float.isNaN(dli) && !Float.isNaN(vals[1])) {
-                dli = de.omagh.lumibuddy.feature_measurement.MeasurementUtils
+                dli = de.omagh.feature_measurement.MeasurementUtils
                         .ppfdToDLI(vals[1], 24);
             }
             if (!Float.isNaN(dli)) {

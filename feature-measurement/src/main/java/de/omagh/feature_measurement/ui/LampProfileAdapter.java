@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_measurement.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +11,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_measurement.R;
 import de.omagh.lumibuddy.feature_growlight.LampProduct;
 
 /**

@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_plantdb.ui;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -13,7 +13,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.lumibuddy.R;
+import de.omagh.feature_plantdb.R;
 import de.omagh.core_domain.model.Plant;
 
 

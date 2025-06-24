@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.*;
 
+import de.omagh.feature_measurement.CalibrationManager;
+
 /**
  * Integration tests for {@link CalibrationManager} using SharedPreferences.
  */

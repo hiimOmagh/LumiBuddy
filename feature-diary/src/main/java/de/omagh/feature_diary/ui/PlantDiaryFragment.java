@@ -1,40 +1,46 @@
-package de.omagh.lumibuddy.ui;
+package de.omagh.feature_diary.ui;
 
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import org.jspecify.annotations.NonNull;
-import org.jspecify.annotations.Nullable;
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import de.omagh.lumibuddy.R;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.lumibuddy.feature_diary.DiaryEntryAdapter;
 import de.omagh.lumibuddy.feature_diary.DiaryViewModel;
+import de.omagh.feature_plantdb.PlantListViewModel;
 
-
-public class PlantGrowthTimelineFragment extends Fragment {
-
-    public static final String ARG_PLANT_ID = "plant_id";
-    private String plantId;
+/**
+ * Diary tab showing all diary entries across plants.
+ */
+public class PlantDiaryFragment extends Fragment {
 
     private DiaryViewModel diaryViewModel;
-    private Uri selectedImageUri = null;
+    private PlantListViewModel plantViewModel;
+    private DiaryEntryAdapter adapter;
+    private Uri selectedImageUri;
     private ImageView dialogImagePreview;
 
     private final androidx.activity.result.ActivityResultLauncher<String> imagePickerLauncher =
@@ -48,79 +54,79 @@ public class PlantGrowthTimelineFragment extends Fragment {
                 }
             });
 
-
-    public PlantGrowthTimelineFragment() {
-    }
-
-    public static PlantGrowthTimelineFragment newInstance(String plantId) {
-        PlantGrowthTimelineFragment fragment = new PlantGrowthTimelineFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PLANT_ID, plantId);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            plantId = getArguments().getString(ARG_PLANT_ID);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_plant_growth_timeline, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_plant_diary, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Setup RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.growthTimelineRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.diaryRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        DiaryEntryAdapter adapter = new DiaryEntryAdapter();
+        recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
+        adapter = new DiaryEntryAdapter();
         recyclerView.setAdapter(adapter);
 
-        // ViewModel
         diaryViewModel = new ViewModelProvider(this,
                 new DiaryViewModel.Factory(requireActivity().getApplication()))
                 .get(DiaryViewModel.class);
-        diaryViewModel.getDiaryEntriesForPlant(plantId)
-                .observe(getViewLifecycleOwner(), adapter::submitList);
+        plantViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
 
-        // FAB to add new log entry
-        FloatingActionButton fab = view.findViewById(R.id.addGrowthEventFab);
+        diaryViewModel.getAllEntries().observe(getViewLifecycleOwner(), entries -> {
+            adapter.submitList(entries);
+            View empty = view.findViewById(R.id.emptyState);
+            if (entries == null || entries.isEmpty()) {
+                empty.setVisibility(View.VISIBLE);
+            } else {
+                empty.setVisibility(View.GONE);
+            }
+        });
+
+        FloatingActionButton fab = view.findViewById(R.id.addDiaryEntryFab);
         fab.setOnClickListener(v -> showAddEntryDialog());
     }
 
     private void showAddEntryDialog() {
-        View dialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_diary_entry, null);
+        View dialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_diary_entry_global, null);
+        Spinner plantSpinner = dialog.findViewById(R.id.plantSpinner);
         Spinner typeSpinner = dialog.findViewById(R.id.eventTypeSpinner);
         EditText noteInput = dialog.findViewById(R.id.editDiaryNote);
         dialogImagePreview = dialog.findViewById(R.id.diaryImagePreview);
         dialog.findViewById(R.id.pickImageBtn).setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
 
+        List<Plant> plants = plantViewModel.getPlants().getValue();
+        List<Plant> safeList = plants != null ? plants : new ArrayList<>();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        for (Plant p : safeList) {
+            adapter.add(p.getName());
+        }
+        plantSpinner.setAdapter(adapter);
+
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setTitle(R.string.add_diary_entry)
                 .setView(dialog)
                 .setPositiveButton(R.string.save, (d, which) -> {
-                    String note = noteInput.getText().toString().trim();
-                    String type = typeSpinner.getSelectedItem().toString();
-                    String uriStr = selectedImageUri != null ? selectedImageUri.toString() : "";
+                    if (safeList.isEmpty()) {
+                        Snackbar.make(requireView(), R.string.plant_list_desc, Snackbar.LENGTH_SHORT).show();
+                        return;
+                    }
+                    Plant selected = safeList.get(plantSpinner.getSelectedItemPosition());
                     DiaryEntry entry = new DiaryEntry(
                             UUID.randomUUID().toString(),
-                            plantId,
+                            selected.getId(),
                             System.currentTimeMillis(),
-                            note,
-                            uriStr,
-                            type
+                            noteInput.getText().toString().trim(),
+                            selectedImageUri != null ? selectedImageUri.toString() : "",
+                            typeSpinner.getSelectedItem().toString()
                     );
                     diaryViewModel.addEntry(entry);
-                    selectedImageUri = null;
                     Snackbar.make(requireView(), R.string.add_diary_entry, Snackbar.LENGTH_SHORT).show();
+                    selectedImageUri = null;
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();

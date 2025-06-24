@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_measurement;
+package de.omagh.feature_measurement;
 
 import android.content.Context;
 import android.content.SharedPreferences;

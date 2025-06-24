@@ -6,7 +6,7 @@
     android:background="?android:colorBackground"
     android:paddingTop="16dp"
     android:paddingBottom="0dp"
-    tools:context=".ui.AgendaFragment">
+    tools:context="de.omagh.feature_growschedule.AgendaFragment">
 
     <!-- Title -->
     <TextView
