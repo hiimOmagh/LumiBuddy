@@ -28,6 +28,12 @@ public abstract class DataModule {
         return db.plantDao();
     }
 
+    @Provides
+    @Singleton
+    static PlantRepository providePlantRepository(AppDatabase db) {
+        return new PlantRepository(db);
+    }
+
     @Binds
     @Singleton
     abstract PlantDataSource bindPlantRepository(PlantRepository impl);
