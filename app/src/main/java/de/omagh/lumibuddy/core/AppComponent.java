@@ -9,7 +9,8 @@ import de.omagh.app_di.ApplicationComponent;
 /**
  * Application-level Dagger component.
  */
-@Singleton
+
 @Component(dependencies = CoreComponent.class)
 public interface AppComponent extends ApplicationComponent {
+
 }
