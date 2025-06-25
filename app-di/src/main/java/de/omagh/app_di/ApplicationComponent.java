@@ -1,17 +1,11 @@
 package de.omagh.app_di;
 
-import de.omagh.feature_measurement.ui.MeasureViewModel;
-import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
-import de.omagh.feature_plantdb.ui.PlantListViewModel;
 
 /**
- * Interface that exposes injection targets used by feature modules.
- * Implemented by application level Dagger component.
+ * Marker interface for the application level Dagger component.
+ * <p>
+ * Feature modules should obtain their dependencies directly from
+ * {@code CoreComponent} or provide them within their own modules.
  */
 public interface ApplicationComponent {
-    void inject(MeasureViewModel viewModel);
-
-    void inject(PlantDetailViewModel viewModel);
-
-    void inject(PlantListViewModel viewModel);
 }

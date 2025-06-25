@@ -13,7 +13,7 @@ import javax.inject.Inject;
 import de.omagh.feature_measurement.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;
-import de.omagh.lumibuddy.core.ApplicationComponent;
+import de.omagh.app_di.ApplicationComponent;
 import de.omagh.core_infra.di.AppComponentProvider;
 import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;

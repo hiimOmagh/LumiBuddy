@@ -1,6 +1,6 @@
 package de.omagh.core_infra.di;
 
-import de.omagh.lumibuddy.core.ApplicationComponent;
+import de.omagh.app_di.ApplicationComponent;
 
 /**
  * Interface to expose {@link ApplicationComponent} from an application context.
