@@ -31,7 +31,6 @@ android {
 dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-infra"))
-    implementation(project(":app-di"))
     implementation(project(":core-data"))
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)

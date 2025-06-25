@@ -32,7 +32,6 @@ dependencies {
 
     implementation(project(":core-data"))
     implementation(project(":core-infra"))
-    implementation(project(":app-di"))
     implementation(project(":core-domain"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

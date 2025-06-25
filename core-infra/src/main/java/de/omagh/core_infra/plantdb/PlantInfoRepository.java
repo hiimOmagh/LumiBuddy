@@ -1,4 +1,4 @@
-package de.omagh.core_data.plantdb;
+package de.omagh.core_infra.plantdb;
 
 import android.content.Context;
 

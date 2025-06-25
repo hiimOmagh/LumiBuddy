@@ -20,8 +20,6 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
                 .application(this)
                 .build();
         coreComponent.inject(this);
-                .coreComponent(coreComponent)
-                .build();
         Timber.plant(new Timber.DebugTree());
     }
 

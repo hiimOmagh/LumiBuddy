@@ -115,38 +115,37 @@ Module dependencies:
 
 ## DI Setup
 
-- LumiBuddy uses **Dagger 2** with two main components.
-
-- **CoreComponent** (in `:core-infra`) is application scoped via `@Singleton` and
-  provides network, database and sensor services via `NetworkModule`, `DataModule`
-  and `SensorModule`.
-- **AppComponent** (in `:app`) depends on `CoreComponent` to wire feature modules.
+- LumiBuddy uses **Dagger 2** with a single `CoreComponent`.
+- `CoreComponent` (in `:core-infra`) is application scoped via `@Singleton` and
+  bundles network, database, sensor, and feature modules.
+- `LumiBuddyApplication` creates the component in `onCreate()` and implements
+  `CoreComponentProvider`. ViewModels obtain the component from their
+  `Application` context and call `inject(this)` in their constructors.
 
 Example:
 
 ```java
 @Singleton
-@Component(modules = {NetworkModule.class, DataModule.class, SensorModule.class})
+@Component(modules = {
+        NetworkModule.class,
+        DataModule.class,
+        SensorModule.class,
+        UserModule.class,
+        MeasurementModule.class,
+        PlantDbModule.class
+})
 public interface CoreComponent {
-  void inject(LumiBuddyApplication app);
+  void inject(LumiBuddyApplication application);
 
   void inject(MeasureViewModel viewModel);
-}
 
-@Singleton
-@Component(dependencies = CoreComponent.class)
-public interface AppComponent {
-  void inject(MeasureViewModel vm);
+  void inject(PlantListViewModel viewModel);
 
-  void inject(PlantDetailViewModel vm);
+  void inject(PlantDetailViewModel viewModel);
 
-  void inject(PlantListViewModel vm);
+  void inject(AddPlantViewModel viewModel);
 }
 ```
-
-`LumiBuddyApplication` builds both components and exposes
-`getAppComponent()` for injection. Feature modules should cast their `Application` instance to
-`AppComponentProvider` to access the component.
 ---
 
 ## Development Guidelines & Best Practices
@@ -156,6 +155,9 @@ public interface AppComponent {
 * Each module handles clearly defined responsibilities.
 * Feature modules encapsulate their specific UI and logic.
 * Common logic resides in core modules.
+* Feature modules aim to remain independent so they can be developed and tested
+  in isolation when possible.
+*
 
 ### Dependency Injection
 

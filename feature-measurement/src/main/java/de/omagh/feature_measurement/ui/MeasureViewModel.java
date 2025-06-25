@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
 
+import javax.inject.Inject;
+
 import de.omagh.core_domain.util.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;

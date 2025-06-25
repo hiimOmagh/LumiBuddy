@@ -5,6 +5,8 @@ import android.graphics.Color;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+
 import de.omagh.core_infra.ml.BasicHealthStatusClassifier;
 import de.omagh.core_infra.ml.BasicLampTypeClassifier;
 import de.omagh.core_infra.ml.BasicPlantClassifier;

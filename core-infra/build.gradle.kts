@@ -32,7 +32,6 @@ dependencies {
 
     implementation(project(":core-domain"))
     implementation(project(":core-data"))
-    compileOnly(project(":app-di"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.dagger)
