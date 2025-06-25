@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.core;
+package de.omagh.app_di;
 
 import de.omagh.feature_measurement.ui.MeasureViewModel;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
