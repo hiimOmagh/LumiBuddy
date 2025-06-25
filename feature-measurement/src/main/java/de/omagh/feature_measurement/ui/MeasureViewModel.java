@@ -11,12 +11,12 @@ import org.jspecify.annotations.NonNull;
 import de.omagh.feature_measurement.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;
-import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.di.CoreComponent;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 
@@ -30,24 +30,23 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<Float> dliLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
     private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
-    private final CalibrationProfilesManager profileManager;
-    private final GrowLightProfileManager growLightManager;
-    private final SettingsManager settingsManager;
-    private final MutableLiveData<String> lampIdLiveData;
-    private final GetCurrentLuxUseCase getCurrentLuxUseCase;
+    @Inject
+    CalibrationProfilesManager profileManager;
+    @Inject
+    GrowLightProfileManager growLightManager;
+    @Inject
+    SettingsManager settingsManager;
+    @Inject
+    GetCurrentLuxUseCase getCurrentLuxUseCase;
+    @Inject
+    CalibrationManager calibrationManager;
+    private MutableLiveData<String> lampIdLiveData;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        CoreComponent core =
-                ((CoreComponentProvider) application).getCoreComponent();
-        getCurrentLuxUseCase =
-                new GetCurrentLuxUseCase(core.measurementRepository());
-        CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
-        profileManager = new CalibrationProfilesManager(application.getApplicationContext());
-        growLightManager = new GrowLightProfileManager(application.getApplicationContext());
-        settingsManager = new SettingsManager(application.getApplicationContext());
+        ((CoreComponentProvider) application).getCoreComponent().inject(this);
 
         int hours = settingsManager.getLightDuration();
         hoursLiveData.setValue(hours);

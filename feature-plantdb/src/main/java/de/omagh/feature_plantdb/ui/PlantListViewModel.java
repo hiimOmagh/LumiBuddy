@@ -15,7 +15,6 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.core_infra.di.CoreComponent;
 //import de.omagh.lumibuddy.LumiBuddyApplication;
 import de.omagh.feature_plantdb.data.PlantDatabaseManager;
 import de.omagh.feature_plantdb.data.PlantInfo;
@@ -27,9 +26,11 @@ import de.omagh.core_infra.di.CoreComponentProvider;
  * Exposes LiveData for automatic UI updates.
  */
 public class PlantListViewModel extends AndroidViewModel {
-    private final LiveData<List<Plant>> plants;
-    private final PlantInfoRepository infoRepository;
-    private final PlantDatabaseManager sampleDb;
+    @Inject
+    PlantInfoRepository infoRepository;
+    @Inject
+    PlantDatabaseManager sampleDb;
+    private LiveData<List<Plant>> plants;
     @Inject
     PlantRepository repository;
 
@@ -40,11 +41,7 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public PlantListViewModel(@NonNull Application application) {
         super(application);
-        CoreComponent core =
-                ((CoreComponentProvider) application).getCoreComponent();
-        repository = core.plantRepository();
-        infoRepository = new PlantInfoRepository(application);
-        sampleDb = new PlantDatabaseManager();
+        ((CoreComponentProvider) application).getCoreComponent().inject(this);
         plants = repository.getAllPlants();
     }
 

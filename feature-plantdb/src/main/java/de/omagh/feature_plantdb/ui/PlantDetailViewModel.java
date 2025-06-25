@@ -16,7 +16,6 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_plantdb.data.PlantInfoRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
 
@@ -28,15 +27,13 @@ import de.omagh.core_infra.di.CoreComponentProvider;
 public class PlantDetailViewModel extends ViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
-    private final PlantInfoRepository infoRepository;
+    @Inject
+    PlantInfoRepository infoRepository;
     @Inject
     PlantRepository repository;
 
     public PlantDetailViewModel(@NonNull Application application) {
-        CoreComponent core =
-                ((CoreComponentProvider) application).getCoreComponent();
-        repository = core.plantRepository();
-        infoRepository = new PlantInfoRepository(application);
+        ((CoreComponentProvider) application).getCoreComponent().inject(this);
     }
 
 
