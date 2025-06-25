@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-infra"))
+    implementation(project(":app-di"))
     implementation(project(":core-data"))
     implementation(project(":feature-ml"))
     implementation(project(":feature-ar"))

@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-data"))
+    implementation(project(":app-di"))
     implementation(project(":feature-plantdb"))
     implementation(project(":feature-measurement"))
     implementation(libs.rxjava2)

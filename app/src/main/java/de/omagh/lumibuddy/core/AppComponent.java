@@ -4,7 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import de.omagh.core_infra.di.CoreComponent;
-import de.omagh.core_infra.di.ApplicationComponent;
+import de.omagh.lumibuddy.core.ApplicationComponent;
 
 /**
  * Application-level Dagger component.

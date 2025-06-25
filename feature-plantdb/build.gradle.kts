@@ -32,6 +32,7 @@ dependencies {
 
     implementation(project(":core-data"))
     implementation(project(":core-infra"))
+    implementation(project(":app-di"))
     implementation(project(":core-domain"))
     implementation(project(":feature-ml"))
     implementation(project(":feature-ar"))

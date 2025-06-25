@@ -30,6 +30,7 @@ android {
 
 dependencies {
     implementation(project(":core-infra"))
+    implementation(project(":app-di"))
     implementation(project(":core-data"))
     implementation(project(":feature-recommendation"))
     implementation(libs.rxjava2)

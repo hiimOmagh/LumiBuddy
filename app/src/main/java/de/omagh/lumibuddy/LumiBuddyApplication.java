@@ -6,7 +6,7 @@ import timber.log.Timber;
 import de.omagh.core_infra.di.DaggerCoreComponent;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.lumibuddy.core.AppComponent;
-import de.omagh.core_infra.di.ApplicationComponent;
+import de.omagh.lumibuddy.core.ApplicationComponent;
 import de.omagh.lumibuddy.core.DaggerAppComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.AppComponentProvider;

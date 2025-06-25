@@ -31,6 +31,7 @@ android {
 dependencies {
 
     implementation(project(":core-infra"))
+    implementation(project(":app-di"))
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)
     implementation(libs.appcompat)

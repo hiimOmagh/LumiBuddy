@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+
+    implementation(project(":app-di"))
     implementation(libs.timber)
     implementation(libs.appcompat)
     implementation(libs.material)
