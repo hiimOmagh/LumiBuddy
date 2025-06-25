@@ -22,9 +22,9 @@ import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
-import de.omagh.lumibuddy.feature_recommendation.NotificationManager;
-import de.omagh.lumibuddy.feature_recommendation.RecommendationEngine;
-import de.omagh.lumibuddy.feature_recommendation.WateringScheduler;
+import de.omagh.feature_recommendation.NotificationManager;
+import de.omagh.feature_recommendation.RecommendationEngine;
+import de.omagh.feature_recommendation.WateringScheduler;
 
 /**
  * ViewModel coordinating home screen data and background recommendation logic.

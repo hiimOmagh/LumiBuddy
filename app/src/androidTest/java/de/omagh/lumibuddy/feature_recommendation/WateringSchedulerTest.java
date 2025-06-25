@@ -15,6 +15,9 @@ import java.util.Collections;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.feature_recommendation.NotificationManager;
+import de.omagh.feature_recommendation.RecommendationEngine;
+import de.omagh.feature_recommendation.WateringScheduler;
 
 import static org.mockito.Mockito.*;
 
