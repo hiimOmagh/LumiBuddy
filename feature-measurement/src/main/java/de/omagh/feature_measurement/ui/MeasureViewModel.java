@@ -8,13 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
 
-import javax.inject.Inject;
-
 import de.omagh.feature_measurement.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;
-import de.omagh.app_di.ApplicationComponent;
-import de.omagh.core_infra.di.AppComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
@@ -36,15 +34,16 @@ public class MeasureViewModel extends AndroidViewModel {
     private final GrowLightProfileManager growLightManager;
     private final SettingsManager settingsManager;
     private final MutableLiveData<String> lampIdLiveData;
-    @Inject
-    GetCurrentLuxUseCase getCurrentLuxUseCase;
+    private final GetCurrentLuxUseCase getCurrentLuxUseCase;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        ApplicationComponent component = ((AppComponentProvider) application).getAppComponent();
-        component.inject(this);
+        CoreComponent core =
+                ((CoreComponentProvider) application).getCoreComponent();
+        getCurrentLuxUseCase =
+                new GetCurrentLuxUseCase(core.measurementRepository());
         CalibrationManager calibrationManager = new CalibrationManager(application.getApplicationContext());
         profileManager = new CalibrationProfilesManager(application.getApplicationContext());
         growLightManager = new GrowLightProfileManager(application.getApplicationContext());

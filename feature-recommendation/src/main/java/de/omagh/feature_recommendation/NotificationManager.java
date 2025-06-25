@@ -14,7 +14,6 @@ import androidx.core.app.NotificationManagerCompat;
 
 import de.omagh.feature_recommendation.R;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.lumibuddy.ui.MainActivity;
 
 /**
  * Handles sending of care reminders to the user.
@@ -49,7 +48,11 @@ public class NotificationManager {
         String text = "Water " + plant.getName() + " today – it's been " + daysSince
                 + " days since last watering!";
 
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = context.getPackageManager()
+                .getLaunchIntentForPackage(context.getPackageName());
+        if (intent == null) {
+            intent = new Intent(); // fallback to empty intent
+        }
         intent.putExtra("openPlantId", plant.getId());
         intent.putExtra("openPlantName", plant.getName());
         intent.putExtra("openPlantType", plant.getType());
@@ -93,7 +96,11 @@ public class NotificationManager {
      */
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     public void notifyLightRecommendation(Plant plant, String message) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = context.getPackageManager()
+                .getLaunchIntentForPackage(context.getPackageName());
+        if (intent == null) {
+            intent = new Intent(); // fallback to empty intent
+        }
         intent.putExtra("openPlantId", plant.getId());
         intent.putExtra("openPlantName", plant.getName());
         intent.putExtra("openPlantType", plant.getType());
