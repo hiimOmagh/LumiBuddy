@@ -34,8 +34,6 @@ dependencies {
     implementation(project(":core-infra"))
     implementation(project(":app-di"))
     implementation(project(":core-domain"))
-    implementation(project(":feature-ml"))
-    implementation(project(":feature-ar"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)

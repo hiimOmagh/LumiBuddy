@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.omagh.core_infra.sync.DiarySyncManager;
+import de.omagh.core_infra.sync.PlantSyncManager;
 import de.omagh.feature_measurement.R;
 import de.omagh.core_domain.model.CalibrationProfile;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
@@ -129,8 +131,8 @@ public class SettingsFragment extends Fragment {
 
         syncNowBtn.setOnClickListener(v -> {
             // Trigger stub sync managers
-            new de.omagh.feature_plantdb.PlantSyncManager().syncToCloud();
-            new de.omagh.feature_diary.DiarySyncManager().syncToCloud();
+            new de.omagh.core_infra.sync.PlantSyncManager().syncToCloud();
+            new de.omagh.core_infra.sync.DiarySyncManager().syncToCloud();
             Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
         });
 

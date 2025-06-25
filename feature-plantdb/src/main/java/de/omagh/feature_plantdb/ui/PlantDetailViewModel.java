@@ -16,7 +16,7 @@ import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.feature_plantdb.data.PlantInfoRepository;
+import de.omagh.core_data.plantdb.PlantInfoRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
 
 /**

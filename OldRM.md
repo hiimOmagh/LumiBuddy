@@ -2,19 +2,27 @@
 
 ## Overview
 
-**LumiBud** is a modular, future-proof Android app for plant lovers, hobby growers, and professionals.  
-It combines professional-grade light/environment measurement, plant identification, personalized care tracking, and actionable recommendations – all in a modern, beautiful UI.
+**LumiBud** is a modular, future-proof Android app for plant lovers, hobby growers, and
+professionals.  
+It combines professional-grade light/environment measurement, plant identification, personalized
+care tracking, and actionable recommendations – all in a modern, beautiful UI.
 
 ## Key Features
 
-- **Accurate plant-centric light measurement:** Lux, PPFD, DLI, spectrum, and CCT, using phone sensors/camera with calibration.
+- **Accurate plant-centric light measurement:** Lux, PPFD, DLI, spectrum, and CCT, using phone
+  sensors/camera with calibration.
 - **Plant identification:** AI-powered auto-ID and manual search.
-- **Personalized diary:** Track growth, care events, watering, environment, and compare progress with calendar/agenda views.
-- **Smart recommendations:** Get actionable, plant-specific care advice (lighting, watering, humidity, temperature, interventions).
-- **Grow light auto-ID & calibration:** Scan/search for lamp type and specs or enter manually, supporting best measurement accuracy.
+- **Personalized diary:** Track growth, care events, watering, environment, and compare progress
+  with calendar/agenda views.
+- **Smart recommendations:** Get actionable, plant-specific care advice (lighting, watering,
+  humidity, temperature, interventions).
+- **Grow light auto-ID & calibration:** Scan/search for lamp type and specs or enter manually,
+  supporting best measurement accuracy.
 - **Periodic scans:** Reminders and visual growth tracking with photos and metrics.
-- **Comprehensive settings:** All app, measurement, calibration, and profile preferences in one place.
-- **Planned:** AR overlays, ML-based plant/lamp recognition, and external hardware sensor support (Bluetooth/USB/IoT).
+- **Comprehensive settings:** All app, measurement, calibration, and profile preferences in one
+  place.
+- **Planned:** AR overlays, ML-based plant/lamp recognition, and external hardware sensor support (
+  Bluetooth/USB/IoT).
 
 ---
 
@@ -38,7 +46,9 @@ It combines professional-grade light/environment measurement, plant identificati
 
 ## Project Vision
 
-LumiBud aims to **demystify indoor plant care**, putting expert-level light/environment analysis and plant-specific recommendations in every grower’s pocket – whether they use only their phone or add advanced sensors and AI.
+LumiBud aims to **demystify indoor plant care**, putting expert-level light/environment analysis and
+plant-specific recommendations in every grower’s pocket – whether they use only their phone or add
+advanced sensors and AI.
 
 ---
 
@@ -56,6 +66,7 @@ LumiBud aims to **demystify indoor plant care**, putting expert-level light/envi
 - **All logic unit-testable and UI-independent.**
 
 ### Directory Structure (Example)
+
 de.omagh.lumibud/
 ├── core/ # Common utilities/constants
 ├── feature_measurement/ # Light/Env measurement logic
@@ -93,6 +104,7 @@ de.omagh.lumibud/
 ## Major Features (Current & Planned)
 
 ### 🌟 **Current**
+
 - Modern home/dashboard, measure tab, plant diary, growth calendar/agenda
 - Accurate Lux, PPFD, DLI, CCT, spectrum measurement (camera/diffuser & ALS)
 - Auto/manual plant identification, database of care needs by species/stage
@@ -101,6 +113,7 @@ de.omagh.lumibud/
 - Periodic plant scan & visual growth tracking
 
 ### 🛠️ **Planned / Modular**
+
 - AR overlays (real-time optical indicators for measurement/growth)
 - ML-based plant and grow light auto-ID
 - External hardware support (Bluetooth/USB/IoT sensors, cloud)
@@ -112,6 +125,7 @@ de.omagh.lumibud/
 ## Measurement Science & Algorithms
 
 ### Key Metrics
+
 - **Lux (Illuminance)**: Measured via ALS or camera.
 - **Foot-candles**: Optional imperial unit (1 fc = 10.764 lux).
 - **PPFD (μmol/m²/s)**: Core metric for plant photosynthesis.
@@ -122,10 +136,13 @@ de.omagh.lumibud/
 ### Algorithms/Approach
 
 - **ALS (Ambient Light Sensor):** Direct lux reading; spectrum-dependent conversion to PPFD.
-- **Camera + Diffuser:** Average RGB, spectrum heuristics, per-lamp calibration factor or user-supplied calibration.
-- **Calibration:** Per-device, per-lamp, user-adjustable profiles; supports custom reference (sun, meter, manufacturer).
+- **Camera + Diffuser:** Average RGB, spectrum heuristics, per-lamp calibration factor or
+  user-supplied calibration.
+- **Calibration:** Per-device, per-lamp, user-adjustable profiles; supports custom reference (sun,
+  meter, manufacturer).
 - **Periodic logging:** For DLI and environment tracking.
-- **Spectral heuristics:** Rule-based RGB analysis for light type (Bluer, Redder, Full-spectrum, etc).
+- **Spectral heuristics:** Rule-based RGB analysis for light type (Bluer, Redder, Full-spectrum,
+  etc).
 
 ### Modular Input Source Design
 
@@ -139,7 +156,8 @@ de.omagh.lumibud/
 - **Plant ID:** AI photo recognition (ML Kit, PlantID API), manual search/list as fallback.
 - **Plant DB:** Optimal DLI, PPFD, temp, humidity, watering by species/stage.
 - **Diary:** Growth scans, photos, measurements, notes, interventions.
-- **Care Recommendation Engine:** Matches logs/measurements to plant needs; gives user actionable, stage-specific advice.
+- **Care Recommendation Engine:** Matches logs/measurements to plant needs; gives user actionable,
+  stage-specific advice.
 - **Watering/Fertilizer Scheduler:** Dynamic reminders, rescheduling based on log entries.
 
 ---
@@ -154,9 +172,12 @@ de.omagh.lumibud/
 
 ## Modular Design for AR, ML, and Hardware
 
-- **AR Module:** Overlays for live measurement, growth alignment, plant care suggestions (via ARCore or compatible tech).
-- **ML Module:** Plant/lamp recognition, health status detection (modular, replaceable, updatable as tech advances).
-- **External Hardware Module:** Bluetooth/USB/IoT sensors; plug-and-play via interface and HardwareManager.
+- **AR Module:** Overlays for live measurement, growth alignment, plant care suggestions (via ARCore
+  or compatible tech).
+- **ML Module:** Plant/lamp recognition, health status detection (modular, replaceable, updatable as
+  tech advances).
+- **External Hardware Module:** Bluetooth/USB/IoT sensors; plug-and-play via interface and
+  HardwareManager.
 
 ---
 

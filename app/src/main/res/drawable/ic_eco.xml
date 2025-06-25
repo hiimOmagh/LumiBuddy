@@ -17,7 +17,7 @@
 
     <!-- Stem -->
     <path
-        android:strokeColor="#388E3C"
+        android:pathData="M24,36 L24,44"
         android:strokeWidth="2"
-        android:pathData="M24,36 L24,44" />
+        android:strokeColor="#388E3C" />
 </vector>

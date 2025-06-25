@@ -7,8 +7,8 @@ import de.omagh.feature_growschedule.ui.HomeViewModel;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.PlantDataSource;
-import de.omagh.feature_recommendation.RecommendationEngine;
-import de.omagh.feature_recommendation.WateringScheduler;
+import de.omagh.core_infra.recommendation.RecommendationEngine;
+import de.omagh.core_infra.recommendation.WateringScheduler;
 
 import org.junit.Before;
 import org.junit.Test;

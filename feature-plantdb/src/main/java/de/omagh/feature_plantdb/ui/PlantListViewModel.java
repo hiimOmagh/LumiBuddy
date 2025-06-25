@@ -16,9 +16,9 @@ import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 //import de.omagh.lumibuddy.LumiBuddyApplication;
-import de.omagh.feature_plantdb.data.PlantDatabaseManager;
-import de.omagh.feature_plantdb.data.PlantInfo;
-import de.omagh.feature_plantdb.data.PlantInfoRepository;
+import de.omagh.core_data.plantdb.PlantDatabaseManager;
+import de.omagh.core_data.plantdb.PlantInfo;
+import de.omagh.core_data.plantdb.PlantInfoRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
 /**
  * ViewModel for managing the user's plant list.
@@ -30,9 +30,9 @@ public class PlantListViewModel extends AndroidViewModel {
     PlantInfoRepository infoRepository;
     @Inject
     PlantDatabaseManager sampleDb;
-    private LiveData<List<Plant>> plants;
     @Inject
     PlantRepository repository;
+    private LiveData<List<Plant>> plants;
 
     /**
      * Initializes the ViewModel and loads LiveData from Room DB.

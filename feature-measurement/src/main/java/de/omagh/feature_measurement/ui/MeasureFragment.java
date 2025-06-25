@@ -27,8 +27,8 @@ import de.omagh.core_infra.measurement.CameraLightMeterX;
 import de.omagh.feature_measurement.R;
 import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;
-import de.omagh.feature_ml.BasicLampTypeClassifier;
-import de.omagh.feature_ml.LampTypeClassifier;
+import de.omagh.core_infra.ml.BasicLampTypeClassifier;
+import de.omagh.core_infra.ml.LampTypeClassifier;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.util.OnSwipeTouchListener;
 import de.omagh.core_infra.util.PermissionUtils;
@@ -60,7 +60,7 @@ public class MeasureFragment extends Fragment {
 
     // AR overlay integration
     private boolean enableAROverlay = false;
-    private de.omagh.feature_ar.AROverlayRenderer arOverlayRenderer;
+    private de.omagh.core_infra.ar.AROverlayRenderer arOverlayRenderer;
 
     private TextView luxValue, ppfdValue, dliValue;
 
@@ -145,7 +145,7 @@ public class MeasureFragment extends Fragment {
             settingsManager.setArOverlayEnabled(checked);
             if (checked) {
                 if (arOverlayRenderer == null) {
-                    arOverlayRenderer = new de.omagh.feature_ar.ARMeasureOverlay();
+                    arOverlayRenderer = new de.omagh.core_infra.ar.ARMeasureOverlay();
                     arOverlayRenderer.init();
                 }
                 android.widget.Toast.makeText(getContext(), "AR overlay enabled (stub)", android.widget.Toast.LENGTH_SHORT).show();
@@ -192,7 +192,7 @@ public class MeasureFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(MeasureViewModel.class);
 
         if (enableAROverlay) {
-            arOverlayRenderer = new de.omagh.feature_ar.ARMeasureOverlay();
+            arOverlayRenderer = new de.omagh.core_infra.ar.ARMeasureOverlay();
             arOverlayRenderer.init();
         }
 

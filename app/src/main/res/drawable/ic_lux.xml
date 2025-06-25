@@ -6,9 +6,6 @@
 
     <!-- Light rays -->
     <path
-        android:strokeColor="#FFD600"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
         android:fillColor="@android:color/transparent"
         android:pathData="M24,6v6
                           M24,36v6
@@ -17,7 +14,10 @@
                           M34,14l4,-4
                           M10,38l4,-4
                           M14,14l-4,-4
-                          M38,38l-4,-4" />
+                          M38,38l-4,-4"
+        android:strokeWidth="2"
+        android:strokeColor="#FFD600"
+        android:strokeLineCap="round" />
 
     <!-- Bulb body -->
     <path

@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
 
-import de.omagh.feature_measurement.MeasurementUtils;
+import de.omagh.core_domain.util.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.feature_measurement.CalibrationManager;
 import de.omagh.core_infra.di.CoreComponentProvider;
@@ -16,7 +16,6 @@ import de.omagh.feature_measurement.infra.GrowLightProfileManager;
 import de.omagh.feature_measurement.infra.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
-import de.omagh.core_infra.di.CoreComponent;
 import io.reactivex.disposables.Disposable;
 import timber.log.Timber;
 

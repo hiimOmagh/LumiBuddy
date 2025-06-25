@@ -5,13 +5,13 @@ import android.graphics.Color;
 
 import org.junit.Test;
 
-import de.omagh.lumibuddy.feature_ml.BasicHealthStatusClassifier;
-import de.omagh.lumibuddy.feature_ml.BasicLampTypeClassifier;
-import de.omagh.lumibuddy.feature_ml.BasicPlantClassifier;
-import de.omagh.lumibuddy.feature_ml.HealthStatusClassifier;
-import de.omagh.lumibuddy.feature_ml.LampTypeClassifier;
-import de.omagh.lumibuddy.feature_ml.PlantClassifier;
-import de.omagh.feature_ar.DummyARGrowthTracker;
+import de.omagh.core_infra.ml.BasicHealthStatusClassifier;
+import de.omagh.core_infra.ml.BasicLampTypeClassifier;
+import de.omagh.core_infra.ml.BasicPlantClassifier;
+import de.omagh.core_infra.ml.HealthStatusClassifier;
+import de.omagh.core_infra.ml.LampTypeClassifier;
+import de.omagh.core_infra.ml.PlantClassifier;
+import de.omagh.core_infra.ar.DummyARGrowthTracker;
 
 public class ARMLIntegrationTest {
 

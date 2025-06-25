@@ -2,15 +2,21 @@
 
 ## Overview
 
-LumiBuddy is a modular, scalable Android app designed for plant enthusiasts—from hobbyists to professional gardeners. It enables accurate environmental measurements, plant management, health monitoring, data visualization, and predictive analytics.
+LumiBuddy is a modular, scalable Android app designed for plant enthusiasts—from hobbyists to
+professional gardeners. It enables accurate environmental measurements, plant management, health
+monitoring, data visualization, and predictive analytics.
 
-This document serves as a comprehensive guide, detailing the application's architecture, current features, modular structure, and future development guidelines. It acts as the authoritative reference for developers and tools (including Codex/GPT) to ensure alignment with the project's vision and architecture.
+This document serves as a comprehensive guide, detailing the application's architecture, current
+features, modular structure, and future development guidelines. It acts as the authoritative
+reference for developers and tools (including Codex/GPT) to ensure alignment with the project's
+vision and architecture.
 
 ---
 
 ## Core Vision
 
-**Provide users with a seamless and intuitive experience to manage plants by accurately measuring, logging, analyzing environmental conditions, and offering insightful recommendations.**
+**Provide users with a seamless and intuitive experience to manage plants by accurately measuring,
+logging, analyzing environmental conditions, and offering insightful recommendations.**
 
 ### Primary Features
 
@@ -182,7 +188,8 @@ public interface AppComponent {
 
 ### Structural & Immediate Improvements
 
-* **Complete modularization**: Move remaining logic and data management fully into domain, data, and infra modules.
+* **Complete modularization**: Move remaining logic and data management fully into domain, data, and
+  infra modules.
 * **Enhanced DI**: Expand Dagger components for finer-grained dependency management.
 * **Increased Test Coverage**: Expand unit tests, introduce instrumentation tests.
 
@@ -225,4 +232,5 @@ Codex/GPT, when reviewing, modifying, or extending this project, follow these gu
 
 ---
 
-**This README.md serves as the project's authoritative guide, ensuring consistency and clarity throughout the development lifecycle.**
+**This README.md serves as the project's authoritative guide, ensuring consistency and clarity
+throughout the development lifecycle.**

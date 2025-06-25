@@ -4,8 +4,8 @@ import android.app.Application;
 
 import dagger.Module;
 import dagger.Provides;
-import de.omagh.feature_plantdb.data.PlantDatabaseManager;
-import de.omagh.feature_plantdb.data.PlantInfoRepository;
+import de.omagh.core_data.plantdb.PlantDatabaseManager;
+import de.omagh.core_data.plantdb.PlantInfoRepository;
 import de.omagh.feature_plantdb.plantid.PlantIdRepository;
 
 @Module

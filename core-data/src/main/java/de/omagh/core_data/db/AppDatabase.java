@@ -15,6 +15,7 @@ import de.omagh.core_data.model.GrowLightProfile;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.model.Plant;
+
 @Database(
         entities = {
                 Plant.class,
