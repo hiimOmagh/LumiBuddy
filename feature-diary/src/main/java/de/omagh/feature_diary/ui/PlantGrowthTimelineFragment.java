@@ -24,7 +24,7 @@ import java.util.UUID;
 
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.feature_diary.ui.DiaryEntryAdapter;
-import de.omagh.core_data.model.DiaryViewModel;
+import de.omagh.feature_diary.ui.DiaryViewModel;
 import de.omagh.feature_diary.R;
 
 

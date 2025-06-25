@@ -31,7 +31,7 @@ import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.feature_diary.R;
 import de.omagh.feature_diary.ui.DiaryEntryAdapter;
-import de.omagh.core_data.model.DiaryViewModel;
+import de.omagh.feature_diary.ui.DiaryViewModel;
 
 /**
  * Diary tab showing all diary entries across plants.

@@ -15,6 +15,7 @@ import de.omagh.core_infra.user.UserProfileSyncManager;
 import de.omagh.feature_measurement.di.MeasurementModule;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
 import de.omagh.feature_plantdb.di.PlantDbModule;
+import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
 import de.omagh.feature_plantdb.ui.PlantListViewModel;
 import de.omagh.lumibuddy.LumiBuddyApplication;
@@ -48,6 +49,8 @@ public interface CoreComponent {
     void inject(PlantListViewModel viewModel);
 
     void inject(PlantDetailViewModel viewModel);
+
+    void inject(AddPlantViewModel viewModel);
 
     @Component.Builder
     interface Builder {
