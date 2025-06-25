@@ -35,6 +35,8 @@ dependencies {
     implementation(project(":core-data"))
     implementation(project(":feature-ml"))
     implementation(project(":feature-ar"))
+    implementation(project(":feature-plantdb"))
+    implementation(project(":feature-diary"))
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.retrofit)

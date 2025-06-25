@@ -1,4 +1,4 @@
-package de.omagh.lumibuddy.feature_diary;
+package de.omagh.feature_diary;
 
 import de.omagh.core_data.model.DiaryEntry;
 import timber.log.Timber;

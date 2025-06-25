@@ -129,8 +129,8 @@ public class SettingsFragment extends Fragment {
 
         syncNowBtn.setOnClickListener(v -> {
             // Trigger stub sync managers
-            new de.omagh.lumibuddy.feature_plantdb.PlantSyncManager().syncToCloud();
-            new de.omagh.lumibuddy.feature_diary.DiarySyncManager().syncToCloud();
+            new de.omagh.feature_plantdb.PlantSyncManager().syncToCloud();
+            new de.omagh.feature_diary.DiarySyncManager().syncToCloud();
             Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
         });
 

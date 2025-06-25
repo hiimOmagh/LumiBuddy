@@ -131,5 +131,7 @@
 
     <string name="powered_by_plantid">Powered by Plant.id</string>
     <string name="total_time_exposure">Total Light-Time Exposure</string>
+    <string name="profile_name">Profile name</string>
+    <string name="note_optional">Note (optional)</string>
 
 </resources>
