@@ -11,23 +11,28 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
-import de.omagh.core_data.db.AppDatabase;
-import de.omagh.core_data.db.DiaryDao;
+import javax.inject.Inject;
+
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
-import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.feature_diary.di.DaggerDiaryComponent;
+import de.omagh.feature_diary.di.DiaryComponent;
 
 /**
  * ViewModel for managing diary entries (timeline) for a specific plant.
  */
 public class DiaryViewModel extends AndroidViewModel {
 
-    private final DiaryRepository repository;
+    @Inject
+    DiaryRepository repository;
 
     public DiaryViewModel(@NonNull Application application) {
         super(application);
-        DiaryDao dao = AppDatabase.getInstance(application).diaryDao();
-        repository = new DiaryRepository(dao);
+        DiaryComponent component = DaggerDiaryComponent.builder()
+                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
+                .build();
+        component.inject(this);
     }
 
     public LiveData<List<DiaryEntry>> getDiaryEntriesForPlant(String plantId) {
