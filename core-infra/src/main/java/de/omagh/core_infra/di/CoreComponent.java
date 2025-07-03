@@ -8,6 +8,9 @@ import dagger.BindsInstance;
 import dagger.Component;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.repository.MeasurementRepository;
+import de.omagh.feature_diary.di.DiaryComponent;
+import de.omagh.feature_measurement.di.MeasurementComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
@@ -34,6 +37,12 @@ public interface CoreComponent {
     UserProfileSyncManager userProfileSyncManager();
 
     Application application();
+
+    DiaryComponent.Factory diaryComponent();
+
+    MeasurementComponent.Factory measurementComponent();
+
+    PlantDbComponent.Factory plantDbComponent();
 
     @Component.Builder
     interface Builder {

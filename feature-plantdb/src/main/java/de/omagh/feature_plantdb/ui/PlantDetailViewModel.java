@@ -18,7 +18,6 @@ import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
@@ -35,9 +34,10 @@ public class PlantDetailViewModel extends ViewModel {
     PlantRepository repository;
 
     public PlantDetailViewModel(@NonNull Application application) {
-        PlantDbComponent component = DaggerPlantDbComponent.builder()
-                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
-                .build();
+        PlantDbComponent component = ((CoreComponentProvider) application)
+                .getCoreComponent()
+                .plantDbComponent()
+                .create();
         component.inject(this);
     }
 

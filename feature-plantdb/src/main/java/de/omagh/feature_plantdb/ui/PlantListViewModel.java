@@ -19,7 +19,6 @@ import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_data.plantdb.PlantInfo;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
@@ -43,9 +42,10 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public PlantListViewModel(@NonNull Application application) {
         super(application);
-        PlantDbComponent component = DaggerPlantDbComponent.builder()
-                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
-                .build();
+        PlantDbComponent component = ((CoreComponentProvider) application)
+                .getCoreComponent()
+                .plantDbComponent()
+                .create();
         component.inject(this);
         plants = repository.getAllPlants();
     }

@@ -16,7 +16,6 @@ import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
-import de.omagh.feature_measurement.di.DaggerMeasurementComponent;
 import de.omagh.feature_measurement.di.MeasurementComponent;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
@@ -49,9 +48,10 @@ public class MeasureViewModel extends AndroidViewModel {
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        MeasurementComponent component = DaggerMeasurementComponent.builder()
-                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
-                .build();
+        MeasurementComponent component = ((CoreComponentProvider) application)
+                .getCoreComponent()
+                .measurementComponent()
+                .create();
         component.inject(this);
 
         int hours = settingsManager.getLightDuration();

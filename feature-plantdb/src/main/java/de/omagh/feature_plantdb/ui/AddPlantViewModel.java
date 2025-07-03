@@ -12,7 +12,6 @@ import javax.inject.Inject;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
-import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
@@ -25,9 +24,10 @@ public class AddPlantViewModel extends AndroidViewModel {
     @Inject
     public AddPlantViewModel(@NonNull Application application) {
         super(application);
-        PlantDbComponent component = DaggerPlantDbComponent.builder()
-                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
-                .build();
+        PlantDbComponent component = ((CoreComponentProvider) application)
+                .getCoreComponent()
+                .plantDbComponent()
+                .create();
         component.inject(this);
     }
 
