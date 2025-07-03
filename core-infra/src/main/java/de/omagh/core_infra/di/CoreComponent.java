@@ -33,6 +33,8 @@ public interface CoreComponent {
 
     UserProfileSyncManager userProfileSyncManager();
 
+    Application application();
+
     @Component.Builder
     interface Builder {
         @BindsInstance
