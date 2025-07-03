@@ -12,7 +12,6 @@ import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
-import de.omagh.lumibuddy.LumiBuddyApplication;
 
 @Singleton
 @Component(modules = {
@@ -33,8 +32,6 @@ public interface CoreComponent {
     UserProfileManager userProfileManager();
 
     UserProfileSyncManager userProfileSyncManager();
-
-    void inject(LumiBuddyApplication application);
 
     @Component.Builder
     interface Builder {
