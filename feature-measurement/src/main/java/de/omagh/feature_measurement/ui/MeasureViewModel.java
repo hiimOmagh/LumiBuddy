@@ -12,10 +12,12 @@ import javax.inject.Inject;
 
 import de.omagh.core_domain.util.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
-import de.omagh.feature_measurement.CalibrationManager;
+import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.feature_measurement.infra.GrowLightProfileManager;
-import de.omagh.feature_measurement.infra.LampProduct;
+import de.omagh.core_infra.measurement.GrowLightProfileManager;
+import de.omagh.core_infra.measurement.LampProduct;
+import de.omagh.feature_measurement.di.DaggerMeasurementComponent;
+import de.omagh.feature_measurement.di.MeasurementComponent;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import io.reactivex.disposables.Disposable;
@@ -47,7 +49,10 @@ public class MeasureViewModel extends AndroidViewModel {
 
     public MeasureViewModel(@NonNull Application application) {
         super(application);
-        ((CoreComponentProvider) application).getCoreComponent().inject(this);
+        MeasurementComponent component = DaggerMeasurementComponent.builder()
+                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
+                .build();
+        component.inject(this);
 
         int hours = settingsManager.getLightDuration();
         hoursLiveData.setValue(hours);

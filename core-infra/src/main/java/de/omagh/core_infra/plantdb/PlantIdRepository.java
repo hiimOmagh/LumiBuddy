@@ -1,4 +1,4 @@
-package de.omagh.feature_plantdb.plantid;
+package de.omagh.core_infra.plantdb;
 
 import android.graphics.Bitmap;
 import android.util.Base64;

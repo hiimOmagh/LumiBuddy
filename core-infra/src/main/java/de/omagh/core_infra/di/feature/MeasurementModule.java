@@ -1,4 +1,4 @@
-package de.omagh.feature_measurement.di;
+package de.omagh.core_infra.di.feature;
 
 import android.app.Application;
 
@@ -6,8 +6,8 @@ import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_domain.repository.MeasurementRepository;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
-import de.omagh.feature_measurement.CalibrationManager;
-import de.omagh.feature_measurement.infra.GrowLightProfileManager;
+import de.omagh.core_infra.measurement.CalibrationManager;
+import de.omagh.core_infra.measurement.GrowLightProfileManager;
 
 @Module
 public class MeasurementModule {

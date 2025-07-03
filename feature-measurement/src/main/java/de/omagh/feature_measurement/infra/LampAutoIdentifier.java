@@ -2,6 +2,9 @@ package de.omagh.feature_measurement.infra;
 
 import android.graphics.Bitmap;
 
+import de.omagh.core_infra.measurement.LampProduct;
+import de.omagh.core_infra.measurement.LampProductDB;
+
 /**
  * Utility to identify lamps by name or in the future via photo/barcode.
  */

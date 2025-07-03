@@ -20,6 +20,9 @@ import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_data.plantdb.PlantInfo;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
+
 /**
  * ViewModel for managing the user's plant list.
  * Uses Room database (AppDatabase) for persistence.
@@ -41,7 +44,10 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public PlantListViewModel(@NonNull Application application) {
         super(application);
-        ((CoreComponentProvider) application).getCoreComponent().inject(this);
+        PlantDbComponent component = DaggerPlantDbComponent.builder()
+                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
+                .build();
+        component.inject(this);
         plants = repository.getAllPlants();
     }
 

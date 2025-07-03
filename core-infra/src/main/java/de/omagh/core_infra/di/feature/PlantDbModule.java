@@ -1,4 +1,4 @@
-package de.omagh.feature_plantdb.di;
+package de.omagh.core_infra.di.feature;
 
 import android.app.Application;
 
@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
-import de.omagh.feature_plantdb.plantid.PlantIdRepository;
+import de.omagh.core_infra.plantdb.PlantIdRepository;
 
 @Module
 public class PlantDbModule {

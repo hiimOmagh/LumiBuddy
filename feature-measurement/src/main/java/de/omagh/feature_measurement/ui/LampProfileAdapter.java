@@ -12,7 +12,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.List;
 
 import de.omagh.feature_measurement.R;
-import de.omagh.feature_measurement.infra.LampProduct;
+import de.omagh.core_infra.measurement.LampProduct;
 
 /**
  * Adapter for displaying grow light profiles.

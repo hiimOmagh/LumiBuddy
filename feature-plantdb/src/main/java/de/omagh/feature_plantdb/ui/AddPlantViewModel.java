@@ -10,8 +10,10 @@ import androidx.lifecycle.LiveData;
 import javax.inject.Inject;
 
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.feature_plantdb.plantid.PlantIdRepository;
+import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
+import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
  * ViewModel for AddPlantFragment handling photo identification via Plant.id.
@@ -23,7 +25,10 @@ public class AddPlantViewModel extends AndroidViewModel {
     @Inject
     public AddPlantViewModel(@NonNull Application application) {
         super(application);
-        ((CoreComponentProvider) application).getCoreComponent().inject(this);
+        PlantDbComponent component = DaggerPlantDbComponent.builder()
+                .coreComponent(((CoreComponentProvider) application).getCoreComponent())
+                .build();
+        component.inject(this);
     }
 
     public LiveData<PlantIdSuggestion> identifyPlant(Bitmap bitmap) {

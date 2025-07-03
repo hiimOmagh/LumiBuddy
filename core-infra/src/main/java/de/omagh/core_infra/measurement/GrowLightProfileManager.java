@@ -1,4 +1,4 @@
-package de.omagh.feature_measurement.infra;
+package de.omagh.core_infra.measurement;
 
 import android.content.Context;
 import android.content.SharedPreferences;

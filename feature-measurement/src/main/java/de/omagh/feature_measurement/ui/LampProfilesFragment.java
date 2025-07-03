@@ -21,7 +21,7 @@ import java.util.UUID;
 
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.feature_measurement.R;
-import de.omagh.feature_measurement.infra.LampProduct;
+import de.omagh.core_infra.measurement.LampProduct;
 
 /**
  * Screen for managing grow light profiles.
