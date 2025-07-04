@@ -11,7 +11,6 @@ import de.omagh.lumibuddy.ui.MainActivity;
 @Component(dependencies = CoreComponent.class)
 public interface AppComponent {
     void inject(LumiBuddyApplication application);
-
     void inject(MainActivity activity);
 
     @Component.Factory

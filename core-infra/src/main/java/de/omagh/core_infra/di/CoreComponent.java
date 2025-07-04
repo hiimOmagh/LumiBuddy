@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.BindsInstance;
 import dagger.Component;
 import de.omagh.core_data.repository.PlantRepository;
+import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_domain.repository.MeasurementRepository;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
@@ -24,6 +25,12 @@ public interface CoreComponent {
     PlantRepository plantRepository();
 
     MeasurementRepository measurementRepository();
+
+    /**
+     * Exposes the Room database instance so feature components depending on
+     * {@link CoreComponent} can obtain database DAOs.
+     */
+    de.omagh.core_data.db.AppDatabase appDatabase();
 
     SettingsManager settingsManager();
 
