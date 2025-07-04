@@ -22,9 +22,11 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
         coreComponent = DaggerCoreComponent.builder()
                 .application(this)
                 .build();
-        appComponent = DaggerAppComponent.factory().create(coreComponent);
-        appComponent.inject(this);
+
         Timber.plant(new Timber.DebugTree());
+        appComponent = DaggerAppComponent.factory()
+                .create(coreComponent);
+        appComponent.inject(this);
     }
 
     @Override

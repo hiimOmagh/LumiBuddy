@@ -98,7 +98,7 @@ public class PlantDetailFragment extends Fragment {
                 Bundle b = new Bundle();
                 b.putString("plant_id", current.getId());
                 androidx.navigation.Navigation.findNavController(v)
-                        .navigate(R.id.plantGrowthTimelineFragment, b);
+                        .navigate(R.id.action_PlantDetailFragment_to_GrowthTimelineFragment, b);
             }
         });
 

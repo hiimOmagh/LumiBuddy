@@ -6,12 +6,15 @@ import de.omagh.core_infra.di.FeatureScope;
 import de.omagh.feature_diary.ui.DiaryViewModel;
 
 @FeatureScope
-@Component(dependencies = CoreComponent.class, modules = DiaryModule.class)
+@Component(
+        dependencies = CoreComponent.class,
+        modules = DiaryModule.class
+)
 public interface DiaryComponent {
-    void inject(DiaryViewModel viewModel);
-
     @Component.Factory
     interface Factory {
         DiaryComponent create(CoreComponent core);
     }
+
+    void inject(DiaryViewModel vm);
 }

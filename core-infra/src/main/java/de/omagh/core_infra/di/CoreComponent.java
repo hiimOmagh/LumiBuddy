@@ -30,7 +30,7 @@ public interface CoreComponent {
      * Exposes the Room database instance so feature components depending on
      * {@link CoreComponent} can obtain database DAOs.
      */
-    de.omagh.core_data.db.AppDatabase appDatabase();
+    AppDatabase appDatabase();
 
     SettingsManager settingsManager();
 

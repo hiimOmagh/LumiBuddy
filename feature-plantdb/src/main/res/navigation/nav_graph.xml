@@ -18,10 +18,21 @@
         android:name="de.omagh.feature_plantdb.ui.PlantDetailFragment"
         android:label="Plant Detail">
         <!-- ...arguments... -->
+        <action
+            android:id="@+id/action_PlantDetailFragment_to_GrowthTimelineFragment"
+            app:destination="@id/plantGrowthTimelineFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPlantFragment"
         android:name="de.omagh.feature_plantdb.ui.AddPlantFragment"
         android:label="Add Plant" />
 
+    <fragment
+        android:id="@+id/plantGrowthTimelineFragment"
+        android:name="de.omagh.feature_diary.ui.PlantGrowthTimelineFragment"
+        android:label="Diary">
+        <argument
+            android:name="plant_id"
+            app:argType="string" />
+    </fragment>
 </navigation>

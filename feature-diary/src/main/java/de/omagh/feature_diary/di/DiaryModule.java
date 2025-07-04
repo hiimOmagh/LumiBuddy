@@ -5,16 +5,19 @@ import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_infra.di.FeatureScope;
 
 @Module
 public class DiaryModule {
     @Provides
-    static DiaryDao provideDiaryDao(AppDatabase db) {
+    @FeatureScope
+    DiaryDao provideDiaryDao(AppDatabase db) {
         return db.diaryDao();
     }
 
     @Provides
-    static DiaryRepository provideDiaryRepository(DiaryDao dao) {
+    @FeatureScope
+    DiaryRepository provideDiaryRepository(DiaryDao dao) {
         return new DiaryRepository(dao);
     }
 }
