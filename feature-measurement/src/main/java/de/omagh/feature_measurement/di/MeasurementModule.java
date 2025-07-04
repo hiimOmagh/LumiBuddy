@@ -1,4 +1,4 @@
-package de.omagh.core_infra.di.feature;
+package de.omagh.feature_measurement.di;
 
 import android.app.Application;
 

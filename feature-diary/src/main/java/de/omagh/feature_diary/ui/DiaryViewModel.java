@@ -16,6 +16,8 @@ import javax.inject.Inject;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.feature_diary.di.DaggerDiaryComponent;
 import de.omagh.feature_diary.di.DiaryComponent;
 
 /**
@@ -28,10 +30,8 @@ public class DiaryViewModel extends AndroidViewModel {
 
     public DiaryViewModel(@NonNull Application application) {
         super(application);
-        DiaryComponent component = ((CoreComponentProvider) application)
-                .getCoreComponent()
-                .diaryComponent()
-                .create();
+        CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
+        DiaryComponent component = DaggerDiaryComponent.factory().create(core);
         component.inject(this);
     }
 

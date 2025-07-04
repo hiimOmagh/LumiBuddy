@@ -1,18 +1,20 @@
 package de.omagh.feature_measurement.di;
 
-import javax.inject.Singleton;
-
-import dagger.Subcomponent;
-import de.omagh.core_infra.di.feature.MeasurementModule;
+import dagger.Component;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.FeatureScope;
+import de.omagh.feature_measurement.ui.MeasureFragment;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
 
-@Singleton
-@Subcomponent(modules = MeasurementModule.class)
+@FeatureScope
+@Component(dependencies = CoreComponent.class, modules = MeasurementModule.class)
 public interface MeasurementComponent {
     void inject(MeasureViewModel viewModel);
 
-    @Subcomponent.Factory
+    void inject(MeasureFragment fragment);
+
+    @Component.Factory
     interface Factory {
-        MeasurementComponent create();
+        MeasurementComponent create(CoreComponent core);
     }
 }

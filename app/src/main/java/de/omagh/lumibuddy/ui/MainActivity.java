@@ -13,11 +13,15 @@ import org.jspecify.annotations.Nullable;
 
 import de.omagh.feature_plantdb.ui.PlantDetailFragment;
 import de.omagh.lumibuddy.R;
+import de.omagh.lumibuddy.LumiBuddyApplication;
+import de.omagh.lumibuddy.di.AppComponent;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppComponent appComponent = ((LumiBuddyApplication) getApplication()).getAppComponent();
+        appComponent.inject(this);
         setContentView(R.layout.activity_main);
 
         // Find the NavHostFragment and NavController

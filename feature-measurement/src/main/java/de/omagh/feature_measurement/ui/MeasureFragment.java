@@ -22,6 +22,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.feature_measurement.di.DaggerMeasurementComponent;
+import de.omagh.feature_measurement.di.MeasurementComponent;
+
 import de.omagh.core_domain.model.Measurement;
 import de.omagh.core_infra.measurement.CameraLightMeterX;
 import de.omagh.feature_measurement.R;
@@ -57,6 +62,14 @@ public class MeasureFragment extends Fragment {
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
     private LampTypeClassifier lampTypeClassifier;
+
+    @Override
+    public void onAttach(@NonNull android.content.Context context) {
+        super.onAttach(context);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        MeasurementComponent component = DaggerMeasurementComponent.factory().create(core);
+        component.inject(this);
+    }
 
     // AR overlay integration
     private boolean enableAROverlay = false;

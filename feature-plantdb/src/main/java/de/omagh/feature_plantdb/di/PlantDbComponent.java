@@ -1,15 +1,14 @@
 package de.omagh.feature_plantdb.di;
 
-import javax.inject.Singleton;
-
-import dagger.Subcomponent;
-import de.omagh.core_infra.di.feature.PlantDbModule;
+import dagger.Component;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.FeatureScope;
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
 import de.omagh.feature_plantdb.ui.PlantListViewModel;
 
-@Singleton
-@Subcomponent(modules = PlantDbModule.class)
+@FeatureScope
+@Component(dependencies = CoreComponent.class, modules = PlantDbModule.class)
 public interface PlantDbComponent {
     void inject(AddPlantViewModel viewModel);
 
@@ -17,8 +16,8 @@ public interface PlantDbComponent {
 
     void inject(PlantDetailViewModel viewModel);
 
-    @Subcomponent.Factory
+    @Component.Factory
     interface Factory {
-        PlantDbComponent create();
+        PlantDbComponent create(CoreComponent core);
     }
 }
