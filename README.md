@@ -1,238 +1,213 @@
-# LumiBuddy – Android Plant Care & Light Measurement App
+# LumiBuddy 🌱
 
-## Overview
-
-LumiBuddy is a modular, scalable Android app designed for plant enthusiasts—from hobbyists to
-professional gardeners. It enables accurate environmental measurements, plant management, health
-monitoring, data visualization, and predictive analytics.
-
-This document serves as a comprehensive guide, detailing the application's architecture, current
-features, modular structure, and future development guidelines. It acts as the authoritative
-reference for developers and tools (including Codex/GPT) to ensure alignment with the project's
-vision and architecture.
+**Plant Diary & Light Measurement App**  
+An Android app for hobbyists, growers, and researchers to monitor plant growth, light exposure, and
+care events using smartphone sensors, camera, AR, and ML technologies.
 
 ---
 
-## Core Vision
+## 🔭 Project Vision
 
-**Provide users with a seamless and intuitive experience to manage plants by accurately measuring,
-logging, analyzing environmental conditions, and offering insightful recommendations.**
-
-### Primary Features
-
-* **Real-time Sensor Measurements**: Lux, PPFD, DLI, temperature, humidity.
-* **Comprehensive Plant Database**: Manage plant profiles, care schedules, and notes.
-* **Care Diary**: Track watering, fertilizing, pruning, and other care events.
-* **Measurement Analytics & Charts**: Data visualization for trends and insights.
-* **Image Handling**: Attach and manage plant photos.
-* **Data Export**: CSV export for external analysis or backup.
-* **Modular and Extensible Architecture**: Ready for future AR, ML, and cloud integration.
+**LumiBuddy aims to be the smartest mobile companion for plant lovers**—enabling plant monitoring
+through environmental sensing, light spectrum measurement, AI-assisted recommendations, and
+community interaction.
 
 ---
 
-## Architecture & Modular Structure
+## 📐 Architecture Overview
 
-LumiBuddy strictly follows a **Clean/Hexagonal Architecture** approach, designed for:
-
-* **Clear separation of concerns**.
-* **Independent module testability**.
-* **Scalable and parallel development**.
-
-### Layers
-
-* **Domain Layer (`:core-domain`)**:
-
-* Domain entities are plain Java objects alongside business use cases.
-* Absolutely no Android or Room dependencies.
-
-* **Data Layer (`:core-data`)**:
-
-  * Room database entities, DAOs and repositories.
-  * Depends only on `:core-domain`.
-
-* **Infrastructure Layer (`:core-infra`)**:
-
-  * Android implementations of domain interfaces (sensors, networking).
-  * Provides Dagger modules and other platform services.
-  * Depends on `:core-domain` and `:core-data`.
-
-* **Presentation Layer (`:feature-*`)**:
-
-  * UI components, Activities, Fragments, ViewModels, layouts, resources.
-
-* **Application Module (`:app`)**:
-
-  * Application entry point, initialization of core services (Dagger, LeakCanary, Timber).
-  * Main navigation graph and high-level integration.
-
-*The core modules never depend on any `feature-*` modules.*
-
----
-
-## Current Modular Structure
-
+### Clean Hexagonal Architecture with Modular Design
 ```
 LumiBuddy/
-├── :app                         // Main application module
-├── :core-domain                 // Entities, business logic
-├── :core-data                   // Room DB, repositories
-├── :core-infra                  // Infrastructure, services, DI modules
-├── :feature-measurement         // Light/environment measurement UI
-├── :feature-plantdb             // Plant database management
-├── :feature-diary               // Care diary management
-├── :feature-growschedule        // Grow schedule & reminders (future module)
-├── :feature-ar                  // AR integration placeholder (future module)
-├── gradle/libs.versions.toml    // Shared dependency version catalog
-├── settings.gradle.kts          // Gradle module settings
-└── README.md                    // Project documentation
+├── :app                   // Entry point, Dagger, navigation, theming
+├── :core-domain           // Entities and use cases (Java only)
+├── :core-data             // Room DB, repositories, mappers
+├── :core-infra            // Android-specific: SensorManager, Camera, DI
+├── :feature-measurement  // Live lux, PPFD, DLI reading UI
+├── :feature-plantdb      // Plant profile management
+├── :feature-diary        // Timeline of care events
+├── :feature-growschedule // Reminder engine (WIP)
+├── :feature-ar           // ARCore features (WIP)
+├── :shared-sensor        // Light, camera, external BLE sensor abstraction
+├── :shared-ml            // On-device TFLite inference
 ```
 
-Module dependencies:
+---
 
-- `:core-domain` is standalone.
-- `:core-data` depends on `:core-domain`.
-  `:core-infra` depends on `:core-domain` and `:core-data`.
-- `feature-*` modules depend only on the core modules.
-- `:app` pulls in all core and feature modules.
+## 📦 Core Technologies
+
+| Purpose            | Tech Stack                                 |
+|--------------------|--------------------------------------------|
+| Language           | Java (Kotlin DSL for Gradle only)          |
+| Persistence        | Room, SharedPreferences, SQLCipher         |
+| DI Framework       | Dagger 2 (modular components)              |
+| UI/UX              | XML layouts + MVVM + ViewModel             |
+| Sensor Integration | SensorManager, CameraX, custom calibration |
+| AR Support         | ARCore, Sceneform (planned)                |
+| AI/ML              | TFLite + On-device inference pipeline      |
+| Networking         | Retrofit + Moshi                           |
+| Charting           | MPAndroidChart                             |
+| Logging            | Timber, LeakCanary (debug only)            |
+| Background Tasks   | WorkManager                                |
+| Cloud              | Firebase (Auth, Firestore, Functions, FCM) |
 
 ---
 
-## Technology Stack
+## 🌞 Light Measurement System
 
-### Core Technologies (Java & XML-based)
+### Metrics Supported
 
-* **AndroidX Libraries**
-* **Room Database**: Local data persistence
-* **Retrofit**: Network communication
-* **Dagger 2**: Dependency Injection (Java)
-* **RxJava & RxAndroid**: Reactive programming for async streams
-* **Glide**: Image loading and caching
-* **MPAndroidChart**: Data visualization
-* **Timber**: Structured logging
-* **LeakCanary**: Memory leak detection (debug builds)
+| Metric            | Meaning               | Derived via                     |
+|-------------------|-----------------------|---------------------------------|
+| **Lux**           | Human-eye light       | Ambient Light Sensor or Camera  |
+| **PPFD**          | μmol/m²/s photon flux | Camera + diffuser + calibration |
+| **DLI**           | mol/m²/day light dose | Integration of PPFD over time   |
+| **CCT**           | Kelvin color temp     | RGB chromaticity from camera    |
+| **Spectrum Type** | Light classification  | RGB ratio pattern matching      |
+
+### Key Techniques Used
+
+- **Camera-based PPFD approximation**:
+  - Use of diffuser (matte white paper)
+  - Exposure locking and color calibration
+  - Spectrum-type-specific conversion factors (sunlight, blurple LED, HPS, etc.)
+
+- **Lux-to-PPFD Conversion**:
+  - Accurate mapping per light type (e.g., 1 lux = 0.0185 μmol/s for sunlight)
+  - Dynamic factor adjustment for different LED spectrums
+
+- **DLI Estimation**:
+  - Manual logging or periodic sensor snapshots
+  - Formula: `DLI = PPFD * light_hours * 3600 / 1e6`
+
+- **Spectrum Heuristics**:
+  - RGB ratios used to detect likely light source
+  - Visualized via approximate bar chart (red/green/blue photon distribution)
 
 ---
 
-## DI Setup
+## 📊 Core Features
 
-- LumiBuddy uses **Dagger 2** with a single `CoreComponent`.
-- `CoreComponent` (in `:core-infra`) is application scoped via `@Singleton` and
-  bundles network, database, sensor, and feature modules.
-- `LumiBuddyApplication` creates the component in `onCreate()` and implements
-  `CoreComponentProvider`. ViewModels obtain the component from their
-  `Application` context and call `inject(this)` in their constructors.
+### ✅ MVP Features (DONE or STABLE)
 
-Example:
+- 📷 **Live Lux/PPFD reading** (with camera and light sensor)
+- 📖 **Plant Database**: name, species, care history
+- 🪴 **Care Diary**: watering, fertilizing, pruning
+- 📊 **Charts**: Light trend, DLI timeline, care events
+- 📤 **CSV export/share**
+- 🔔 **Reminder System** (via WorkManager)
+
+### 🔮 In Progress / Next
+
+- 🧠 **Plant Identifier** (ML on-device + fallback cloud)
+- 🧪 **Disease Detection** (CNN, Grad-CAM overlays)
+- 🌐 **Cloud Sync** (Firebase + Firestore)
+- 📱 **AR Assistant** (light heatmap, growth simulation)
+- 🎛️ **Grow Light Simulator** (distance/PPFD visualization)
+
+---
+
+## 🧩 Modular DI with Dagger 2
+
+### Components
 
 ```java
 @Singleton
-@Component(modules = {
-        NetworkModule.class,
-        DataModule.class,
-        SensorModule.class,
-        UserModule.class,
-        MeasurementModule.class,
-        PlantDbModule.class
-})
+@Component(modules = {NetworkModule.class, DataModule.class, SensorModule.class})
 public interface CoreComponent {
-  void inject(LumiBuddyApplication application);
-
-  void inject(MeasureViewModel viewModel);
-
-  void inject(PlantListViewModel viewModel);
-
-  void inject(PlantDetailViewModel viewModel);
-
-  void inject(AddPlantViewModel viewModel);
+  void inject(LumiBuddyApplication app);
 }
 ```
----
 
-## Development Guidelines & Best Practices
+```java
 
-### Modularization
+@Singleton
+@Component(dependencies = CoreComponent.class)
+public interface AppComponent {
+  void inject(MeasureViewModel vm);
 
-* Each module handles clearly defined responsibilities.
-* Feature modules encapsulate their specific UI and logic.
-* Common logic resides in core modules.
-* Feature modules aim to remain independent so they can be developed and tested
-  in isolation when possible.
-*
-
-### Dependency Injection
-
-* All dependencies provided via Dagger 2.
-* Modules clearly define provided services, repositories, and infrastructure components.
-
-### UI Development
-
-* XML layouts and Android Views.
-* MVVM pattern with ViewModels managing UI state.
-
-### Reactive Programming
-
-* Use RxJava for handling sensor streams, network calls, and database interactions asynchronously.
-
-### Logging & Debugging
-
-* Timber for logging.
-* LeakCanary to proactively identify memory leaks.
-
-### Code Quality
-
-* Write unit tests for core logic (JUnit, Mockito).
-* Regularly conduct manual and automated UI tests.
-* Ensure all code is modular, well-documented, and easy to maintain.
+  void inject(PlantDetailViewModel vm);
+}
+```
 
 ---
 
-## Planned Improvements & Roadmap
+## 🧪 Testing Strategy
 
-### Structural & Immediate Improvements
-
-* **Complete modularization**: Move remaining logic and data management fully into domain, data, and
-  infra modules.
-* **Enhanced DI**: Expand Dagger components for finer-grained dependency management.
-* **Increased Test Coverage**: Expand unit tests, introduce instrumentation tests.
-
-### Feature Enhancements (Near-term)
-
-* **Advanced Analytics**: Predictive plant health analytics using aggregated sensor data.
-* **Improved UI/UX**: Polished and intuitive UI enhancements.
-* **Cloud Sync & Backup**: Firebase/Google Cloud integration for data synchronization and backup.
-* **Export & Import Enhancements**: More formats and user-friendly exports.
-
-### Future Expansion (Long-term)
-
-* **Augmented Reality (AR)**: ARCore integration for visualization and educational overlays.
-* **Machine Learning (ML)**: Plant identification, disease detection.
-* **Community & Social Integration**: Sharing insights, plant profiles, and recommendations.
-* **Smart Home & IoT**: Integration with external sensors and home automation.
+| Layer       | Framework                                  | Coverage |
+|-------------|--------------------------------------------|----------|
+| Core Logic  | JUnit, Mockito                             | ✅        |
+| DAOs        | Instrumentation                            | ✅        |
+| ViewModels  | JUnit + LiveData TestRules                 | ✅        |
+| UI          | Espresso, Compose Testing (where relevant) | 🚧       |
+| Integration | Firebase Test Lab                          | 🚧       |
+| Performance | Android Profiler, LeakCanary               | ✅        |
 
 ---
 
-## Instructions for AI & Codex
+## 📄 Documentation Plan
 
-Codex/GPT, when reviewing, modifying, or extending this project, follow these guidelines:
+**README Sections**
 
-* Maintain clear separation of concerns among modules.
-* Preserve Java-only codebase (no Kotlin/Compose).
-* Ensure any new logic adheres to the modular structure.
-* Always use Dagger 2 for DI; no manual dependency creation.
-* Integrate recommended libraries correctly (Glide, Timber, MPAndroidChart, RxJava).
-* Expand test coverage whenever new code or features are introduced.
-* Update documentation (this README) whenever major architectural or feature changes are made.
+- ✅ Architecture & Structure
+- ✅ Light Measurement Guide
+- ✅ Current Feature Set
+- ✅ Roadmap
+- ✅ Dagger Setup
+- ✅ Modular Guidelines
 
----
+**To Add**
 
-## Next Steps for Developers
-
-* Validate and finalize the modular migration.
-* Implement immediate feature enhancements.
-* Prepare scaffolding for future expansions (AR, ML, Cloud).
-* Maintain clear documentation and ensure code quality remains high.
+- [ ] Developer Setup Instructions
+- [ ] Emulator Profiles for Testing
+- [ ] ARCore Device Compatibility
+- [ ] CSV Export Format Spec
+- [ ] Grow Light Spectrum Calibration Table
 
 ---
 
-**This README.md serves as the project's authoritative guide, ensuring consistency and clarity
-throughout the development lifecycle.**
+## 📝 Developer To-Do List
+
+### App Structure
+
+- [x] Finalize modular structure
+- [x] Validate Dagger modules + DI scopes
+- [ ] Improve documentation of feature entry points (Fragment routes, nav graph)
+
+### Sensor & Measurement
+
+- [x] CameraX integration with manual exposure
+- [x] Lux to PPFD calculation with selectable spectrum
+- [ ] Add calibration UI wizard for advanced users
+- [ ] Store device correction factor per light type
+
+### AR & ML
+
+- [ ] Set up ARCore scene + light heatmap mesh
+- [ ] Port TFLite plant ID model into :shared-ml
+- [ ] Setup ML fallback to cloud model if confidence < threshold
+
+### Cloud
+
+- [ ] Enable Firebase Auth + Firestore integration
+- [ ] Data backup & sync
+- [ ] Setup model distribution pipeline (Cloud Function)
+
+### UX / UI
+
+- [x] Reorganize settings screen
+- [x] Add CSV export timestamp suffix
+- [x] Add share CSV feature
+- [ ] Dark mode polish
+- [ ] AR toggle on measurement screen
+
+### Testing & CI
+
+- [ ] Improve test coverage on ViewModels and Repos
+- [ ] GitHub Actions for PR builds and unit test automation
+
+---
+
+## 🌍 License
+
+TBD (likely MIT or Apache 2.0)
