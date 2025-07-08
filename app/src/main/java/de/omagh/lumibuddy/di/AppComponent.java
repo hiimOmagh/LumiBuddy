@@ -9,12 +9,12 @@ import de.omagh.lumibuddy.ui.MainActivity;
 
 @Component(dependencies = CoreComponent.class)
 public interface AppComponent {
+    void inject(LumiBuddyApplication app);
+
+    void inject(MainActivity activity);
+
     @Component.Factory
     interface Factory {
         AppComponent create(CoreComponent core);
     }
-
-    void inject(LumiBuddyApplication app);
-
-    void inject(MainActivity activity);
 }

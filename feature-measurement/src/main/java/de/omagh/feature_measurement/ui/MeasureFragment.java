@@ -62,6 +62,14 @@ public class MeasureFragment extends Fragment {
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
     private LampTypeClassifier lampTypeClassifier;
+    // AR overlay integration
+    private boolean enableAROverlay = false;
+    private de.omagh.core_infra.ar.AROverlayRenderer arOverlayRenderer;
+    private TextView luxValue, ppfdValue, dliValue;
+
+    public static MeasureFragment newInstance() {
+        return new MeasureFragment();
+    }
 
     @Override
     public void onAttach(@NonNull android.content.Context context) {
@@ -69,16 +77,6 @@ public class MeasureFragment extends Fragment {
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         MeasurementComponent component = DaggerMeasurementComponent.factory().create(core);
         component.inject(this);
-    }
-
-    // AR overlay integration
-    private boolean enableAROverlay = false;
-    private de.omagh.core_infra.ar.AROverlayRenderer arOverlayRenderer;
-
-    private TextView luxValue, ppfdValue, dliValue;
-
-    public static MeasureFragment newInstance() {
-        return new MeasureFragment();
     }
 
     @Override

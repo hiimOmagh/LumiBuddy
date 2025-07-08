@@ -1,6 +1,7 @@
 package de.omagh.core_infra.recommendation;
 
 import android.Manifest;
+
 import androidx.annotation.RequiresPermission;
 
 import java.util.HashMap;

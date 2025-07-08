@@ -11,10 +11,10 @@ import de.omagh.feature_diary.ui.DiaryViewModel;
         modules = DiaryModule.class
 )
 public interface DiaryComponent {
+    void inject(DiaryViewModel vm);
+
     @Component.Factory
     interface Factory {
         DiaryComponent create(CoreComponent core);
     }
-
-    void inject(DiaryViewModel vm);
 }

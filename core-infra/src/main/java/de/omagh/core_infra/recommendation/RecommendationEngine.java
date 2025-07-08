@@ -56,7 +56,9 @@ public class RecommendationEngine {
         return daysSince >= interval;
     }
 
-    /** Returns the number of whole days since the last watering event. */
+    /**
+     * Returns the number of whole days since the last watering event.
+     */
     public int daysSinceLastWatering(Plant plant, List<DiaryEntry> entries) {
         long lastWater = 0;
         for (DiaryEntry entry : entries) {

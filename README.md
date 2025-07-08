@@ -17,6 +17,7 @@ community interaction.
 ## 📐 Architecture Overview
 
 ### Clean Hexagonal Architecture with Modular Design
+
 ```
 LumiBuddy/
 ├── :app                   // Entry point, Dagger, navigation, theming
@@ -112,6 +113,7 @@ LumiBuddy/
 ### Components
 
 ```java
+
 @Singleton
 @Component(modules = {NetworkModule.class, DataModule.class, SensorModule.class})
 public interface CoreComponent {

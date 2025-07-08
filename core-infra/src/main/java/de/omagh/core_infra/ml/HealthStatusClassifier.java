@@ -11,6 +11,8 @@ public interface HealthStatusClassifier {
      */
     void classify(Bitmap bitmap);
 
-    /** Returns the last detected health status string. */
+    /**
+     * Returns the last detected health status string.
+     */
     String getLastResult();
 }

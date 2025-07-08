@@ -11,6 +11,8 @@ public interface LampTypeClassifier {
      */
     void classify(Bitmap bitmap);
 
-    /** Returns the last detected lamp type. */
+    /**
+     * Returns the last detected lamp type.
+     */
     String getLastResult();
 }
