@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkModule {
     @Provides
-    @Singleton
     Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl("https://example.com/")

@@ -40,7 +40,7 @@ public class PlantRepositoryTest {
      */
     @Test
     public void insertPlant_callsDao() {
-        Plant p = new Plant("1", "Tomato", "Solanum", "");
+        de.omagh.core_data.model.Plant p = new de.omagh.core_data.model.Plant("1", "Tomato", "Solanum", "");
         repository.insertPlant(p);
         Mockito.verify(dao, Mockito.timeout(1000)).insert(p);
     }
@@ -50,7 +50,7 @@ public class PlantRepositoryTest {
      */
     @Test
     public void updatePlant_callsDao() {
-        Plant p = new Plant("1", "Tomato", "Solanum", "");
+        Plant p = new de.omagh.core_data.model.Plant("1", "Tomato", "Solanum", "");
         repository.updatePlant(p);
         Mockito.verify(dao, Mockito.timeout(1000)).update(p);
     }

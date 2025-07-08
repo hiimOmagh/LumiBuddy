@@ -21,27 +21,27 @@ import de.omagh.core_infra.measurement.StubCameraSpectralProvider;
 @Module
 public abstract class SensorModule {
     @Provides
-    @Singleton
+
     static ALSManager provideAlsManager(Application app) {
         return new ALSManager(app);
 
     }
 
     @Provides
-    @Singleton
+
     static MeasurementEngine provideMeasurementEngine(LightSensorProvider provider) {
         return new MeasurementEngine(provider);
     }
 
     @Binds
-    @Singleton
+
     abstract LightSensorProvider bindLightSensorProvider(ALSLightSensorProvider impl);
 
     @Binds
-    @Singleton
+
     abstract CameraSpectralProvider bindCameraSpectralProvider(StubCameraSpectralProvider impl);
 
     @Binds
-    @Singleton
+
     abstract MeasurementRepository bindMeasurementRepository(MeasurementEngine engine);
 }

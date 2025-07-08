@@ -13,15 +13,15 @@ import javax.inject.Inject;
 
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
-import de.omagh.core_data.repository.PlantRepository;
-import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_data.plantdb.PlantInfo;
-import de.omagh.core_infra.plantdb.PlantInfoRepository;
-import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_data.repository.PlantRepository;
+import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.di.CoreComponent;
-import de.omagh.feature_plantdb.di.PlantDbComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
  * ViewModel for managing the user's plant list.

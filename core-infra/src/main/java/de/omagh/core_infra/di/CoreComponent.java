@@ -2,8 +2,6 @@ package de.omagh.core_infra.di;
 
 import android.app.Application;
 
-import javax.inject.Singleton;
-
 import dagger.BindsInstance;
 import dagger.Component;
 import de.omagh.core_data.repository.PlantRepository;
@@ -14,7 +12,6 @@ import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
 
-@Singleton
 @Component(modules = {
         NetworkModule.class,
         DataModule.class,

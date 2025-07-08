@@ -18,7 +18,7 @@ import de.omagh.core_data.repository.PlantRepository;
 @Module
 public abstract class DataModule {
     @Provides
-    @Singleton
+
     static AppDatabase provideDatabase(Application app) {
         return AppDatabase.getInstance(app);
     }
@@ -29,12 +29,12 @@ public abstract class DataModule {
     }
 
     @Provides
-    @Singleton
+
     static PlantRepository providePlantRepository(AppDatabase db) {
         return new PlantRepository(db);
     }
 
     @Binds
-    @Singleton
+
     abstract PlantDataSource bindPlantRepository(PlantRepository impl);
 }

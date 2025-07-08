@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":core-data"))
     implementation(project(":core-infra"))
     implementation(project(":core-domain"))
+    implementation(project(":feature-diary"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)

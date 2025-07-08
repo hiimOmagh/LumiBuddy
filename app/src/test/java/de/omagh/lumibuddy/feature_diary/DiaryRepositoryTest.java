@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_data.repository.DiaryRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -66,7 +67,7 @@ public class DiaryRepositoryTest {
      */
     @Test
     public void getEntriesSync_returnsDaoList() {
-        List<DiaryEntry> list = Arrays.asList(new DiaryEntry("1", "p1", 1L, "n", "", ""));
+        List<DiaryEntry> list = List.of(new DiaryEntry("1", "p1", 1L, "n", "", ""));
         Mockito.when(dao.getEntriesForPlantSync("p1")).thenReturn(list);
         assertSame(list, repository.getEntriesForPlantSync("p1"));
     }
