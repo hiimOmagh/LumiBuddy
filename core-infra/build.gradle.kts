@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.androidx.activity)
     implementation(libs.appcompat)
+    implementation(libs.work.runtime)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)

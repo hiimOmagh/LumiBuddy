@@ -158,9 +158,9 @@ public interface AppComponent {
 - ✅ Dagger Setup
 - ✅ Modular Guidelines
 
-**To Add**
+-**To Add**
 
-- [ ] Developer Setup Instructions
+- ✅ Developer Setup Instructions
 - [ ] Emulator Profiles for Testing
 - [ ] ARCore Device Compatibility
 - [ ] CSV Export Format Spec
@@ -168,6 +168,32 @@ public interface AppComponent {
 
 ---
 
+## 🛠️ Developer Setup
+
+### Prerequisites
+
+- **JDK 17** (Gradle uses AGP 8.10.1, modules target Java 11)
+- **Android Studio Hedgehog (2023.1.1)** or newer
+
+### local.properties
+
+1. Create a `local.properties` file in the project root if missing
+2. Set your Android SDK path:
+   ```
+   sdk.dir=/path/to/Android/sdk
+   ```
+
+### Build & Run
+
+- Build debug APK:
+  ```
+  ./gradlew assembleDebug
+  ```
+- Install on a connected device/emulator:
+  ```
+  ./gradlew installDebug
+  ```
+- Or open the project in Android Studio and press **Run**.
 ## 📝 Developer To-Do List
 
 ### App Structure
