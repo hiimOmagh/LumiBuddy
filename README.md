@@ -1,5 +1,6 @@
 # LumiBuddy 🌱
 
+![CI](https://github.com/your-org/your-repo/actions/workflows/ci.yml/badge.svg)
 **Plant Diary & Light Measurement App**  
 An Android app for hobbyists, growers, and researchers to monitor plant growth, light exposure, and
 care events using smartphone sensors, camera, AR, and ML technologies.
@@ -177,7 +178,7 @@ public interface AppComponent {
 
 ### local.properties
 
-1. Create a `local.properties` file in the project root if missing
+1. Copy `local.properties.example` to `local.properties` in the project root
 2. Set your Android SDK path:
    ```
    sdk.dir=/path/to/Android/sdk
