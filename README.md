@@ -1,6 +1,6 @@
 # LumiBuddy 🌱
 
-![CI](https://github.com/your-org/your-repo/actions/workflows/ci.yml/badge.svg)
+![CI](https://github.com/hiimOmagh/LumiBuddy/actions/workflows/ci.yml/badge.svg)
 **Plant Diary & Light Measurement App**  
 An Android app for hobbyists, growers, and researchers to monitor plant growth, light exposure, and
 care events using smartphone sensors, camera, AR, and ML technologies.
