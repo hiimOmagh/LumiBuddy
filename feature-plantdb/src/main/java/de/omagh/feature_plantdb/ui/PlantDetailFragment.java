@@ -106,8 +106,7 @@ public class PlantDetailFragment extends Fragment {
                     return;
                 }
                 PlantCareProfileEntity p = profiles.get(0);
-                String msg = String.format(java.util.Locale.US,
-                        "Water every %d d\nTemp %.0f-%.0f°C\nHumidity %.0f-%.0f%%\nSunlight %s",
+                String msg = getString(R.string.plant_care_summary,
                         p.getWateringIntervalDays(),
                         p.getMinTemperature(), p.getMaxTemperature(),
                         p.getMinHumidity(), p.getMaxHumidity(),

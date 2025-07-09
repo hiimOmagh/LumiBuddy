@@ -101,6 +101,7 @@
     <string name="privacy_summary">Your data is stored only on your device. When cloud sync is enabled, plant logs and photos will be uploaded securely.</string>
     <string name="dli_icon">dli icon</string>
     <string name="ic_eco">ic_eco</string>
+    <string name="plant_care_summary">Water every %1$d d\nTemp %2$.0f-%3$.0f°C\nHumidity %4$.0f-%5$.0f%%\nSunlight %6$s</string>
 
     <string-array name="calibration_sources">
         <item>ALS</item>

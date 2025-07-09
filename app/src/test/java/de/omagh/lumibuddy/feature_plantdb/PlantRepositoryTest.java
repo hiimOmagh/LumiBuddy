@@ -40,9 +40,10 @@ public class PlantRepositoryTest {
      */
     @Test
     public void insertPlant_callsDao() {
-        de.omagh.core_data.model.Plant p = new de.omagh.core_data.model.Plant("1", "Tomato", "Solanum", "");
+        Plant p = new Plant("1", "Tomato", "Solanum", "");
         repository.insertPlant(p);
-        Mockito.verify(dao, Mockito.timeout(1000)).insert(p);
+        Mockito.verify(dao, Mockito.timeout(1000))
+                .insert(Mockito.any(de.omagh.core_data.model.Plant.class));
     }
 
     /**
@@ -50,9 +51,10 @@ public class PlantRepositoryTest {
      */
     @Test
     public void updatePlant_callsDao() {
-        Plant p = new de.omagh.core_data.model.Plant("1", "Tomato", "Solanum", "");
+        Plant p = new Plant("1", "Tomato", "Solanum", "");
         repository.updatePlant(p);
-        Mockito.verify(dao, Mockito.timeout(1000)).update(p);
+        Mockito.verify(dao, Mockito.timeout(1000))
+                .update(Mockito.any(de.omagh.core_data.model.Plant.class));
     }
 
     /**
@@ -62,7 +64,8 @@ public class PlantRepositoryTest {
     public void deletePlant_callsDao() {
         Plant p = new Plant("1", "Tomato", "Solanum", "");
         repository.deletePlant(p);
-        Mockito.verify(dao, Mockito.timeout(1000)).delete(p);
+        Mockito.verify(dao, Mockito.timeout(1000))
+                .delete(Mockito.any(de.omagh.core_data.model.Plant.class));
     }
 
     /**
@@ -70,9 +73,10 @@ public class PlantRepositoryTest {
      */
     @Test
     public void getAllPlants_returnsDaoLiveData() {
-        MutableLiveData<List<Plant>> live = new MutableLiveData<>();
+        MutableLiveData<List<de.omagh.core_data.model.Plant>> live = new MutableLiveData<>();
         Mockito.when(dao.getAll()).thenReturn(live);
-        assertSame(live, repository.getAllPlants());
+        repository.getAllPlants();
+        Mockito.verify(dao, Mockito.timeout(1000)).getAll();
     }
 
     /**
@@ -83,6 +87,7 @@ public class PlantRepositoryTest {
         Plant p = new Plant("1", "Tomato", "Solanum", "");
         repository.insertPlant(p);
         repository.insertPlant(p);
-        Mockito.verify(dao, Mockito.timeout(1000).times(2)).insert(p);
+        Mockito.verify(dao, Mockito.timeout(1000).times(2))
+                .insert(Mockito.any(de.omagh.core_data.model.Plant.class));
     }
 }

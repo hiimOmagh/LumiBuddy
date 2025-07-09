@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_data.repository.DiaryRepository;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
