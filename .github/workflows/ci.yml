@@ -18,21 +18,17 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Verify Android SDK
-        run: |
-          if ! command -v sdkmanager > /dev/null; then
-            echo "Android SDK not found" >&2
-            exit 1
-          fi
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Lint
-        run: ./gradlew lint --no-daemon
-
-      - name: Assemble Debug
-        run: ./gradlew assembleDebug --no-daemon
-
-      - name: Run Unit Tests
-        run: ./gradlew test --no-daemon
+      - run: ./gradlew lint
+      - run: ./gradlew assembleDebug
+      - run: ./gradlew test
+      - run: ./gradlew connectedCheck

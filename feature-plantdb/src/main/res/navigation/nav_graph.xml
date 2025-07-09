@@ -27,12 +27,5 @@
         android:name="de.omagh.feature_plantdb.ui.AddPlantFragment"
         android:label="Add Plant" />
 
-    <fragment
-        android:id="@+id/plantGrowthTimelineFragment"
-        android:name="de.omagh.feature_diary.ui.PlantGrowthTimelineFragment"
-        android:label="Diary">
-        <argument
-            android:name="plant_id"
-            app:argType="string" />
-    </fragment>
+    <!-- TODO: integrate diary timeline once :feature-diary exposes its navigation graph -->
 </navigation>

@@ -36,8 +36,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.recyclerview)
     implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.androidx.test.core)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.work.testing)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

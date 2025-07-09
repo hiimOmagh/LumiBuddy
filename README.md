@@ -29,10 +29,13 @@ LumiBuddy/
 ├── :feature-plantdb      // Plant profile management
 ├── :feature-diary        // Timeline of care events
 ├── :feature-growschedule // Reminder engine (WIP)
-├── :feature-ar           // ARCore features (WIP)
-├── :shared-sensor        // Light, camera, external BLE sensor abstraction
-├── :shared-ml            // On-device TFLite inference
 ```
+
+### Planned Modules
+
+- `:feature-ar` – ARCore features (WIP)
+- `:shared-sensor` – Light, camera, external BLE sensor abstraction
+- `:shared-ml` – On-device TFLite inference
 
 ---
 
@@ -239,4 +242,4 @@ public interface AppComponent {
 
 ## 🌍 License
 
-TBD (likely MIT or Apache 2.0)
+License: MIT

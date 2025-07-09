@@ -6,6 +6,10 @@ android {
     namespace = "de.omagh.lumibuddy"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         applicationId = "de.omagh.lumibuddy"
         minSdk = 28
@@ -14,6 +18,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "BASE_URL", "\"https://api.example.com/\"")
     }
 
     buildTypes {

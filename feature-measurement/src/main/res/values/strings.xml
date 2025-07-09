@@ -65,7 +65,6 @@
     <string name="lux_measurement_icon">Lux Measurement icon</string>
     <string name="lux">Lux</string>
     <string name="lx">lx</string>
-    <string name="_0_0">0.0</string>
     <string name="add_growth_event">Add growth event</string>
     <string name="growth_timeline_title">Growth Timeline Title</string>
     <string name="your_name">Your Name</string>
@@ -73,7 +72,7 @@
     <string name="daily_light_amount">Daily Light Amount</string>
     <string name="dli">DLI</string>
     <string name="mol_m_d">mol/m²/d</string>
-    <string name="dliValue">0.000\n</string>
+    <string name="dliValue">0.000</string>
     <string name="care_info_placeholder">Care info</string>
     <string name="selected_light_hours">Selected light hours</string>
     <string name="homeWelcomeText">Welcome</string>
