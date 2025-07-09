@@ -3,6 +3,8 @@ package de.omagh.lumibuddy;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import de.omagh.lumibuddy.ui.MainActivity;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,8 @@ public class NavigationTest {
     @Test
     public void startDestination_isDisplayed() {
         // TODO: add real navigation assertions
-        rule.getScenario();
+        rule.getScenario().onActivity(activity -> {
+            // Add navigation assertions in future
+        });
     }
 }

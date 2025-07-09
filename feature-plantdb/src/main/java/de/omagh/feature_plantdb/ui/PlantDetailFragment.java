@@ -75,7 +75,7 @@ public class PlantDetailFragment extends Fragment {
         // Observe LiveData for display
         viewModel.getPlant().observe(getViewLifecycleOwner(), plant -> {
             nameView.setText(plant.getName());
-            typeView.setText("Type: " + plant.getType());
+            typeView.setText(getString(R.string.type_format, plant.getType()));
             if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()) {
                 try {
                     plantImageView.setImageURI(Uri.parse(plant.getImageUri()));

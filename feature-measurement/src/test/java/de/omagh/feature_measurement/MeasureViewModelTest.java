@@ -15,6 +15,8 @@ public class MeasureViewModelTest {
     public void defaultValues_areZero() {
         Application app = ApplicationProvider.getApplicationContext();
         MeasureViewModel vm = new MeasureViewModel(app);
+        assertNotNull(vm.getLux().getValue());
+        assertNotNull(vm.getPPFD().getValue());
         assertEquals(0f, vm.getLux().getValue(), 0.001f);
         assertEquals(0f, vm.getPPFD().getValue(), 0.001f);
     }

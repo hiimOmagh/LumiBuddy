@@ -1,7 +1,5 @@
 package de.omagh.core_infra.di;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;

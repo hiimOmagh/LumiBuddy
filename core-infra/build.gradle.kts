@@ -6,8 +6,14 @@ android {
     namespace = "de.omagh.core_infra"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = 28
+
+        buildConfigField("String", "BASE_URL", "\"https://api.example.com/\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -45,6 +51,8 @@ dependencies {
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)
     implementation(libs.timber)
+    testImplementation(libs.androidx.test.core)
+    testImplementation(libs.work.testing)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
