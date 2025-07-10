@@ -93,6 +93,9 @@
     <string name="no_diary_entries">No diary entries yet</string>
     <string name="enable_ar">Enable AR Overlay</string>
     <string name="enable_ml">Enable ML Features</string>
+    <string name="calib_step_choose_type">Choose the light type you are calibrating.</string>
+    <string name="calib_step_measure">Expose the sensor to the light and tap Save.</string>
+    <string name="calib_step_done">Calibration saved.</string>
 
     <string name="care_reminders">Care Reminders</string>
     <string name="sync_now">Sync Now</string>
@@ -132,5 +135,6 @@
     <string name="total_time_exposure">Total Light-Time Exposure</string>
     <string name="profile_name">Profile name</string>
     <string name="note_optional">Note (optional)</string>
+    <string name="next">next</string>
 
 </resources>

@@ -72,6 +72,9 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.glide)
     implementation(libs.mpandroidchart)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
     debugImplementation(libs.leakcanary)
 // For LiveData support:
 

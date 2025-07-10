@@ -1,8 +1,11 @@
 package de.omagh.core_infra.sync;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_infra.firebase.FirebaseManager;
 import timber.log.Timber;
 
 /**
@@ -12,12 +15,22 @@ import timber.log.Timber;
  */
 public class PlantSyncManager {
     private static final String TAG = "PlantSyncManager";
+    private final FirebaseManager firebaseManager = new FirebaseManager();
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     /**
      * Pushes local plant data to the cloud backend.
      */
-    public void syncToCloud() {
-        Timber.tag(TAG).d("syncToCloud: not implemented");
+    public void syncToCloud(List<Plant> plants) {
+        executor.execute(() -> {
+            firebaseManager.signInAnonymously().addOnSuccessListener(r -> {
+                for (Plant p : plants) {
+                    firebaseManager.getDb().collection("plants")
+                            .document(p.id)
+                            .set(p);
+                }
+            });
+        });
     }
 
     /**

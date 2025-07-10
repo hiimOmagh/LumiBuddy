@@ -56,6 +56,7 @@ public class AddPlantFragment extends Fragment {
     private PlantClassifier plantClassifier;
     private HealthStatusClassifier healthClassifier;
     private DummyARGrowthTracker growthTracker;
+    private SwitchCompat mlToggle;
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
@@ -125,7 +126,7 @@ public class AddPlantFragment extends Fragment {
         MaterialButton pickImageBtn = view.findViewById(R.id.pickImageBtn);
         MaterialButton captureImageBtn = view.findViewById(R.id.captureImageBtn);
         MaterialButton searchPlantBtn = view.findViewById(R.id.searchPlantBtn);
-        SwitchCompat mlToggle = view.findViewById(R.id.mlToggle);
+        mlToggle = view.findViewById(R.id.mlToggle);
         SwitchCompat arGrowthToggle = view.findViewById(R.id.arGrowthToggle);
 
         // Init ViewModel
@@ -137,7 +138,7 @@ public class AddPlantFragment extends Fragment {
         mlToggle.setChecked(sm.isMlFeaturesEnabled());
         arGrowthToggle.setChecked(sm.isArOverlayEnabled());
         if (mlToggle.isChecked()) {
-            plantClassifier = new BasicPlantClassifier();
+            plantClassifier = new de.omagh.core_infra.ml.OnDevicePlantClassifier(requireContext());
             healthClassifier = new BasicHealthStatusClassifier();
         }
         if (arGrowthToggle.isChecked()) {
@@ -148,9 +149,9 @@ public class AddPlantFragment extends Fragment {
         mlToggle.setOnCheckedChangeListener((b, checked) -> {
             sm.setMlFeaturesEnabled(checked);
             if (checked) {
-                plantClassifier = new BasicPlantClassifier();
+                plantClassifier = new de.omagh.core_infra.ml.OnDevicePlantClassifier(requireContext());
                 healthClassifier = new BasicHealthStatusClassifier();
-                Toast.makeText(getContext(), "ML features enabled (stub)", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "ML features enabled", Toast.LENGTH_SHORT).show();
             } else {
                 plantClassifier = null;
                 healthClassifier = null;
@@ -228,6 +229,10 @@ public class AddPlantFragment extends Fragment {
         if (plantClassifier == null) return;
         plantClassifier.classify(bitmap);
         String result = plantClassifier.getLastResult();
+        if ("Unknown".equals(result)) {
+            identifyWithApi(bitmap);
+            return;
+        }
         android.widget.Toast.makeText(getContext(), "Recognized: " + result,
                 android.widget.Toast.LENGTH_SHORT).show();
         if (!android.text.TextUtils.isEmpty(result)) {

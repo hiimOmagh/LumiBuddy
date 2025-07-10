@@ -11,6 +11,8 @@ import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
+import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_infra.firebase.FirebaseManager;
 
 @Component(modules = {
         NetworkModule.class,
@@ -36,6 +38,10 @@ public interface CoreComponent {
     UserProfileManager userProfileManager();
 
     UserProfileSyncManager userProfileSyncManager();
+
+    LightCorrectionStore lightCorrectionStore();
+
+    FirebaseManager firebaseManager();
 
     Application application();
 
