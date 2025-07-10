@@ -2,8 +2,10 @@ package de.omagh.lumibuddy;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.action.ViewActions;
+import androidx.test.espresso.assertion.ViewAssertions;
+import androidx.test.espresso.matcher.ViewMatchers;
 
 import de.omagh.lumibuddy.ui.MainActivity;
 
@@ -18,9 +20,17 @@ public class NavigationTest {
 
     @Test
     public void startDestination_isDisplayed() {
-        rule.getScenario().onActivity(activity -> {
-            NavController navController = Navigation.findNavController(activity, R.id.nav_host_fragment);
-            org.junit.Assert.assertEquals(R.id.homeFragment, navController.getCurrentDestination().getId());
-        });
+        Espresso.onView(ViewMatchers.withId(R.id.homeWelcomeText))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+        Espresso.onView(ViewMatchers.withId(R.id.startMeasureButton))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
+    public void navigateToMeasureFragment() {
+        Espresso.onView(ViewMatchers.withId(R.id.startMeasureButton))
+                .perform(ViewActions.click());
+        Espresso.onView(ViewMatchers.withId(R.id.cameraMeasureButton))
+                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 }

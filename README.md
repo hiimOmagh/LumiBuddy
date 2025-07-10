@@ -165,49 +165,6 @@ public interface AppComponent {
 -**To Add**
 
 - ✅ Developer Setup Instructions
-
-### Recommended Emulator Profiles for Testing
-
-| Device Profile | API Level       | Notes                                |
-|----------------|-----------------|--------------------------------------|
-| Pixel 5        | 34 (Android 14) | Default Google Play image            |
-| Pixel 4        | 30 (Android 11) | Good baseline for sensors and ARCore |
-| 2GB Android Go | 28 (Android 9)  | Low-end performance test             |
-
-### Android Device & ARCore Compatibility
-
-AR features rely on ARCore. Most modern Pixel, Samsung Galaxy, and OnePlus devices are supported.
-Check Google's official list for compatibility. Emulators do not support ARCore-based features.
-
-### CSV Export File Format
-
-CSV exports contain these columns:
-
-| Column       | Unit       | Description                       |
-|--------------|------------|-----------------------------------|
-| `timestamp`  | ISO 8601   | Local date/time of entry          |
-| `lux`        | lux        | Ambient light or camera reading   |
-| `ppfd`       | µmol/m²/s  | Photon flux density               |
-| `dli`        | mol/m²/day | Daily light integral              |
-| `event_type` | -          | Diary event type or `measurement` |
-
-Example:
-
-```
-timestamp,lux,ppfd,dli,event_type
-2024-03-10T14:00:00,15000,278,12.4,measurement
-```
-
-### Calibration Factors for Common Grow Light Spectra
-
-| Spectrum       | Lux→PPFD Factor (µmol/m²/s per lux) |
-|----------------|-------------------------------------|
-| Sunlight       | 0.0185                              |
-| Warm White LED | 0.017                               |
-| Cool White LED | 0.020                               |
-| Blurple LED    | 0.022                               |
-| HPS            | 0.012                               |
-
 - ✅ Emulator Profiles for Testing
 - ✅ ARCore Device Compatibility
 - ✅ CSV Export Format Spec
@@ -241,6 +198,57 @@ timestamp,lux,ppfd,dli,event_type
   ./gradlew installDebug
   ```
 - Or open the project in Android Studio and press **Run**.
+- ### Recommended Emulator Profiles
+
+| Device Profile | API Level       | Notes                                |
+|----------------|-----------------|--------------------------------------|
+| Pixel 5        | 34 (Android 14) | Default Google Play image            |
+| Pixel 4        | 30 (Android 11) | Good baseline for sensors and ARCore |
+| 2GB Android Go | 28 (Android 9)  | Low-end performance test             |
+
+### ARCore Device Compatibility
+
+Most recent Pixel, Samsung Galaxy, and OnePlus devices support ARCore.
+Check [Google's official list](https://developers.google.com/ar/devices) to verify a specific model.
+On a device, ensure the **Google Play Services for AR** package is installed or run:
+
+```bash
+adb shell pm list packages | grep arcore
+```
+
+Emulators do not support ARCore-based features.
+
+### CSV Export Format
+
+CSV exports contain these columns in order:
+
+| Column       | Unit       | Description                       |
+|--------------|------------|-----------------------------------|
+| `timestamp`  | ISO 8601   | Local date/time of entry          |
+| `lux`        | lux        | Ambient light reading             |
+| `ppfd`       | µmol/m²/s  | Photon flux density               |
+| `dli`        | mol/m²/day | Daily light integral              |
+| `event_type` | -          | Diary event type or `measurement` |
+
+Example:
+
+```csv
+timestamp,lux,ppfd,dli,event_type
+2024-03-10T14:00:00,15000,278,12.4,measurement
+```
+
+### Grow Light Spectrum Calibration Table
+
+Default lux→PPFD conversion factors used by LumiBuddy:
+
+| Spectrum       | Lux→PPFD Factor (µmol/m²/s per lux) |
+|----------------|-------------------------------------|
+| Sunlight       | 0.0185                              |
+| Warm White LED | 0.017                               |
+| Cool White LED | 0.020                               |
+| Blurple LED    | 0.022                               |
+| HPS            | 0.012                               |
+
 ## 📝 Developer To-Do List
 
 ### App Structure

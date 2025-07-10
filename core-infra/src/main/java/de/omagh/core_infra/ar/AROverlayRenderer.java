@@ -15,9 +15,11 @@ public interface AROverlayRenderer {
     void init();
 
     /**
-     * Render the overlay using the provided canvas and measurement.
+     * Render the overlay using the provided canvas, measurement and optional
+     * intensity grid. The grid represents relative light intensity values and
+     * may be {@code null} if not available.
      */
-    void renderOverlay(Canvas canvas, Measurement measurement);
+    void renderOverlay(Canvas canvas, Measurement measurement, float[][] intensityGrid);
 
     /**
      * Release allocated resources when no longer needed.

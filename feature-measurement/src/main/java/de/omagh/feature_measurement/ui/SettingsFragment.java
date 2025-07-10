@@ -33,6 +33,8 @@ public class SettingsFragment extends Fragment {
     private EditText hoursInput;
     private Spinner calibrationSpinner;
     private android.widget.TextView calibrationInfoText;
+    private Spinner lightTypeFactorSpinner;
+    private android.widget.TextView lightFactorInfoText;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -51,6 +53,9 @@ public class SettingsFragment extends Fragment {
         calibrationSpinner = view.findViewById(R.id.calibrationSpinner);
         View addCalibrationBtn = view.findViewById(R.id.addCalibrationBtn);
         calibrationInfoText = view.findViewById(R.id.calibrationInfoText);
+        lightTypeFactorSpinner = view.findViewById(R.id.lightTypeFactorSpinner);
+        lightFactorInfoText = view.findViewById(R.id.lightFactorInfoText);
+        View editLightFactorBtn = view.findViewById(R.id.editLightFactorBtn);
         SwitchCompat careReminderSwitch = view.findViewById(R.id.careReminderSwitch);
         View syncNowBtn = view.findViewById(R.id.syncNowBtn);
         View privacyPolicyBtn = view.findViewById(R.id.privacyPolicyBtn);
@@ -61,6 +66,12 @@ public class SettingsFragment extends Fragment {
                 android.R.layout.simple_spinner_item);
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         unitsSpinner.setAdapter(unitAdapter);
+
+        // Light type correction spinner
+        ArrayAdapter<CharSequence> lightAdapter = ArrayAdapter.createFromResource(
+                requireContext(), R.array.lamp_types, android.R.layout.simple_spinner_item);
+        lightAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lightTypeFactorSpinner.setAdapter(lightAdapter);
 
         // Populate calibration profiles
         ArrayAdapter<String> calibAdapter = new ArrayAdapter<>(requireContext(),
@@ -73,6 +84,7 @@ public class SettingsFragment extends Fragment {
         calibAdapter.add(getString(R.string.add));
         calibrationSpinner.setAdapter(calibAdapter);
         updateCalibrationInfo();
+        updateLightFactorInfo();
 
         calibrationSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,6 +117,18 @@ public class SettingsFragment extends Fragment {
         });
 
         addCalibrationBtn.setOnClickListener(v -> showAddProfileDialog());
+
+        lightTypeFactorSpinner.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> parent, View view1, int position, long id) {
+                updateLightFactorInfo();
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> parent) {
+            }
+        });
+        editLightFactorBtn.setOnClickListener(v -> showEditLightFactorDialog());
 
         careReminderSwitch.setChecked(settingsManager.isCareRemindersEnabled());
         careReminderSwitch.setOnCheckedChangeListener(
@@ -183,6 +207,35 @@ public class SettingsFragment extends Fragment {
         } else {
             calibrationInfoText.setText("");
         }
+    }
+
+    private void updateLightFactorInfo() {
+        String type = (String) lightTypeFactorSpinner.getSelectedItem();
+        if (type != null) {
+            float f = calibrationManager.getLightCorrection(type);
+            lightFactorInfoText.setText(getString(R.string.calibration_factor, f));
+        }
+    }
+
+    private void showEditLightFactorDialog() {
+        String type = (String) lightTypeFactorSpinner.getSelectedItem();
+        final EditText input = new EditText(getContext());
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setText(String.valueOf(calibrationManager.getLightCorrection(type)));
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle(type)
+                .setView(input)
+                .setPositiveButton(R.string.save, (d, w) -> {
+                    try {
+                        float val = Float.parseFloat(input.getText().toString());
+                        calibrationManager.setLightCorrection(type, val);
+                        updateLightFactorInfo();
+                    } catch (NumberFormatException ex) {
+                        Toast.makeText(getContext(), R.string.invalid_number, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     private void showAddProfileDialog() {

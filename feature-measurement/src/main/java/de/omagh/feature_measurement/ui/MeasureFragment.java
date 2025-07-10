@@ -29,6 +29,8 @@ import de.omagh.feature_measurement.di.MeasurementComponent;
 
 import de.omagh.core_domain.model.Measurement;
 import de.omagh.core_infra.measurement.CameraLightMeterX;
+import de.omagh.core_infra.ar.ARMeasureOverlay;
+import de.omagh.core_infra.ar.HeatmapOverlayView;
 import de.omagh.feature_measurement.R;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
@@ -57,6 +59,7 @@ public class MeasureFragment extends Fragment {
 
     // CameraX measurement
     private PreviewView cameraPreview;
+    private de.omagh.core_infra.ar.HeatmapOverlayView heatmapOverlay;
     private Button cameraMeasureButton;
     private CameraLightMeterX cameraLightMeterX;
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
@@ -149,6 +152,7 @@ public class MeasureFragment extends Fragment {
 
         cameraMeasureButton = view.findViewById(R.id.cameraMeasureButton);
         cameraPreview = view.findViewById(R.id.cameraPreview);
+        heatmapOverlay = view.findViewById(R.id.heatmapOverlay);
         SwitchCompat arToggle = view.findViewById(R.id.arToggle);
         arToggle.setChecked(enableAROverlay);
         arToggle.setOnCheckedChangeListener((btn, checked) -> {
@@ -156,10 +160,9 @@ public class MeasureFragment extends Fragment {
             settingsManager.setArOverlayEnabled(checked);
             if (checked) {
                 if (arOverlayRenderer == null) {
-                    arOverlayRenderer = new de.omagh.core_infra.ar.ARMeasureOverlay();
+                    arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);
                     arOverlayRenderer.init();
                 }
-                android.widget.Toast.makeText(getContext(), "AR overlay enabled (stub)", android.widget.Toast.LENGTH_SHORT).show();
             } else {
                 if (arOverlayRenderer != null) {
                     arOverlayRenderer.cleanup();
@@ -203,7 +206,7 @@ public class MeasureFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(MeasureViewModel.class);
 
         if (enableAROverlay) {
-            arOverlayRenderer = new de.omagh.core_infra.ar.ARMeasureOverlay();
+            arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);
             arOverlayRenderer.init();
         }
 
@@ -286,19 +289,19 @@ public class MeasureFragment extends Fragment {
                     .setTitle("Tip")
                     .setMessage("Place a single white sheet of paper over the camera for best accuracy, then tap OK.")
                     .setPositiveButton("OK", (d, w) ->
-                            cameraLightMeterX.analyzeFrame(new CameraLightMeterX.ResultCallback() {
+                            cameraLightMeterX.analyzeFrameWithGrid(10, 10, new CameraLightMeterX.GridResultCallback() {
                                 @Override
-                                public void onResult(float meanR, float meanG, float meanB) {
+                                public void onResult(float meanR, float meanG, float meanB, float[][] intensity) {
                                     float pseudoLux = meanR + meanG + meanB;
                                     requireActivity().runOnUiThread(() -> {
                                         mViewModel.setLux(pseudoLux, "Camera");
                                         cameraPreview.setVisibility(View.GONE);
 
                                         if (enableAROverlay && arOverlayRenderer != null) {
-                                            Measurement m =
-                                                    new Measurement();
+                                            Measurement m = new Measurement();
                                             m.lux = pseudoLux;
-                                            arOverlayRenderer.renderOverlay(new android.graphics.Canvas(), m);
+                                            heatmapOverlay.setVisibility(View.VISIBLE);
+                                            arOverlayRenderer.renderOverlay(new android.graphics.Canvas(), m, intensity);
                                         }
 
                                         // Auto-detect lamp type and show warning if needed

@@ -11,8 +11,7 @@ import javax.inject.Inject;
 
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
-import de.omagh.core_infra.plantdb.PlantIdRepository;
-import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
+import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 
@@ -21,7 +20,7 @@ import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
  */
 public class AddPlantViewModel extends AndroidViewModel {
     @Inject
-    PlantIdRepository plantIdRepository;
+    PlantIdentifier plantIdentifier;
 
     @Inject
     public AddPlantViewModel(@NonNull Application application) {
@@ -31,7 +30,7 @@ public class AddPlantViewModel extends AndroidViewModel {
         component.inject(this);
     }
 
-    public LiveData<PlantIdSuggestion> identifyPlant(Bitmap bitmap) {
-        return plantIdRepository.identifyPlant(bitmap);
+    public LiveData<String> identifyPlant(Bitmap bitmap) {
+        return plantIdentifier.identifyPlant(bitmap);
     }
 }

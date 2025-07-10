@@ -39,15 +39,27 @@
             android:layout_marginBottom="18dp"
             android:text="@string/calibration_factor_placeholder" />
 
-        <!-- CameraX Preview & Measure Button -->
-        <androidx.camera.view.PreviewView
-            android:id="@+id/cameraPreview"
+        <!-- CameraX Preview & AR Overlay -->
+        <FrameLayout
+            android:id="@+id/cameraFrame"
             android:layout_width="300dp"
             android:layout_height="220dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/darker_gray"
-            android:visibility="gone" />
+            android:layout_marginBottom="8dp">
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/cameraPreview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/darker_gray"
+                android:visibility="gone" />
+
+            <de.omagh.core_infra.ar.HeatmapOverlayView
+                android:id="@+id/heatmapOverlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+        </FrameLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/cameraMeasureButton"

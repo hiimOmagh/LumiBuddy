@@ -6,7 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
-import de.omagh.core_infra.plantdb.PlantIdRepository;
+import de.omagh.shared_ml.PlantIdentifier;
 
 @Module
 public class PlantDbModule {
@@ -21,7 +21,7 @@ public class PlantDbModule {
     }
 
     @Provides
-    static PlantIdRepository providePlantIdRepository() {
-        return new PlantIdRepository();
+    static PlantIdentifier providePlantIdentifier(Application app) {
+        return new PlantIdentifier(app.getApplicationContext());
     }
 }

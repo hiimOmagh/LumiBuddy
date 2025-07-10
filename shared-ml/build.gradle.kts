@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "de.omagh.feature_measurement"
+    namespace = "de.omagh.shared_ml"
     compileSdk = 35
 
     defaultConfig {
@@ -26,31 +26,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    buildFeatures {
+        mlModelBinding = true
+    }
 }
 
 dependencies {
-    implementation(project(":core-domain"))
-    implementation(project(":core-infra"))
-    implementation(project(":core-data"))
-    implementation(libs.dagger)
-    annotationProcessor(libs.dagger.compiler)
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
-    implementation(libs.timber)
-    implementation(libs.camera.core)
-    implementation(libs.camera.camera2)
-    implementation(libs.camera.lifecycle)
-    implementation(libs.camera.view)
-    implementation(libs.rxjava2)
-    implementation(libs.rxandroid2)
+    implementation(libs.tensorflow.lite)
+    implementation(libs.androidx.lifecycle.livedata)
+
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.navigation.fragment)
-    implementation(libs.navigation.ui)
     testImplementation(libs.junit)
-    testImplementation(libs.androidx.test.core)
-    testImplementation(libs.mockito.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

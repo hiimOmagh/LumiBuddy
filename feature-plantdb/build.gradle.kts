@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core-infra"))
     implementation(project(":core-domain"))
     implementation(project(":feature-diary"))
+    implementation(project(":shared-ml"))
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
@@ -48,6 +49,7 @@ dependencies {
     implementation(libs.timber)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
+    testImplementation(libs.mockito.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

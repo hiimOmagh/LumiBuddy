@@ -86,6 +86,30 @@ public class CalibrationProfilesManager {
         return 1f;
     }
 
+    // --- Per-light-type corrections ---
+    private static final String KEY_LIGHT_PREFIX = "light_factor_";
+    private final java.util.Map<String, Float> lightCache = new java.util.HashMap<>();
+
+    /**
+     * Returns the saved correction factor for the given light type or 1f if none is set.
+     */
+    public float getLightCorrection(String type) {
+        if (lightCache.containsKey(type)) {
+            return lightCache.get(type);
+        }
+        float f = prefs.getFloat(KEY_LIGHT_PREFIX + type, 1f);
+        lightCache.put(type, f);
+        return f;
+    }
+
+    /**
+     * Persist a correction factor for the given light type.
+     */
+    public void setLightCorrection(String type, float factor) {
+        lightCache.put(type, factor);
+        prefs.edit().putFloat(KEY_LIGHT_PREFIX + type, factor).apply();
+    }
+
     // --- Persistence helpers ---
     private String getActiveProfileId() {
         return prefs.getString(KEY_ACTIVE, null);

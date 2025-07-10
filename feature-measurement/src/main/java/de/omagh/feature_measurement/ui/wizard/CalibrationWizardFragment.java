@@ -16,26 +16,26 @@ import androidx.fragment.app.Fragment;
 
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.feature_measurement.R;
 
 /**
  * Simple three step wizard that allows the user to record a correction
  * factor for a specific light type. The result is stored via
- * {@link LightCorrectionStore}.
+ * {@link CalibrationProfilesManager}.
  */
 public class CalibrationWizardFragment extends Fragment {
     private int step = 0;
     private Spinner typeSpinner;
     private TextView instructions;
     private Button nextBtn;
-    private LightCorrectionStore store;
+    private CalibrationProfilesManager manager;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-        store = core.lightCorrectionStore();
+        manager = core.calibrationProfilesManager();
     }
 
     @Nullable
@@ -47,8 +47,8 @@ public class CalibrationWizardFragment extends Fragment {
         instructions = v.findViewById(R.id.instructions);
         nextBtn = v.findViewById(R.id.nextBtn);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item,
-                new String[]{"Sunlight", "HPS", "White LED", "Blurple LED"});
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(),
+                R.array.lamp_types, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         typeSpinner.setAdapter(adapter);
 
@@ -64,7 +64,7 @@ public class CalibrationWizardFragment extends Fragment {
             // Normally this would capture sensor data to compute the factor
             float result = 0.02f; // stub value
             String type = (String) typeSpinner.getSelectedItem();
-            store.setFactor(type, result);
+            manager.setLightCorrection(type, result);
             step = 2;
         } else {
             requireActivity().onBackPressed();

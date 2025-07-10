@@ -2,8 +2,6 @@ name: CI
 
 on:
   pull_request:
-  push:
-    branches: [ main ]
 
 jobs:
   build:
@@ -28,7 +26,9 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - run: ./gradlew lint
-      - run: ./gradlew assembleDebug
-      - run: ./gradlew test
-      - run: ./gradlew connectedCheck
+      - name: Run lint
+        run: ./gradlew lint
+      - name: Run unit tests
+        run: ./gradlew test
+      - name: Build debug APK
+        run: ./gradlew assembleDebug

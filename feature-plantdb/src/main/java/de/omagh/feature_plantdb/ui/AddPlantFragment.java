@@ -269,9 +269,9 @@ public class AddPlantFragment extends Fragment {
         Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
         addPlantViewModel.identifyPlant(bmp).observe(getViewLifecycleOwner(), result -> {
             if (result != null) {
-                nameInput.setText(result.getCommonName());
-                typeInput.setText(result.getScientificName());
-                Toast.makeText(getContext(), getString(R.string.powered_by_plantid), Toast.LENGTH_SHORT).show();
+                nameInput.setText(result);
+                typeInput.setText(result);
+                Toast.makeText(getContext(), "Identified locally", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Identification failed", Toast.LENGTH_SHORT).show();
             }

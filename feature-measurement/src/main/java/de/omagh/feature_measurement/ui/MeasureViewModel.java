@@ -158,6 +158,7 @@ public class MeasureViewModel extends AndroidViewModel {
         LampProduct def = growLightManager.getById(lampId);
         if (def != null) {
             lampFactor = def.calibrationFactor;
+            lampFactor *= profileManager.getLightCorrection(def.type);
         }
         float deviceFactor = profileManager.getCalibrationFactorForSource(currentSource);
         float factor = lampFactor * deviceFactor;

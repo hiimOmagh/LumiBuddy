@@ -30,6 +30,7 @@
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="add">add</string>
+    <string name="edit">Edit</string>
     <string name="invalid_number">Invalid number</string>
     <string name="lamp_type">"Lamp Type : "</string>
     <string name="calibration_factor_placeholder">Factor: —</string>

@@ -50,6 +50,9 @@
         android:name="de.omagh.feature_plantdb.ui.PlantDetailFragment"
         android:label="Plant Detail">
         <!-- ...arguments... -->
+        <action
+            android:id="@+id/action_PlantDetailFragment_to_GrowthTimelineFragment"
+            app:destination="@id/plantGrowthTimelineFragment" />
     </fragment>
     <fragment
         android:id="@+id/addPlantFragment"
