@@ -4,16 +4,43 @@
    for details.
 -->
 <data-extraction-rules>
+
     <cloud-backup>
-        <!-- TODO: Use <include> and <exclude> to control what is backed up.
-        <include .../>
-        <exclude .../>
-        -->
+
+        <!-- Persist core data such as the Room database and user settings -->
+        <include
+            domain="database"
+            path="lumibuddy.db" />
+        <include
+            domain="sharedpref"
+            path="user_settings.xml" />
+        <include
+            domain="files"
+            path="images/" />
+        <!-- Avoid syncing cache files -->
+        <exclude
+            domain="cache"
+            path="." />
+
     </cloud-backup>
-    <!--
+
     <device-transfer>
-        <include .../>
-        <exclude .../>
+
+        <!-- Migrate essential user data to a new device -->
+        <include
+            domain="database"
+            path="lumibuddy.db" />
+        <include
+            domain="sharedpref"
+            path="user_settings.xml" />
+        <include
+            domain="files"
+            path="images/" />
+        <!-- Skip calibration preferences during transfer -->
+        <exclude
+            domain="sharedpref"
+            path="calibration_prefs.xml" />
+
     </device-transfer>
-    -->
+
 </data-extraction-rules>

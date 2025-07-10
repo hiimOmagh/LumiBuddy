@@ -2,6 +2,8 @@ package de.omagh.lumibuddy;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import de.omagh.lumibuddy.ui.MainActivity;
 
@@ -16,9 +18,9 @@ public class NavigationTest {
 
     @Test
     public void startDestination_isDisplayed() {
-        // TODO: add real navigation assertions
         rule.getScenario().onActivity(activity -> {
-            // Add navigation assertions in future
+            NavController navController = Navigation.findNavController(activity, R.id.nav_host_fragment);
+            org.junit.Assert.assertEquals(R.id.homeFragment, navController.getCurrentDestination().getId());
         });
     }
 }
