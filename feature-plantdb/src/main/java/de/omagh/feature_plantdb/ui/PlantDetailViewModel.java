@@ -2,7 +2,7 @@ package de.omagh.feature_plantdb.ui;
 
 import android.app.Application;
 
-import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -27,7 +27,7 @@ import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
  * Holds LiveData for a single plant, supporting detail view and editing.
  * Can be extended to load/update a plant from Room database.
  */
-public class PlantDetailViewModel extends ViewModel {
+public class PlantDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
     @Inject
@@ -36,6 +36,7 @@ public class PlantDetailViewModel extends ViewModel {
     PlantRepository repository;
 
     public PlantDetailViewModel(@NonNull Application application) {
+        super(application);
         CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
         PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
         component.inject(this);
