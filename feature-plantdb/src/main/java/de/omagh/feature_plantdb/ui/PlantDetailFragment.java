@@ -23,6 +23,7 @@ import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.content.Context;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -51,7 +52,7 @@ public class PlantDetailFragment extends Fragment {
     private TextView careInfoView;
 
     @Override
-    public void onAttach(@NonNull android.content.Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         component = DaggerPlantDbComponent.factory().create(core);

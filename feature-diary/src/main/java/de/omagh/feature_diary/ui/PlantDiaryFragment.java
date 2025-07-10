@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,12 +22,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.core_data.db.AppDatabase;
-import de.omagh.core_data.repository.PlantRepository;
+
 import de.omagh.feature_diary.R;
 import de.omagh.feature_diary.ui.DiaryEntryAdapter;
 import de.omagh.feature_diary.ui.DiaryViewModel;

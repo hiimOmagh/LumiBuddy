@@ -1,6 +1,7 @@
 package de.omagh.feature_plantdb.ui;
 
 import android.Manifest;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -26,8 +27,6 @@ import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
-
-import javax.inject.Inject;
 
 import com.google.android.material.button.MaterialButton;
 
@@ -120,7 +119,7 @@ public class AddPlantFragment extends Fragment {
             });
 
     @Override
-    public void onAttach(@NonNull android.content.Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         component = DaggerPlantDbComponent.factory().create(core);

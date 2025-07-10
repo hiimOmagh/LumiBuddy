@@ -1,9 +1,6 @@
 package de.omagh.core_infra.measurement;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-
-import timber.log.Timber;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

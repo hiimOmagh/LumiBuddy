@@ -5,9 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import de.omagh.feature_diary.ui.dialog.DiaryEntryDialog;
 
@@ -21,8 +19,6 @@ import com.google.android.material.snackbar.Snackbar;
 
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
-
-import java.util.UUID;
 
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.feature_diary.ui.DiaryEntryAdapter;

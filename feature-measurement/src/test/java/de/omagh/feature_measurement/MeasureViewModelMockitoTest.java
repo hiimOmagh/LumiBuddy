@@ -15,6 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.lang.reflect.Field;
 
+import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
+import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
@@ -31,6 +33,10 @@ public class MeasureViewModelMockitoTest {
     CalibrationProfilesManager profileManager;
     @Mock
     SettingsManager settings;
+    @Mock
+    GetCurrentLuxUseCase getCurrentLuxUseCase;
+    @Mock
+    CalibrationManager calibrationManager;
 
     private MeasureViewModel vm;
 
@@ -38,26 +44,15 @@ public class MeasureViewModelMockitoTest {
     public void setup() throws Exception {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
-        vm = new MeasureViewModel(app);
-
-        Field f = MeasureViewModel.class.getDeclaredField("growLightManager");
-        f.setAccessible(true);
-        f.set(vm, growLightManager);
-
-        f = MeasureViewModel.class.getDeclaredField("profileManager");
-        f.setAccessible(true);
-        f.set(vm, profileManager);
-
-        f = MeasureViewModel.class.getDeclaredField("settingsManager");
-        f.setAccessible(true);
-        f.set(vm, settings);
+        vm = new MeasureViewModel(app, profileManager, growLightManager, settings,
+                getCurrentLuxUseCase, calibrationManager);
 
         Field lampField = MeasureViewModel.class.getDeclaredField("lampIdLiveData");
         lampField.setAccessible(true);
         lampField.set(vm, new MutableLiveData<>("lamp1"));
 
         Mockito.when(growLightManager.getById("lamp1"))
-                .thenReturn(new LampProduct("lamp1", "Lamp", 0.02f));
+                .thenReturn(new LampProduct("lamp1", "Lamp", "Brand", "LED", "full", 100, 0.02f, 0f));
         Mockito.when(profileManager.getCalibrationFactorForSource(Mockito.anyString()))
                 .thenReturn(1f);
     }

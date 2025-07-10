@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+
+import android.content.Context;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -22,7 +24,6 @@ import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
-import javax.inject.Inject;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -63,7 +64,7 @@ public class PlantListFragment extends Fragment {
             });
 
     @Override
-    public void onAttach(@NonNull android.content.Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         component = DaggerPlantDbComponent.factory().create(core);
