@@ -2,8 +2,6 @@ package de.omagh.core_infra.di;
 
 import android.app.Application;
 
-import javax.inject.Singleton;
-
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;

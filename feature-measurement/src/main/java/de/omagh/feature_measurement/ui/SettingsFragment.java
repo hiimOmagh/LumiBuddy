@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.omagh.core_infra.sync.DiarySyncManager;
-import de.omagh.core_infra.sync.PlantSyncManager;
 import de.omagh.feature_measurement.R;
 import de.omagh.core_domain.model.CalibrationProfile;
 import de.omagh.core_infra.user.CalibrationProfilesManager;

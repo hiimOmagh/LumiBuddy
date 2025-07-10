@@ -1,7 +1,5 @@
 package de.omagh.lumibuddy.di;
 
-import javax.inject.Singleton;
-
 import dagger.Component;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.lumibuddy.LumiBuddyApplication;

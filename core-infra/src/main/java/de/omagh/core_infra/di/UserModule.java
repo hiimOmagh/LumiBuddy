@@ -2,8 +2,6 @@ package de.omagh.core_infra.di;
 
 import android.app.Application;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_infra.user.CalibrationProfilesManager;

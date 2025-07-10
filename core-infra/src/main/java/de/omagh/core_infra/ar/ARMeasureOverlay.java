@@ -22,7 +22,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
 
     @Override
     public void renderOverlay(Canvas canvas, Measurement measurement) {
-        Timber.tag(TAG).d("renderOverlay() called with measurement=" + measurement);
+        Timber.tag(TAG).d("renderOverlay() called with measurement=%s", measurement);
     }
 
     @Override

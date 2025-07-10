@@ -21,7 +21,7 @@ public class DummyARGrowthTracker implements ARGrowthTracker {
 
     @Override
     public void trackGrowth(Bitmap currentView) {
-        Timber.tag(TAG).d("trackGrowth() called with bitmap=" + currentView);
+        Timber.tag(TAG).d("trackGrowth() called with bitmap=%s", currentView);
     }
 
     @Override
