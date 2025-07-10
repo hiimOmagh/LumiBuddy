@@ -19,6 +19,7 @@ import de.omagh.feature_measurement.R;
 import de.omagh.core_domain.model.CalibrationProfile;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.sync.PlantSyncManager;
 
 /**
  * Simple settings screen for user preferences.
@@ -129,7 +130,7 @@ public class SettingsFragment extends Fragment {
 
         syncNowBtn.setOnClickListener(v -> {
             // Trigger stub sync managers
-            new de.omagh.core_infra.sync.PlantSyncManager().syncToCloud();
+            new PlantSyncManager().syncToCloud(java.util.Collections.emptyList());
             new de.omagh.core_infra.sync.DiarySyncManager().syncToCloud();
             Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
         });

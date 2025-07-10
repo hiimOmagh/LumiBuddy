@@ -26,7 +26,7 @@ public class PlantSyncManager {
             firebaseManager.signInAnonymously().addOnSuccessListener(r -> {
                 for (Plant p : plants) {
                     firebaseManager.getDb().collection("plants")
-                            .document(p.id)
+                            .document(p.getId())
                             .set(p);
                 }
             });

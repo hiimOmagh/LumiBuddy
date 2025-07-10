@@ -91,10 +91,15 @@ public class PlantDetailFragment extends Fragment {
         // Edit FAB
         editFab.setOnClickListener(v -> showEditPlantDialog());
 
-        // View timeline button
-        // TODO: open growth timeline screen when feature-diary is integrated
+        // View timeline button opens diary timeline for this plant
         timelineButton.setOnClickListener(v -> {
-            // placeholder for cross-feature navigation
+            Plant current = viewModel.getPlant().getValue();
+            if (current == null) return;
+            Bundle bundle = new Bundle();
+            bundle.putString(de.omagh.feature_diary.ui.PlantGrowthTimelineFragment.ARG_PLANT_ID,
+                    current.getId());
+            androidx.navigation.Navigation.findNavController(v)
+                    .navigate(R.id.action_PlantDetailFragment_to_GrowthTimelineFragment, bundle);
         });
 
         fetchDetails.setOnClickListener(v -> {

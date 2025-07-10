@@ -136,5 +136,5 @@
     <string name="profile_name">Profile name</string>
     <string name="note_optional">Note (optional)</string>
     <string name="next">next</string>
-
+    <string name="finish">Finish</string>
 </resources>
