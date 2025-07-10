@@ -165,10 +165,53 @@ public interface AppComponent {
 -**To Add**
 
 - ✅ Developer Setup Instructions
-- [ ] Emulator Profiles for Testing
-- [ ] ARCore Device Compatibility
-- [ ] CSV Export Format Spec
-- [ ] Grow Light Spectrum Calibration Table
+
+### Recommended Emulator Profiles for Testing
+
+| Device Profile | API Level       | Notes                                |
+|----------------|-----------------|--------------------------------------|
+| Pixel 5        | 34 (Android 14) | Default Google Play image            |
+| Pixel 4        | 30 (Android 11) | Good baseline for sensors and ARCore |
+| 2GB Android Go | 28 (Android 9)  | Low-end performance test             |
+
+### Android Device & ARCore Compatibility
+
+AR features rely on ARCore. Most modern Pixel, Samsung Galaxy, and OnePlus devices are supported.
+Check Google's official list for compatibility. Emulators do not support ARCore-based features.
+
+### CSV Export File Format
+
+CSV exports contain these columns:
+
+| Column       | Unit       | Description                       |
+|--------------|------------|-----------------------------------|
+| `timestamp`  | ISO 8601   | Local date/time of entry          |
+| `lux`        | lux        | Ambient light or camera reading   |
+| `ppfd`       | µmol/m²/s  | Photon flux density               |
+| `dli`        | mol/m²/day | Daily light integral              |
+| `event_type` | -          | Diary event type or `measurement` |
+
+Example:
+
+```
+timestamp,lux,ppfd,dli,event_type
+2024-03-10T14:00:00,15000,278,12.4,measurement
+```
+
+### Calibration Factors for Common Grow Light Spectra
+
+| Spectrum       | Lux→PPFD Factor (µmol/m²/s per lux) |
+|----------------|-------------------------------------|
+| Sunlight       | 0.0185                              |
+| Warm White LED | 0.017                               |
+| Cool White LED | 0.020                               |
+| Blurple LED    | 0.022                               |
+| HPS            | 0.012                               |
+
+- ✅ Emulator Profiles for Testing
+- ✅ ARCore Device Compatibility
+- ✅ CSV Export Format Spec
+- ✅ Grow Light Spectrum Calibration Table
 
 ---
 
