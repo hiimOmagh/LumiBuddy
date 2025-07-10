@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/measurement_nav_graph">
+
+    <fragment
+        android:id="@+id/calibrationFragment"
+        android:name="de.omagh.feature_measurement.ui.CalibrationFragment"
+        android:label="Calibration" />
+
+    <fragment
+        android:id="@+id/calibrationWizardFragment"
+        android:name="de.omagh.feature_measurement.ui.wizard.CalibrationWizardFragment"
+        android:label="Calibration Wizard" />
+</navigation>
