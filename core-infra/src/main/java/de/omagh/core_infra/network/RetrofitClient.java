@@ -2,13 +2,13 @@ package de.omagh.core_infra.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import de.omagh.core_infra.BuildConfig;
+import de.omagh.core_domain.Config;
 
 /**
  * Simple Retrofit client singleton for network calls.
  */
 public class RetrofitClient {
-    private static final String BASE_URL = BuildConfig.BASE_URL;
+    private static final String BASE_URL = Config.BASE_URL;
 
     private RetrofitClient() {
     }

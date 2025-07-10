@@ -3,6 +3,8 @@ package de.omagh.core_infra.measurement;
 import android.content.Context;
 import android.content.res.AssetManager;
 
+import timber.log.Timber;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,14 +29,14 @@ public class LampProductDB {
     }
 
     private void loadSampleData() {
-        try {
-            AssetManager am = context.getAssets();
-            InputStream is = am.open("grow_lights.json");
-            byte[] buf = new byte[is.available()];
-            int read = is.read(buf);
-            is.close();
-            if (read <= 0) return;
-            String json = new String(buf);
+        try (InputStream is = context.getAssets().open("grow_lights.json")) {
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            byte[] buf = new byte[4096];
+            int len;
+            while ((len = is.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+            String json = out.toString();
             JSONArray arr = new JSONArray(json);
             for (int i = 0; i < arr.length(); i++) {
                 JSONObject o = arr.getJSONObject(i);
@@ -48,7 +50,8 @@ public class LampProductDB {
                         (float) o.optDouble("calibrationFactor"),
                         (float) o.optDouble("ppfdAt30cm")));
             }
-        } catch (IOException | org.json.JSONException ignored) {
+        } catch (IOException | org.json.JSONException e) {
+            timber.log.Timber.e(e, "Failed to load lamp products");
         }
     }
 

@@ -13,8 +13,6 @@ android {
     defaultConfig {
         minSdk = 28
 
-        buildConfigField("String", "BASE_URL", "\"https://api.example.com/\"")
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

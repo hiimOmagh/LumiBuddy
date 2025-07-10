@@ -17,10 +17,7 @@ import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_data.plantdb.PlantInfo;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
-import de.omagh.core_infra.di.CoreComponent;
-import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
-import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
@@ -42,11 +39,15 @@ public class PlantListViewModel extends AndroidViewModel {
      *
      * @param application Android Application context (required for DB singleton)
      */
-    public PlantListViewModel(@NonNull Application application) {
+    @Inject
+    public PlantListViewModel(@NonNull Application application,
+                              PlantInfoRepository infoRepository,
+                              PlantDatabaseManager sampleDb,
+                              PlantRepository repository) {
         super(application);
-        CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-        PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
-        component.inject(this);
+        this.infoRepository = infoRepository;
+        this.sampleDb = sampleDb;
+        this.repository = repository;
         plants = repository.getAllPlants();
     }
 

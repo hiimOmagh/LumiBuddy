@@ -8,6 +8,10 @@ import de.omagh.core_domain.repository.MeasurementRepository;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
+import de.omagh.feature_measurement.ui.MeasureViewModelFactory;
+import de.omagh.feature_measurement.ui.MeasureViewModel;
+
+import javax.inject.Provider;
 
 @Module
 public class MeasurementModule {
@@ -24,5 +28,10 @@ public class MeasurementModule {
     @Provides
     static GrowLightProfileManager provideGrowLightProfileManager(Application app) {
         return new GrowLightProfileManager(app.getApplicationContext());
+    }
+
+    @Provides
+    static MeasureViewModelFactory provideViewModelFactory(Provider<MeasureViewModel> provider) {
+        return new MeasureViewModelFactory(provider);
     }
 }

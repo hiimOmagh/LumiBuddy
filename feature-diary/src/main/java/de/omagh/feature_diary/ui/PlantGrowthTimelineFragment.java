@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import de.omagh.feature_diary.ui.dialog.DiaryEntryDialog;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -97,32 +99,17 @@ public class PlantGrowthTimelineFragment extends Fragment {
     }
 
     private void showAddEntryDialog() {
-        View dialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_diary_entry, null);
-        Spinner typeSpinner = dialog.findViewById(R.id.eventTypeSpinner);
-        EditText noteInput = dialog.findViewById(R.id.editDiaryNote);
-        dialogImagePreview = dialog.findViewById(R.id.diaryImagePreview);
-        dialog.findViewById(R.id.pickImageBtn).setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
-
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.add_diary_entry)
-                .setView(dialog)
-                .setPositiveButton(R.string.save, (d, which) -> {
-                    String note = noteInput.getText().toString().trim();
-                    String type = typeSpinner.getSelectedItem().toString();
-                    String uriStr = selectedImageUri != null ? selectedImageUri.toString() : "";
-                    DiaryEntry entry = new DiaryEntry(
-                            UUID.randomUUID().toString(),
-                            plantId,
-                            System.currentTimeMillis(),
-                            note,
-                            uriStr,
-                            type
-                    );
-                    diaryViewModel.addEntry(entry);
-                    selectedImageUri = null;
-                    Snackbar.make(requireView(), R.string.add_diary_entry, Snackbar.LENGTH_SHORT).show();
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+        DiaryEntryDialog.show(requireContext(), entry -> {
+            DiaryEntry fixed = new DiaryEntry(
+                    entry.getId(),
+                    plantId,
+                    entry.getTimestamp(),
+                    entry.getNote(),
+                    entry.getImageUri(),
+                    entry.getEventType()
+            );
+            diaryViewModel.addEntry(fixed);
+            Snackbar.make(requireView(), R.string.add_diary_entry, Snackbar.LENGTH_SHORT).show();
+        });
     }
 }

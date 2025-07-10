@@ -14,6 +14,13 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import javax.inject.Inject;
+
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jspecify.annotations.NonNull;
@@ -37,8 +44,19 @@ public class PlantDetailFragment extends Fragment {
     public static final String ARG_IMAGE_URI = "plant_image_uri";
     private PlantDetailViewModel viewModel;
     private PlantListViewModel listViewModel;
+    @Inject
+    PlantDbViewModelFactory viewModelFactory;
+    private PlantDbComponent component;
     private ImageView plantImageView;
     private TextView careInfoView;
+
+    @Override
+    public void onAttach(@NonNull android.content.Context context) {
+        super.onAttach(context);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        component = DaggerPlantDbComponent.factory().create(core);
+        viewModelFactory = component.viewModelFactory();
+    }
 
     @Nullable
     @Override
@@ -57,9 +75,8 @@ public class PlantDetailFragment extends Fragment {
         View fetchDetails = view.findViewById(R.id.fetchMoreInfoButton);
 
         // ViewModels
-        viewModel = new ViewModelProvider(this).get(PlantDetailViewModel.class);
-        listViewModel = new ViewModelProvider(requireActivity(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+        viewModel = new ViewModelProvider(this, viewModelFactory).get(PlantDetailViewModel.class);
+        listViewModel = new ViewModelProvider(requireActivity(), viewModelFactory)
                 .get(PlantListViewModel.class);
 
         // Retrieve arguments

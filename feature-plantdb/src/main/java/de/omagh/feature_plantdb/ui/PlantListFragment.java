@@ -14,6 +14,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import javax.inject.Inject;
+
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
+
+import javax.inject.Inject;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +45,9 @@ import de.omagh.core_data.plantdb.PlantInfo;
  */
 public class PlantListFragment extends Fragment {
     private PlantListViewModel viewModel;
+    @Inject
+    PlantDbViewModelFactory viewModelFactory;
+    private PlantDbComponent component;
     private Uri pickedImageUri = null;
     private ImageView plantImagePreview = null;
 
@@ -49,6 +61,14 @@ public class PlantListFragment extends Fragment {
                     plantImagePreview.setImageURI(pickedImageUri);
                 }
             });
+
+    @Override
+    public void onAttach(@NonNull android.content.Context context) {
+        super.onAttach(context);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        component = DaggerPlantDbComponent.factory().create(core);
+        viewModelFactory = component.viewModelFactory();
+    }
 
     @Nullable
     @Override
@@ -88,8 +108,7 @@ public class PlantListFragment extends Fragment {
         addFab.setOnClickListener(v -> showAddPlantDialog());
 
         // ViewModel init
-        viewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+        viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(PlantListViewModel.class);
 
         // Observe LiveData for plant list

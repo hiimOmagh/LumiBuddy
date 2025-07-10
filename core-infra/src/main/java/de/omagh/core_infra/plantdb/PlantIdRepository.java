@@ -9,13 +9,15 @@ import androidx.lifecycle.MutableLiveData;
 import java.io.ByteArrayOutputStream;
 import java.util.Collections;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import de.omagh.core_domain.util.AppExecutors;
 
 import de.omagh.core_infra.network.plantid.PlantIdInterceptor;
 import de.omagh.core_infra.network.plantid.PlantIdRequest;
 import de.omagh.core_infra.network.plantid.PlantIdResponse;
 import de.omagh.core_infra.network.plantid.PlantIdService;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
+import de.omagh.core_domain.Config;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -27,10 +29,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class PlantIdRepository {
     private static final String BASE_URL = "https://api.plant.id/v2/";
-    private static final String API_KEY = "YOUR_PLANT_ID_KEY";
+    private static final String API_KEY = Config.PLANT_ID_API_KEY;
 
     private final PlantIdService service;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = AppExecutors.single();
 
     public PlantIdRepository() {
         OkHttpClient client = new OkHttpClient.Builder()

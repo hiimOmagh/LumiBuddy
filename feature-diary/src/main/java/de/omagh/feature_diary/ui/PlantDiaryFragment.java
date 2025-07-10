@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import de.omagh.feature_diary.ui.dialog.DiaryEntryDialog;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -90,45 +92,9 @@ public class PlantDiaryFragment extends Fragment {
     }
 
     private void showAddEntryDialog() {
-        View dialog = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_diary_entry_global, null);
-        Spinner plantSpinner = dialog.findViewById(R.id.plantSpinner);
-        Spinner typeSpinner = dialog.findViewById(R.id.eventTypeSpinner);
-        EditText noteInput = dialog.findViewById(R.id.editDiaryNote);
-        dialogImagePreview = dialog.findViewById(R.id.diaryImagePreview);
-        dialog.findViewById(R.id.pickImageBtn).setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
-
-        PlantRepository repository = new PlantRepository(AppDatabase.getInstance(requireContext()));
-        List<Plant> plants = repository.getAllPlants().getValue();
-        List<Plant> safeList = plants != null ? plants : new ArrayList<>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        for (Plant p : safeList) {
-            adapter.add(p.getName());
-        }
-        plantSpinner.setAdapter(adapter);
-
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.add_diary_entry)
-                .setView(dialog)
-                .setPositiveButton(R.string.save, (d, which) -> {
-                    if (safeList.isEmpty()) {
-                        Snackbar.make(requireView(), R.string.plant_list_desc, Snackbar.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Plant selected = safeList.get(plantSpinner.getSelectedItemPosition());
-                    DiaryEntry entry = new DiaryEntry(
-                            UUID.randomUUID().toString(),
-                            selected.getId(),
-                            System.currentTimeMillis(),
-                            noteInput.getText().toString().trim(),
-                            selectedImageUri != null ? selectedImageUri.toString() : "",
-                            typeSpinner.getSelectedItem().toString()
-                    );
-                    diaryViewModel.addEntry(entry);
-                    Snackbar.make(requireView(), R.string.add_diary_entry, Snackbar.LENGTH_SHORT).show();
-                    selectedImageUri = null;
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .show();
+        DiaryEntryDialog.show(requireContext(), entry -> {
+            diaryViewModel.addEntry(entry);
+            Snackbar.make(requireView(), R.string.add_diary_entry, Snackbar.LENGTH_SHORT).show();
+        });
     }
 }

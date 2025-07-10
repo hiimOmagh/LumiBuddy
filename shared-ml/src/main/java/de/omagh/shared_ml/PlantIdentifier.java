@@ -12,23 +12,27 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import de.omagh.core_domain.util.AppExecutors;
 
 /**
  * Simple on-device plant identifier backed by a TensorFlow Lite model.
  */
 public class PlantIdentifier {
     private final Interpreter interpreter;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = AppExecutors.single();
     private final int inputSize = 224;
     private final String[] labels = {"Unknown", "Plant"};
 
     public PlantIdentifier(Context context) {
-        try {
-            InputStream is = context.getAssets().open("plant_identifier.tflite");
-            byte[] model = new byte[is.available()];
-            int r = is.read(model);
-            is.close();
+        try (InputStream is = context.getAssets().open("plant_identifier.tflite")) {
+            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
+            byte[] buf = new byte[4096];
+            int len;
+            while ((len = is.read(buf)) != -1) {
+                out.write(buf, 0, len);
+            }
+            byte[] model = out.toByteArray();
             interpreter = new Interpreter(ByteBuffer.wrap(model));
         } catch (Exception e) {
             throw new RuntimeException(e);

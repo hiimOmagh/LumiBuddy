@@ -22,6 +22,8 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import javax.inject.Inject;
+
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_measurement.di.DaggerMeasurementComponent;
@@ -43,6 +45,8 @@ import timber.log.Timber;
 
 public class MeasureFragment extends Fragment {
     private MeasureViewModel mViewModel;
+    @Inject
+    MeasureViewModelFactory viewModelFactory;
 
     // Lamp type selection
     private Spinner lampTypeSpinner;
@@ -80,6 +84,7 @@ public class MeasureFragment extends Fragment {
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         MeasurementComponent component = DaggerMeasurementComponent.factory().create(core);
         component.inject(this);
+        viewModelFactory = component.viewModelFactory();
     }
 
     @Override
@@ -203,7 +208,7 @@ public class MeasureFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(MeasureViewModel.class);
+        mViewModel = new ViewModelProvider(this, viewModelFactory).get(MeasureViewModel.class);
 
         if (enableAROverlay) {
             arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);

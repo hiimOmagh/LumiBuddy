@@ -13,12 +13,8 @@ import javax.inject.Inject;
 import de.omagh.core_domain.util.MeasurementUtils;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.core_infra.measurement.CalibrationManager;
-import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.core_infra.di.CoreComponent;
-import de.omagh.feature_measurement.di.DaggerMeasurementComponent;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
-import de.omagh.feature_measurement.di.MeasurementComponent;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import io.reactivex.disposables.Disposable;
@@ -48,11 +44,19 @@ public class MeasureViewModel extends AndroidViewModel {
     private Disposable luxDisposable;
     private String currentSource = "ALS";
 
-    public MeasureViewModel(@NonNull Application application) {
+    @Inject
+    public MeasureViewModel(@NonNull Application application,
+                            CalibrationProfilesManager profileManager,
+                            GrowLightProfileManager growLightManager,
+                            SettingsManager settingsManager,
+                            GetCurrentLuxUseCase getCurrentLuxUseCase,
+                            CalibrationManager calibrationManager) {
         super(application);
-        CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-        MeasurementComponent component = DaggerMeasurementComponent.factory().create(core);
-        component.inject(this);
+        this.profileManager = profileManager;
+        this.growLightManager = growLightManager;
+        this.settingsManager = settingsManager;
+        this.getCurrentLuxUseCase = getCurrentLuxUseCase;
+        this.calibrationManager = calibrationManager;
 
         int hours = settingsManager.getLightDuration();
         hoursLiveData.setValue(hours);

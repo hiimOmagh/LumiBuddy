@@ -5,6 +5,8 @@ import android.app.Application;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
 import de.omagh.core_domain.repository.MeasurementRepository;
 import de.omagh.core_infra.measurement.ALSLightSensorProvider;
 import de.omagh.core_infra.measurement.ALSManager;
@@ -19,14 +21,14 @@ import de.omagh.core_infra.measurement.StubCameraSpectralProvider;
 @Module
 public abstract class SensorModule {
     @Provides
-
+    @Singleton
     static ALSManager provideAlsManager(Application app) {
         return new ALSManager(app);
 
     }
 
     @Provides
-
+    @Singleton
     static MeasurementEngine provideMeasurementEngine(LightSensorProvider provider) {
         return new MeasurementEngine(provider);
     }

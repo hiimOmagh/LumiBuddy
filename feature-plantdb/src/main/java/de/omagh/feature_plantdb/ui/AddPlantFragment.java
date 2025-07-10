@@ -20,6 +20,15 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import javax.inject.Inject;
+
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
+import de.omagh.feature_plantdb.di.PlantDbComponent;
+
+import javax.inject.Inject;
+
 import com.google.android.material.button.MaterialButton;
 
 import java.util.UUID;
@@ -50,6 +59,8 @@ public class AddPlantFragment extends Fragment {
     private ImageView imagePreview;
     private PlantListViewModel plantListViewModel;
     private AddPlantViewModel addPlantViewModel;
+    @Inject
+    PlantDbViewModelFactory viewModelFactory;
     private Uri selectedImageUri = null;
     private String existingPlantId = null;
     // ML plant recognition
@@ -57,6 +68,7 @@ public class AddPlantFragment extends Fragment {
     private HealthStatusClassifier healthClassifier;
     private DummyARGrowthTracker growthTracker;
     private SwitchCompat mlToggle;
+    private PlantDbComponent component;
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
@@ -107,6 +119,14 @@ public class AddPlantFragment extends Fragment {
                 }
             });
 
+    @Override
+    public void onAttach(@NonNull android.content.Context context) {
+        super.onAttach(context);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        component = DaggerPlantDbComponent.factory().create(core);
+        viewModelFactory = component.viewModelFactory();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -130,8 +150,8 @@ public class AddPlantFragment extends Fragment {
         SwitchCompat arGrowthToggle = view.findViewById(R.id.arGrowthToggle);
 
         // Init ViewModel
-        plantListViewModel = new ViewModelProvider(requireActivity()).get(PlantListViewModel.class);
-        addPlantViewModel = new ViewModelProvider(this).get(AddPlantViewModel.class);
+        plantListViewModel = new ViewModelProvider(requireActivity(), viewModelFactory).get(PlantListViewModel.class);
+        addPlantViewModel = new ViewModelProvider(this, viewModelFactory).get(AddPlantViewModel.class);
 
         de.omagh.core_infra.user.SettingsManager sm =
                 new de.omagh.core_infra.user.SettingsManager(requireContext());

@@ -4,7 +4,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import de.omagh.core_domain.util.AppExecutors;
 
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.model.DiaryEntry;
@@ -14,7 +15,7 @@ import de.omagh.core_data.model.DiaryEntry;
  */
 public class DiaryRepository implements DiaryDataSource {
     private final DiaryDao diaryDao;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor = AppExecutors.single();
 
     public DiaryRepository(DiaryDao dao) {
         this.diaryDao = dao;
