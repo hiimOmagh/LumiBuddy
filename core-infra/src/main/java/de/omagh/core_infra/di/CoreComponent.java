@@ -5,8 +5,6 @@ import android.app.Application;
 import dagger.BindsInstance;
 import dagger.Component;
 
-import javax.inject.Singleton;
-
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_domain.repository.MeasurementRepository;
@@ -19,7 +17,6 @@ import de.omagh.core_infra.firebase.FirebaseManager;
 import de.omagh.core_infra.di.ExecutorModule;
 import de.omagh.core_domain.util.AppExecutors;
 
-@Singleton
 @Component(modules = {
         NetworkModule.class,
         DataModule.class,
@@ -27,6 +24,7 @@ import de.omagh.core_domain.util.AppExecutors;
         UserModule.class,
         ExecutorModule.class
 })
+
 public interface CoreComponent {
     PlantRepository plantRepository();
 
