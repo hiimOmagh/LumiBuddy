@@ -14,12 +14,14 @@ import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
 import de.omagh.core_infra.user.LightCorrectionStore;
 import de.omagh.core_infra.firebase.FirebaseManager;
+import de.omagh.core_infra.di.ExecutorModule;
 
 @Component(modules = {
         NetworkModule.class,
         DataModule.class,
         SensorModule.class,
-        UserModule.class
+        UserModule.class,
+        ExecutorModule.class
 })
 public interface CoreComponent {
     PlantRepository plantRepository();

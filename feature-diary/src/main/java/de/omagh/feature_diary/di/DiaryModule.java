@@ -5,6 +5,7 @@ import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_domain.util.AppExecutors;
 
 @Module
 public class DiaryModule {
@@ -14,7 +15,7 @@ public class DiaryModule {
     }
 
     @Provides
-    DiaryRepository provideDiaryRepository(DiaryDao dao) {
-        return new DiaryRepository(dao);
+    DiaryRepository provideDiaryRepository(DiaryDao dao, AppExecutors executors) {
+        return new DiaryRepository(dao, executors);
     }
 }

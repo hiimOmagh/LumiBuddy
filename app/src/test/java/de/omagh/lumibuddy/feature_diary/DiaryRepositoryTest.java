@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_domain.util.AppExecutors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +30,7 @@ public class DiaryRepositoryTest {
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        repository = new DiaryRepository(dao);
+        repository = new DiaryRepository(dao, new AppExecutors());
     }
 
     /**

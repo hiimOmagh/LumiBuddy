@@ -1,8 +1,9 @@
 package de.omagh.core_domain;
 
 /**
- * Placeholder BuildConfig to allow shared modules to reference configuration constants.
- * In Android modules this will be overridden by the generated BuildConfig class.
+ * Placeholder BuildConfig to allow modules without the Android Gradle Plugin
+ * to reference configuration constants. Android modules generate their own
+ * BuildConfig at compile time so this class is ignored there.
  */
 public final class BuildConfig {
     /**

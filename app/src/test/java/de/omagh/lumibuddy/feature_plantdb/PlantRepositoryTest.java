@@ -32,7 +32,7 @@ public class PlantRepositoryTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Mockito.when(db.plantDao()).thenReturn(dao);
-        repository = new PlantRepository(db);
+        repository = new PlantRepository(db, new AppExecutors());
     }
 
     /**

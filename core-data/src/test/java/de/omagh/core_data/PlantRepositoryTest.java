@@ -10,6 +10,7 @@ import androidx.test.core.app.ApplicationProvider;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.util.AppExecutors;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +28,7 @@ public class PlantRepositoryTest {
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        repo = new PlantRepository(db);
+        repo = new PlantRepository(db, new AppExecutors());
     }
 
     @After

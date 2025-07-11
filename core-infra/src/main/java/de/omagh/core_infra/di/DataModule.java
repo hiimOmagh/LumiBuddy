@@ -11,6 +11,7 @@ import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.PlantRepository;
+import de.omagh.core_domain.util.AppExecutors;
 
 /**
  * Provides data layer dependencies.
@@ -31,8 +32,8 @@ public abstract class DataModule {
 
     @Provides
     @Singleton
-    static PlantRepository providePlantRepository(AppDatabase db) {
-        return new PlantRepository(db);
+    static PlantRepository providePlantRepository(AppDatabase db, AppExecutors executors) {
+        return new PlantRepository(db, executors);
     }
 
     @Binds

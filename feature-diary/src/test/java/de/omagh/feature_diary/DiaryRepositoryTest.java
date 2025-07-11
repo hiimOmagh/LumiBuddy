@@ -15,6 +15,7 @@ import java.util.List;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_domain.util.AppExecutors;
 
 /**
  * Simple unit tests for {@link DiaryRepository} in this feature module.
@@ -27,7 +28,7 @@ public class DiaryRepositoryTest {
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        repository = new DiaryRepository(dao);
+        repository = new DiaryRepository(dao, new AppExecutors());
     }
 
     @Test

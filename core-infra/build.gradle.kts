@@ -13,6 +13,12 @@ android {
     defaultConfig {
         minSdk = 28
 
+        buildConfigField(
+            "String",
+            "PLANT_ID_API_KEY",
+            "\"${project.findProperty("PLANT_ID_API_KEY") ?: ""}\""
+        )
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }

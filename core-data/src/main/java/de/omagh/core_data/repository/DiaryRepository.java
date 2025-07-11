@@ -15,10 +15,13 @@ import de.omagh.core_data.model.DiaryEntry;
  */
 public class DiaryRepository implements DiaryDataSource {
     private final DiaryDao diaryDao;
-    private final ExecutorService executor = AppExecutors.single();
+    private final AppExecutors appExecutors;
+    private final ExecutorService executor;
 
-    public DiaryRepository(DiaryDao dao) {
+    public DiaryRepository(DiaryDao dao, AppExecutors executors) {
         this.diaryDao = dao;
+        this.appExecutors = executors;
+        this.executor = executors.single();
     }
 
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {

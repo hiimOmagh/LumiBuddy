@@ -14,10 +14,13 @@ import de.omagh.core_domain.model.Plant;
 
 public class PlantRepository implements PlantDataSource {
     private final PlantDao plantDao;
-    private final ExecutorService executor = AppExecutors.single();
+    private final AppExecutors appExecutors;
+    private final ExecutorService executor;
 
-    public PlantRepository(AppDatabase db) {
+    public PlantRepository(AppDatabase db, AppExecutors executors) {
         this.plantDao = db.plantDao();
+        this.appExecutors = executors;
+        this.executor = executors.single();
     }
 
     public LiveData<List<Plant>> getAllPlants() {

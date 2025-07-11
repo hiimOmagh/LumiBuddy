@@ -17,7 +17,7 @@ import de.omagh.core_infra.network.plantid.PlantIdRequest;
 import de.omagh.core_infra.network.plantid.PlantIdResponse;
 import de.omagh.core_infra.network.plantid.PlantIdService;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
-import de.omagh.core_domain.Config;
+import de.omagh.core_infra.BuildConfig;
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -29,8 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class PlantIdRepository {
     private static final String BASE_URL = "https://api.plant.id/v2/";
-    private static final String API_KEY = Config.PLANT_ID_API_KEY;
-
+    private static final String API_KEY = BuildConfig.PLANT_ID_API_KEY;
     private final PlantIdService service;
     private final ExecutorService executor = AppExecutors.single();
 

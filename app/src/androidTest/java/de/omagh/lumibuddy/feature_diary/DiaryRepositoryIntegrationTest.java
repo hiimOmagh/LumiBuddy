@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_domain.util.AppExecutors;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -36,7 +37,7 @@ public class DiaryRepositoryIntegrationTest {
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
-        repository = new DiaryRepository(db.diaryDao());
+        repository = new DiaryRepository(db.diaryDao(), new AppExecutors());
     }
 
     @After

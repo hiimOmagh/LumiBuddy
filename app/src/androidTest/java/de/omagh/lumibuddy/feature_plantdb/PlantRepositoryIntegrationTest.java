@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.util.AppExecutors;
 
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -36,7 +37,7 @@ public class PlantRepositoryIntegrationTest {
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
-        repository = new PlantRepository(db);
+        repository = new PlantRepository(db, new AppExecutors());
     }
 
     @After
