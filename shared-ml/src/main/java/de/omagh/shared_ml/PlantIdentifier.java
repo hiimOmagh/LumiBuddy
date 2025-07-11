@@ -8,12 +8,12 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.tensorflow.lite.Interpreter;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
 
 import de.omagh.core_domain.util.AppExecutors;
+import de.omagh.shared_ml.ModelProvider;
 
 /**
  * Simple on-device plant identifier backed by a TensorFlow Lite model.
@@ -24,19 +24,9 @@ public class PlantIdentifier {
     private final int inputSize = 224;
     private final String[] labels = {"Unknown", "Plant"};
 
-    public PlantIdentifier(Context context, AppExecutors executors) {
-        try (InputStream is = context.getAssets().open("plant_identifier.tflite")) {
-            java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-            byte[] buf = new byte[4096];
-            int len;
-            while ((len = is.read(buf)) != -1) {
-                out.write(buf, 0, len);
-            }
-            byte[] model = out.toByteArray();
-            interpreter = new Interpreter(ByteBuffer.wrap(model));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
+        ByteBuffer model = provider.loadModel(context);
+        interpreter = new Interpreter(model);
         this.executor = executors.single();
     }
 

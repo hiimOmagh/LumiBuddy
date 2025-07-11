@@ -7,6 +7,7 @@ import dagger.Provides;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.shared_ml.PlantIdentifier;
+import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.feature_plantdb.ui.PlantDbViewModelFactory;
 import de.omagh.feature_plantdb.ui.PlantListViewModel;
@@ -29,7 +30,8 @@ public class PlantDbModule {
 
     @Provides
     static PlantIdentifier providePlantIdentifier(Application app, AppExecutors executors) {
-        return new PlantIdentifier(app.getApplicationContext(), executors);
+        AssetModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
+        return new PlantIdentifier(app.getApplicationContext(), provider, executors);
     }
 
     @Provides
