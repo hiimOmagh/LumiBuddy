@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.recyclerview)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.androidx.test.core)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
     annotationProcessor(libs.room.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
