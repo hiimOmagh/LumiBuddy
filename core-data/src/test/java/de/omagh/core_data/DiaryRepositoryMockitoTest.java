@@ -1,6 +1,7 @@
 package de.omagh.core_data;
 
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import androidx.lifecycle.MutableLiveData;
 

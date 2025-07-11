@@ -1,0 +1,4 @@
+<resources>
+    <string name="ar_entry_title">AR Feature</string>
+    <string name="device_not_supported">This device does not support AR features.</string>
+</resources>
