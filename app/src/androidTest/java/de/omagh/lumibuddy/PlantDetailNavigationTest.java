@@ -30,9 +30,11 @@ public class PlantDetailNavigationTest {
         intent.putExtra("openPlantImageUri", "");
 
         try (ActivityScenario<MainActivity> scenario = ActivityScenario.launch(intent)) {
-            Espresso.onView(ViewMatchers.withId(R.id.viewTimelineButton))
+            Espresso.onView(ViewMatchers.withId(
+                            de.omagh.feature_growschedule.R.id.viewTimelineButton))
                     .perform(ViewActions.click());
-            Espresso.onView(ViewMatchers.withId(R.id.growthTimelineRecyclerView))
+            Espresso.onView(ViewMatchers.withId(
+                            de.omagh.feature_diary.R.id.growthTimelineRecyclerView))
                     .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
         }
     }

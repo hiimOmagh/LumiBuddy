@@ -20,17 +20,21 @@ public class NavigationTest {
 
     @Test
     public void startDestination_isDisplayed() {
-        Espresso.onView(ViewMatchers.withId(R.id.homeWelcomeText))
+        Espresso.onView(ViewMatchers.withId(
+                        de.omagh.feature_growschedule.R.id.homeWelcomeText))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        Espresso.onView(ViewMatchers.withId(R.id.startMeasureButton))
+        Espresso.onView(ViewMatchers.withId(
+                        de.omagh.feature_growschedule.R.id.startMeasureButton))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 
     @Test
     public void navigateToMeasureFragment() {
-        Espresso.onView(ViewMatchers.withId(R.id.startMeasureButton))
+        Espresso.onView(ViewMatchers.withId(
+                        de.omagh.feature_growschedule.R.id.startMeasureButton))
                 .perform(ViewActions.click());
-        Espresso.onView(ViewMatchers.withId(R.id.cameraMeasureButton))
+        Espresso.onView(ViewMatchers.withId(
+                        de.omagh.feature_measurement.R.id.cameraMeasureButton))
                 .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
     }
 }

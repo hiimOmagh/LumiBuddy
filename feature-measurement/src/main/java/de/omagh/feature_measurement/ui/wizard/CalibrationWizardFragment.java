@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import de.omagh.core_infra.di.CoreComponent;
@@ -67,7 +68,7 @@ public class CalibrationWizardFragment extends Fragment {
             manager.setLightCorrection(type, result);
             step = 2;
         } else {
-            requireActivity().onBackPressed();
+            ActivityCompat.finishAffinity(requireActivity());
         }
         updateUi();
     }

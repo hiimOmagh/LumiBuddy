@@ -28,7 +28,6 @@ public class SettingsFragment extends Fragment {
     private SettingsManager settingsManager;
     private CalibrationProfilesManager calibrationManager;
     private List<CalibrationProfile> profileList = new ArrayList<>();
-
     private Spinner unitsSpinner;
     private EditText hoursInput;
     private Spinner calibrationSpinner;
@@ -203,7 +202,7 @@ public class SettingsFragment extends Fragment {
             }
         }
         if (p != null) {
-            calibrationInfoText.setText(getString(R.string.calibration_factor, p.calibrationFactor) + " (" + p.source + ")");
+            calibrationInfoText.setText(String.format("%s (%s)", getString(R.string.calibration_factor, p.calibrationFactor), p.source));
         } else {
             calibrationInfoText.setText("");
         }
@@ -250,27 +249,27 @@ public class SettingsFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         source.setAdapter(adapter);
 
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle(R.string.add)
-                .setView(dialogView)
-                .setPositiveButton(R.string.add, (d, w) -> {
-                    try {
-                        String id = java.util.UUID.randomUUID().toString();
-                        float f = Float.parseFloat(factor.getText().toString());
-                        CalibrationProfile p = new CalibrationProfile(id, name.getText().toString(),
-                                source.getSelectedItem().toString(), f, note.getText().toString());
-                        calibrationManager.addProfile(p);
-                        settingsManager.setSelectedCalibrationProfileId(id);
-                        profileList = new ArrayList<>(calibrationManager.getProfiles());
-                        ((ArrayAdapter<String>) calibrationSpinner.getAdapter()).insert(p.name, profileList.size() - 1);
-                        calibrationSpinner.setSelection(profileList.size() - 1);
-                        updateCalibrationInfo();
-                    } catch (NumberFormatException ex) {
-                        Toast.makeText(getContext(), R.string.invalid_number, Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .show();
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
+        builder.setTitle(R.string.add);
+        builder.setView(dialogView);
+        builder.setPositiveButton(R.string.add, (d, w) -> {
+            try {
+                String id = java.util.UUID.randomUUID().toString();
+                float f = Float.parseFloat(factor.getText().toString());
+                CalibrationProfile p = new CalibrationProfile(id, name.getText().toString(),
+                        source.getSelectedItem().toString(), f, note.getText().toString());
+                calibrationManager.addProfile(p);
+                settingsManager.setSelectedCalibrationProfileId(id);
+                profileList = new ArrayList<>(calibrationManager.getProfiles());
+                ((ArrayAdapter<String>) calibrationSpinner.getAdapter()).insert(p.name, profileList.size() - 1);
+                calibrationSpinner.setSelection(profileList.size() - 1);
+                updateCalibrationInfo();
+            } catch (NumberFormatException ex) {
+                Toast.makeText(getContext(), R.string.invalid_number, Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.show();
     }
 
     private void showManageDialog(CalibrationProfile profile) {

@@ -51,7 +51,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     AppDatabase.class,
                                     "lumibuddy.db")
                             .addMigrations(MIGRATION_4_5)
-                            .fallbackToDestructiveMigration()
+                            .fallbackToDestructiveMigration() // Only destructive migration on upgrade
                             .build();
                 }
             }
