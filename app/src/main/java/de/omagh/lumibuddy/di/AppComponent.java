@@ -5,9 +5,6 @@ import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.lumibuddy.LumiBuddyApplication;
 import de.omagh.lumibuddy.ui.MainActivity;
 
-import javax.inject.Singleton;
-
-@Singleton
 @Component(dependencies = CoreComponent.class)
 public interface AppComponent {
     void inject(LumiBuddyApplication app);
