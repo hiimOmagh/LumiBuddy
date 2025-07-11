@@ -18,6 +18,8 @@ import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
 
 /**
  * Worker performing periodic care checks using {@link WorkManager}.
@@ -30,8 +32,10 @@ public class PeriodicScanWorker extends Worker {
 
     public PeriodicScanWorker(@NonNull Context context, @NonNull WorkerParameters params) {
         super(context, params);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        AppExecutors executors = core.appExecutors();
         AppDatabase db = AppDatabase.getInstance(context);
-        plantRepository = new PlantRepository(db, new AppExecutors());
+        plantRepository = new PlantRepository(db, executors);
         DiaryDao diaryDao = db.diaryDao();
         RecommendationEngine engine = new RecommendationEngine();
         NotificationManager notifications = new NotificationManager(context);

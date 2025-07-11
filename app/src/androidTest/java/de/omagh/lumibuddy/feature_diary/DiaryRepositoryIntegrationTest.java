@@ -18,6 +18,8 @@ import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_domain.util.AppExecutors;
 
+import org.mockito.Mockito;
+
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +39,10 @@ public class DiaryRepositoryIntegrationTest {
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
-        repository = new DiaryRepository(db.diaryDao(), new AppExecutors());
+        AppExecutors executors = Mockito.mock(AppExecutors.class);
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        Mockito.when(executors.single()).thenReturn(executor);
+        repository = new DiaryRepository(db.diaryDao(), executors);
     }
 
     @After

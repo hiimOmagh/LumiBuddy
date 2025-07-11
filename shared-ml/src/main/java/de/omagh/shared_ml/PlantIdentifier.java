@@ -20,11 +20,11 @@ import de.omagh.core_domain.util.AppExecutors;
  */
 public class PlantIdentifier {
     private final Interpreter interpreter;
-    private final ExecutorService executor = AppExecutors.single();
+    private final ExecutorService executor;
     private final int inputSize = 224;
     private final String[] labels = {"Unknown", "Plant"};
 
-    public PlantIdentifier(Context context) {
+    public PlantIdentifier(Context context, AppExecutors executors) {
         try (InputStream is = context.getAssets().open("plant_identifier.tflite")) {
             java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
             byte[] buf = new byte[4096];
@@ -37,6 +37,7 @@ public class PlantIdentifier {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        this.executor = executors.single();
     }
 
     private String run(Bitmap bitmap) {

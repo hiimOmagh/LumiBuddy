@@ -31,9 +31,9 @@ public class PlantIdRepository {
     private static final String BASE_URL = "https://api.plant.id/v2/";
     private static final String API_KEY = BuildConfig.PLANT_ID_API_KEY;
     private final PlantIdService service;
-    private final ExecutorService executor = AppExecutors.single();
+    private final ExecutorService executor;
 
-    public PlantIdRepository() {
+    public PlantIdRepository(AppExecutors executors) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(new PlantIdInterceptor(API_KEY))
                 .build();
@@ -43,6 +43,7 @@ public class PlantIdRepository {
                 .client(client)
                 .build();
         service = retrofit.create(PlantIdService.class);
+        this.executor = executors.single();
     }
 
     /**

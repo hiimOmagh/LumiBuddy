@@ -6,6 +6,7 @@ import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.util.AppExecutors;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,12 +28,16 @@ public class PlantRepositoryTest {
     private PlantDao dao;
 
     private PlantRepository repository;
+    private AppExecutors executors;
 
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Mockito.when(db.plantDao()).thenReturn(dao);
-        repository = new PlantRepository(db, new AppExecutors());
+        executors = Mockito.mock(AppExecutors.class);
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        Mockito.when(executors.single()).thenReturn(executor);
+        repository = new PlantRepository(db, executors);
     }
 
     /**

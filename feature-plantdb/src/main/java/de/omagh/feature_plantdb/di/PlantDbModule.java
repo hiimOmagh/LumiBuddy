@@ -7,6 +7,7 @@ import dagger.Provides;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.shared_ml.PlantIdentifier;
+import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.feature_plantdb.ui.PlantDbViewModelFactory;
 import de.omagh.feature_plantdb.ui.PlantListViewModel;
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
@@ -27,8 +28,8 @@ public class PlantDbModule {
     }
 
     @Provides
-    static PlantIdentifier providePlantIdentifier(Application app) {
-        return new PlantIdentifier(app.getApplicationContext());
+    static PlantIdentifier providePlantIdentifier(Application app, AppExecutors executors) {
+        return new PlantIdentifier(app.getApplicationContext(), executors);
     }
 
     @Provides

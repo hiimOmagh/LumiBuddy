@@ -24,11 +24,15 @@ public class DiaryRepositoryTest {
     @Mock
     DiaryDao dao;
     DiaryRepository repository;
+    AppExecutors executors;
 
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        repository = new DiaryRepository(dao, new AppExecutors());
+        executors = Mockito.mock(AppExecutors.class);
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        Mockito.when(executors.single()).thenReturn(executor);
+        repository = new DiaryRepository(dao, executors);
     }
 
     @Test

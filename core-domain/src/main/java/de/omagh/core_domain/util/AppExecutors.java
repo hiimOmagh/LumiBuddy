@@ -7,28 +7,37 @@ import java.util.concurrent.Executors;
  * Provides application wide ExecutorServices for IO and single threaded work.
  */
 public class AppExecutors {
-    private static final ExecutorService IO = Executors.newCachedThreadPool();
-    private static final ExecutorService SINGLE = Executors.newSingleThreadExecutor();
+    private final ExecutorService ioExecutor;
+    private final ExecutorService singleThreadExecutor;
+
+    public AppExecutors() {
+        this(Executors.newCachedThreadPool(), Executors.newSingleThreadExecutor());
+    }
+
+    public AppExecutors(ExecutorService ioExecutor, ExecutorService singleThreadExecutor) {
+        this.ioExecutor = ioExecutor;
+        this.singleThreadExecutor = singleThreadExecutor;
+    }
 
     /**
      * Returns a general IO executor.
      */
-    public static ExecutorService io() {
-        return IO;
+    public ExecutorService io() {
+        return ioExecutor;
     }
 
     /**
      * Returns a single threaded executor.
      */
-    public static ExecutorService single() {
-        return SINGLE;
+    public ExecutorService single() {
+        return singleThreadExecutor;
     }
 
     /**
      * Shutdown executors when the app is terminating.
      */
-    public static void shutdown() {
-        IO.shutdown();
-        SINGLE.shutdown();
+    public void shutdown() {
+        ioExecutor.shutdown();
+        singleThreadExecutor.shutdown();
     }
 }

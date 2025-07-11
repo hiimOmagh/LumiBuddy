@@ -18,6 +18,8 @@ import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 
+import org.mockito.Mockito;
+
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -37,7 +39,10 @@ public class PlantRepositoryIntegrationTest {
     public void setup() {
         context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
-        repository = new PlantRepository(db, new AppExecutors());
+        AppExecutors executors = Mockito.mock(AppExecutors.class);
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        Mockito.when(executors.single()).thenReturn(executor);
+        repository = new PlantRepository(db, executors);
     }
 
     @After

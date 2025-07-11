@@ -23,6 +23,8 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_domain.util.AppExecutors;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.recommendation.NotificationManager;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
 import de.omagh.core_infra.recommendation.WateringScheduler;
@@ -50,10 +52,12 @@ public class HomeViewModel extends AndroidViewModel {
      * using the singleton {@link AppDatabase} instance.
      */
     public HomeViewModel(Application application) {
+        CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
+        AppExecutors executors = core.appExecutors();
         this(
                 application,
-                new PlantRepository(AppDatabase.getInstance(application), new AppExecutors()),
-                new DiaryRepository(AppDatabase.getInstance(application).diaryDao(), new AppExecutors()),
+                new PlantRepository(AppDatabase.getInstance(application), executors),
+                new DiaryRepository(AppDatabase.getInstance(application).diaryDao(), executors),
                 new RecommendationEngine(),
                 new WateringScheduler(
                         new RecommendationEngine(),

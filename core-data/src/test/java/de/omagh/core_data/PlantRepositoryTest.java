@@ -12,6 +12,8 @@ import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 
+import org.mockito.Mockito;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +30,10 @@ public class PlantRepositoryTest {
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class)
                 .allowMainThreadQueries()
                 .build();
-        repo = new PlantRepository(db, new AppExecutors());
+        AppExecutors executors = Mockito.mock(AppExecutors.class);
+        java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
+        Mockito.when(executors.single()).thenReturn(executor);
+        repo = new PlantRepository(db, executors);
     }
 
     @After
