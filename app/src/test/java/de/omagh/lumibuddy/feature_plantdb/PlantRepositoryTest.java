@@ -85,6 +85,23 @@ public class PlantRepositoryTest {
     }
 
     /**
+     * getPlant should query the DAO by id and transform the entity.
+     */
+    @Test
+    public void getPlant_returnsMappedLiveData() {
+        MutableLiveData<de.omagh.core_data.model.Plant> live = new MutableLiveData<>();
+        live.setValue(new de.omagh.core_data.model.Plant("2", "Rose", "Flower", ""));
+        Mockito.when(dao.getById("2")).thenReturn(live);
+
+        androidx.lifecycle.LiveData<Plant> result = repository.getPlant("2");
+        result.observeForever(p -> {
+        });
+
+        Mockito.verify(dao).getById("2");
+        assertEquals("Rose", result.getValue().getName());
+    }
+
+    /**
      * Ensures duplicate inserts are forwarded to the DAO each time.
      */
     @Test

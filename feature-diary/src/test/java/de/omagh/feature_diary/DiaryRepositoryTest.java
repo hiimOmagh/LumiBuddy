@@ -48,4 +48,18 @@ public class DiaryRepositoryTest {
         Mockito.when(dao.getAllEntries()).thenReturn(live);
         assertSame(live, repository.getAllEntries());
     }
+
+    @Test
+    public void delete_delegatesToDao() {
+        DiaryEntry entry = new DiaryEntry("2", "p1", 0L, "", "", "watering");
+        repository.delete(entry);
+        Mockito.verify(dao, Mockito.timeout(1000)).delete(entry);
+    }
+
+    @Test
+    public void getAllEntriesSync_delegatesToDao() {
+        java.util.List<DiaryEntry> list = java.util.Collections.emptyList();
+        Mockito.when(dao.getAllEntriesSync()).thenReturn(list);
+        assertSame(list, repository.getAllEntriesSync());
+    }
 }

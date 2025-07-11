@@ -56,4 +56,35 @@ public class DiaryRepositoryMockitoTest {
         Mockito.when(dao.getEntriesForPlant("p1")).thenReturn(live);
         assertSame(live, repository.getEntriesForPlant("p1"));
     }
+
+    @Test
+    public void getAllEntries_callsDao() {
+        MutableLiveData<List<DiaryEntry>> live = new MutableLiveData<>();
+        Mockito.when(dao.getAllEntries()).thenReturn(live);
+        assertSame(live, repository.getAllEntries());
+        Mockito.verify(dao).getAllEntries();
+    }
+
+    @Test
+    public void getEntriesForPlantSync_callsDao() {
+        List<DiaryEntry> list = java.util.Collections.emptyList();
+        Mockito.when(dao.getEntriesForPlantSync("p1")).thenReturn(list);
+        assertSame(list, repository.getEntriesForPlantSync("p1"));
+        Mockito.verify(dao).getEntriesForPlantSync("p1");
+    }
+
+    @Test
+    public void getAllEntriesSync_callsDao() {
+        List<DiaryEntry> list = java.util.Collections.emptyList();
+        Mockito.when(dao.getAllEntriesSync()).thenReturn(list);
+        assertSame(list, repository.getAllEntriesSync());
+        Mockito.verify(dao).getAllEntriesSync();
+    }
+
+    @Test
+    public void shutdown_closesExecutor() {
+        repository.shutdown();
+        java.util.concurrent.ExecutorService e = executors.single();
+        assertTrue(e.isShutdown());
+    }
 }
