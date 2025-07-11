@@ -23,7 +23,6 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_domain.util.AppExecutors;
-import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.recommendation.NotificationManager;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
@@ -42,7 +41,6 @@ public class HomeViewModel extends AndroidViewModel {
     private final DiaryDataSource diaryRepository;
     private final RecommendationEngine recommendationEngine;
     private final WateringScheduler wateringScheduler;
-
     private final LiveData<List<Plant>> plantsLiveData;
     private final MutableLiveData<List<String>> reminders = new MutableLiveData<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -52,18 +50,20 @@ public class HomeViewModel extends AndroidViewModel {
      * using the singleton {@link AppDatabase} instance.
      */
     public HomeViewModel(Application application) {
-        CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-        AppExecutors executors = core.appExecutors();
         this(
                 application,
-                new PlantRepository(AppDatabase.getInstance(application), executors),
-                new DiaryRepository(AppDatabase.getInstance(application).diaryDao(), executors),
+                new PlantRepository(AppDatabase.getInstance(application), getExecutors(application)),
+                new DiaryRepository(AppDatabase.getInstance(application).diaryDao(), getExecutors(application)),
                 new RecommendationEngine(),
                 new WateringScheduler(
                         new RecommendationEngine(),
                         new NotificationManager(application),
                         AppDatabase.getInstance(application).diaryDao())
         );
+    }
+
+    private static AppExecutors getExecutors(Application application) {
+        return ((CoreComponentProvider) application).getCoreComponent().appExecutors();
     }
 
     /**
