@@ -1,5 +1,7 @@
 package de.omagh.core_infra.measurement;
 
+import static androidx.camera.lifecycle.ProcessCameraProvider.getInstance;
+
 import android.app.Activity;
 
 import androidx.camera.core.AspectRatio;
@@ -40,9 +42,9 @@ public class CameraLightMeterX {
      */
     public void startCamera() {
         cameraExecutor = Executors.newSingleThreadExecutor();
-        ProcessCameraProvider.getInstance(activity).addListener(() -> {
+        getInstance(activity).addListener(() -> {
             try {
-                ProcessCameraProvider cameraProvider = ProcessCameraProvider.getInstance(activity).get();
+                ProcessCameraProvider cameraProvider = getInstance(activity).get();
                 Preview preview = new Preview.Builder()
                         .setTargetAspectRatio(AspectRatio.RATIO_4_3)
                         .build();

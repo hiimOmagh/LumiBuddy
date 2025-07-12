@@ -40,6 +40,7 @@ firebase = "25.1.4"
 tflite = "2.17.0"
 arcore = "1.50.0"
 navigationTesting = "2.9.1"
+sceneform = "1.23.0"
 
 [libraries]
 camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
@@ -89,6 +90,8 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebase" }
 tensorflow-lite = { group = "org.tensorflow", name = "tensorflow-lite", version.ref = "tflite" }
 arcore = { group = "com.google.ar", name = "core", version.ref = "arcore" }
+sceneform-core = { group = "com.gorisse.thomas.sceneform", name = "core", version.ref = "sceneform" }
+sceneform-ux = { group = "com.gorisse.thomas.sceneform", name = "ux", version.ref = "sceneform" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

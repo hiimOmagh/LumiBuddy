@@ -60,6 +60,8 @@ dependencies {
     implementation(libs.tensorflow.lite)
     implementation(libs.arcore)
     implementation(libs.timber)
+    implementation(libs.sceneform.core)
+    implementation(libs.sceneform.ux)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.work.testing)
     testImplementation(libs.mockito.core)
