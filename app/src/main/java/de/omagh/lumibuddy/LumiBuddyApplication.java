@@ -1,14 +1,11 @@
 package de.omagh.lumibuddy;
 
-import static timber.log.Timber.plant;
-
 import android.app.Application;
 
 import timber.log.Timber;
 
 import androidx.annotation.NonNull;
 import androidx.work.Configuration;
-import androidx.work.WorkManager;
 import de.omagh.core_infra.di.DaggerCoreComponent;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
@@ -34,14 +31,6 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
         appComponent = DaggerAppComponent.factory()
                 .create(coreComponent);
         appComponent.inject(this);
-
-        SyncWorkerFactory factory = new SyncWorkerFactory(
-                () -> coreComponent.remotePlantRepository(),
-                () -> coreComponent.remoteDiaryRepository(),
-                () -> coreComponent.firebaseManager());
-        WorkManager.initialize(this, new Configuration.Builder()
-                .setWorkerFactory(factory)
-                .build());
     }
 
     @Override
