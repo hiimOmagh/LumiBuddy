@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.legacy.support.v4)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    compileOnly(libs.jspecify)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.androidx.test.core)

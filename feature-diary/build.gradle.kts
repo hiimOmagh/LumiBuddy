@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     implementation(libs.timber)
+    compileOnly(libs.jspecify)
     implementation(libs.dagger)
     testImplementation(libs.androidx.test.core)
     annotationProcessor(libs.dagger.compiler)

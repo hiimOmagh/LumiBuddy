@@ -11,6 +11,7 @@ import de.omagh.core_domain.model.Measurement;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.Session;
+import com.google.ar.core.Frame;
 import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
@@ -64,7 +65,10 @@ public class ARMeasureOverlay implements AROverlayRenderer {
                         anchor.detach();
                         anchor = null;
                     }
-                    anchor = session.createAnchor(session.getCamera().getPose());
+                    Frame frame = sceneView.getArFrame();
+                    if (frame != null) {
+                        anchor = session.createAnchor(frame.getCamera().getPose());
+                    }
                     if (anchorNode != null) {
                         anchorNode.setParent(null);
                     }

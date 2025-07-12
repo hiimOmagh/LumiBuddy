@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    compileOnly(libs.jspecify)
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.timber)

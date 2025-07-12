@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.android)
+    compileOnly(libs.jspecify)
     implementation(project(":core-domain"))
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)

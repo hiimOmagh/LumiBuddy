@@ -41,6 +41,7 @@ tflite = "2.17.0"
 arcore = "1.50.0"
 navigationTesting = "2.9.1"
 sceneform = "1.23.0"
+jspecify = "0.3.0"
 
 [libraries]
 camera-camera2 = { module = "androidx.camera:camera-camera2", version.ref = "cameraCore" }
@@ -92,6 +93,7 @@ tensorflow-lite = { group = "org.tensorflow", name = "tensorflow-lite", version.
 arcore = { group = "com.google.ar", name = "core", version.ref = "arcore" }
 sceneform-core = { group = "com.gorisse.thomas.sceneform", name = "core", version.ref = "sceneform" }
 sceneform-ux = { group = "com.gorisse.thomas.sceneform", name = "ux", version.ref = "sceneform" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
