@@ -7,9 +7,12 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import com.google.android.gms.tasks.Tasks;
+
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_infra.di.Remote;
+import de.omagh.core_infra.firebase.FirebaseManager;
 
 /**
  * Worker that uploads a single diary entry to Firestore.
@@ -23,17 +26,25 @@ public class UploadDiaryEntryWorker extends Worker {
     public static final String KEY_EVENT_TYPE = "eventType";
 
     private final DiaryDataSource repository;
+    private final FirebaseManager firebaseManager;
 
     public UploadDiaryEntryWorker(@NonNull Context context,
                                   @NonNull WorkerParameters params,
-                                  @Remote DiaryDataSource repository) {
+                                  @Remote DiaryDataSource repository,
+                                  FirebaseManager firebaseManager) {
         super(context, params);
         this.repository = repository;
+        this.firebaseManager = firebaseManager;
     }
 
     @NonNull
     @Override
     public Result doWork() {
+        try {
+            Tasks.await(firebaseManager.signInAnonymously());
+        } catch (Exception e) {
+            return Result.retry();
+        }
         Data data = getInputData();
         DiaryEntry entry = new DiaryEntry(
                 data.getString(KEY_ID),

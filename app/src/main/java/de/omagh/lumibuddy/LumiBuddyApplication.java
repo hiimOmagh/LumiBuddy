@@ -30,14 +30,15 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
                 .application(this)
                 .build();
 
-        plant(new Timber.DebugTree());
+        Timber.plant(new Timber.DebugTree());
         appComponent = DaggerAppComponent.factory()
                 .create(coreComponent);
         appComponent.inject(this);
 
         SyncWorkerFactory factory = new SyncWorkerFactory(
                 () -> coreComponent.remotePlantRepository(),
-                () -> coreComponent.remoteDiaryRepository());
+                () -> coreComponent.remoteDiaryRepository(),
+                () -> coreComponent.firebaseManager());
         WorkManager.initialize(this, new Configuration.Builder()
                 .setWorkerFactory(factory)
                 .build());
@@ -58,7 +59,8 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
         return new Configuration.Builder()
                 .setWorkerFactory(new SyncWorkerFactory(
                         () -> coreComponent.remotePlantRepository(),
-                        () -> coreComponent.remoteDiaryRepository()))
+                        () -> coreComponent.remoteDiaryRepository(),
+                        () -> coreComponent.firebaseManager()))
                 .build();
     }
 }
