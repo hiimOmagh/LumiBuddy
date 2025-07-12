@@ -29,8 +29,15 @@ android {
 }
 
 dependencies {
+    implementation(project(":core-domain"))
     implementation(project(":core-infra"))
     implementation(libs.arcore)
+    implementation(libs.sceneform.core)
+    implementation(libs.sceneform.ux)
+    implementation(libs.dagger)
+    annotationProcessor(libs.dagger.compiler)
+    implementation(libs.rxjava3)
+    implementation(libs.rxandroid3)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

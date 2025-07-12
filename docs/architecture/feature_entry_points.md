@@ -9,5 +9,4 @@ navigation graph is defined. It also notes which Dagger component injects that e
 | `feature-plantdb`      | `PlantListFragment`     | `feature-plantdb/src/main/res/navigation/nav_graph.xml`      | `PlantDbComponent`         |
 | `feature-diary`        | `PlantDiaryFragment`    | `feature-diary/src/main/res/navigation/diary_nav_graph.xml`  | `DiaryComponent`           |
 | `feature-growschedule` | `HomeFragment`          | `feature-growschedule/src/main/res/navigation/nav_graph.xml` | `GrowScheduleComponent`    |
-| `feature-ar`           | `ArEntryActivity`       | (none yet)                                                   | (none)                     |
-
+| `feature-ar`           | `ArEntryActivity`       | (none yet)                                                   | `ArComponent`              |
