@@ -67,6 +67,7 @@ dependencies {
 
     // Room database
     implementation(libs.room.runtime)
+    implementation(libs.work.runtime)
     annotationProcessor(libs.room.compiler)
 
     implementation(libs.dagger)

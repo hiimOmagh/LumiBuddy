@@ -8,7 +8,8 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import de.omagh.core_data.model.DiaryEntry;
-import de.omagh.core_data.repository.firebase.FirebaseDiaryRepository;
+import de.omagh.core_data.repository.DiaryDataSource;
+import de.omagh.core_infra.di.Remote;
 
 /**
  * Worker that uploads a single diary entry to Firestore.
@@ -21,8 +22,13 @@ public class UploadDiaryEntryWorker extends Worker {
     public static final String KEY_IMAGE_URI = "imageUri";
     public static final String KEY_EVENT_TYPE = "eventType";
 
-    public UploadDiaryEntryWorker(@NonNull Context context, @NonNull WorkerParameters params) {
+    private final DiaryDataSource repository;
+
+    public UploadDiaryEntryWorker(@NonNull Context context,
+                                  @NonNull WorkerParameters params,
+                                  @Remote DiaryDataSource repository) {
         super(context, params);
+        this.repository = repository;
     }
 
     @NonNull
@@ -37,7 +43,7 @@ public class UploadDiaryEntryWorker extends Worker {
                 data.getString(KEY_IMAGE_URI),
                 data.getString(KEY_EVENT_TYPE)
         );
-        new FirebaseDiaryRepository().insert(entry);
+        repository.insert(entry);
         return Result.success();
     }
 }

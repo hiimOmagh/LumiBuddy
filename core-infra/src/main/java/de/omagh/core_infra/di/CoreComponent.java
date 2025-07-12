@@ -16,6 +16,9 @@ import de.omagh.core_infra.user.LightCorrectionStore;
 import de.omagh.core_infra.firebase.FirebaseManager;
 import de.omagh.core_infra.di.ExecutorModule;
 import de.omagh.core_domain.util.AppExecutors;
+import de.omagh.core_data.repository.PlantDataSource;
+import de.omagh.core_data.repository.DiaryDataSource;
+import de.omagh.core_infra.di.Remote;
 
 @Component(modules = {
         NetworkModule.class,
@@ -49,6 +52,12 @@ public interface CoreComponent {
     FirebaseManager firebaseManager();
 
     AppExecutors appExecutors();
+
+    @Remote
+    PlantDataSource remotePlantRepository();
+
+    @Remote
+    DiaryDataSource remoteDiaryRepository();
 
     Application application();
 

@@ -7,7 +7,8 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import de.omagh.core_data.repository.firebase.FirebasePlantRepository;
+import de.omagh.core_data.repository.PlantDataSource;
+import de.omagh.core_infra.di.Remote;
 import de.omagh.core_domain.model.Plant;
 
 /**
@@ -19,8 +20,13 @@ public class UploadPlantWorker extends Worker {
     public static final String KEY_TYPE = "type";
     public static final String KEY_IMAGE_URI = "imageUri";
 
-    public UploadPlantWorker(@NonNull Context context, @NonNull WorkerParameters params) {
+    private final PlantDataSource repository;
+
+    public UploadPlantWorker(@NonNull Context context,
+                             @NonNull WorkerParameters params,
+                             @Remote PlantDataSource repository) {
         super(context, params);
+        this.repository = repository;
     }
 
     @NonNull
@@ -33,7 +39,7 @@ public class UploadPlantWorker extends Worker {
                 d.getString(KEY_TYPE),
                 d.getString(KEY_IMAGE_URI)
         );
-        new FirebasePlantRepository().insertPlant(plant);
+        repository.insertPlant(plant);
         return Result.success();
     }
 }
