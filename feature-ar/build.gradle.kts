@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-infra"))
+    implementation(project(":core-data"))
     implementation(libs.arcore)
     implementation(libs.sceneform.core)
     implementation(libs.sceneform.ux)
