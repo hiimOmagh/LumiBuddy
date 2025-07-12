@@ -2,10 +2,13 @@ package de.omagh.feature_growschedule.di;
 
 import android.app.Application;
 
+import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;
+import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.recommendation.NotificationManager;
@@ -17,7 +20,7 @@ import de.omagh.feature_growschedule.ui.HomeViewModelFactory;
 import javax.inject.Provider;
 
 @Module
-public class GrowScheduleModule {
+public abstract class GrowScheduleModule {
     @Provides
     static PlantRepository providePlantRepository(AppDatabase db, AppExecutors executors) {
         return new PlantRepository(db, executors);
@@ -46,4 +49,10 @@ public class GrowScheduleModule {
     static HomeViewModelFactory provideViewModelFactory(Provider<HomeViewModel> provider) {
         return new HomeViewModelFactory(provider);
     }
+
+    @Binds
+    abstract PlantDataSource bindPlantRepository(PlantRepository repo);
+
+    @Binds
+    abstract DiaryDataSource bindDiaryRepository(DiaryRepository repo);
 }

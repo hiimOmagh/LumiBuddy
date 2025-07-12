@@ -18,6 +18,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import androidx.lifecycle.Observer;
 
 import static org.junit.Assert.*;
 
@@ -44,8 +48,12 @@ public class HomeViewModelTest {
      */
     @Test
     public void emptyPlants_producesNoReminders() throws Exception {
+        CountDownLatch latch = new CountDownLatch(1);
+        Observer<List<String>> observer = list -> latch.countDown();
+        vm.getUpcomingReminders().observeForever(observer);
         plantData.setPlants(Collections.emptyList());
-        Thread.sleep(200); // allow async
+        assertTrue(latch.await(1, TimeUnit.SECONDS));
+        vm.getUpcomingReminders().removeObserver(observer);
         assertTrue(vm.getUpcomingReminders().getValue().isEmpty());
     }
 
@@ -55,9 +63,13 @@ public class HomeViewModelTest {
     @Test
     public void plantWithoutWatering_triggersReminder() throws Exception {
         Plant plant = new Plant("1", "Basil", "Basil", "");
+        CountDownLatch latch = new CountDownLatch(1);
+        Observer<List<String>> observer = list -> latch.countDown();
+        vm.getUpcomingReminders().observeForever(observer);
         plantData.setPlants(Collections.singletonList(plant));
         diaryData.setEntries(plant.getId(), new ArrayList<>());
-        Thread.sleep(500); // allow async
+        assertTrue(latch.await(1, TimeUnit.SECONDS));
+        vm.getUpcomingReminders().removeObserver(observer);
         List<String> reminders = vm.getUpcomingReminders().getValue();
         assertNotNull(reminders);
         assertFalse(reminders.isEmpty());

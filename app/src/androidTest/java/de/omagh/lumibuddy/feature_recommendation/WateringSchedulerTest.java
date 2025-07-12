@@ -11,6 +11,8 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_domain.model.Plant;
@@ -19,6 +21,7 @@ import de.omagh.core_infra.recommendation.NotificationManager;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
 import de.omagh.core_infra.recommendation.WateringScheduler;
 
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -46,9 +49,21 @@ public class WateringSchedulerTest {
     public void notifyWhenOverdue() throws Exception {
         Plant plant = new Plant("1", "Basil", "Basil", "");
         when(diaryDao.getEntriesForPlantSync("1")).thenReturn(new ArrayList<>());
+        CountDownLatch notifyLatch = new CountDownLatch(1);
+        doAnswer(invocation -> {
+            notifyLatch.countDown();
+            return null;
+        }).when(notifications).notifyWateringNeeded(eq(plant), anyInt());
+
+        CountDownLatch insertLatch = new CountDownLatch(1);
+        doAnswer(invocation -> {
+            insertLatch.countDown();
+            return null;
+        }).when(diaryDao).insert(any(DiaryEntry.class));
         scheduler.runDailyCheck(Collections.singletonList(plant));
-        Thread.sleep(500);
-        verify(notifications, timeout(1000)).notifyWateringNeeded(eq(plant), anyInt());
-        verify(diaryDao, timeout(1000)).insert(any(DiaryEntry.class));
+        assertTrue(notifyLatch.await(1, TimeUnit.SECONDS));
+        assertTrue(insertLatch.await(1, TimeUnit.SECONDS));
+        verify(notifications).notifyWateringNeeded(eq(plant), anyInt());
+        verify(diaryDao).insert(any(DiaryEntry.class));
     }
 }
