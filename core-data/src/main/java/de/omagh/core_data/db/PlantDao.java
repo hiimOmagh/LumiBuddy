@@ -19,6 +19,9 @@ public interface PlantDao {
     @Query("SELECT * FROM plants")
     LiveData<List<Plant>> getAll();
 
+    @Query("SELECT * FROM plants")
+    List<Plant> getAllSync();
+
     /**
      * Gets a single plant by its ID.
      *

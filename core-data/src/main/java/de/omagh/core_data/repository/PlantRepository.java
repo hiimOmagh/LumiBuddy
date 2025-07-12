@@ -34,6 +34,16 @@ public class PlantRepository implements PlantDataSource {
         });
     }
 
+    public List<Plant> getAllPlantsSync() {
+        List<de.omagh.core_data.model.Plant> entities = plantDao.getAllSync();
+        if (entities == null) return null;
+        java.util.List<Plant> result = new java.util.ArrayList<>();
+        for (de.omagh.core_data.model.Plant p : entities) {
+            result.add(toDomain(p));
+        }
+        return result;
+    }
+
     public LiveData<Plant> getPlant(String id) {
         return Transformations.map(plantDao.getById(id), this::toDomain);
     }

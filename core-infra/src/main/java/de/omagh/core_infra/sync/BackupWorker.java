@@ -32,7 +32,7 @@ public class BackupWorker extends Worker {
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getInstance(context);
         PlantRepository plantRepo = new PlantRepository(db, new AppExecutors());
-        List<Plant> plants = plantRepo.getAllPlants().getValue();
+        List<Plant> plants = plantRepo.getAllPlantsSync();
         if (plants == null) plants = new ArrayList<>();
         WorkManager wm = WorkManager.getInstance(context);
         for (Plant p : plants) {
