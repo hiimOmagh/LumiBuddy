@@ -1,6 +1,6 @@
 package de.omagh.core_domain.repository;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Abstraction for retrieving lux measurements from sensors.

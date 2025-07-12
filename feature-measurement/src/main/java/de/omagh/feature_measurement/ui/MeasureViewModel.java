@@ -17,7 +17,7 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
 /**

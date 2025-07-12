@@ -31,8 +31,8 @@ android {
 dependencies {
     implementation(project(":core-infra"))
     implementation(project(":core-data"))
-    implementation(libs.rxjava2)
-    implementation(libs.rxandroid2)
+    implementation(libs.rxjava3)
+    implementation(libs.rxandroid3)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.android)

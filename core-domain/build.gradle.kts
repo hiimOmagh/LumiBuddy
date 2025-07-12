@@ -6,7 +6,7 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 dependencies {
-    implementation(libs.rxjava2)
+    implementation(libs.rxjava3)
     implementation(libs.dagger)
     // no AndroidX here—just pure-Java dependencies if needed
 }

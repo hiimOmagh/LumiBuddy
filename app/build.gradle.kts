@@ -71,8 +71,8 @@ dependencies {
 
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
-    implementation(libs.rxjava2)
-    implementation(libs.rxandroid2)
+    implementation(libs.rxjava3)
+    implementation(libs.rxandroid3)
     implementation(libs.timber)
     implementation(libs.glide)
     implementation(libs.mpandroidchart)

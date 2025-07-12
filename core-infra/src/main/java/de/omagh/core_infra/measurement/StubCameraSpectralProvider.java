@@ -1,6 +1,6 @@
 package de.omagh.core_infra.measurement;
 
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Single;
 
 /**
  * Placeholder CameraSpectralProvider that returns an error until a real

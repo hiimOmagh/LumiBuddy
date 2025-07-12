@@ -4,7 +4,7 @@ import android.app.Activity;
 
 import androidx.camera.view.PreviewView;
 
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Single;
 
 /**
  * Simple implementation using CameraLightMeterX to capture RGB.

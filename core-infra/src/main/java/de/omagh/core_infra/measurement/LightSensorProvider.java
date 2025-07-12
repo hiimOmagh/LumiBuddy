@@ -1,6 +1,6 @@
 package de.omagh.core_infra.measurement;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Provides ambient light sensor readings as an Observable stream of lux values.

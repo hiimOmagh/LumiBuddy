@@ -3,7 +3,7 @@ package de.omagh.core_domain.usecase;
 import javax.inject.Inject;
 
 import de.omagh.core_domain.repository.MeasurementRepository;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Use case that exposes current lux measurements from the device's sensor.

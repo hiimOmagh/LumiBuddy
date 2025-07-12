@@ -3,7 +3,7 @@ package de.omagh.core_infra.measurement;
 import javax.inject.Inject;
 
 import de.omagh.core_domain.repository.MeasurementRepository;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 public class MeasurementEngine implements MeasurementRepository {
     private final LightSensorProvider lightSensorProvider;

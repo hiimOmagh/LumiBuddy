@@ -2,7 +2,7 @@ package de.omagh.core_infra.measurement;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Implementation of LightSensorProvider using Android's ALSManager.

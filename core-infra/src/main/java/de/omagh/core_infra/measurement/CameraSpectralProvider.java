@@ -1,6 +1,6 @@
 package de.omagh.core_infra.measurement;
 
-import io.reactivex.Single;
+import io.reactivex.rxjava3.core.Single;
 
 /**
  * Provides a single capture of mean RGB values using the device camera.

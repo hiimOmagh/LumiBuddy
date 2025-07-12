@@ -16,7 +16,7 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
-import io.reactivex.Observable;
+import io.reactivex.rxjava3.core.Observable;
 
 /**
  * Tests interaction of {@link MeasureViewModel} with its collaborators.
