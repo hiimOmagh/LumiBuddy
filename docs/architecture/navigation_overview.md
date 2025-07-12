@@ -27,4 +27,5 @@ respective
 `res/navigation` XML files.
 
 See [Feature Entry Points](feature_entry_points.md) for the list of fragments or activities that
-start each module and the Dagger components that inject them.
+start each module and the Dagger components that inject them. For an example of requesting a feature
+component see [di_setup.md](di_setup.md).

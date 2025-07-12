@@ -26,6 +26,8 @@ Each feature module defines its own component that also depends on `CoreComponen
 - **MeasurementComponent** – injects `MeasureFragment` and provides a `MeasureViewModelFactory`.
 - **PlantDbComponent** – provides `PlantDbViewModelFactory` for plant database screens.
 - **DiaryComponent** – injects `DiaryViewModel` and related classes.
+- **GrowScheduleComponent** – injects `HomeFragment` and provides a `HomeViewModelFactory`.
+-
 
 Components share the same `CoreComponent` instance, so repositories and managers are singletons
 across the app. Feature components are usually created by their host fragments when needed and
