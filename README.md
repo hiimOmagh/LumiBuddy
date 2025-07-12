@@ -259,7 +259,7 @@ Default lux→PPFD conversion factors used by LumiBuddy:
 
 - [x] Finalize modular structure
 - [x] Validate Dagger modules + DI scopes
-- [ ] Improve documentation of feature entry points (Fragment routes, nav graph)
+- [x] Improve documentation of feature entry points (Fragment routes, nav graph)
 
 ### Sensor & Measurement
 
