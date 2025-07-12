@@ -24,9 +24,18 @@ public class LampProfilesViewModel extends AndroidViewModel {
     private final GrowLightProductRepository productRepository;
 
     public LampProfilesViewModel(@NonNull Application application) {
+        this(application,
+                new GrowLightProfileManager(application.getApplicationContext()),
+                new GrowLightProductRepository(application.getApplicationContext()));
+    }
+
+    // Constructor for tests
+    public LampProfilesViewModel(@NonNull Application application,
+                                 GrowLightProfileManager manager,
+                                 GrowLightProductRepository repository) {
         super(application);
-        manager = new GrowLightProfileManager(application.getApplicationContext());
-        productRepository = new GrowLightProductRepository(application.getApplicationContext());
+        this.manager = manager;
+        this.productRepository = repository;
         profiles.setValue(manager.getAllProfiles());
     }
 

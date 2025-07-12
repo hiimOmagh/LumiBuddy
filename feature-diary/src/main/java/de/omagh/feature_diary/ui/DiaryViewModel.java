@@ -29,10 +29,14 @@ public class DiaryViewModel extends AndroidViewModel {
     DiaryRepository repository;
 
     public DiaryViewModel(@NonNull Application application) {
+        this(application, null);
+    }
+
+    // Constructor for tests allowing repository injection
+    public DiaryViewModel(@NonNull Application application, DiaryRepository repository) {
         super(application);
         CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
         DiaryComponent component = DaggerDiaryComponent.factory().create(core);
-        component.inject(this);
     }
 
     public LiveData<List<DiaryEntry>> getDiaryEntriesForPlant(String plantId) {

@@ -20,8 +20,13 @@ public class ProfileViewModel extends AndroidViewModel {
     private final MutableLiveData<String> theme = new MutableLiveData<>();
 
     public ProfileViewModel(@NonNull Application application) {
+        this(application, new UserProfileManager(application.getApplicationContext()));
+    }
+
+    // Constructor for tests
+    public ProfileViewModel(@NonNull Application application, UserProfileManager manager) {
         super(application);
-        manager = new UserProfileManager(application.getApplicationContext());
+        this.manager = manager;
         loadFromManager();
     }
 

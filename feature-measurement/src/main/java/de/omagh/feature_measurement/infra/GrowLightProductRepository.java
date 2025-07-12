@@ -24,12 +24,22 @@ import retrofit2.Response;
 public class GrowLightProductRepository {
     private final GrowLightApiService apiService;
     private final GrowLightProductDao productDao;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor;
     private final String apiKey = "YOUR_API_KEY";
 
     public GrowLightProductRepository(Context context) {
-        apiService = RetrofitClient.getInstance().create(GrowLightApiService.class);
-        productDao = AppDatabase.getInstance(context.getApplicationContext()).growLightProductDao();
+        this(RetrofitClient.getInstance().create(GrowLightApiService.class),
+                AppDatabase.getInstance(context.getApplicationContext()).growLightProductDao(),
+                Executors.newSingleThreadExecutor());
+    }
+
+    // Constructor for tests
+    public GrowLightProductRepository(GrowLightApiService apiService,
+                                      GrowLightProductDao productDao,
+                                      ExecutorService executor) {
+        this.apiService = apiService;
+        this.productDao = productDao;
+        this.executor = executor;
     }
 
     /**

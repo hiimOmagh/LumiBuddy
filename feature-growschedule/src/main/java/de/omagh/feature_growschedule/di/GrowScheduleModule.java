@@ -22,11 +22,6 @@ import javax.inject.Provider;
 @Module
 public abstract class GrowScheduleModule {
     @Provides
-    static PlantRepository providePlantRepository(AppDatabase db, AppExecutors executors) {
-        return new PlantRepository(db, executors);
-    }
-
-    @Provides
     static DiaryRepository provideDiaryRepository(AppDatabase db, AppExecutors executors) {
         return new DiaryRepository(db.diaryDao(), executors);
     }

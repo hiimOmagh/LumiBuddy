@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.navigation.ui)
     implementation(libs.timber)
     implementation(libs.dagger)
+    testImplementation(libs.androidx.test.core)
     annotationProcessor(libs.dagger.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)

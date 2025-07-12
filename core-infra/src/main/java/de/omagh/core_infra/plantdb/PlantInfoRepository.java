@@ -34,16 +34,29 @@ public class PlantInfoRepository {
     private final PlantIdApiService idService;
     private final PlantSpeciesDao speciesDao;
     private final PlantCareProfileDao profileDao;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+    private final ExecutorService executor;
     private final String apiKey = "YOUR_API_KEY"; // documented in README
     private final String idApiKey = "YOUR_PLANT_ID_KEY";
 
     public PlantInfoRepository(Context context) {
-        apiService = RetrofitClient.getInstance().create(PlantApiService.class);
-        idService = RetrofitClient.getInstance().create(PlantIdApiService.class);
-        AppDatabase db = AppDatabase.getInstance(context.getApplicationContext());
-        speciesDao = db.plantSpeciesDao();
-        profileDao = db.plantCareProfileDao();
+        this(RetrofitClient.getInstance().create(PlantApiService.class),
+                RetrofitClient.getInstance().create(PlantIdApiService.class),
+                AppDatabase.getInstance(context.getApplicationContext()).plantSpeciesDao(),
+                AppDatabase.getInstance(context.getApplicationContext()).plantCareProfileDao(),
+                Executors.newSingleThreadExecutor());
+    }
+
+    // Constructor for tests
+    public PlantInfoRepository(PlantApiService apiService,
+                               PlantIdApiService idService,
+                               PlantSpeciesDao speciesDao,
+                               PlantCareProfileDao profileDao,
+                               ExecutorService executor) {
+        this.apiService = apiService;
+        this.idService = idService;
+        this.speciesDao = speciesDao;
+        this.profileDao = profileDao;
+        this.executor = executor;
     }
 
     /**
