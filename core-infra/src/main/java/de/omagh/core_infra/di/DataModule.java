@@ -8,11 +8,15 @@ import dagger.Provides;
 
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
+import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_data.repository.DiaryDataSource;
+import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.repository.firebase.FirebaseDiaryRepository;
 import de.omagh.core_data.repository.firebase.FirebasePlantRepository;
+import de.omagh.core_data.repository.firebase.FirestorePlantDao;
+import de.omagh.core_data.repository.firebase.FirestoreDiaryEntryDao;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.di.Remote;
 
@@ -44,6 +48,26 @@ public abstract class DataModule {
     @Provides
     static FirebaseDiaryRepository provideFirebaseDiaryRepository() {
         return new FirebaseDiaryRepository();
+    }
+
+    @Provides
+    static DiaryDao provideDiaryDao(AppDatabase db) {
+        return db.diaryDao();
+    }
+
+    @Provides
+    static DiaryRepository provideDiaryRepository(DiaryDao dao, AppExecutors executors) {
+        return new DiaryRepository(dao, executors);
+    }
+
+    @Provides
+    static FirestorePlantDao provideFirestorePlantDao() {
+        return new FirestorePlantDao();
+    }
+
+    @Provides
+    static FirestoreDiaryEntryDao provideFirestoreDiaryEntryDao() {
+        return new FirestoreDiaryEntryDao();
     }
 
     @Binds
