@@ -15,18 +15,15 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.PlantDataSource;
-import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
-import de.omagh.core_domain.util.AppExecutors;
-import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.core_infra.recommendation.NotificationManager;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
 import de.omagh.core_infra.recommendation.WateringScheduler;
+
+import javax.inject.Inject;
 
 /**
  * ViewModel coordinating home screen data and background recommendation logic.
@@ -45,30 +42,11 @@ public class HomeViewModel extends AndroidViewModel {
     private final MutableLiveData<List<String>> reminders = new MutableLiveData<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    /**
-     * Default constructor used by the app. It creates repositories and helpers
-     * using the singleton {@link AppDatabase} instance.
-     */
-    public HomeViewModel(Application application) {
-        this(
-                application,
-                new PlantRepository(AppDatabase.getInstance(application), getExecutors(application)),
-                new DiaryRepository(AppDatabase.getInstance(application).diaryDao(), getExecutors(application)),
-                new RecommendationEngine(),
-                new WateringScheduler(
-                        new RecommendationEngine(),
-                        new NotificationManager(application),
-                        AppDatabase.getInstance(application).diaryDao())
-        );
-    }
-
-    private static AppExecutors getExecutors(Application application) {
-        return ((CoreComponentProvider) application).getCoreComponent().appExecutors();
-    }
 
     /**
-     * Constructor used for tests to supply fake repositories and schedulers.
+     * Constructs the ViewModel with injected repositories and helpers.
      */
+    @Inject
     public HomeViewModel(Application application,
                          PlantDataSource plantRepository,
                          DiaryDataSource diaryRepository,

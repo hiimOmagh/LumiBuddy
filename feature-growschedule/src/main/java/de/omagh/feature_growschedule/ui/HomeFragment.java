@@ -1,6 +1,8 @@
 package de.omagh.feature_growschedule.ui;
 
 import android.Manifest;
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +12,11 @@ import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.RequiresPermission;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import javax.inject.Inject;
 import androidx.navigation.Navigation;
 
 import org.jspecify.annotations.NonNull;
@@ -22,19 +27,34 @@ import java.util.Locale;
 import de.omagh.feature_growschedule.R;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.util.PermissionUtils;
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.feature_growschedule.di.DaggerGrowScheduleComponent;
+import de.omagh.feature_growschedule.di.GrowScheduleComponent;
 
-/**
- * HomeFragment displays the home screen and summary metrics.
- */
 public class HomeFragment extends Fragment {
     // Executor no longer used, but kept for potential future background tasks
     private final java.util.concurrent.ExecutorService lightCheckExecutor =
             java.util.concurrent.Executors.newSingleThreadExecutor();
 
+    @Inject
+    HomeViewModelFactory viewModelFactory;
+    private HomeViewModel viewModel;
+    private GrowScheduleComponent component;
+
     public HomeFragment() {
         super(R.layout.fragment_home);
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        component = DaggerGrowScheduleComponent.factory().create(core);
+        viewModelFactory = component.viewModelFactory();
+    }
+
+    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,24 +69,12 @@ public class HomeFragment extends Fragment {
 
         final SettingsManager settingsManager = new SettingsManager(requireContext());
 
-        HomeViewModel viewModel = new ViewModelProvider(requireActivity(),
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+        viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(HomeViewModel.class);
 
         ActivityResultLauncher<String> notifPermissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
-                granted -> {
-                    if (granted) {
-                        try {
-                            viewModel.refresh();
-                        } catch (SecurityException ignored) {
-                            // Permission may still be denied
-                        }
-                    } else {
-                        PermissionUtils.showPermissionDenied(this,
-                                getString(R.string.notification_permission_denied));
-                    }
-                });
+                this::onActivityResult);
 
         viewModel.getWelcomeText().observe(getViewLifecycleOwner(), welcomeText::setText);
         viewModel.getLux().observe(getViewLifecycleOwner(),
@@ -88,7 +96,7 @@ public class HomeFragment extends Fragment {
 
         viewModel.getPlants().observe(getViewLifecycleOwner(), plants -> {
             if (!settingsManager.isCareRemindersEnabled()) return;
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU &&
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                     !PermissionUtils.hasPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)) {
                 PermissionUtils.requestPermissionWithRationale(
                         this,
@@ -119,5 +127,18 @@ public class HomeFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         lightCheckExecutor.shutdown();
+    }
+
+    private void onActivityResult(Boolean granted) {
+        if (granted) {
+            try {
+                viewModel.refresh();
+            } catch (SecurityException ignored) {
+                // Permission may still be denied
+            }
+        } else {
+            PermissionUtils.showPermissionDenied(this,
+                    getString(R.string.notification_permission_denied));
+        }
     }
 }

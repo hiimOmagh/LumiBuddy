@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.navigation.runtime.android)
     implementation(project(":core-domain"))
+    implementation(libs.dagger)
+    annotationProcessor(libs.dagger.compiler)
     implementation(libs.androidx.test.core)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
