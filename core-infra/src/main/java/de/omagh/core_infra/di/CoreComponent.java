@@ -15,9 +15,12 @@ import de.omagh.core_infra.user.UserProfileSyncManager;
 import de.omagh.core_infra.user.LightCorrectionStore;
 import de.omagh.core_infra.firebase.FirebaseManager;
 import de.omagh.core_infra.di.ExecutorModule;
+import de.omagh.core_infra.di.SyncModule;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.DiaryDataSource;
+import de.omagh.core_infra.sync.PlantSyncManager;
+import de.omagh.core_infra.sync.DiarySyncManager;
 import de.omagh.core_infra.di.Remote;
 
 @Component(modules = {
@@ -25,7 +28,8 @@ import de.omagh.core_infra.di.Remote;
         DataModule.class,
         SensorModule.class,
         UserModule.class,
-        ExecutorModule.class
+        ExecutorModule.class,
+        SyncModule.class
 })
 
 public interface CoreComponent {
@@ -50,6 +54,10 @@ public interface CoreComponent {
     LightCorrectionStore lightCorrectionStore();
 
     FirebaseManager firebaseManager();
+
+    PlantSyncManager plantSyncManager();
+
+    DiarySyncManager diarySyncManager();
 
     AppExecutors appExecutors();
 

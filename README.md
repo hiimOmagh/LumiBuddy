@@ -140,6 +140,26 @@ public interface AppComponent {
 }
 ```
 
+### Backup & Firestore Sync
+
+`BackupWorker` reads local plants and diary entries, then enqueues
+`UploadPlantWorker` and `UploadDiaryEntryWorker` for each record. These workers
+receive their repositories via the `SyncWorkerFactory`, which binds the remote
+`PlantDataSource`, `DiaryDataSource` and `FirebaseManager` from Dagger. The
+factory is supplied when `WorkManager` is initialised in `LumiBuddyApplication`.
+
+To trigger a backup manually or on a schedule, enqueue a
+`OneTimeWorkRequest` for `BackupWorker`:
+
+```java
+WorkManager.getInstance(context)
+        .
+
+enqueue(new OneTimeWorkRequest.Builder(BackupWorker.class).
+
+build());
+```
+
 ---
 
 ## 🧪 Testing Strategy

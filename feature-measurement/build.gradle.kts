@@ -33,6 +33,7 @@ dependencies {
     implementation(project(":core-infra"))
     implementation(project(":core-data"))
     implementation(libs.dagger)
+    implementation(libs.work.runtime)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

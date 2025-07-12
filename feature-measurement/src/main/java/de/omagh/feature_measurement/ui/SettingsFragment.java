@@ -19,7 +19,6 @@ import de.omagh.feature_measurement.R;
 import de.omagh.core_domain.model.CalibrationProfile;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
-import de.omagh.core_infra.sync.PlantSyncManager;
 
 /**
  * Simple settings screen for user preferences.
@@ -152,10 +151,13 @@ public class SettingsFragment extends Fragment {
         view.findViewById(R.id.saveSettingsBtn).setOnClickListener(v -> saveSettings());
 
         syncNowBtn.setOnClickListener(v -> {
-            // Trigger stub sync managers
-            new PlantSyncManager().syncToCloud(java.util.Collections.emptyList());
-            new de.omagh.core_infra.sync.DiarySyncManager().syncToCloud();
-            Toast.makeText(requireContext(), getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+            // Schedule a one-time backup worker which uploads local data
+            androidx.work.WorkManager.getInstance(requireContext())
+                    .enqueue(new androidx.work.OneTimeWorkRequest.Builder(
+                            de.omagh.core_infra.sync.BackupWorker.class)
+                            .build());
+            Toast.makeText(requireContext(), getString(R.string.coming_soon),
+                    Toast.LENGTH_SHORT).show();
         });
 
         privacyPolicyBtn.setOnClickListener(v ->
