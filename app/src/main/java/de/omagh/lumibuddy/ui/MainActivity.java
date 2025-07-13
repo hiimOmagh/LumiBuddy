@@ -1,6 +1,7 @@
 package de.omagh.lumibuddy.ui;
 
 import android.os.Bundle;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -15,11 +16,18 @@ import de.omagh.feature_plantdb.ui.PlantDetailFragment;
 import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.LumiBuddyApplication;
 import de.omagh.lumibuddy.di.AppComponent;
+import de.omagh.core_infra.user.SettingsManager;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SettingsManager settings = new SettingsManager(this);
+        if (!settings.isOnboardingComplete()) {
+            startActivity(new Intent(this, OnboardingActivity.class));
+            finish();
+            return;
+        }
         AppComponent appComponent = ((LumiBuddyApplication) getApplication()).getAppComponent();
         appComponent.inject(this);
         setContentView(R.layout.activity_main);

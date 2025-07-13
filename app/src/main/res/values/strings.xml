@@ -129,4 +129,9 @@
 
     <string name="powered_by_plantid">Powered by Plant.id</string>
 
+    <string name="onboarding_welcome">Let's set up LumiBuddy</string>
+    <string name="onboarding_request_permissions">Grant Permissions</string>
+    <string name="onboarding_sign_in">Sign in</string>
+    <string name="onboarding_finish">Finish</string>
+
 </resources>

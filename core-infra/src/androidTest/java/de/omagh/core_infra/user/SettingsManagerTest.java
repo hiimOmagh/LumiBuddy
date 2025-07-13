@@ -38,4 +38,14 @@ public class SettingsManagerTest {
         assertEquals("PPFD", manager.getPreferredUnit());
         assertEquals(12, manager.getLightDuration());
     }
+
+    /**
+     * Onboarding completion state should persist.
+     */
+    @Test
+    public void onboardingCompletionPersists() {
+        assertFalse(manager.isOnboardingComplete());
+        manager.setOnboardingComplete(true);
+        assertTrue(manager.isOnboardingComplete());
+    }
 }

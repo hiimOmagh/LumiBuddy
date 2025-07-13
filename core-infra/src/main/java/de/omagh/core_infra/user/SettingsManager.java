@@ -17,6 +17,7 @@ public class SettingsManager {
     private static final String KEY_ENABLE_AR = "enable_ar_overlay";
     private static final String KEY_ENABLE_ML = "enable_ml_features";
     private static final String KEY_CARE_REMINDERS = "care_reminders_enabled";
+    private static final String KEY_ONBOARDING_DONE = "onboarding_complete";
     private static final String KEY_PLANT_LAST_SYNC = "plant_last_sync";
     private static final String KEY_DIARY_LAST_SYNC = "diary_last_sync";
     private final SharedPreferences prefs;
@@ -107,6 +108,20 @@ public class SettingsManager {
      */
     public void setCareRemindersEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_CARE_REMINDERS, enabled).apply();
+    }
+
+    /**
+     * Returns true if the onboarding flow has been completed.
+     */
+    public boolean isOnboardingComplete() {
+        return prefs.getBoolean(KEY_ONBOARDING_DONE, false);
+    }
+
+    /**
+     * Mark onboarding as completed.
+     */
+    public void setOnboardingComplete(boolean done) {
+        prefs.edit().putBoolean(KEY_ONBOARDING_DONE, done).apply();
     }
 
     /**
