@@ -1,5 +1,6 @@
 package de.omagh.core_infra.ar;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.View;
@@ -16,17 +17,13 @@ import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.rendering.ViewRenderable;
-import timber.log.Timber;
 
 /**
- * Stub implementation of {@link AROverlayRenderer}.
- * This class does not perform any real AR rendering yet. It simply logs
- * the calls it receives and acts as an integration point for a future
- * ARCore based overlay renderer.
+ * Simple implementation of {@link AROverlayRenderer} using Sceneform.
+ * An anchor is placed at the current camera pose and a {@link ViewRenderable}
+ * displaying the latest measurement is attached to it.
  */
 public class ARMeasureOverlay implements AROverlayRenderer {
-
-    private static final String TAG = "ARMeasureOverlay";
     private final HeatmapOverlayView overlayView;
     private ArSceneView sceneView;
     private Anchor anchor;
@@ -36,23 +33,38 @@ public class ARMeasureOverlay implements AROverlayRenderer {
         this.overlayView = view;
     }
 
+    /**
+     * Factory method used to obtain the {@link ArSceneView}. Overridden in tests
+     * to provide a mocked instance.
+     */
+    protected ArSceneView createSceneView(Context context) {
+        return new ArSceneView(context);
+    }
+
+    /**
+     * Builds the {@link ViewRenderable} for display.
+     */
+    protected ViewRenderable buildViewRenderable(View view) throws Exception {
+        return ViewRenderable.builder()
+                .setView(overlayView.getContext(), view)
+                .build()
+                .get();
+    }
+
     @Override
     public void init() {
-        Timber.tag(TAG).d("init() called");
         if (overlayView != null) {
             overlayView.setVisibility(View.VISIBLE);
         }
         try {
-            sceneView = new ArSceneView(overlayView.getContext());
+            sceneView = createSceneView(overlayView.getContext());
             sceneView.resume();
-        } catch (Exception e) {
-            Timber.tag(TAG).e(e, "Failed to initialize ArSceneView");
+        } catch (Exception ignored) {
         }
     }
 
     @Override
     public void renderOverlay(Canvas canvas, Measurement measurement, float[][] intensityGrid) {
-        Timber.tag(TAG).d("renderOverlay() called with measurement=%s", measurement);
         if (overlayView != null && intensityGrid != null) {
             overlayView.setIntensityGrid(intensityGrid);
         }
@@ -81,12 +93,8 @@ public class ARMeasureOverlay implements AROverlayRenderer {
                     tv.setText(String.format(java.util.Locale.US, "%.1f", measurement.ppfd));
 
                     try {
-                        viewRenderable = ViewRenderable.builder()
-                                .setView(overlayView.getContext(), tv)
-                                .build()
-                                .get();
-                    } catch (Exception e) {
-                        Timber.tag(TAG).e(e, "Failed to build ViewRenderable");
+                        viewRenderable = buildViewRenderable(tv);
+                    } catch (Exception ignored) {
                     }
 
                     if (viewRenderable != null) {
@@ -94,8 +102,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
                         node.setParent(anchorNode);
                         node.setRenderable(viewRenderable);
                     }
-                } catch (Exception e) {
-                    Timber.tag(TAG).e(e, "Error creating AR anchor");
+                } catch (Exception ignored) {
                 }
             }
         }
@@ -103,7 +110,6 @@ public class ARMeasureOverlay implements AROverlayRenderer {
 
     @Override
     public void cleanup() {
-        Timber.tag(TAG).d("cleanup() called");
         if (overlayView != null) {
             overlayView.setVisibility(View.GONE);
         }

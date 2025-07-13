@@ -43,6 +43,8 @@ import de.omagh.core_infra.util.OnSwipeTouchListener;
 import de.omagh.core_infra.util.PermissionUtils;
 import timber.log.Timber;
 
+import com.google.ar.core.ArCoreApk;
+
 public class MeasureFragment extends Fragment {
     private MeasureViewModel mViewModel;
     @Inject
@@ -73,6 +75,11 @@ public class MeasureFragment extends Fragment {
     private boolean enableAROverlay = false;
     private de.omagh.core_infra.ar.AROverlayRenderer arOverlayRenderer;
     private TextView luxValue, ppfdValue, dliValue;
+
+    private boolean isArSupported() {
+        ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(requireContext());
+        return availability.isSupported();
+    }
 
     public static MeasureFragment newInstance() {
         return new MeasureFragment();
@@ -161,6 +168,11 @@ public class MeasureFragment extends Fragment {
         SwitchCompat arToggle = view.findViewById(R.id.arToggle);
         arToggle.setChecked(enableAROverlay);
         arToggle.setOnCheckedChangeListener((btn, checked) -> {
+            if (checked && !isArSupported()) {
+                android.widget.Toast.makeText(getContext(), R.string.device_not_supported, android.widget.Toast.LENGTH_LONG).show();
+                btn.setChecked(false);
+                return;
+            }
             enableAROverlay = checked;
             settingsManager.setArOverlayEnabled(checked);
             if (checked) {
@@ -210,9 +222,12 @@ public class MeasureFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this, viewModelFactory).get(MeasureViewModel.class);
 
-        if (enableAROverlay) {
+        if (enableAROverlay && isArSupported()) {
             arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);
             arOverlayRenderer.init();
+        } else if (enableAROverlay) {
+            android.widget.Toast.makeText(getContext(), R.string.device_not_supported, android.widget.Toast.LENGTH_LONG).show();
+            enableAROverlay = false;
         }
 
         // LiveData observers update card values

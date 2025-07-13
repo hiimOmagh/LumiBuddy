@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":core-data"))
     implementation(libs.dagger)
     implementation(libs.work.runtime)
+    implementation(libs.arcore)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

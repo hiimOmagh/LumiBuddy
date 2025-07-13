@@ -54,6 +54,10 @@ public class ArEntryActivity extends AppCompatActivity {
             return;
         }
 
+        if (!requestArInstall()) {
+            return;
+        }
+
         permissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
@@ -79,6 +83,17 @@ public class ArEntryActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private boolean requestArInstall() {
+        try {
+            ArCoreApk.InstallStatus status = ArCoreApk.getInstance().requestInstall(this, true);
+            return status != ArCoreApk.InstallStatus.INSTALL_REQUESTED;
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.device_not_supported, Toast.LENGTH_LONG).show();
+            finish();
+            return false;
+        }
     }
 
     private void setupScene() {
