@@ -27,7 +27,9 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
                 .application(this)
                 .build();
 
-        Timber.plant(new Timber.DebugTree());
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
         appComponent = DaggerAppComponent.factory()
                 .create(coreComponent);
         appComponent.inject(this);

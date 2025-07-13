@@ -19,8 +19,6 @@ retrofit = "3.0.0"
 mockito = "5.18.0"
 androidxTestCore = "1.6.1"
 dagger = "2.56.2"
-rxjava2 = "2.2.21"
-rxandroid2 = "2.1.1"
 rxjava3 = "3.1.11"
 rxandroid3 = "3.0.2"
 timber = "5.0.1"
@@ -69,8 +67,6 @@ converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito" }
 dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
 dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
-rxjava2 = { group = "io.reactivex.rxjava2", name = "rxjava", version.ref = "rxjava2" }
-rxandroid2 = { group = "io.reactivex.rxjava2", name = "rxandroid", version.ref = "rxandroid2" }
 rxjava3 = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxjava3" }
 rxandroid3 = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxandroid3" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
