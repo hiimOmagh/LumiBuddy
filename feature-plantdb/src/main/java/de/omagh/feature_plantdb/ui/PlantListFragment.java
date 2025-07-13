@@ -114,7 +114,15 @@ public class PlantListFragment extends Fragment {
 
         // Observe LiveData for plant list
         viewModel.getPlants().observe(getViewLifecycleOwner(), adapter::updatePlants);
-
+        viewModel.getSyncStatus().observe(getViewLifecycleOwner(), s -> {
+            if (s == de.omagh.core_infra.sync.SyncStatus.SYNCING) {
+                com.google.android.material.snackbar.Snackbar.make(recyclerView, "Syncing", com.google.android.material.snackbar.Snackbar.LENGTH_SHORT).show();
+            } else if (s == de.omagh.core_infra.sync.SyncStatus.ERROR) {
+                String msg = viewModel.getSyncError().getValue();
+                com.google.android.material.snackbar.Snackbar.make(recyclerView, "Sync failed: " + msg, com.google.android.material.snackbar.Snackbar.LENGTH_LONG).show();
+            }
+        });
+        viewModel.triggerSync();
         return view;
     }
 

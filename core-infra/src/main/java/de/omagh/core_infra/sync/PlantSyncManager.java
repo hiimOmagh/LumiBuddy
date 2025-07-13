@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import javax.inject.Inject;
 
 import de.omagh.core_domain.model.Plant;
@@ -13,6 +16,8 @@ import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_data.repository.firebase.FirestorePlantDao;
 import de.omagh.core_infra.firebase.FirebaseManager;
+import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.sync.SyncStatus;
 import timber.log.Timber;
 
 /**
@@ -27,15 +32,21 @@ public class PlantSyncManager {
     private final FirestorePlantDao cloudDao;
     private final PlantRepository localRepository;
     private final ExecutorService executor;
+    private final SettingsManager settings;
+
+    private final MutableLiveData<SyncStatus> status = new MutableLiveData<>(SyncStatus.IDLE);
+    private final MutableLiveData<String> error = new MutableLiveData<>();
 
     @Inject
     public PlantSyncManager(PlantRepository localRepository,
                             FirestorePlantDao cloudDao,
                             FirebaseManager firebaseManager,
+                            SettingsManager settingsManager,
                             AppExecutors executors) {
         this.localRepository = localRepository;
         this.cloudDao = cloudDao;
         this.firebaseManager = firebaseManager;
+        this.settings = settingsManager;
         this.executor = executors.single();
     }
 
@@ -86,6 +97,55 @@ public class PlantSyncManager {
 
     public interface MergeCallback {
         void mergeWithLocal(List<Plant> plants);
+    }
+
+    public LiveData<SyncStatus> getSyncStatus() {
+        return status;
+    }
+
+    public LiveData<String> getError() {
+        return error;
+    }
+
+    /**
+     * Triggers a full bidirectional sync.
+     */
+    public void sync() {
+        status.postValue(SyncStatus.SYNCING);
+        executor.execute(() -> {
+            try {
+                com.google.android.gms.tasks.Tasks.await(firebaseManager.signInAnonymously());
+                List<Plant> remote = cloudDao.getAllSync();
+                List<Plant> local = localRepository.getAllPlantsSync();
+                List<Plant> merged = resolveConflicts(local, remote);
+
+                Map<String, Plant> localMap = new HashMap<>();
+                if (local != null) {
+                    for (Plant p : local) {
+                        localMap.put(p.getId(), p);
+                    }
+                }
+                for (Plant p : remote) {
+                    Plant lp = localMap.get(p.getId());
+                    if (lp == null) {
+                        localRepository.insertPlant(p);
+                    } else if (!lp.getName().equals(p.getName()) ||
+                            !lp.getType().equals(p.getType()) ||
+                            (lp.getImageUri() != null && !lp.getImageUri().equals(p.getImageUri()))) {
+                        localRepository.updatePlant(p);
+                    }
+                }
+                for (Plant p : merged) {
+                    cloudDao.insert(p);
+                }
+                settings.setPlantLastSync(System.currentTimeMillis());
+                status.postValue(SyncStatus.SUCCESS);
+            } catch (Exception e) {
+                Timber.e(e);
+                error.postValue(e.getMessage());
+                status.postValue(SyncStatus.ERROR);
+            }
+        });
     }
 
     /**

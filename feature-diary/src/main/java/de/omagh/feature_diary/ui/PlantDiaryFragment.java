@@ -81,6 +81,15 @@ public class PlantDiaryFragment extends Fragment {
                 empty.setVisibility(View.GONE);
             }
         });
+        diaryViewModel.getSyncStatus().observe(getViewLifecycleOwner(), s -> {
+            if (s == de.omagh.core_infra.sync.SyncStatus.SYNCING) {
+                Snackbar.make(recyclerView, "Syncing", Snackbar.LENGTH_SHORT).show();
+            } else if (s == de.omagh.core_infra.sync.SyncStatus.ERROR) {
+                String msg = diaryViewModel.getSyncError().getValue();
+                Snackbar.make(recyclerView, "Sync failed: " + msg, Snackbar.LENGTH_LONG).show();
+            }
+        });
+        diaryViewModel.triggerSync();
 
         FloatingActionButton fab = view.findViewById(R.id.addDiaryEntryFab);
         fab.setOnClickListener(v -> showAddEntryDialog());

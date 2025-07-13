@@ -131,5 +131,8 @@
     </string-array>
 
     <string name="powered_by_plantid">Powered by Plant.id</string>
+    <string name="syncing">Synchronizing…</string>
+    <string name="sync_failed">Sync failed</string>
+    <string name="sync_complete">Sync complete</string>
 
 </resources>

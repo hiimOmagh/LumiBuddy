@@ -18,6 +18,8 @@ import de.omagh.core_data.plantdb.PlantInfo;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
+import de.omagh.core_infra.sync.PlantSyncManager;
+import de.omagh.core_infra.sync.SyncStatus;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
@@ -32,6 +34,10 @@ public class PlantListViewModel extends AndroidViewModel {
     PlantDatabaseManager sampleDb;
     @Inject
     PlantRepository repository;
+    @Inject
+    PlantSyncManager syncManager;
+    private LiveData<SyncStatus> syncStatus;
+    private LiveData<String> syncError;
     private LiveData<List<Plant>> plants;
 
     /**
@@ -43,12 +49,16 @@ public class PlantListViewModel extends AndroidViewModel {
     public PlantListViewModel(@NonNull Application application,
                               PlantInfoRepository infoRepository,
                               PlantDatabaseManager sampleDb,
-                              PlantRepository repository) {
+                              PlantRepository repository,
+                              PlantSyncManager syncManager) {
         super(application);
         this.infoRepository = infoRepository;
         this.sampleDb = sampleDb;
         this.repository = repository;
+        this.syncManager = syncManager;
         plants = repository.getAllPlants();
+        syncStatus = syncManager.getSyncStatus();
+        syncError = syncManager.getError();
     }
 
     /**
@@ -63,6 +73,18 @@ public class PlantListViewModel extends AndroidViewModel {
      */
     public LiveData<Plant> getPlantById(String id) {
         return repository.getPlant(id);
+    }
+
+    public LiveData<SyncStatus> getSyncStatus() {
+        return syncStatus;
+    }
+
+    public LiveData<String> getSyncError() {
+        return syncError;
+    }
+
+    public void triggerSync() {
+        syncManager.sync();
     }
 
     /**
