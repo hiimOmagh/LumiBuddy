@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.sceneform.core)
     implementation(libs.sceneform.ux)
     compileOnly(libs.jspecify)
+    testImplementation(libs.androidx.core.testing)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.work.testing)
     testImplementation(libs.mockito.core)
