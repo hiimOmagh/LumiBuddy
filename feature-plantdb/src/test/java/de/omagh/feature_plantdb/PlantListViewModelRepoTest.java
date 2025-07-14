@@ -20,6 +20,7 @@ import de.omagh.core_data.plantdb.PlantInfo;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
+import de.omagh.core_infra.sync.PlantSyncManager;
 import de.omagh.feature_plantdb.ui.PlantListViewModel;
 
 /**
@@ -32,6 +33,8 @@ public class PlantListViewModelRepoTest {
     PlantDatabaseManager db;
     @Mock
     PlantRepository repo;
+    @Mock
+    PlantSyncManager syncManager;
 
     private PlantListViewModel vm;
 
@@ -40,7 +43,9 @@ public class PlantListViewModelRepoTest {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
         Mockito.when(repo.getAllPlants()).thenReturn(new MutableLiveData<>(Collections.emptyList()));
-        vm = new PlantListViewModel(app, infoRepo, db, repo);
+        Mockito.when(syncManager.getSyncStatus()).thenReturn(new MutableLiveData<>());
+        Mockito.when(syncManager.getError()).thenReturn(new MutableLiveData<>());
+        vm = new PlantListViewModel(app, infoRepo, db, repo, syncManager);
     }
 
     @Test

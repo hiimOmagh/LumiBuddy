@@ -10,6 +10,7 @@ import androidx.test.core.app.ApplicationProvider;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.feature_diary.ui.DiaryViewModel;
+import de.omagh.core_infra.sync.DiarySyncManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,8 @@ import java.util.List;
 public class DiaryViewModelTest {
     @Mock
     DiaryRepository repository;
+    @Mock
+    DiarySyncManager syncManager;
 
     private DiaryViewModel vm;
 
@@ -31,7 +34,9 @@ public class DiaryViewModelTest {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
         Mockito.when(repository.getAllEntries()).thenReturn(new MutableLiveData<>(Collections.emptyList()));
-        vm = new DiaryViewModel(app, repository);
+        Mockito.when(syncManager.getSyncStatus()).thenReturn(new MutableLiveData<>());
+        Mockito.when(syncManager.getError()).thenReturn(new MutableLiveData<>());
+        vm = new DiaryViewModel(app, repository, syncManager);
     }
 
     @Test

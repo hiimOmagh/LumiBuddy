@@ -23,6 +23,7 @@ import de.omagh.feature_plantdb.ui.PlantListViewModel;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
+import de.omagh.core_infra.sync.PlantSyncManager;
 
 /**
  * Tests for {@link PlantListViewModel#getAllPlantInfo()} using a mocked database.
@@ -37,6 +38,9 @@ public class PlantListViewModelMockitoTest {
     @Mock
     PlantRepository repo;
 
+    @Mock
+    PlantSyncManager syncManager;
+
     private PlantListViewModel vm;
 
     @Before
@@ -45,7 +49,9 @@ public class PlantListViewModelMockitoTest {
         Application app = ApplicationProvider.getApplicationContext();
         LiveData<List<Plant>> dummy = new MutableLiveData<>(Collections.emptyList());
         Mockito.when(repo.getAllPlants()).thenReturn(dummy);
-        vm = new PlantListViewModel(app, infoRepo, db, repo);
+        Mockito.when(syncManager.getSyncStatus()).thenReturn(new MutableLiveData<>());
+        Mockito.when(syncManager.getError()).thenReturn(new MutableLiveData<>());
+        vm = new PlantListViewModel(app, infoRepo, db, repo, syncManager);
     }
 
     @Test
