@@ -120,6 +120,8 @@
         <item>light</item>
         <item>note</item>
         <item>recommendation</item>
+        <item>task_completed</item>
+        <item>ar_scan</item>
     </string-array>
     <!-- Lamp types -->
     <string-array name="lamp_types">

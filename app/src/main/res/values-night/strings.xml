@@ -31,5 +31,7 @@
         <item>light</item>
         <item>note</item>
         <item>recommendation</item>
+        <item>task_completed</item>
+        <item>ar_scan</item>
     </string-array>
 </resources>

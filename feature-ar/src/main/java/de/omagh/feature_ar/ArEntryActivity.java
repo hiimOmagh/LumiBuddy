@@ -2,6 +2,9 @@ package de.omagh.feature_ar;
 
 import android.Manifest;
 import android.graphics.Color;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +26,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 
 import de.omagh.core_domain.repository.MeasurementRepository;
+import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.util.PermissionUtils;
@@ -35,8 +40,14 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
  */
 public class ArEntryActivity extends AppCompatActivity {
 
+    public static final String EXTRA_PLANT_ID = "plant_id";
+
     @Inject
     MeasurementRepository measurementRepository;
+    @Inject
+    DiaryRepository diaryRepository;
+
+    private String plantId;
 
     private ArFragment arFragment;
     private ActivityResultLauncher<String> permissionLauncher;
@@ -48,6 +59,8 @@ public class ArEntryActivity extends AppCompatActivity {
 
         CoreComponent core = ((CoreComponentProvider) getApplicationContext()).getCoreComponent();
         DaggerArComponent.factory().create(core).inject(this);
+
+        plantId = getIntent().getStringExtra(EXTRA_PLANT_ID);
 
         if (!checkArSupport()) {
             finish();
@@ -130,6 +143,17 @@ public class ArEntryActivity extends AppCompatActivity {
                                 tv.setText(String.format(Locale.US, "%.1f lx", lux));
                                 int color = heatmapColor(lux);
                                 tv.setBackgroundColor(color);
+                                Uri screenshot = captureScreenshot();
+                                DiaryEntry entry = new DiaryEntry(
+                                        java.util.UUID.randomUUID().toString(),
+                                        plantId,
+                                        System.currentTimeMillis(),
+                                        "",
+                                        screenshot != null ? screenshot.toString() : "",
+                                        "ar_scan"
+                                );
+                                diaryRepository.insert(entry);
+                                Toast.makeText(this, R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
                             });
                 })
                 .exceptionally(t -> {
@@ -143,5 +167,25 @@ public class ArEntryActivity extends AppCompatActivity {
         int red = (int) (scaled * 255);
         int blue = 255 - red;
         return Color.argb(200, red, 0, blue);
+    }
+
+    private Uri captureScreenshot() {
+        try {
+            android.view.View view = getWindow().getDecorView().getRootView();
+            Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            view.draw(canvas);
+            java.io.File dir = new java.io.File(getFilesDir(), "images");
+            if (!dir.exists()) dir.mkdirs();
+            java.io.File file = java.io.File.createTempFile("ar_", ".png", dir);
+            try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                out.flush();
+            }
+            return Uri.fromFile(file);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

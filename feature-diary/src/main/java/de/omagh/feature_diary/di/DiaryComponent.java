@@ -4,6 +4,7 @@ import dagger.Component;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.FeatureScope;
 import de.omagh.feature_diary.ui.DiaryViewModel;
+import de.omagh.feature_diary.ui.TaskViewModel;
 
 @FeatureScope
 @Component(
@@ -12,6 +13,8 @@ import de.omagh.feature_diary.ui.DiaryViewModel;
 )
 public interface DiaryComponent {
     void inject(DiaryViewModel vm);
+
+    void inject(TaskViewModel vm);
 
     @Component.Factory
     interface Factory {

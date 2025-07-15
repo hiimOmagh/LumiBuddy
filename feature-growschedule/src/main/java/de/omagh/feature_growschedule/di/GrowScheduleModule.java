@@ -8,6 +8,8 @@ import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_data.repository.TaskRepository;
+import de.omagh.core_data.repository.TaskDataSource;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.util.AppExecutors;
@@ -24,6 +26,11 @@ public abstract class GrowScheduleModule {
     @Provides
     static DiaryRepository provideDiaryRepository(AppDatabase db, AppExecutors executors) {
         return new DiaryRepository(db.diaryDao(), executors);
+    }
+
+    @Provides
+    static TaskRepository provideTaskRepository(AppDatabase db, AppExecutors executors) {
+        return new TaskRepository(db.taskDao(), executors);
     }
 
     @Provides
@@ -50,4 +57,7 @@ public abstract class GrowScheduleModule {
 
     @Binds
     abstract DiaryDataSource bindDiaryRepository(DiaryRepository repo);
+
+    @Binds
+    abstract TaskDataSource bindTaskRepository(TaskRepository repo);
 }

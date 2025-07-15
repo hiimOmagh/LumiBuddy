@@ -23,7 +23,7 @@ import de.omagh.core_data.model.DiaryEntry;
 /**
  * Adapter for displaying a list of DiaryEntry items in a RecyclerView (growth timeline).
  */
-public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, DiaryEntryAdapter.DiaryViewHolder> {
+public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.ViewHolder> {
 
     private static final DiffUtil.ItemCallback<DiaryEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
@@ -46,16 +46,34 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, DiaryEntryAdapter
 
     @NonNull
     @Override
-    public DiaryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (viewType == 1) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_diary_ar_scan, parent, false);
+            return new ArScanViewHolder(view);
+        }
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_diary_entry, parent, false);
         return new DiaryViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DiaryViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         DiaryEntry entry = getItem(position);
-        holder.bind(entry);
+        if (holder instanceof ArScanViewHolder) {
+            ((ArScanViewHolder) holder).bind(entry);
+        } else if (holder instanceof DiaryViewHolder) {
+            ((DiaryViewHolder) holder).bind(entry);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        DiaryEntry entry = getItem(position);
+        if ("ar_scan".equals(entry.getEventType())) {
+            return 1;
+        }
+        return 0;
     }
 
     static class DiaryViewHolder extends RecyclerView.ViewHolder {
@@ -94,6 +112,27 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, DiaryEntryAdapter
                 }
             } else {
                 imageView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    static class ArScanViewHolder extends RecyclerView.ViewHolder {
+        final ImageView imageView;
+
+        ArScanViewHolder(@NonNull View itemView) {
+            super(itemView);
+            imageView = itemView.findViewById(R.id.arImage);
+        }
+
+        void bind(DiaryEntry entry) {
+            if (entry.getImageUri() != null && !entry.getImageUri().isEmpty()) {
+                try {
+                    imageView.setImageURI(Uri.parse(entry.getImageUri()));
+                } catch (Exception e) {
+                    imageView.setImageResource(R.drawable.ic_eco);
+                }
+            } else {
+                imageView.setImageResource(R.drawable.ic_eco);
             }
         }
     }

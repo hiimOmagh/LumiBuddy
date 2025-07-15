@@ -16,10 +16,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_data.model.Task;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_data.repository.TaskDataSource;
+import de.omagh.core_data.repository.TaskRepository;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
 import de.omagh.core_infra.recommendation.WateringScheduler;
 
@@ -38,6 +41,8 @@ public class HomeViewModel extends AndroidViewModel {
     private final DiaryDataSource diaryRepository;
     private final RecommendationEngine recommendationEngine;
     private final WateringScheduler wateringScheduler;
+    private final TaskDataSource taskRepository;
+    private final LiveData<List<Task>> pendingTasks;
     private final LiveData<List<Plant>> plantsLiveData;
     private final MutableLiveData<List<String>> reminders = new MutableLiveData<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -50,13 +55,16 @@ public class HomeViewModel extends AndroidViewModel {
     public HomeViewModel(Application application,
                          PlantDataSource plantRepository,
                          DiaryDataSource diaryRepository,
+                         TaskDataSource taskRepository,
                          RecommendationEngine engine,
                          WateringScheduler scheduler) {
         super(application);
         this.diaryRepository = diaryRepository;
+        this.taskRepository = taskRepository;
         this.recommendationEngine = engine;
         this.wateringScheduler = scheduler;
         plantsLiveData = plantRepository.getAllPlants();
+        pendingTasks = taskRepository.getPendingTasks();
         plantsLiveData.observeForever(this::launchChecks);
     }
 
@@ -123,11 +131,18 @@ public class HomeViewModel extends AndroidViewModel {
         return reminders;
     }
 
+    public LiveData<List<Task>> getPendingTasks() {
+        return pendingTasks;
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
         if (diaryRepository instanceof DiaryRepository) {
             ((DiaryRepository) diaryRepository).shutdown();
+        }
+        if (taskRepository instanceof TaskRepository) {
+            ((TaskRepository) taskRepository).shutdown();
         }
         wateringScheduler.shutdown();
         recommendationEngine.shutdown();

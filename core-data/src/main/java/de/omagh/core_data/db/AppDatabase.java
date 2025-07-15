@@ -15,6 +15,7 @@ import de.omagh.core_data.model.GrowLightProfile;
 import de.omagh.core_data.model.PlantCareProfileEntity;
 import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_data.model.Plant;
+import de.omagh.core_data.model.Task;
 
 @Database(
         entities = {
@@ -23,9 +24,10 @@ import de.omagh.core_data.model.Plant;
                 GrowLightProfile.class,
                 PlantSpecies.class,
                 PlantCareProfileEntity.class,
-                GrowLightProduct.class
+                GrowLightProduct.class,
+                Task.class
         },
-        version = 5,
+        version = 6,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {
@@ -70,4 +72,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract PlantCareProfileDao plantCareProfileDao();
 
     public abstract GrowLightProductDao growLightProductDao();
+
+    public abstract TaskDao taskDao();
 }

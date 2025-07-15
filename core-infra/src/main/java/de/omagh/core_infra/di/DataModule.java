@@ -9,10 +9,13 @@ import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_data.db.DiaryDao;
+import de.omagh.core_data.db.TaskDao;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_data.repository.TaskDataSource;
+import de.omagh.core_data.repository.TaskRepository;
 import de.omagh.core_data.repository.firebase.FirebaseDiaryRepository;
 import de.omagh.core_data.repository.firebase.FirebasePlantRepository;
 import de.omagh.core_data.repository.firebase.FirestorePlantDao;
@@ -56,8 +59,18 @@ public abstract class DataModule {
     }
 
     @Provides
+    static TaskDao provideTaskDao(AppDatabase db) {
+        return db.taskDao();
+    }
+
+    @Provides
     static DiaryRepository provideDiaryRepository(DiaryDao dao, AppExecutors executors) {
         return new DiaryRepository(dao, executors);
+    }
+
+    @Provides
+    static TaskRepository provideTaskRepository(TaskDao dao, AppExecutors executors) {
+        return new TaskRepository(dao, executors);
     }
 
     @Provides
@@ -81,4 +94,7 @@ public abstract class DataModule {
     @Binds
     @Remote
     abstract DiaryDataSource bindRemoteDiaryRepository(FirebaseDiaryRepository impl);
+
+    @Binds
+    abstract TaskDataSource bindTaskRepository(TaskRepository impl);
 }
