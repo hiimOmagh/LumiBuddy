@@ -1,6 +1,10 @@
 android {
-    packagingOptions {
-        pickFirst 'META-INF/*'
-        pickFirst '**/libflatbuffers.so'
+    packaging {
+        resources {
+            pickFirsts += [
+                    'META-INF/*',
+                    '**/libflatbuffers.so'
+            ]
+        }
     }
 }
