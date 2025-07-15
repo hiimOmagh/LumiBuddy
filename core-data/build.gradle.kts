@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
+apply(from = rootProject.file("gradle/packaging-options.gradle"))
+
 android {
     namespace = "de.omagh.core_data"
     compileSdk = 35

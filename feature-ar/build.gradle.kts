@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
+apply(from = rootProject.file("gradle/packaging-options.gradle"))
+
 android {
     namespace = "de.omagh.feature_ar"
     compileSdk = 35
@@ -25,6 +27,10 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    packagingOptions {
+        pickFirst("**/com/google/flatbuffers/**")
     }
 }
 

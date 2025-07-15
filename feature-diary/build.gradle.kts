@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
 }
 
+apply(from = rootProject.file("gradle/packaging-options.gradle"))
+
 android {
     namespace = "de.omagh.feature_diary"
     compileSdk = 35

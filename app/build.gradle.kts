@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+apply(from = rootProject.file("gradle/packaging-options.gradle"))
+
 android {
     namespace = "de.omagh.lumibuddy"
     compileSdk = 35
