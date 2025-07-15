@@ -23,6 +23,9 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
     @Override
     public void onCreate() {
         super.onCreate();
+        // Initialize Firebase so FirebaseAuth and Firestore can be used
+        // even when the google-services Gradle plugin is not applied.
+        com.google.firebase.FirebaseApp.initializeApp(this);
         coreComponent = DaggerCoreComponent.builder()
                 .application(this)
                 .build();
