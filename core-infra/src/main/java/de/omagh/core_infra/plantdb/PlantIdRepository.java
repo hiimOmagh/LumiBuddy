@@ -46,6 +46,12 @@ public class PlantIdRepository {
         this.executor = executors.single();
     }
 
+    // Constructor for tests
+    public PlantIdRepository(PlantIdService service, ExecutorService executor) {
+        this.service = service;
+        this.executor = executor;
+    }
+
     /**
      * Identify a plant from an image bitmap.
      */
