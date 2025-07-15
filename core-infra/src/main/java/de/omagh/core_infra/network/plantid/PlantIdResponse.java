@@ -8,22 +8,31 @@ import java.util.List;
  * Response model for Plant.id identification results.
  */
 public class PlantIdResponse {
+    @SerializedName("model_version")
+    private String modelVersion;
+
     private List<Suggestion> suggestions;
+
+    public String getModelVersion() {
+        return modelVersion;
+    }
 
     public List<Suggestion> getSuggestions() {
         return suggestions;
     }
 
     public static class Suggestion {
-        @SerializedName("plant_name")
-        private String plantName;
-        @SerializedName("probability")
+        private String name;
         private double probability;
-        @SerializedName("plant_details")
+
+        @SerializedName("details")
         private PlantDetails plantDetails;
 
-        public String getPlantName() {
-            return plantName;
+        @SerializedName("similar_images")
+        private List<SimilarImage> similarImages;
+
+        public String getName() {
+            return name;
         }
 
         public double getProbability() {
@@ -33,6 +42,10 @@ public class PlantIdResponse {
         public PlantDetails getPlantDetails() {
             return plantDetails;
         }
+
+        public List<SimilarImage> getSimilarImages() {
+            return similarImages;
+        }
     }
 
     public static class PlantDetails {
@@ -41,6 +54,14 @@ public class PlantIdResponse {
 
         public List<String> getCommonNames() {
             return commonNames;
+        }
+    }
+
+    public static class SimilarImage {
+        private String url;
+
+        public String getUrl() {
+            return url;
         }
     }
 }

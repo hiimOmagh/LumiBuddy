@@ -28,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Repository wrapping Plant.id API for photo identification.
  */
 public class PlantIdRepository {
-    private static final String BASE_URL = "https://api.plant.id/v2/";
+    private static final String BASE_URL = "https://api.plant.id/";
     private static final String API_KEY = BuildConfig.PLANT_ID_API_KEY;
     private final PlantIdService service;
     private final ExecutorService executor;
@@ -56,12 +56,12 @@ public class PlantIdRepository {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
                 String base64 = Base64.encodeToString(out.toByteArray(), Base64.NO_WRAP);
-                PlantIdRequest request = new PlantIdRequest(Collections.singletonList(base64));
+                PlantIdRequest request = new PlantIdRequest(Collections.singletonList(base64), false);
                 Call<PlantIdResponse> call = service.identify(request);
                 Response<PlantIdResponse> resp = call.execute();
                 if (resp.isSuccessful() && resp.body() != null && !resp.body().getSuggestions().isEmpty()) {
                     PlantIdResponse.Suggestion best = resp.body().getSuggestions().get(0);
-                    String sci = best.getPlantName();
+                    String sci = best.getName();
                     String common = sci;
                     if (best.getPlantDetails() != null && best.getPlantDetails().getCommonNames() != null
                             && !best.getPlantDetails().getCommonNames().isEmpty()) {

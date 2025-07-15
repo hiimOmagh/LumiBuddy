@@ -48,6 +48,9 @@ dependencies {
     implementation(project(":feature-plantdb"))
     implementation(project(":feature-diary"))
     implementation(project(":feature-growschedule"))
+
+    implementation(libs.image.labeling.custom)
+
     // Material Design
     implementation(libs.material)
     // Navigation
