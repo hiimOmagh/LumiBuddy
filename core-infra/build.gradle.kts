@@ -67,8 +67,12 @@ dependencies {
     implementation(libs.tensorflow.lite)
     implementation(libs.arcore)
     implementation(libs.timber)
-    implementation(libs.sceneform.core)
-    implementation(libs.sceneform.ux)
+    implementation(libs.sceneform.core) {
+        exclude("com.google.flatbuffers", "flatbuffers-java")
+    }
+    implementation(libs.sceneform.ux) {
+        exclude("com.google.flatbuffers", "flatbuffers-java")
+    }
     compileOnly(libs.jspecify)
     testImplementation(libs.androidx.core.testing)
     testImplementation(libs.androidx.test.core)

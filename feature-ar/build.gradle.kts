@@ -33,8 +33,12 @@ dependencies {
     implementation(project(":core-infra"))
     implementation(project(":core-data"))
     implementation(libs.arcore)
-    implementation(libs.sceneform.core)
-    implementation(libs.sceneform.ux)
+    implementation(libs.sceneform.core) {
+        exclude("com.google.flatbuffers", "flatbuffers-java")
+    }
+    implementation(libs.sceneform.ux) {
+        exclude("com.google.flatbuffers", "flatbuffers-java")
+    }
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava3)
