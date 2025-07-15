@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation(project(":core-domain"))
     implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
     implementation(libs.androidx.lifecycle.livedata)
 
     implementation(libs.appcompat)
