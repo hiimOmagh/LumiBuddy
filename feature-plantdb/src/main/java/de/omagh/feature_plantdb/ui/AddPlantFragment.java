@@ -286,11 +286,11 @@ public class AddPlantFragment extends Fragment {
 
     private void identifyWithApi(Bitmap bmp) {
         Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
-        addPlantViewModel.identifyPlant(bmp).observe(getViewLifecycleOwner(), result -> {
-            if (result != null) {
-                nameInput.setText(result);
-                typeInput.setText(result);
-                Toast.makeText(getContext(), "Identified locally", Toast.LENGTH_SHORT).show();
+        addPlantViewModel.identifyPlantWithApi(bmp).observe(getViewLifecycleOwner(), suggestion -> {
+            if (suggestion != null) {
+                nameInput.setText(suggestion.getCommonName());
+                typeInput.setText(suggestion.getScientificName());
+                Toast.makeText(getContext(), "Identified with Plant.id", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getContext(), "Identification failed", Toast.LENGTH_SHORT).show();
             }

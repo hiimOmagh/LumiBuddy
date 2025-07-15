@@ -1,0 +1,7 @@
+# Copy this file to local.properties and fill in the values
+# Path to your Android SDK
+sdk.dir=/path/to/Android/sdk
+# API keys for external services
+PLANT_API_KEY=
+PLANT_ID_API_KEY=
+GROW_LIGHT_API_KEY=
