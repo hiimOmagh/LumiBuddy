@@ -19,6 +19,7 @@ import de.omagh.core_data.model.PlantSpecies;
 import de.omagh.core_infra.network.PlantApiService;
 import de.omagh.core_infra.network.PlantIdApiService;
 import de.omagh.core_infra.network.RetrofitClient;
+import de.omagh.core_infra.BuildConfig;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -35,8 +36,8 @@ public class PlantInfoRepository {
     private final PlantSpeciesDao speciesDao;
     private final PlantCareProfileDao profileDao;
     private final ExecutorService executor;
-    private final String apiKey = "YOUR_API_KEY"; // documented in README
-    private final String idApiKey = "YOUR_PLANT_ID_KEY";
+    private final String apiKey = BuildConfig.PLANT_API_KEY;
+    private final String idApiKey = BuildConfig.PLANT_ID_API_KEY;
 
     public PlantInfoRepository(Context context) {
         this(RetrofitClient.getInstance().create(PlantApiService.class),

@@ -14,6 +14,7 @@ import de.omagh.core_data.db.GrowLightProductDao;
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.core_infra.network.GrowLightApiService;
 import de.omagh.core_infra.network.RetrofitClient;
+import de.omagh.feature_measurement.BuildConfig;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -25,7 +26,7 @@ public class GrowLightProductRepository {
     private final GrowLightApiService apiService;
     private final GrowLightProductDao productDao;
     private final ExecutorService executor;
-    private final String apiKey = "YOUR_API_KEY";
+    private final String apiKey = BuildConfig.GROW_LIGHT_API_KEY;
 
     public GrowLightProductRepository(Context context) {
         this(RetrofitClient.getInstance().create(GrowLightApiService.class),

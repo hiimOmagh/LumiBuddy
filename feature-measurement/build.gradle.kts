@@ -6,8 +6,18 @@ android {
     namespace = "de.omagh.feature_measurement"
     compileSdk = 35
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     defaultConfig {
         minSdk = 28
+
+        buildConfigField(
+            "String",
+            "GROW_LIGHT_API_KEY",
+            "\"${project.findProperty("GROW_LIGHT_API_KEY") ?: ""}\""
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
