@@ -10,6 +10,7 @@ import androidx.test.core.app.ApplicationProvider;
 
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.shared_ml.PlantIdentifier;
+import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 
@@ -31,7 +32,7 @@ public class AddPlantViewModelTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
-        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>("id"));
+        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new Prediction("id", 0.9f)));
         Mockito.when(idRepo.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new PlantIdSuggestion("c", "s")));
         vm = new AddPlantViewModel(app, identifier, idRepo);
     }
@@ -45,7 +46,7 @@ public class AddPlantViewModelTest {
     @Test
     public void identifyPlantWithApi_usesRepositoryWhenUnknown() {
         Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        MutableLiveData<String> local = new MutableLiveData<>("Unknown");
+        MutableLiveData<Prediction> local = new MutableLiveData<>(new Prediction(null, 0.1f));
         Mockito.when(identifier.identifyPlant(bmp)).thenReturn(local);
         MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("rose", "rosa"));
         Mockito.when(idRepo.identifyPlant(bmp)).thenReturn(remote);

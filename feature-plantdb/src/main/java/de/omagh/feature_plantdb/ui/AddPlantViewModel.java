@@ -7,9 +7,11 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import javax.inject.Inject;
 
+import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
@@ -25,6 +27,8 @@ public class AddPlantViewModel extends AndroidViewModel {
     @Inject
     PlantIdRepository plantIdRepository;
 
+    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
+
     @Inject
     public AddPlantViewModel(@NonNull Application application,
                              PlantIdentifier plantIdentifier,
@@ -34,7 +38,11 @@ public class AddPlantViewModel extends AndroidViewModel {
         this.plantIdRepository = plantIdRepository;
     }
 
-    public LiveData<String> identifyPlant(Bitmap bitmap) {
+    public LiveData<PlantIdSuggestion> getIdentificationResult() {
+        return identificationResult;
+    }
+
+    public LiveData<Prediction> identifyPlant(Bitmap bitmap) {
         return plantIdentifier.identifyPlant(bitmap);
     }
 
@@ -43,20 +51,21 @@ public class AddPlantViewModel extends AndroidViewModel {
      * the local classifier returns "Unknown".
      */
     public LiveData<PlantIdSuggestion> identifyPlantWithApi(Bitmap bitmap) {
-        MediatorLiveData<PlantIdSuggestion> result = new MediatorLiveData<>();
-        LiveData<String> local = plantIdentifier.identifyPlant(bitmap);
-        result.addSource(local, label -> {
-            result.removeSource(local);
-            if ("Unknown".equals(label)) {
+        identificationResult.setValue(null);
+        LiveData<Prediction> local = plantIdentifier.identifyPlant(bitmap);
+        identificationResult.addSource(local, prediction -> {
+            identificationResult.removeSource(local);
+            if (prediction == null || prediction.getLabel() == null) {
                 LiveData<PlantIdSuggestion> remote = plantIdRepository.identifyPlant(bitmap);
-                result.addSource(remote, suggestion -> {
-                    result.postValue(suggestion);
-                    result.removeSource(remote);
+                identificationResult.addSource(remote, suggestion -> {
+                    identificationResult.postValue(suggestion);
+                    identificationResult.removeSource(remote);
                 });
             } else {
-                result.postValue(new PlantIdSuggestion(label, label));
+                identificationResult.postValue(new PlantIdSuggestion(prediction.getLabel(), prediction.getLabel()));
+
             }
         });
-        return result;
+        return identificationResult;
     }
 }

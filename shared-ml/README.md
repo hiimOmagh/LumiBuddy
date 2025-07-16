@@ -14,7 +14,7 @@ The model is supplied by a `ModelProvider` which abstracts where the
 ```java
 ModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
 PlantIdentifier identifier = new PlantIdentifier(context, provider, executors);
-LiveData<String> result = identifier.identifyPlant(bitmap);
+LiveData<PlantIdentifier.Prediction> result = identifier.identifyPlant(bitmap);
 ```
 
 Any other `ModelProvider` implementation can be supplied, e.g. one that

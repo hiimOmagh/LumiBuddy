@@ -19,18 +19,25 @@ import de.omagh.shared_ml.ModelProvider;
  * Simple on-device plant identifier backed by a TensorFlow Lite model.
  */
 public class PlantIdentifier {
+    private static final float DEFAULT_THRESHOLD = 0.7f;
+    private final float threshold;
+
     private final Interpreter interpreter;
     private final ExecutorService executor;
     private final int inputSize = 224;
     private final String[] labels = {"Unknown", "Plant"};
-
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
+        this(context, provider, executors, DEFAULT_THRESHOLD);
+    }
+
+    public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors, float threshold) {
         ByteBuffer model = provider.loadModel(context);
         interpreter = new Interpreter(model);
         this.executor = executors.single();
+        this.threshold = threshold;
     }
 
-    private String run(Bitmap bitmap) {
+    private Prediction run(Bitmap bitmap) {
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true);
         ByteBuffer buf = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
         buf.order(ByteOrder.nativeOrder());
@@ -53,15 +60,42 @@ public class PlantIdentifier {
                 best = i;
             }
         }
-        return labels[best];
+        if (bestScore < DEFAULT_THRESHOLD) {
+            return "Unknown";
+        }
+        return new Prediction(labels[best], bestScore);
     }
 
     /**
      * Identify the plant in the given image asynchronously.
      */
-    public LiveData<String> identifyPlant(Bitmap bitmap) {
-        MutableLiveData<String> result = new MutableLiveData<>();
-        executor.execute(() -> result.postValue(run(bitmap)));
+    public LiveData<Prediction> identifyPlant(Bitmap bitmap) {
+        MutableLiveData<Prediction> result = new MutableLiveData<>();
+        executor.execute(() -> {
+            Prediction pred = run(bitmap);
+            if (pred.getConfidence() < threshold) {
+                pred = new Prediction(null, pred.getConfidence());
+            }
+            result.postValue(pred);
+        });
         return result;
+    }
+
+    public static class Prediction {
+        private final String label;
+        private final float confidence;
+
+        public Prediction(String label, float confidence) {
+            this.label = label;
+            this.confidence = confidence;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public float getConfidence() {
+            return confidence;
+        }
     }
 }

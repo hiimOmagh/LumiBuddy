@@ -37,9 +37,7 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_plantdb.R;
 import de.omagh.core_infra.ar.DummyARGrowthTracker;
 import de.omagh.core_infra.ml.BasicHealthStatusClassifier;
-import de.omagh.core_infra.ml.BasicPlantClassifier;
 import de.omagh.core_infra.ml.HealthStatusClassifier;
-import de.omagh.core_infra.ml.PlantClassifier;
 import de.omagh.core_infra.util.PermissionUtils;
 import timber.log.Timber;
 
@@ -63,7 +61,6 @@ public class AddPlantFragment extends Fragment {
     private Uri selectedImageUri = null;
     private String existingPlantId = null;
     // ML plant recognition
-    private PlantClassifier plantClassifier;
     private HealthStatusClassifier healthClassifier;
     private DummyARGrowthTracker growthTracker;
     private SwitchCompat mlToggle;
@@ -78,7 +75,6 @@ public class AddPlantFragment extends Fragment {
                         android.graphics.Bitmap bmp = android.graphics.ImageDecoder.decodeBitmap(
                                 android.graphics.ImageDecoder.createSource(
                                         requireActivity().getContentResolver(), selectedImageUri));
-                        recognizePlant(bmp);
                         identifyWithApi(bmp);
                         if (healthClassifier != null) {
                             healthClassifier.classify(bmp);
@@ -96,7 +92,6 @@ public class AddPlantFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bmp -> {
                 if (bmp != null) {
                     imagePreview.setImageBitmap(bmp);
-                    recognizePlant(bmp);
                     identifyWithApi(bmp);
                     if (healthClassifier != null) {
                         healthClassifier.classify(bmp);
@@ -157,7 +152,6 @@ public class AddPlantFragment extends Fragment {
         mlToggle.setChecked(sm.isMlFeaturesEnabled());
         arGrowthToggle.setChecked(sm.isArOverlayEnabled());
         if (mlToggle.isChecked()) {
-            plantClassifier = new de.omagh.core_infra.ml.OnDevicePlantClassifier(requireContext());
             healthClassifier = new BasicHealthStatusClassifier();
         }
         if (arGrowthToggle.isChecked()) {
@@ -168,11 +162,9 @@ public class AddPlantFragment extends Fragment {
         mlToggle.setOnCheckedChangeListener((b, checked) -> {
             sm.setMlFeaturesEnabled(checked);
             if (checked) {
-                plantClassifier = new de.omagh.core_infra.ml.OnDevicePlantClassifier(requireContext());
                 healthClassifier = new BasicHealthStatusClassifier();
                 Toast.makeText(getContext(), "ML features enabled", Toast.LENGTH_SHORT).show();
             } else {
-                plantClassifier = null;
                 healthClassifier = null;
             }
         });
@@ -244,23 +236,6 @@ public class AddPlantFragment extends Fragment {
         });
     }
 
-    private void recognizePlant(android.graphics.Bitmap bitmap) {
-        if (plantClassifier == null) return;
-        plantClassifier.classify(bitmap);
-        String result = plantClassifier.getLastResult();
-        if ("Unknown".equals(result)) {
-            identifyWithApi(bitmap);
-            return;
-        }
-        android.widget.Toast.makeText(getContext(), "Recognized: " + result,
-                android.widget.Toast.LENGTH_SHORT).show();
-        if (!android.text.TextUtils.isEmpty(result)) {
-            nameInput.setText(result);
-            typeInput.setText(result);
-            performPlantSearch();
-        }
-    }
-
     private void performPlantSearch() {
         String query = nameInput.getText().toString().trim();
         plantListViewModel.searchPlantInfo(query).observe(getViewLifecycleOwner(), results -> {
@@ -286,7 +261,9 @@ public class AddPlantFragment extends Fragment {
 
     private void identifyWithApi(Bitmap bmp) {
         Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
-        addPlantViewModel.identifyPlantWithApi(bmp).observe(getViewLifecycleOwner(), suggestion -> {
+        addPlantViewModel.identifyPlantWithApi(bmp);
+        addPlantViewModel.getIdentificationResult().removeObservers(getViewLifecycleOwner());
+        addPlantViewModel.getIdentificationResult().observe(getViewLifecycleOwner(), suggestion -> {
             if (suggestion != null) {
                 nameInput.setText(suggestion.getCommonName());
                 typeInput.setText(suggestion.getScientificName());
