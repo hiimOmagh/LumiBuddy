@@ -77,6 +77,10 @@ public class DiaryViewModel extends AndroidViewModel {
         repository.insert(entry);
     }
 
+    public void updateEntry(DiaryEntry entry) {
+        repository.update(entry);
+    }
+
     public void deleteEntry(DiaryEntry entry) {
         repository.delete(entry);
     }

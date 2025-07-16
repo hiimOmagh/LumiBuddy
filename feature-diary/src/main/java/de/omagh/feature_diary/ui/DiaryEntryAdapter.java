@@ -25,6 +25,13 @@ import de.omagh.core_data.model.DiaryEntry;
  */
 public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.ViewHolder> {
 
+    private final OnEntryInteractionListener listener;
+
+    public DiaryEntryAdapter(OnEntryInteractionListener listener) {
+        super(DIFF_CALLBACK);
+        this.listener = listener;
+    }
+
     private static final DiffUtil.ItemCallback<DiaryEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areItemsTheSame(@NonNull DiaryEntry oldItem, @NonNull DiaryEntry newItem) {
@@ -40,8 +47,10 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
         }
     };
 
-    public DiaryEntryAdapter() {
-        super(DIFF_CALLBACK);
+    public interface OnEntryInteractionListener {
+        void onEdit(DiaryEntry entry);
+
+        void onDelete(DiaryEntry entry);
     }
 
     @Override
@@ -112,6 +121,14 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
             } else {
                 imageView.setVisibility(View.GONE);
             }
+
+            if (listener != null) {
+                itemView.setOnClickListener(v -> listener.onEdit(entry));
+                itemView.setOnLongClickListener(v -> {
+                    listener.onDelete(entry);
+                    return true;
+                });
+            }
         }
     }
 
@@ -132,6 +149,14 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
                 }
             } else {
                 imageView.setImageResource(R.drawable.ic_eco);
+            }
+
+            if (listener != null) {
+                itemView.setOnClickListener(v -> listener.onEdit(entry));
+                itemView.setOnLongClickListener(v -> {
+                    listener.onDelete(entry);
+                    return true;
+                });
             }
         }
     }

@@ -104,6 +104,7 @@ public class HomeFragment extends Fragment {
                         notifPermissionLauncher);
             } else {
                 try {
+                    new de.omagh.core_infra.recommendation.WateringWorkScheduler(requireContext()).scheduleDaily();
                     viewModel.refresh();
                 } catch (SecurityException ignored) {
                     // Permission might still be missing

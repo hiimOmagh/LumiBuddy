@@ -50,4 +50,18 @@ public class DiaryViewModelTest {
         vm.addEntry(e);
         Mockito.verify(repository).insert(e);
     }
+
+    @Test
+    public void updateEntry_delegatesToRepo() {
+        DiaryEntry e = new DiaryEntry("2", "p1", 0L, "", "", "e");
+        vm.updateEntry(e);
+        Mockito.verify(repository).update(e);
+    }
+
+    @Test
+    public void deleteEntry_delegatesToRepo() {
+        DiaryEntry e = new DiaryEntry("3", "p1", 0L, "", "", "e");
+        vm.deleteEntry(e);
+        Mockito.verify(repository).delete(e);
+    }
 }

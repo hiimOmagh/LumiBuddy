@@ -57,6 +57,13 @@ public class PlantLogManager {
     }
 
     /**
+     * Updates an existing diary entry.
+     */
+    public void updateEntry(DiaryEntry entry) {
+        repository.update(entry);
+    }
+
+    /**
      * Deletes the given diary entry.
      */
     public void deleteEntry(DiaryEntry entry) {

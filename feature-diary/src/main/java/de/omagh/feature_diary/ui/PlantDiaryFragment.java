@@ -64,7 +64,24 @@ public class PlantDiaryFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.diaryRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.addItemDecoration(new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL));
-        adapter = new DiaryEntryAdapter();
+        adapter = new DiaryEntryAdapter(new DiaryEntryAdapter.OnEntryInteractionListener() {
+            @Override
+            public void onEdit(DiaryEntry entry) {
+                DiaryEntryDialog.edit(requireContext(), entry, edited -> {
+                    diaryViewModel.updateEntry(edited);
+                    Snackbar.make(requireView(), R.string.edit_diary_entry, Snackbar.LENGTH_SHORT).show();
+                });
+            }
+
+            @Override
+            public void onDelete(DiaryEntry entry) {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setMessage(R.string.delete_diary_entry)
+                        .setPositiveButton(R.string.delete, (d, w) -> diaryViewModel.deleteEntry(entry))
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show();
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         diaryViewModel = new ViewModelProvider(this,

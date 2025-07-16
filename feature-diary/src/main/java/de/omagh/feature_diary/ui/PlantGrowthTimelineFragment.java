@@ -78,7 +78,21 @@ public class PlantGrowthTimelineFragment extends Fragment {
         // Setup RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.growthTimelineRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        DiaryEntryAdapter adapter = new DiaryEntryAdapter();
+        DiaryEntryAdapter adapter = new DiaryEntryAdapter(new DiaryEntryAdapter.OnEntryInteractionListener() {
+            @Override
+            public void onEdit(DiaryEntry entry) {
+                DiaryEntryDialog.edit(requireContext(), entry, edited -> diaryViewModel.updateEntry(edited));
+            }
+
+            @Override
+            public void onDelete(DiaryEntry entry) {
+                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                        .setMessage(R.string.delete_diary_entry)
+                        .setPositiveButton(R.string.delete, (d, w) -> diaryViewModel.deleteEntry(entry))
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show();
+            }
+        });
         recyclerView.setAdapter(adapter);
 
         // ViewModel

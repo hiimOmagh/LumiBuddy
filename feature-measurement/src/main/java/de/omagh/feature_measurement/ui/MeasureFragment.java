@@ -99,7 +99,7 @@ public class MeasureFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
         settingsManager = new SettingsManager(requireContext());
-        enableAROverlay = settingsManager.isArOverlayEnabled();
+        enableAROverlay = settingsManager.isArMeasureOverlayEnabled();
         if (settingsManager.isMlFeaturesEnabled()) {
             lampTypeClassifier = new BasicLampTypeClassifier();
         }
@@ -174,7 +174,7 @@ public class MeasureFragment extends Fragment {
                 return;
             }
             enableAROverlay = checked;
-            settingsManager.setArOverlayEnabled(checked);
+            settingsManager.setArMeasureOverlayEnabled(checked);
             if (checked) {
                 if (arOverlayRenderer == null) {
                     arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);

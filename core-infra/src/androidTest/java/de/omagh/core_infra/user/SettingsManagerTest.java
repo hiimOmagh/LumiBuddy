@@ -47,4 +47,11 @@ public class SettingsManagerTest {
         manager.setOnboardingComplete(true);
         assertTrue(manager.isOnboardingComplete());
     }
+
+    @Test
+    public void arOverlayStatePersists() {
+        assertFalse(manager.isArMeasureOverlayEnabled());
+        manager.setArMeasureOverlayEnabled(true);
+        assertTrue(manager.isArMeasureOverlayEnabled());
+    }
 }

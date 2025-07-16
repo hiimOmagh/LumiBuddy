@@ -15,6 +15,7 @@ public class SettingsManager {
     private static final String KEY_DURATION = "light_duration_hours";
     private static final String KEY_CALIB_ID = "selected_calibration_profile";
     private static final String KEY_ENABLE_AR = "enable_ar_overlay";
+    private static final String KEY_MEASURE_AR = "measure_ar_overlay";
     private static final String KEY_ENABLE_ML = "enable_ml_features";
     private static final String KEY_AUTO_SUN = "auto_sunlight_estimate";
 
@@ -82,6 +83,20 @@ public class SettingsManager {
      */
     public void setArOverlayEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_ENABLE_AR, enabled).apply();
+    }
+
+    /**
+     * Returns true if the measurement AR overlay was enabled previously.
+     */
+    public boolean isArMeasureOverlayEnabled() {
+        return prefs.getBoolean(KEY_MEASURE_AR, false);
+    }
+
+    /**
+     * Persist the measurement AR overlay toggle state.
+     */
+    public void setArMeasureOverlayEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_MEASURE_AR, enabled).apply();
     }
 
     /**

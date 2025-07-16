@@ -95,8 +95,7 @@ public class DiarySyncManager {
                         if (le == null) {
                             localRepository.insert(e);
                         } else if (e.getTimestamp() > le.getTimestamp()) {
-                            localRepository.delete(le);
-                            localRepository.insert(e);
+                            localRepository.update(e);
                         }
                     }
                 }));
@@ -137,8 +136,7 @@ public class DiarySyncManager {
                     if (le == null) {
                         localRepository.insert(e);
                     } else if (e.getTimestamp() > le.getTimestamp()) {
-                        localRepository.delete(le);
-                        localRepository.insert(e);
+                        localRepository.update(e);
                     }
                 }
                 for (DiaryEntry e : merged) {

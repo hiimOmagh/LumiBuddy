@@ -57,6 +57,13 @@ public class DiaryRepositoryTest {
     }
 
     @Test
+    public void update_delegatesToDao() {
+        DiaryEntry entry = new DiaryEntry("3", "p1", 0L, "", "", "watering");
+        repository.update(entry);
+        Mockito.verify(dao, Mockito.timeout(1000)).update(entry);
+    }
+
+    @Test
     public void getAllEntriesSync_delegatesToDao() {
         java.util.List<DiaryEntry> list = java.util.Collections.emptyList();
         Mockito.when(dao.getAllEntriesSync()).thenReturn(list);

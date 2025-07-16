@@ -42,6 +42,10 @@ public class DiaryRepository implements DiaryDataSource {
         executor.execute(() -> diaryDao.insert(entry));
     }
 
+    public void update(DiaryEntry entry) {
+        executor.execute(() -> diaryDao.update(entry));
+    }
+
     public void delete(DiaryEntry entry) {
         executor.execute(() -> diaryDao.delete(entry));
     }

@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.rxandroid3)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.work.runtime)
     implementation(libs.androidx.navigation.runtime.android)
     compileOnly(libs.jspecify)
     implementation(project(":core-domain"))

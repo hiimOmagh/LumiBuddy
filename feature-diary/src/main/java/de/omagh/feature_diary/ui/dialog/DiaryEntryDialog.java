@@ -43,7 +43,42 @@ public class DiaryEntryDialog {
                 .show();
     }
 
+    public static void edit(Context context, DiaryEntry entry, OnEntryEditedListener listener) {
+        View dialog = LayoutInflater.from(context).inflate(R.layout.dialog_add_diary_entry, null);
+        Spinner typeSpinner = dialog.findViewById(R.id.eventTypeSpinner);
+        EditText noteInput = dialog.findViewById(R.id.editDiaryNote);
+        noteInput.setText(entry.getNote());
+        String[] types = context.getResources().getStringArray(R.array.diary_event_types);
+        for (int i = 0; i < types.length; i++) {
+            if (types[i].equals(entry.getEventType())) {
+                typeSpinner.setSelection(i);
+                break;
+            }
+        }
+
+        new AlertDialog.Builder(context)
+                .setTitle(R.string.edit_diary_entry)
+                .setView(dialog)
+                .setPositiveButton(R.string.save, (d, w) -> {
+                    DiaryEntry edited = new DiaryEntry(
+                            entry.getId(),
+                            entry.getPlantId(),
+                            System.currentTimeMillis(),
+                            noteInput.getText().toString().trim(),
+                            entry.getImageUri(),
+                            typeSpinner.getSelectedItem().toString()
+                    );
+                    listener.onEntryEdited(edited);
+                })
+                .setNegativeButton(android.R.string.cancel, null)
+                .show();
+    }
+
     public interface OnEntryAddedListener {
         void onEntryAdded(DiaryEntry entry);
+    }
+
+    public interface OnEntryEditedListener {
+        void onEntryEdited(DiaryEntry entry);
     }
 }
