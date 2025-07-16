@@ -129,7 +129,7 @@ public class PlantSyncManager {
                     Plant lp = localMap.get(p.getId());
                     if (lp == null) {
                         localRepository.insertPlant(p);
-                    } else if (p.getUpdated() > lp.getUpdated() ||
+                    } else if (p.getUpdatedAt() > lp.getUpdatedAt() ||
                             !lp.getName().equals(p.getName()) ||
                             !lp.getType().equals(p.getType()) ||
                             (lp.getImageUri() != null && !lp.getImageUri().equals(p.getImageUri()))) {

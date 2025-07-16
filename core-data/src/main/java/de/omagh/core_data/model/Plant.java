@@ -25,6 +25,7 @@ public class Plant {
         this(id, name, type, imageUri, System.currentTimeMillis());
     }
 
+    @androidx.room.Ignore
     public Plant(@NonNull String id, String name, String type, String imageUri, long updatedAt) {
         this.id = id;
         this.name = name;
