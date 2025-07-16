@@ -20,6 +20,10 @@ public class FirebasePlantRepository implements PlantDataSource {
         return dao.getAll();
     }
 
+    public List<Plant> getAllPlantsSync() {
+        return dao.getAllSync();
+    }
+
     public LiveData<Plant> getPlant(String id) {
         return dao.getById(id);
     }

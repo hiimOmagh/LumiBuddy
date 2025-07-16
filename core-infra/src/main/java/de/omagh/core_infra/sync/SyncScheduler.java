@@ -19,14 +19,22 @@ public class SyncScheduler {
     }
 
     public void scheduleDaily() {
-        PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(
+        PeriodicWorkRequest full = new PeriodicWorkRequest.Builder(
                 FullSyncWorker.class,
                 1, TimeUnit.DAYS)
                 .build();
-        WorkManager.getInstance(context)
-                .enqueueUniquePeriodicWork(
-                        "FullSyncWorker",
-                        ExistingPeriodicWorkPolicy.KEEP,
-                        request);
+        PeriodicWorkRequest backup = new PeriodicWorkRequest.Builder(
+                BackupWorker.class,
+                1, TimeUnit.DAYS)
+                .build();
+        WorkManager wm = WorkManager.getInstance(context);
+        wm.enqueueUniquePeriodicWork(
+                "FullSyncWorker",
+                ExistingPeriodicWorkPolicy.KEEP,
+                full);
+        wm.enqueueUniquePeriodicWork(
+                "BackupWorker",
+                ExistingPeriodicWorkPolicy.KEEP,
+                backup);
     }
 }

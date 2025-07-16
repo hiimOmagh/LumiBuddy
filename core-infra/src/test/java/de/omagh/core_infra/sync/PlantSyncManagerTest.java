@@ -26,8 +26,8 @@ public class PlantSyncManagerTest {
 
     @Test
     public void resolveConflicts_remoteWins() {
-        Plant local = new Plant("1", "A", "t", "");
-        Plant remote = new Plant("1", "B", "t", "");
+        Plant local = new Plant("1", "A", "t", "", 1L);
+        Plant remote = new Plant("1", "B", "t", "", 2L);
         PlantSyncManager mgr = new PlantSyncManager(
                 Mockito.mock(PlantRepository.class),
                 Mockito.mock(FirestorePlantDao.class),

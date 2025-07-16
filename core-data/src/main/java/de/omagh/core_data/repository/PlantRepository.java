@@ -62,7 +62,7 @@ public class PlantRepository implements PlantDataSource {
 
     private Plant toDomain(de.omagh.core_data.model.Plant entity) {
         if (entity == null) return null;
-        return new Plant(entity.getId(), entity.getName(), entity.getType(), entity.getImageUri());
+        return new Plant(entity.getId(), entity.getName(), entity.getType(), entity.getImageUri(), entity.getUpdatedAt());
     }
 
     private de.omagh.core_data.model.Plant toEntity(Plant plant) {
@@ -70,7 +70,8 @@ public class PlantRepository implements PlantDataSource {
                 plant.getId(),
                 plant.getName(),
                 plant.getType(),
-                plant.getImageUri()
+                plant.getImageUri(),
+                plant.getUpdatedAt()
         );
     }
 }

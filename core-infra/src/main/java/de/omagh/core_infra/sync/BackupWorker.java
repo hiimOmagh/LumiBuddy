@@ -41,6 +41,7 @@ public class BackupWorker extends Worker {
                     .putString(UploadPlantWorker.KEY_NAME, p.getName())
                     .putString(UploadPlantWorker.KEY_TYPE, p.getType())
                     .putString(UploadPlantWorker.KEY_IMAGE_URI, p.getImageUri())
+                    .putLong(UploadPlantWorker.KEY_UPDATED_AT, p.getUpdatedAt())
                     .build();
             wm.enqueue(new OneTimeWorkRequest.Builder(UploadPlantWorker.class)
                     .setInputData(data)

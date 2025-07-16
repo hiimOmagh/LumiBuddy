@@ -22,6 +22,10 @@ public class UploadPlantWorker extends Worker {
     public static final String KEY_NAME = "name";
     public static final String KEY_TYPE = "type";
     public static final String KEY_IMAGE_URI = "imageUri";
+    /*
+        public static final String KEY_UPDATED = "updated";
+    */
+    public static final String KEY_UPDATED_AT = "updatedAt";
 
     private final PlantDataSource repository;
     private final FirebaseManager firebaseManager;
@@ -48,7 +52,10 @@ public class UploadPlantWorker extends Worker {
                 d.getString(KEY_ID),
                 d.getString(KEY_NAME),
                 d.getString(KEY_TYPE),
-                d.getString(KEY_IMAGE_URI)
+                d.getString(KEY_IMAGE_URI),
+                d.getLong(KEY_UPDATED_AT, System.currentTimeMillis())
+/*                d.getString(KEY_IMAGE_URI),
+                d.getLong(KEY_UPDATED, System.currentTimeMillis())*/
         );
         repository.insertPlant(plant);
         return Result.success();

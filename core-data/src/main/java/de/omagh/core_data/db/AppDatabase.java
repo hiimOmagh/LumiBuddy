@@ -27,7 +27,7 @@ import de.omagh.core_data.model.Task;
                 GrowLightProduct.class,
                 Task.class
         },
-        version = 6,
+        version = 7,
         exportSchema = false
 )
 public abstract class AppDatabase extends RoomDatabase {

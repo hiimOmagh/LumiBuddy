@@ -15,12 +15,22 @@ public class Plant {
     private final String name;
     private final String type;
     private final String imageUri;
+    @androidx.room.ColumnInfo(name = "updated_at")
+    private final long updatedAt;
+/*
+    private final long updated;
+*/
 
     public Plant(@NonNull String id, String name, String type, String imageUri) {
+        this(id, name, type, imageUri, System.currentTimeMillis());
+    }
+
+    public Plant(@NonNull String id, String name, String type, String imageUri, long updatedAt) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.imageUri = imageUri;
+        this.updatedAt = updatedAt;
     }
 
     @NonNull
@@ -38,5 +48,13 @@ public class Plant {
 
     public String getImageUri() {
         return imageUri;
+    }
+
+    /*public long getUpdated() {
+        return updated;
+    }*/
+
+    public long getUpdatedAt() {
+        return updatedAt;
     }
 }

@@ -93,7 +93,9 @@ public class FirestorePlantDao {
         String name = doc.getString("name");
         String type = doc.getString("type");
         String imageUri = doc.getString("imageUri");
-        return new Plant(id, name, type, imageUri);
+        Long updated = doc.getLong("updatedAt");
+        if (updated == null) updated = 0L;
+        return new Plant(id, name, type, imageUri, updated);
     }
 
     private Map<String, Object> toMap(Plant plant) {
@@ -102,6 +104,7 @@ public class FirestorePlantDao {
         map.put("name", plant.getName());
         map.put("type", plant.getType());
         map.put("imageUri", plant.getImageUri());
+        map.put("updatedAt", plant.getUpdatedAt());
         return map;
     }
 }

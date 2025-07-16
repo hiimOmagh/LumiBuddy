@@ -125,17 +125,16 @@ public class PlantSyncManager {
                         localMap.put(p.getId(), p);
                     }
                 }
-                for (Plant p : remote) {
+                for (Plant p : merged) {
                     Plant lp = localMap.get(p.getId());
                     if (lp == null) {
                         localRepository.insertPlant(p);
-                    } else if (!lp.getName().equals(p.getName()) ||
+                    } else if (p.getUpdated() > lp.getUpdated() ||
+                            !lp.getName().equals(p.getName()) ||
                             !lp.getType().equals(p.getType()) ||
                             (lp.getImageUri() != null && !lp.getImageUri().equals(p.getImageUri()))) {
                         localRepository.updatePlant(p);
                     }
-                }
-                for (Plant p : merged) {
                     cloudDao.insert(p);
                 }
                 settings.setPlantLastSync(System.currentTimeMillis());
@@ -158,9 +157,13 @@ public class PlantSyncManager {
                 result.put(p.getId(), p);
             }
         }
-        for (Plant p : remote) {
-            // remote wins by replacing existing entry
-            result.put(p.getId(), p);
+        if (remote != null) {
+            for (Plant p : remote) {
+                Plant current = result.get(p.getId());
+                if (current == null || p.getUpdatedAt() > current.getUpdatedAt()) {
+                    result.put(p.getId(), p);
+                }
+            }
         }
         return new ArrayList<>(result.values());
     }

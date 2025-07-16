@@ -24,6 +24,7 @@ public class FirestoreDaoMappingTest {
         Mockito.when(doc.getString("name")).thenReturn("Rose");
         Mockito.when(doc.getString("type")).thenReturn("Flower");
         Mockito.when(doc.getString("imageUri")).thenReturn("img");
+        Mockito.when(doc.getLong("updatedAt")).thenReturn(5L);
 
         FirestorePlantDao dao = new FirestorePlantDao();
         Method m = FirestorePlantDao.class.getDeclaredMethod("fromDoc", DocumentSnapshot.class);
@@ -34,6 +35,7 @@ public class FirestoreDaoMappingTest {
         assertEquals("Rose", result.getName());
         assertEquals("Flower", result.getType());
         assertEquals("img", result.getImageUri());
+        assertEquals(5L, result.getUpdatedAt());
     }
 
     @Test

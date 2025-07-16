@@ -20,12 +20,24 @@ public class FirebaseDiaryRepository implements DiaryDataSource {
         return dao.getEntriesForPlant(plantId);
     }
 
+    public LiveData<List<DiaryEntry>> getAllEntries() {
+        return dao.getAll();
+    }
+
     public List<DiaryEntry> getEntriesForPlantSync(String plantId) {
         return dao.getEntriesForPlantSync(plantId);
     }
 
+    public List<DiaryEntry> getAllEntriesSync() {
+        return dao.getAllSync();
+    }
+
     public void insert(DiaryEntry entry) {
         executor.execute(() -> dao.insert(entry));
+    }
+
+    public void update(DiaryEntry entry) {
+        executor.execute(() -> dao.update(entry));
     }
 
     public void delete(DiaryEntry entry) {

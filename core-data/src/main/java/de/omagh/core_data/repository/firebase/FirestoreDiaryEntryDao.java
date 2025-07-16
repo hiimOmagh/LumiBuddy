@@ -22,6 +22,39 @@ public class FirestoreDiaryEntryDao {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
+     * Returns all diary entries as LiveData.
+     */
+    public LiveData<List<DiaryEntry>> getAll() {
+        MutableLiveData<List<DiaryEntry>> liveData = new MutableLiveData<>();
+        db.collection("diary_entries").addSnapshotListener((snap, e) -> {
+            List<DiaryEntry> list = new ArrayList<>();
+            if (snap != null) {
+                for (DocumentSnapshot d : snap.getDocuments()) {
+                    list.add(fromDoc(d));
+                }
+            }
+            liveData.postValue(list);
+        });
+        return liveData;
+    }
+
+    /**
+     * Returns all diary entries synchronously.
+     */
+    public List<DiaryEntry> getAllSync() {
+        try {
+            QuerySnapshot snap = Tasks.await(db.collection("diary_entries").get());
+            List<DiaryEntry> list = new ArrayList<>();
+            for (DocumentSnapshot d : snap.getDocuments()) {
+                list.add(fromDoc(d));
+            }
+            return list;
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    /**
      * Returns all entries for a given plant as LiveData.
      */
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {
@@ -65,6 +98,10 @@ public class FirestoreDiaryEntryDao {
         db.collection("diary_entries")
                 .document(entry.getId())
                 .set(toMap(entry));
+    }
+
+    public void update(DiaryEntry entry) {
+        insert(entry);
     }
 
     /**
