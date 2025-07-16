@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_growschedule.ui.HomeViewModel;
 import de.omagh.core_data.repository.DiaryDataSource;
+import de.omagh.core_data.repository.TaskDataSource;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
@@ -31,6 +32,7 @@ import static org.junit.Assert.*;
 public class HomeViewModelTest {
     private FakePlantDataSource plantData;
     private FakeDiaryDataSource diaryData;
+    private FakeTaskDataSource taskData;
     private FakeWateringScheduler scheduler;
     private HomeViewModel vm;
 
@@ -38,9 +40,14 @@ public class HomeViewModelTest {
     public void setup() {
         plantData = new FakePlantDataSource();
         diaryData = new FakeDiaryDataSource();
+        taskData = new FakeTaskDataSource();
         scheduler = new FakeWateringScheduler();
-        vm = new HomeViewModel(new android.app.Application(), plantData, diaryData,
-                new RecommendationEngine(), scheduler);
+        vm = new HomeViewModel(new android.app.Application(),
+                plantData,
+                diaryData,
+                taskData,
+                new RecommendationEngine(),
+                scheduler);
     }
 
     /**
