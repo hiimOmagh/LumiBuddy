@@ -1,0 +1,44 @@
+digraph ModuleMap {
+    rankdir = LR;
+    node [shape = box];
+
+    subgraph cluster_core {
+    label = "Core";
+    color = lightblue;
+    "core-domain";
+    "core-data";
+    "core-infra";
+    }
+
+    subgraph cluster_features {
+    label = "Features";
+    color = lightgreen;
+    "feature-measurement";
+    "feature-plantdb";
+    "feature-diary";
+    "feature-growschedule";
+    "feature-ar";
+    }
+
+    "shared-ml" [shape = ellipse];
+    "app" [shape = box, style = filled, color = lightyellow];
+
+    "core-data" -> "core-domain";
+    "core-infra" -> "core-domain";
+    "app" -> "core-infra";
+    "app" -> "core-data";
+    "app" -> "core-domain";
+
+    {rank = same; "feature-measurement" -> "core-infra"; "feature-measurement" -> "core-data"; "feature-measurement" -> "core-domain";}
+    {rank = same; "feature-plantdb" -> "core-infra"; "feature-plantdb" -> "core-data"; "feature-plantdb" -> "core-domain"; "feature-plantdb" -> "feature-diary"; "feature-plantdb" -> "shared-ml";}
+    {rank = same; "feature-diary" -> "core-infra"; "feature-diary" -> "core-data"; "feature-diary" -> "core-domain";}
+    {rank = same; "feature-growschedule" -> "core-infra"; "feature-growschedule" -> "core-data"; "feature-growschedule" -> "core-domain";}
+    {rank = same; "feature-ar" -> "core-infra"; "feature-ar" -> "core-data"; "feature-ar" -> "core-domain";}
+
+    "shared-ml" -> "core-domain";
+    "app" -> "feature-measurement";
+    "app" -> "feature-plantdb";
+    "app" -> "feature-diary";
+    "app" -> "feature-growschedule";
+    "app" -> "feature-ar";
+}
