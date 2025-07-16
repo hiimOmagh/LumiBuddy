@@ -16,6 +16,8 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
+import de.omagh.core_infra.environment.SunlightEstimator;
+import de.omagh.core_data.repository.DiaryRepository;
 import io.reactivex.rxjava3.core.Observable;
 
 /**
@@ -32,6 +34,10 @@ public class MeasureViewModelInteractionTest {
     GetCurrentLuxUseCase luxUseCase;
     @Mock
     CalibrationManager calibrationManager;
+    @Mock
+    SunlightEstimator sunlightEstimator;
+    @Mock
+    DiaryRepository diaryRepository;
 
     private MeasureViewModel vm;
 
@@ -42,7 +48,8 @@ public class MeasureViewModelInteractionTest {
         Mockito.when(settingsManager.getLightDuration()).thenReturn(12);
         Mockito.when(settingsManager.getSelectedCalibrationProfileId()).thenReturn("lamp1");
         Mockito.when(growLightManager.getActiveLampProfile()).thenReturn(new de.omagh.core_infra.measurement.LampProduct("lamp1", "", "", "", "", 0, 1f, 0f));
-        vm = new MeasureViewModel(app, profileManager, growLightManager, settingsManager, luxUseCase, calibrationManager);
+        vm = new MeasureViewModel(app, profileManager, growLightManager, settingsManager,
+                luxUseCase, calibrationManager, sunlightEstimator, diaryRepository);
     }
 
     @Test

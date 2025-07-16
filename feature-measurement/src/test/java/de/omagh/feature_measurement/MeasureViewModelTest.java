@@ -12,6 +12,8 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
+import de.omagh.core_infra.environment.SunlightEstimator;
+import de.omagh.core_data.repository.DiaryRepository;
 
 import org.mockito.Mockito;
 
@@ -26,7 +28,10 @@ public class MeasureViewModelTest {
         SettingsManager sm = Mockito.mock(SettingsManager.class);
         GetCurrentLuxUseCase useCase = Mockito.mock(GetCurrentLuxUseCase.class);
         CalibrationManager cm = Mockito.mock(CalibrationManager.class);
-        MeasureViewModel vm = new MeasureViewModel(app, pm, gm, sm, useCase, cm);
+        SunlightEstimator estimator = Mockito.mock(SunlightEstimator.class);
+        DiaryRepository diaryRepository = Mockito.mock(DiaryRepository.class);
+        MeasureViewModel vm = new MeasureViewModel(app, pm, gm, sm, useCase, cm,
+                estimator, diaryRepository);
         assertNotNull(vm.getLux().getValue());
         assertNotNull(vm.getPPFD().getValue());
         assertEquals(0f, vm.getLux().getValue(), 0.001f);
