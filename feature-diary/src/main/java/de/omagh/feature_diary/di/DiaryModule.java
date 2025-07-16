@@ -5,7 +5,9 @@ import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.db.TaskDao;
+/*
 import de.omagh.core_data.repository.DiaryRepository;
+*/
 import de.omagh.core_data.repository.TaskRepository;
 import de.omagh.core_domain.util.AppExecutors;
 
@@ -21,10 +23,10 @@ public class DiaryModule {
         return db.taskDao();
     }
 
-    @Provides
+/*    @Provides
     DiaryRepository provideDiaryRepository(DiaryDao dao, AppExecutors executors) {
         return new DiaryRepository(dao, executors);
-    }
+    }*/
 
     @Provides
     TaskRepository provideTaskRepository(TaskDao dao, AppExecutors executors) {
