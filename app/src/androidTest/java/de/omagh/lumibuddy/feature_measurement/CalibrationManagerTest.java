@@ -19,11 +19,10 @@ import de.omagh.core_infra.measurement.CalibrationManager;
 @RunWith(AndroidJUnit4.class)
 public class CalibrationManagerTest {
     private CalibrationManager manager;
-    private Context context;
 
     @Before
     public void setup() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         context.getSharedPreferences("calibration_prefs", Context.MODE_PRIVATE).edit().clear().commit();
         manager = new CalibrationManager(context);
     }

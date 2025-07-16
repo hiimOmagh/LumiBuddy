@@ -24,7 +24,6 @@ public class PlantIdentifier {
 
     private final Interpreter interpreter;
     private final ExecutorService executor;
-    private final int inputSize = 224;
     private final String[] labels = {"Unknown", "Plant"};
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
         this(context, provider, executors, DEFAULT_THRESHOLD);
@@ -38,14 +37,14 @@ public class PlantIdentifier {
     }
 
     private Prediction run(Bitmap bitmap) {
+        int inputSize = 224;
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true);
         ByteBuffer buf = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
         buf.order(ByteOrder.nativeOrder());
         int[] pixels = new int[inputSize * inputSize];
         scaled.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize);
         int idx = 0;
-        for (int i = 0; i < pixels.length; i++) {
-            int val = pixels[i];
+        for (int val : pixels) {
             buf.putFloat(((val >> 16) & 0xFF) / 255f);
             buf.putFloat(((val >> 8) & 0xFF) / 255f);
             buf.putFloat((val & 0xFF) / 255f);

@@ -9,6 +9,8 @@ import androidx.work.WorkerParameters;
 
 import com.google.android.gms.tasks.Tasks;
 
+import java.util.Objects;
+
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_infra.di.Remote;
@@ -47,7 +49,7 @@ public class UploadDiaryEntryWorker extends Worker {
         }
         Data data = getInputData();
         DiaryEntry entry = new DiaryEntry(
-                data.getString(KEY_ID),
+                Objects.requireNonNull(data.getString(KEY_ID)),
                 data.getString(KEY_PLANT_ID),
                 data.getLong(KEY_TIMESTAMP, 0),
                 data.getString(KEY_NOTE),

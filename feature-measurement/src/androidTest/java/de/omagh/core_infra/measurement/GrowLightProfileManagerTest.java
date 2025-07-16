@@ -18,12 +18,11 @@ import static org.junit.Assert.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class GrowLightProfileManagerTest {
-    private Context context;
     private GrowLightProfileManager manager;
 
     @Before
     public void setUp() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         context.getSharedPreferences("grow_light_profiles", Context.MODE_PRIVATE).edit().clear().commit();
         manager = new GrowLightProfileManager(context);
     }

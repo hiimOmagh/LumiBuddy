@@ -46,6 +46,7 @@ public class PlantRepositoryTest {
         Plant plant = new Plant("1", "Rose", "Flower", null);
         repo.insertPlant(plant);
         Plant loaded = repo.getPlant("1").getValue();
+        assert loaded != null;
         assertEquals("Rose", loaded.getName());
     }
 }

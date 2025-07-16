@@ -48,7 +48,6 @@ public class PlantListFragment extends Fragment {
     private PlantListViewModel viewModel;
     @Inject
     PlantDbViewModelFactory viewModelFactory;
-    private PlantDbComponent component;
     private Uri pickedImageUri = null;
     private ImageView plantImagePreview = null;
 
@@ -67,7 +66,7 @@ public class PlantListFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-        component = DaggerPlantDbComponent.factory().create(core);
+        PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
         viewModelFactory = component.viewModelFactory();
     }
 

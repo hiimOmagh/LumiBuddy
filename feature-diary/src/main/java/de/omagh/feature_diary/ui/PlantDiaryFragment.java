@@ -37,13 +37,12 @@ public class PlantDiaryFragment extends Fragment {
 
     private DiaryViewModel diaryViewModel;
     private DiaryEntryAdapter adapter;
-    private Uri selectedImageUri;
     private ImageView dialogImagePreview;
 
     private final androidx.activity.result.ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new androidx.activity.result.contract.ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
-                    selectedImageUri = de.omagh.core_infra.util.ImageUtils.copyUriToInternalStorage(
+                    Uri selectedImageUri = de.omagh.core_infra.util.ImageUtils.copyUriToInternalStorage(
                             requireContext(), uri);
                     if (dialogImagePreview != null) {
                         dialogImagePreview.setImageURI(selectedImageUri);

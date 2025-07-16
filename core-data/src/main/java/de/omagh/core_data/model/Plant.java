@@ -51,10 +51,6 @@ public class Plant {
         return imageUri;
     }
 
-    /*public long getUpdated() {
-        return updated;
-    }*/
-
     public long getUpdatedAt() {
         return updatedAt;
     }

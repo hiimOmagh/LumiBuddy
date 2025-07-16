@@ -15,6 +15,7 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.*;
 
@@ -28,13 +29,12 @@ public class PlantRepositoryTest {
     private PlantDao dao;
 
     private PlantRepository repository;
-    private AppExecutors executors;
 
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Mockito.when(db.plantDao()).thenReturn(dao);
-        executors = Mockito.mock(AppExecutors.class);
+        AppExecutors executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
         repository = new PlantRepository(db, executors);
@@ -98,7 +98,7 @@ public class PlantRepositoryTest {
         });
 
         Mockito.verify(dao).getById("2");
-        assertEquals("Rose", result.getValue().getName());
+        assertEquals("Rose", Objects.requireNonNull(result.getValue()).getName());
     }
 
     /**

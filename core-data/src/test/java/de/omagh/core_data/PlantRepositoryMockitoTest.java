@@ -32,15 +32,13 @@ public class PlantRepositoryMockitoTest {
     PlantDao dao;
 
     private PlantRepository repository;
-    private AppExecutors executors;
-    private ExecutorService executor;
 
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Mockito.when(db.plantDao()).thenReturn(dao);
-        executors = Mockito.mock(AppExecutors.class);
-        executor = Executors.newSingleThreadExecutor();
+        AppExecutors executors = Mockito.mock(AppExecutors.class);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
         repository = new PlantRepository(db, executors);
     }
@@ -63,7 +61,7 @@ public class PlantRepositoryMockitoTest {
 
     @Test
     public void getAllPlants_transformsEntities() {
-        List<de.omagh.core_data.model.Plant> entities = Arrays.asList(
+        List<de.omagh.core_data.model.Plant> entities = List.of(
                 new de.omagh.core_data.model.Plant("1", "Tomato", "Solanum", "")
         );
         MutableLiveData<List<de.omagh.core_data.model.Plant>> live = new MutableLiveData<>(entities);
@@ -75,6 +73,7 @@ public class PlantRepositoryMockitoTest {
 
         Mockito.verify(dao).getAll();
         List<Plant> plants = result.getValue();
+        assert plants != null;
         assertEquals(1, plants.size());
         assertEquals("Tomato", plants.get(0).getName());
     }

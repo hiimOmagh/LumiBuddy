@@ -23,10 +23,6 @@ import javax.inject.Provider;
 
 @Module
 public abstract class GrowScheduleModule {
-/*    @Provides
-    static DiaryRepository provideDiaryRepository(AppDatabase db, AppExecutors executors) {
-        return new DiaryRepository(db.diaryDao(), executors);
-    }*/
 
     @Provides
     static TaskRepository provideTaskRepository(AppDatabase db, AppExecutors executors) {

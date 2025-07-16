@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -33,7 +34,6 @@ import static org.junit.Assert.*;
 public class HomeViewModelTest {
     private FakePlantDataSource plantData;
     private FakeDiaryDataSource diaryData;
-    private FakeTaskDataSource taskData;
     private FakeWateringScheduler scheduler;
     private HomeViewModel vm;
 
@@ -41,7 +41,7 @@ public class HomeViewModelTest {
     public void setup() {
         plantData = new FakePlantDataSource();
         diaryData = new FakeDiaryDataSource();
-        taskData = new FakeTaskDataSource();
+        FakeTaskDataSource taskData = new FakeTaskDataSource();
         scheduler = new FakeWateringScheduler();
         vm = new HomeViewModel(new android.app.Application(),
                 plantData,
@@ -62,7 +62,7 @@ public class HomeViewModelTest {
         plantData.setPlants(Collections.emptyList());
         assertTrue(latch.await(1, TimeUnit.SECONDS));
         vm.getUpcomingReminders().removeObserver(observer);
-        assertTrue(vm.getUpcomingReminders().getValue().isEmpty());
+        assertTrue(Objects.requireNonNull(vm.getUpcomingReminders().getValue()).isEmpty());
     }
 
     /**

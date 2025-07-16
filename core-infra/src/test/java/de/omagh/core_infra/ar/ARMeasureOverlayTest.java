@@ -22,22 +22,18 @@ public class ARMeasureOverlayTest {
     private HeatmapOverlayView overlayView;
     private ArSceneView sceneView;
     private Session session;
-    private Frame frame;
-    private com.google.ar.core.Camera camera;
     private Pose pose;
-    private Anchor anchor;
-    private Scene scene;
 
     @Before
     public void setup() {
         overlayView = mock(HeatmapOverlayView.class);
         sceneView = mock(ArSceneView.class);
         session = mock(Session.class);
-        frame = mock(Frame.class);
-        camera = mock(com.google.ar.core.Camera.class);
+        Frame frame = mock(Frame.class);
+        com.google.ar.core.Camera camera = mock(com.google.ar.core.Camera.class);
         pose = mock(Pose.class);
-        anchor = mock(Anchor.class);
-        scene = mock(Scene.class);
+        Anchor anchor = mock(Anchor.class);
+        Scene scene = mock(Scene.class);
 
         when(sceneView.getSession()).thenReturn(session);
         when(sceneView.getArFrame()).thenReturn(frame);

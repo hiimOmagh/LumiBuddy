@@ -40,7 +40,7 @@ service cloud.firestore {
 These rules require the user to be authenticated before any read or write occurs. Review them before
 going to production.
 
-5. After saving the rules, verify the **Indexes** tab shows no errors and add composite indexes as
+1. After saving the rules, verify the **Indexes** tab shows no errors and add composite indexes as
    needed by your queries.
 
 Once authentication is enabled and the `google-services.json` file is placed correctly, the app can

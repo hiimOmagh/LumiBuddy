@@ -40,17 +40,16 @@ public class HomeFragment extends Fragment {
     @Inject
     HomeViewModelFactory viewModelFactory;
     private HomeViewModel viewModel;
-    private GrowScheduleComponent component;
 
     public HomeFragment() {
         super(R.layout.fragment_home);
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@androidx.annotation.NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-        component = DaggerGrowScheduleComponent.factory().create(core);
+        GrowScheduleComponent component = DaggerGrowScheduleComponent.factory().create(core);
         viewModelFactory = component.viewModelFactory();
     }
 

@@ -18,7 +18,6 @@ public class PlantTaskFragment extends Fragment {
     public static final String ARG_PLANT_ID = "plant_id";
     private String plantId;
     private TaskViewModel viewModel;
-    private TaskAdapter adapter;
 
     public PlantTaskFragment() {
     }
@@ -51,7 +50,7 @@ public class PlantTaskFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.taskRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new TaskAdapter(task -> viewModel.completeTask(task));
+        TaskAdapter adapter = new TaskAdapter(task -> viewModel.completeTask(task));
         recyclerView.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this,

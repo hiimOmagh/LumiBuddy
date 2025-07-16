@@ -121,6 +121,7 @@ public class FirestoreDiaryEntryDao {
         String imageUri = doc.getString("imageUri");
         String eventType = doc.getString("eventType");
         if (timestamp == null) timestamp = 0L;
+        assert id != null;
         return new DiaryEntry(id, plantId, timestamp, note, imageUri, eventType);
     }
 

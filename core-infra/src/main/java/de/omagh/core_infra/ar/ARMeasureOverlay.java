@@ -57,6 +57,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
             overlayView.setVisibility(View.VISIBLE);
         }
         try {
+            assert overlayView != null;
             sceneView = createSceneView(overlayView.getContext());
             sceneView.resume();
         } catch (Exception ignored) {
@@ -87,6 +88,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
                     anchorNode = new AnchorNode(anchor);
                     anchorNode.setParent(sceneView.getScene());
 
+                    assert overlayView != null;
                     TextView tv = new TextView(overlayView.getContext());
                     tv.setBackgroundColor(Color.WHITE);
                     tv.setTextColor(Color.BLACK);

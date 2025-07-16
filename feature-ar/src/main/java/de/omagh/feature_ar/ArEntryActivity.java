@@ -52,8 +52,6 @@ public class ArEntryActivity extends AppCompatActivity {
     private String plantId;
 
     private ArFragment arFragment;
-    private ActivityResultLauncher<String> permissionLauncher;
-    private TextView statusView;
     private ARGrowthTracker growthTracker;
 
     @Override
@@ -74,7 +72,7 @@ public class ArEntryActivity extends AppCompatActivity {
             return;
         }
 
-        permissionLauncher = registerForActivityResult(
+        ActivityResultLauncher<String> permissionLauncher = registerForActivityResult(
                 new ActivityResultContracts.RequestPermission(),
                 granted -> {
                     if (granted) {
@@ -114,7 +112,7 @@ public class ArEntryActivity extends AppCompatActivity {
 
     private void setupScene() {
         setContentView(R.layout.activity_ar_entry);
-        statusView = findViewById(R.id.arStatus);
+        TextView statusView = findViewById(R.id.arStatus);
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.arFragment);
         if (arFragment == null) {
             statusView.setText(R.string.device_not_supported);

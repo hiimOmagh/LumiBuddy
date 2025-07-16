@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 /**
  * Simple view that draws a heatmap grid to visualize light intensity.
  * Each cell color ranges from blue (low) to red (high).
@@ -44,7 +46,7 @@ public class HeatmapOverlayView extends View {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         if (intensityGrid == null) return;
         int rows = intensityGrid.length;

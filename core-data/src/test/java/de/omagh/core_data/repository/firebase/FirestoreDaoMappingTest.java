@@ -31,6 +31,7 @@ public class FirestoreDaoMappingTest {
         m.setAccessible(true);
         Plant result = (Plant) m.invoke(dao, doc);
 
+        assert result != null;
         assertEquals("1", result.getId());
         assertEquals("Rose", result.getName());
         assertEquals("Flower", result.getType());
@@ -53,6 +54,7 @@ public class FirestoreDaoMappingTest {
         m.setAccessible(true);
         DiaryEntry entry = (DiaryEntry) m.invoke(dao, doc);
 
+        assert entry != null;
         assertEquals(0L, entry.getTimestamp());
         assertEquals("d1", entry.getId());
         assertEquals("p1", entry.getPlantId());

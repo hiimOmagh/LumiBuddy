@@ -21,6 +21,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class LampProfilesViewModelTest {
     @Mock
@@ -41,7 +42,7 @@ public class LampProfilesViewModelTest {
 
     @Test
     public void getProfiles_returnsManagerData() {
-        assertTrue(vm.getProfiles().getValue().isEmpty());
+        assertTrue(Objects.requireNonNull(vm.getProfiles().getValue()).isEmpty());
     }
 
     @Test

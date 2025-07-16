@@ -23,11 +23,10 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class CalibrationProfilesManagerTest {
     private CalibrationProfilesManager manager;
-    private Context context;
 
     @Before
     public void setup() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         context.getSharedPreferences("calibration_profiles", Context.MODE_PRIVATE).edit().clear().commit();
         manager = new CalibrationProfilesManager(context);
     }

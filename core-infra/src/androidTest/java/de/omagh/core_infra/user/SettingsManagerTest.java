@@ -19,11 +19,10 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class SettingsManagerTest {
     private SettingsManager manager;
-    private Context context;
 
     @Before
     public void setup() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         context.getSharedPreferences("user_settings", Context.MODE_PRIVATE).edit().clear().commit();
         manager = new SettingsManager(context);
     }

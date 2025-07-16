@@ -26,9 +26,8 @@ public class AssetModelProvider implements ModelProvider {
              FileChannel channel = fis.getChannel()) {
             long startOffset = afd.getStartOffset();
             long declaredLength = afd.getDeclaredLength();
-            MappedByteBuffer buffer = channel.map(FileChannel.MapMode.READ_ONLY,
+            return channel.map(FileChannel.MapMode.READ_ONLY,
                     startOffset, declaredLength);
-            return buffer;
         } catch (Exception e) {
             throw new RuntimeException("Failed to load model from assets", e);
         }

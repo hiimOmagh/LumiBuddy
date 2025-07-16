@@ -33,11 +33,10 @@ import static org.junit.Assert.*;
 public class DiaryRepositoryIntegrationTest {
     private AppDatabase db;
     private DiaryRepository repository;
-    private Context context;
 
     @Before
     public void setup() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
         AppExecutors executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
@@ -67,7 +66,7 @@ public class DiaryRepositoryIntegrationTest {
     private <T> T getValue(LiveData<T> live) throws InterruptedException {
         final Object[] data = new Object[1];
         CountDownLatch latch = new CountDownLatch(1);
-        Observer<T> obs = new Observer<T>() {
+        Observer<T> obs = new Observer<>() {
             @Override
             public void onChanged(T t) {
                 data[0] = t;

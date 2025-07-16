@@ -18,7 +18,7 @@ import java.util.UUID;
  * Utility helper to create diary entry dialogs.
  */
 public class DiaryEntryDialog {
-    public static View show(Context context, OnEntryAddedListener listener) {
+    public static void show(Context context, OnEntryAddedListener listener) {
         View dialog = LayoutInflater.from(context).inflate(R.layout.dialog_add_diary_entry_global, null);
         Spinner plantSpinner = dialog.findViewById(R.id.plantSpinner);
         Spinner typeSpinner = dialog.findViewById(R.id.eventTypeSpinner);
@@ -41,7 +41,6 @@ public class DiaryEntryDialog {
                 })
                 .setNegativeButton(android.R.string.cancel, null)
                 .show();
-        return dialog;
     }
 
     public interface OnEntryAddedListener {

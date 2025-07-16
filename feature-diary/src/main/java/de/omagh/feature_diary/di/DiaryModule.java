@@ -23,11 +23,6 @@ public class DiaryModule {
         return db.taskDao();
     }
 
-/*    @Provides
-    DiaryRepository provideDiaryRepository(DiaryDao dao, AppExecutors executors) {
-        return new DiaryRepository(dao, executors);
-    }*/
-
     @Provides
     TaskRepository provideTaskRepository(TaskDao dao, AppExecutors executors) {
         return new TaskRepository(dao, executors);

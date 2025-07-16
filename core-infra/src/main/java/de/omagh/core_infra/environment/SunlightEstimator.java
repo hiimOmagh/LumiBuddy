@@ -1,5 +1,6 @@
 package de.omagh.core_infra.environment;
 
+import android.Manifest;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -7,6 +8,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationManager;
+
+import androidx.annotation.RequiresPermission;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -30,6 +33,7 @@ public class SunlightEstimator {
      * Returns the estimated hours of direct sunlight for the current location
      * and device orientation. Values are clamped to the range 1-24.
      */
+    @RequiresPermission(anyOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     public int estimateDailySunlightHours() {
         float latitude = 0f;
         try {

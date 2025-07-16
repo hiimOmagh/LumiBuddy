@@ -63,8 +63,6 @@ public class AddPlantFragment extends Fragment {
     // ML plant recognition
     private HealthStatusClassifier healthClassifier;
     private DummyARGrowthTracker growthTracker;
-    private SwitchCompat mlToggle;
-    private PlantDbComponent component;
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
@@ -117,7 +115,7 @@ public class AddPlantFragment extends Fragment {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-        component = DaggerPlantDbComponent.factory().create(core);
+        PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
         viewModelFactory = component.viewModelFactory();
     }
 
@@ -140,7 +138,7 @@ public class AddPlantFragment extends Fragment {
         MaterialButton pickImageBtn = view.findViewById(R.id.pickImageBtn);
         MaterialButton captureImageBtn = view.findViewById(R.id.captureImageBtn);
         MaterialButton searchPlantBtn = view.findViewById(R.id.searchPlantBtn);
-        mlToggle = view.findViewById(R.id.mlToggle);
+        SwitchCompat mlToggle = view.findViewById(R.id.mlToggle);
         SwitchCompat arGrowthToggle = view.findViewById(R.id.arGrowthToggle);
 
         // Init ViewModel

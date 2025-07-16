@@ -29,14 +29,13 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(AndroidJUnit4.class)
 public class WateringSchedulerTest {
-    private Context context;
     private DiaryDao diaryDao;
     private NotificationManager notifications;
     private WateringScheduler scheduler;
 
     @Before
     public void setup() {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
         diaryDao = mock(DiaryDao.class);
         notifications = mock(NotificationManager.class);
         scheduler = new WateringScheduler(new RecommendationEngine(), notifications, diaryDao);
