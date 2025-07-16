@@ -6,6 +6,7 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_growschedule.ui.HomeViewModel;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.TaskDataSource;
+import de.omagh.core_data.model.Task;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
@@ -141,6 +142,40 @@ public class HomeViewModelTest {
 
         void setEntries(String id, List<DiaryEntry> e) {
             map.put(id, e);
+        }
+    }
+
+    private static class FakeTaskDataSource implements TaskDataSource {
+        @Override
+        public MutableLiveData<List<Task>> getTasksForPlant(String plantId) {
+            return new MutableLiveData<>(new ArrayList<>());
+        }
+
+        @Override
+        public List<Task> getTasksForPlantSync(String plantId) {
+            return new ArrayList<>();
+        }
+
+        @Override
+        public MutableLiveData<List<Task>> getPendingTasks() {
+            return new MutableLiveData<>(new ArrayList<>());
+        }
+
+        @Override
+        public List<Task> getPendingTasksSync() {
+            return new ArrayList<>();
+        }
+
+        @Override
+        public void insert(Task task) {
+        }
+
+        @Override
+        public void update(Task task) {
+        }
+
+        @Override
+        public void delete(Task task) {
         }
     }
 
