@@ -4,6 +4,7 @@ This page describes how feature modules obtain their Dagger components from the
 shared `CoreComponent`. `LumiBuddyApplication` creates the `CoreComponent` on
 startup and exposes it through `CoreComponentProvider` so that fragments or
 view models in feature modules can build their own components when needed.
+See [dagger_graph.md](dagger_graph.md) for a visual overview of these components.
 
 ## Getting `CoreComponent`
 

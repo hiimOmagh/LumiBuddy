@@ -1,0 +1,11 @@
+digraph DaggerGraph {
+    rankdir=LR;
+    node [shape=box, style=filled, color=lightgrey];
+    CoreComponent [shape=doubleoctagon, color=lightblue, style=filled];
+    AppComponent -> CoreComponent;
+    MeasurementComponent -> CoreComponent;
+    PlantDbComponent -> CoreComponent;
+    DiaryComponent -> CoreComponent;
+    GrowScheduleComponent -> CoreComponent;
+    ArComponent -> CoreComponent;
+}

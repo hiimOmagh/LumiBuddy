@@ -37,9 +37,11 @@ LumiBuddy/
 - `:shared-sensor` – Light, camera, external BLE sensor abstraction
 - `:shared-ml` – On-device TFLite inference
 
-For more details on fragment routes and dependency injection see
-[docs/architecture/navigation_overview.md](docs/architecture/navigation_overview.md), [docs/architecture/dagger_graph.md](docs/architecture/dagger_graph.md),
-and [docs/architecture/di_setup.md](docs/architecture/di_setup.md).
+For more details on fragment routes, dependency injection and module boundaries see
+[docs/architecture/navigation_overview.md](docs/architecture/navigation_overview.md),
+[docs/architecture/dagger_graph.md](docs/architecture/dagger_graph.md) and
+[docs/architecture/module_map.md](docs/architecture/module_map.md).
+Diagram source files live under `docs/diagrams`.
 
 ---
 
