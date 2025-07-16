@@ -31,6 +31,8 @@ import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.util.PermissionUtils;
+import de.omagh.core_infra.ar.ARGrowthTracker;
+import de.omagh.core_infra.ar.ARCoreGrowthTracker;
 import de.omagh.feature_ar.di.DaggerArComponent;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -52,6 +54,7 @@ public class ArEntryActivity extends AppCompatActivity {
     private ArFragment arFragment;
     private ActivityResultLauncher<String> permissionLauncher;
     private TextView statusView;
+    private ARGrowthTracker growthTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,10 +120,15 @@ public class ArEntryActivity extends AppCompatActivity {
             statusView.setText(R.string.device_not_supported);
             return;
         }
+        growthTracker = new ARCoreGrowthTracker(arFragment);
+        growthTracker.init();
         arFragment.setOnTapArPlaneListener(this::placeMarker);
     }
 
     private void placeMarker(HitResult hitResult, com.google.ar.core.Plane plane, android.view.MotionEvent motionEvent) {
+        if (growthTracker != null) {
+            growthTracker.trackGrowth(null);
+        }
         Anchor anchor = hitResult.createAnchor();
         AnchorNode anchorNode = new AnchorNode(anchor);
         anchorNode.setParent(arFragment.getArSceneView().getScene());
@@ -187,5 +195,14 @@ public class ArEntryActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (growthTracker != null) {
+            growthTracker.cleanup();
+            growthTracker = null;
+        }
+        super.onDestroy();
     }
 }
