@@ -60,9 +60,6 @@ public class PlantIdentifier {
                 best = i;
             }
         }
-        if (bestScore < DEFAULT_THRESHOLD) {
-            return "Unknown";
-        }
         return new Prediction(labels[best], bestScore);
     }
 

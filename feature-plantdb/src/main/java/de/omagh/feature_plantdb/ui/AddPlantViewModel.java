@@ -48,7 +48,8 @@ public class AddPlantViewModel extends AndroidViewModel {
 
     /**
      * Performs on-device identification and falls back to Plant.id API when
-     * the local classifier returns "Unknown".
+     * the local classifier reports low confidence. The ML component only
+     * exposes a label when the confidence exceeds its threshold.
      */
     public LiveData<PlantIdSuggestion> identifyPlantWithApi(Bitmap bitmap) {
         identificationResult.setValue(null);

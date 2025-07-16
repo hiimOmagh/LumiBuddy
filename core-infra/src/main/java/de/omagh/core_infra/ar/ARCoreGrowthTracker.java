@@ -39,7 +39,7 @@ public class ARCoreGrowthTracker implements ARGrowthTracker {
         if (ctx == null) return;
         try {
             session = new Session(ctx);
-            arFragment.getArSceneView().setupSession(session);
+            arFragment.getArSceneView().setSession(session);
             arFragment.getArSceneView().resume();
             Timber.tag(TAG).d("ARCore session initialized");
         } catch (Exception e) {

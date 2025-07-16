@@ -259,6 +259,13 @@ public class AddPlantFragment extends Fragment {
         });
     }
 
+    /**
+     * Runs local ML identification and falls back to the Plant.id service
+     * when the confidence from {@link de.omagh.shared_ml.PlantIdentifier}
+     * is below its threshold. Results are delivered via LiveData so the UI
+     * automatically updates.
+     */
+
     private void identifyWithApi(Bitmap bmp) {
         Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
         addPlantViewModel.identifyPlantWithApi(bmp);
