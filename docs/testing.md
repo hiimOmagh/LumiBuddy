@@ -15,11 +15,24 @@ Common steps:
 4. When LiveData is returned, an observer can be attached with
    `observeForever` so the value is emitted synchronously.
 
-Run all unit tests with:
+Run lint and all unit tests locally with:
 
 ```bash
-./gradlew test
+./gradlew test lint
 ```
+
+Dependency checks can also be executed locally:
+
+```bash
+./scripts/check_dependencies.sh
+```
+
+### Workflow and build updates
+
+- `.github/workflows/test.yml` and `ci.yml` now run the above commands and will fail
+  the pull request if either test or lint tasks fail.
+- A new script `scripts/check_dependencies.sh` verifies ARCore and TensorFlow Lite
+  dependencies are declared. Both workflows invoke this script.
 
 ## AR Overlay Integration Testing
 
