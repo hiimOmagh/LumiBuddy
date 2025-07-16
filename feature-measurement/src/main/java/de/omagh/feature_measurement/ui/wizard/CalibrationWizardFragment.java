@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.core_infra.user.CalibrationProfilesManager;
+import de.omagh.core_infra.user.LightCorrectionStore;
 import de.omagh.feature_measurement.R;
 
 /**
@@ -30,13 +30,13 @@ public class CalibrationWizardFragment extends Fragment {
     private Spinner typeSpinner;
     private TextView instructions;
     private Button nextBtn;
-    private CalibrationProfilesManager manager;
+    private LightCorrectionStore correctionStore;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-        manager = core.calibrationProfilesManager();
+        correctionStore = core.lightCorrectionStore();
     }
 
     @Nullable
@@ -65,7 +65,7 @@ public class CalibrationWizardFragment extends Fragment {
             // Normally this would capture sensor data to compute the factor
             float result = 0.02f; // stub value
             String type = (String) typeSpinner.getSelectedItem();
-            manager.setLightCorrection(type, result);
+            correctionStore.setFactor(type, result);
             step = 2;
         } else {
             ActivityCompat.finishAffinity(requireActivity());

@@ -19,6 +19,7 @@ import de.omagh.feature_measurement.R;
 import de.omagh.core_domain.model.CalibrationProfile;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.user.LightCorrectionStore;
 
 /**
  * Simple settings screen for user preferences.
@@ -26,6 +27,7 @@ import de.omagh.core_infra.user.SettingsManager;
 public class SettingsFragment extends Fragment {
     private SettingsManager settingsManager;
     private CalibrationProfilesManager calibrationManager;
+    private LightCorrectionStore lightCorrectionStore;
     private List<CalibrationProfile> profileList = new ArrayList<>();
     private Spinner unitsSpinner;
     private EditText hoursInput;
@@ -45,6 +47,7 @@ public class SettingsFragment extends Fragment {
 
         settingsManager = new SettingsManager(requireContext());
         calibrationManager = new CalibrationProfilesManager(requireContext());
+        lightCorrectionStore = new LightCorrectionStore(requireContext());
 
         unitsSpinner = view.findViewById(R.id.unitsSpinner);
         hoursInput = view.findViewById(R.id.lightDurationInput);
@@ -213,7 +216,7 @@ public class SettingsFragment extends Fragment {
     private void updateLightFactorInfo() {
         String type = (String) lightTypeFactorSpinner.getSelectedItem();
         if (type != null) {
-            float f = calibrationManager.getLightCorrection(type);
+            float f = lightCorrectionStore.getFactor(type);
             lightFactorInfoText.setText(getString(R.string.calibration_factor, f));
         }
     }
@@ -222,14 +225,14 @@ public class SettingsFragment extends Fragment {
         String type = (String) lightTypeFactorSpinner.getSelectedItem();
         final EditText input = new EditText(getContext());
         input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setText(String.valueOf(calibrationManager.getLightCorrection(type)));
+        input.setText(String.valueOf(lightCorrectionStore.getFactor(type)));
         new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                 .setTitle(type)
                 .setView(input)
                 .setPositiveButton(R.string.save, (d, w) -> {
                     try {
                         float val = Float.parseFloat(input.getText().toString());
-                        calibrationManager.setLightCorrection(type, val);
+                        lightCorrectionStore.setFactor(type, val);
                         updateLightFactorInfo();
                     } catch (NumberFormatException ex) {
                         Toast.makeText(getContext(), R.string.invalid_number, Toast.LENGTH_SHORT).show();

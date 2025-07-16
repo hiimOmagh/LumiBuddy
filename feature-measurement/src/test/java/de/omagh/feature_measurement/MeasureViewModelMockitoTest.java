@@ -21,6 +21,7 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.user.LightCorrectionStore;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
 import de.omagh.core_infra.environment.SunlightEstimator;
 import de.omagh.core_data.repository.DiaryRepository;
@@ -43,6 +44,8 @@ public class MeasureViewModelMockitoTest {
     SunlightEstimator sunlightEstimator;
     @Mock
     DiaryRepository diaryRepository;
+    @Mock
+    LightCorrectionStore lightCorrectionStore;
 
     private MeasureViewModel vm;
 
@@ -51,7 +54,8 @@ public class MeasureViewModelMockitoTest {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
         vm = new MeasureViewModel(app, profileManager, growLightManager, settings,
-                getCurrentLuxUseCase, calibrationManager, sunlightEstimator, diaryRepository);
+                getCurrentLuxUseCase, calibrationManager, sunlightEstimator, diaryRepository,
+                lightCorrectionStore);
 
         Field lampField = MeasureViewModel.class.getDeclaredField("lampIdLiveData");
         lampField.setAccessible(true);

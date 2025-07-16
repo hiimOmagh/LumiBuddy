@@ -18,6 +18,7 @@ import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.environment.SunlightEstimator;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.user.LightCorrectionStore;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.model.DiaryEntry;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -47,6 +48,8 @@ public class MeasureViewModel extends AndroidViewModel {
     SunlightEstimator sunlightEstimator;
     @Inject
     DiaryRepository diaryRepository;
+    @Inject
+    LightCorrectionStore lightCorrectionStore;
     private MutableLiveData<String> lampIdLiveData;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
@@ -59,7 +62,8 @@ public class MeasureViewModel extends AndroidViewModel {
                             GetCurrentLuxUseCase getCurrentLuxUseCase,
                             CalibrationManager calibrationManager,
                             SunlightEstimator sunlightEstimator,
-                            DiaryRepository diaryRepository) {
+                            DiaryRepository diaryRepository,
+                            LightCorrectionStore lightCorrectionStore) {
         super(application);
         this.profileManager = profileManager;
         this.growLightManager = growLightManager;
@@ -68,6 +72,7 @@ public class MeasureViewModel extends AndroidViewModel {
         this.calibrationManager = calibrationManager;
         this.sunlightEstimator = sunlightEstimator;
         this.diaryRepository = diaryRepository;
+        this.lightCorrectionStore = lightCorrectionStore;
 
         int hours = settingsManager.getLightDuration();
         if (settingsManager.isAutoSunlightEstimationEnabled()) {
@@ -180,7 +185,7 @@ public class MeasureViewModel extends AndroidViewModel {
         LampProduct def = growLightManager.getById(lampId);
         if (def != null) {
             lampFactor = def.calibrationFactor;
-            lampFactor *= profileManager.getLightCorrection(def.type);
+            lampFactor *= lightCorrectionStore.getFactor(def.type);
         }
         float deviceFactor = profileManager.getCalibrationFactorForSource(currentSource);
         float factor = lampFactor * deviceFactor;
