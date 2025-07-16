@@ -17,7 +17,9 @@ import java.util.List;
 
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.PlantDataSource;
+import de.omagh.core_data.repository.TaskDataSource;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_data.model.Task;
 import de.omagh.core_infra.recommendation.RecommendationEngine;
 import de.omagh.core_infra.recommendation.WateringScheduler;
 import de.omagh.feature_growschedule.ui.HomeViewModel;
@@ -31,11 +33,15 @@ public class HomeViewModelTest {
     @Mock
     DiaryDataSource diaryRepo;
     @Mock
+    TaskDataSource taskRepo;
+    @Mock
     RecommendationEngine engine;
     @Mock
     WateringScheduler scheduler;
     @Mock
     MutableLiveData<List<Plant>> plantLive;
+    @Mock
+    MutableLiveData<List<Task>> taskLive;
 
     private Application app;
 
@@ -44,11 +50,12 @@ public class HomeViewModelTest {
         MockitoAnnotations.openMocks(this);
         app = ApplicationProvider.getApplicationContext();
         Mockito.when(plantRepo.getAllPlants()).thenReturn(plantLive);
+        Mockito.when(taskRepo.getPendingTasks()).thenReturn(taskLive);
     }
 
     @Test
     public void getPlants_returnsRepositoryLiveData() {
-        HomeViewModel vm = new HomeViewModel(app, plantRepo, diaryRepo, engine, scheduler);
+        HomeViewModel vm = new HomeViewModel(app, plantRepo, diaryRepo, taskRepo, engine, scheduler);
         assertSame(plantLive, vm.getPlants());
     }
 }
