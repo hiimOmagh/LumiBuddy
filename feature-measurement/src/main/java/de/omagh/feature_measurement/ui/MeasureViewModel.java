@@ -15,8 +15,11 @@ import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
+import de.omagh.core_infra.environment.SunlightEstimator;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_data.model.DiaryEntry;
 import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
@@ -40,6 +43,10 @@ public class MeasureViewModel extends AndroidViewModel {
     GetCurrentLuxUseCase getCurrentLuxUseCase;
     @Inject
     CalibrationManager calibrationManager;
+    @Inject
+    SunlightEstimator sunlightEstimator;
+    @Inject
+    DiaryRepository diaryRepository;
     private MutableLiveData<String> lampIdLiveData;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
@@ -50,15 +57,26 @@ public class MeasureViewModel extends AndroidViewModel {
                             GrowLightProfileManager growLightManager,
                             SettingsManager settingsManager,
                             GetCurrentLuxUseCase getCurrentLuxUseCase,
-                            CalibrationManager calibrationManager) {
+                            CalibrationManager calibrationManager,
+                            SunlightEstimator sunlightEstimator,
+                            DiaryRepository diaryRepository) {
         super(application);
         this.profileManager = profileManager;
         this.growLightManager = growLightManager;
         this.settingsManager = settingsManager;
         this.getCurrentLuxUseCase = getCurrentLuxUseCase;
         this.calibrationManager = calibrationManager;
+        this.sunlightEstimator = sunlightEstimator;
+        this.diaryRepository = diaryRepository;
 
         int hours = settingsManager.getLightDuration();
+        if (settingsManager.isAutoSunlightEstimationEnabled()) {
+            int est = sunlightEstimator.estimateDailySunlightHours();
+            if (est > 0) {
+                hours = est;
+                settingsManager.setLightDuration(est);
+            }
+        }
         hoursLiveData.setValue(hours);
 
         String lampId = settingsManager.getSelectedCalibrationProfileId();
@@ -191,6 +209,29 @@ public class MeasureViewModel extends AndroidViewModel {
     private float getPPFDValue() {
         Float v = ppfdLiveData.getValue();
         return (v == null ? 0f : v);
+    }
+
+    private float getDliValue() {
+        Float v = dliLiveData.getValue();
+        return (v == null ? 0f : v);
+    }
+
+    /**
+     * Persist the current measurement values as a diary entry for the given plant.
+     */
+    public void saveMeasurementEntry(String plantId) {
+        String note = String.format(java.util.Locale.US,
+                "lux=%.1f ppfd=%.1f dli=%.2f hours=%d",
+                getLuxValue(), getPPFDValue(), getDliValue(), getHoursValue());
+        DiaryEntry entry = new DiaryEntry(
+                java.util.UUID.randomUUID().toString(),
+                plantId,
+                System.currentTimeMillis(),
+                note,
+                "",
+                "light"
+        );
+        diaryRepository.insert(entry);
     }
 
     // Enum for lamp types and their lux-to-PPFD factors

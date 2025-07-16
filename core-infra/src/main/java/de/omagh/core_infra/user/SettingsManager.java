@@ -16,6 +16,8 @@ public class SettingsManager {
     private static final String KEY_CALIB_ID = "selected_calibration_profile";
     private static final String KEY_ENABLE_AR = "enable_ar_overlay";
     private static final String KEY_ENABLE_ML = "enable_ml_features";
+    private static final String KEY_AUTO_SUN = "auto_sunlight_estimate";
+
     private static final String KEY_CARE_REMINDERS = "care_reminders_enabled";
     private static final String KEY_ONBOARDING_DONE = "onboarding_complete";
     private static final String KEY_PLANT_LAST_SYNC = "plant_last_sync";
@@ -94,6 +96,20 @@ public class SettingsManager {
      */
     public void setMlFeaturesEnabled(boolean enabled) {
         prefs.edit().putBoolean(KEY_ENABLE_ML, enabled).apply();
+    }
+
+    /**
+     * Returns true if automatic sunlight hour estimation is enabled.
+     */
+    public boolean isAutoSunlightEstimationEnabled() {
+        return prefs.getBoolean(KEY_AUTO_SUN, false);
+    }
+
+    /**
+     * Enable or disable automatic sunlight hour estimation.
+     */
+    public void setAutoSunlightEstimationEnabled(boolean enabled) {
+        prefs.edit().putBoolean(KEY_AUTO_SUN, enabled).apply();
     }
 
     /**

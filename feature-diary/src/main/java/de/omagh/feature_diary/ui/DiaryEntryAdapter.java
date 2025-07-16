@@ -44,9 +44,8 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
         super(DIFF_CALLBACK);
     }
 
-    @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.@NonNull ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1) {
             View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_diary_ar_scan, parent, false);
@@ -58,7 +57,7 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.@NonNull ViewHolder holder, int position) {
         DiaryEntry entry = getItem(position);
         if (holder instanceof ArScanViewHolder) {
             ((ArScanViewHolder) holder).bind(entry);

@@ -19,9 +19,11 @@ import de.omagh.core_infra.di.SyncModule;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_data.repository.PlantDataSource;
 import de.omagh.core_data.repository.DiaryDataSource;
+import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_infra.sync.PlantSyncManager;
 import de.omagh.core_infra.sync.DiarySyncManager;
 import de.omagh.core_infra.di.Remote;
+import de.omagh.core_infra.environment.SunlightEstimator;
 
 @Component(modules = {
         NetworkModule.class,
@@ -58,6 +60,10 @@ public interface CoreComponent {
     PlantSyncManager plantSyncManager();
 
     DiarySyncManager diarySyncManager();
+
+    SunlightEstimator sunlightEstimator();
+
+    DiaryRepository diaryRepository();
 
     AppExecutors appExecutors();
 
