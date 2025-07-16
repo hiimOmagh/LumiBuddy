@@ -1,23 +1,21 @@
 # Plant Database Feature
 
-Screens and logic for managing plant profiles and their diary entries.
-This module depends on `feature-diary` for cross-linking events.
+Contains screens for managing plant profiles and connecting them with diary entries from the diary
+feature.
 
-## Dagger Setup
+**Entry point:** `PlantListFragment` as described in the architecture docs.
 
-`PlantDbComponent` is built from `CoreComponent` and supplies a
-`PlantDbViewModelFactory`.
+## Dagger component
+
+`PlantDbComponent` depends on `CoreComponent` and supplies a `PlantDbViewModelFactory`. Fragments
+build the component on attach:
 
 ```java
-CoreComponent core = ((CoreComponentProvider)
-        context.getApplicationContext()).getCoreComponent();
-PlantDbComponent component =
-        DaggerPlantDbComponent.factory().create(core);
+CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
 viewModelFactory =component.
 
 viewModelFactory();
 ```
 
-See [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md)
-for all feature components.
-
+See [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md) for the full graph.

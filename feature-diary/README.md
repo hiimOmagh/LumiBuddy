@@ -1,21 +1,21 @@
 # Diary Feature
 
-This module tracks plant care tasks and history.
+Tracks plant care tasks and history.
 
-## Dagger Setup
+**Entry point:** `PlantDiaryFragment`.
 
-`DiaryComponent` depends on `CoreComponent` and injects view models
-such as `DiaryViewModel` and `TaskViewModel`.
+## Dagger component
+
+`DiaryComponent` depends on `CoreComponent` and injects `DiaryViewModel` and `TaskViewModel`.
+Fragments create the component when their view models are constructed:
 
 ```java
 CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-DiaryComponent component =
-        DaggerDiaryComponent.factory().create(core);
+DiaryComponent component = DaggerDiaryComponent.factory().create(core);
 component.
 
 inject(this);
 ```
 
-The overall dependency graph is shown in
-[../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md).
-
+More details are shown
+in [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md).
