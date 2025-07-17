@@ -1,5 +1,6 @@
 package de.omagh.core_data.db;
 
+import androidx.annotation.Nullable;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
@@ -13,6 +14,7 @@ import de.omagh.core_data.model.LightCorrectionEntity;
 @Dao
 public interface LightCorrectionDao {
     @Query("SELECT factor FROM light_corrections WHERE type = :type")
+    @Nullable
     float getFactor(String type);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

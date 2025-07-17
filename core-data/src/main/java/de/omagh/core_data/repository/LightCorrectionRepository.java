@@ -20,7 +20,7 @@ public class LightCorrectionRepository {
      */
     public float getFactor(String type) {
         Float f = dao.getFactor(type);
-        return f == null ? 1f : f;
+        return f != null ? f : 1f;
     }
 
     /**
