@@ -1,7 +1,9 @@
 package de.omagh.feature_measurement.ui;
 
 import android.app.Application;
+import android.Manifest;
 
+import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -21,6 +23,7 @@ import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.model.DiaryEntry;
+import de.omagh.core_infra.util.PermissionUtils;
 import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
@@ -54,6 +57,7 @@ public class MeasureViewModel extends AndroidViewModel {
     private Disposable luxDisposable;
     private String currentSource = "ALS";
 
+    @RequiresPermission(allOf = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION})
     @Inject
     public MeasureViewModel(@NonNull Application application,
                             CalibrationProfilesManager profileManager,
@@ -76,10 +80,14 @@ public class MeasureViewModel extends AndroidViewModel {
 
         int hours = settingsManager.getLightDuration();
         if (settingsManager.isAutoSunlightEstimationEnabled()) {
-            int est = sunlightEstimator.estimateDailySunlightHours();
-            if (est > 0) {
-                hours = est;
-                settingsManager.setLightDuration(est);
+            boolean hasFine = PermissionUtils.hasPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION);
+            boolean hasCoarse = PermissionUtils.hasPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (hasFine || hasCoarse) {
+                int est = sunlightEstimator.estimateDailySunlightHours();
+                if (est > 0) {
+                    hours = est;
+                    settingsManager.setLightDuration(est);
+                }
             }
         }
         hoursLiveData.setValue(hours);

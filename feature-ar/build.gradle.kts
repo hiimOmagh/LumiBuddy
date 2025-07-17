@@ -46,6 +46,7 @@ dependencies {
         exclude("com.google.flatbuffers", "flatbuffers-java")
     }
     implementation(libs.dagger)
+    implementation(libs.camera.view)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava3)
     implementation(libs.rxandroid3)

@@ -29,7 +29,7 @@ Each feature module defines its own component that also depends on `CoreComponen
 - **PlantDbComponent** – provides `PlantDbViewModelFactory` for plant database screens.
 - **DiaryComponent** – injects `DiaryViewModel` and related classes.
 - **GrowScheduleComponent** – injects `HomeFragment` and provides a `HomeViewModelFactory`.
-- **ArComponent** – injects `ArEntryActivity` for AR features.
+- **ArComponent** – injects `ArEntryActivity` and `ArHeatmapActivity` for AR features.
 
 Components share the same `CoreComponent` instance, so repositories and managers are singletons
 across the app. Feature components are usually created by their host fragments when needed and

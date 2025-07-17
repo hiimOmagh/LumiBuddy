@@ -4,9 +4,13 @@ Experimental module for visualizing light intensity in AR.
 
 **Entry point:** `ArEntryActivity`.
 
+Additional demo overlay: `ArHeatmapActivity` shows a heatmap of
+live light measurements using `ARMeasureOverlay`.
+
 ## Dagger component
 
-`ArComponent` depends on `CoreComponent` and injects `ArEntryActivity`.
+`ArComponent` depends on `CoreComponent` and injects `ArEntryActivity`
+and `ArHeatmapActivity`.
 
 ```java
 CoreComponent core = ((CoreComponentProvider) getApplicationContext()).getCoreComponent();
