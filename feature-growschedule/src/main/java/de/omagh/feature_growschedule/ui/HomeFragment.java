@@ -33,9 +33,6 @@ import de.omagh.feature_growschedule.di.DaggerGrowScheduleComponent;
 import de.omagh.feature_growschedule.di.GrowScheduleComponent;
 
 public class HomeFragment extends Fragment {
-    // Executor no longer used, but kept for potential future background tasks
-    private final java.util.concurrent.ExecutorService lightCheckExecutor =
-            java.util.concurrent.Executors.newSingleThreadExecutor();
 
     @Inject
     HomeViewModelFactory viewModelFactory;
@@ -126,7 +123,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        lightCheckExecutor.shutdown();
     }
 
     private void onActivityResult(Boolean granted) {
