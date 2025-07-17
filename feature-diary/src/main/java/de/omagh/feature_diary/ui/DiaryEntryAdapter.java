@@ -41,6 +41,10 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
     };
     private static final OnEntryInteractionListener listener = null;
 
+    public DiaryEntryAdapter() {
+        super(DIFF_CALLBACK);
+    }
+
     @Override
     public RecyclerView.@NonNull ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == 1) {

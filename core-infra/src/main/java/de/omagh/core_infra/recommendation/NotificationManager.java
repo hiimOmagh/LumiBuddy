@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import androidx.annotation.RequiresPermission;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -69,11 +72,13 @@ public class NotificationManager {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()) {
-            try {
-                Uri uri = Uri.parse(plant.getImageUri());
-                builder.setLargeIcon(BitmapFactory.decodeStream(
-                        context.getContentResolver().openInputStream(uri)));
-            } catch (Exception ignored) {
+            Uri uri = Uri.parse(plant.getImageUri());
+            try (InputStream in = context.getContentResolver().openInputStream(uri)) {
+                if (in != null) {
+                    builder.setLargeIcon(BitmapFactory.decodeStream(in));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 
@@ -113,11 +118,13 @@ public class NotificationManager {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         if (plant.getImageUri() != null && !plant.getImageUri().isEmpty()) {
-            try {
-                Uri uri = Uri.parse(plant.getImageUri());
-                builder.setLargeIcon(BitmapFactory.decodeStream(
-                        context.getContentResolver().openInputStream(uri)));
-            } catch (Exception ignored) {
+            Uri uri = Uri.parse(plant.getImageUri());
+            try (InputStream in = context.getContentResolver().openInputStream(uri)) {
+                if (in != null) {
+                    builder.setLargeIcon(BitmapFactory.decodeStream(in));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
 

@@ -137,6 +137,11 @@ public class HomeViewModelTest {
         }
 
         @Override
+        public void update(DiaryEntry entry) {
+
+        }
+
+        @Override
         public void delete(DiaryEntry entry) {
         }
 
