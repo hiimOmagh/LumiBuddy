@@ -25,13 +25,6 @@ import de.omagh.core_data.model.DiaryEntry;
  */
 public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.ViewHolder> {
 
-    private final OnEntryInteractionListener listener;
-
-    public DiaryEntryAdapter(OnEntryInteractionListener listener) {
-        super(DIFF_CALLBACK);
-        this.listener = listener;
-    }
-
     private static final DiffUtil.ItemCallback<DiaryEntry> DIFF_CALLBACK = new DiffUtil.ItemCallback<>() {
         @Override
         public boolean areItemsTheSame(@NonNull DiaryEntry oldItem, @NonNull DiaryEntry newItem) {
@@ -46,11 +39,11 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
                     && oldItem.getEventType().equals(newItem.getEventType());
         }
     };
+    private final OnEntryInteractionListener listener;
 
-    public interface OnEntryInteractionListener {
-        void onEdit(DiaryEntry entry);
-
-        void onDelete(DiaryEntry entry);
+    public DiaryEntryAdapter(OnEntryInteractionListener listener) {
+        super(DIFF_CALLBACK);
+        this.listener = listener;
     }
 
     @Override
@@ -82,6 +75,12 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
             return 1;
         }
         return 0;
+    }
+
+    public interface OnEntryInteractionListener {
+        void onEdit(DiaryEntry entry);
+
+        void onDelete(DiaryEntry entry);
     }
 
     static class DiaryViewHolder extends RecyclerView.ViewHolder {
