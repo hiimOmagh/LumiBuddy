@@ -23,7 +23,7 @@ import de.omagh.feature_measurement.R;
 /**
  * Simple three step wizard that allows the user to record a correction
  * factor for a specific light type. The result is stored via
- * {@link CalibrationProfilesManager}.
+ * {@link de.omagh.core_infra.user.CalibrationProfilesManager}.
  */
 public class CalibrationWizardFragment extends Fragment {
     private int step = 0;
