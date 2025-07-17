@@ -39,12 +39,7 @@ public class DiaryEntryAdapter extends ListAdapter<DiaryEntry, RecyclerView.View
                     && oldItem.getEventType().equals(newItem.getEventType());
         }
     };
-    private final OnEntryInteractionListener listener;
-
-    public DiaryEntryAdapter(OnEntryInteractionListener listener) {
-        super(DIFF_CALLBACK);
-        this.listener = listener;
-    }
+    private static final OnEntryInteractionListener listener = null;
 
     @Override
     public RecyclerView.@NonNull ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
