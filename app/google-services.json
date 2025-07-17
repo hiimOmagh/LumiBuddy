@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "42210860836",
+    "project_id": "lumibud-2894a",
+    "storage_bucket": "lumibud-2894a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42210860836:android:d5b3e5ef94d5a421e69db1",
+        "android_client_info": {
+          "package_name": "de.omagh.lumibuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiLDHjysEz1lOv2cZWgf_syf1h10Vc7Ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42210860836:android:7c2f26894d68c431e69db1",
+        "android_client_info": {
+          "package_name": "de.omagh.lumibuddy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBiLDHjysEz1lOv2cZWgf_syf1h10Vc7Ag"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
