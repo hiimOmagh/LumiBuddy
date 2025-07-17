@@ -7,6 +7,7 @@ import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +45,7 @@ public class HomeViewModel extends AndroidViewModel {
     private final TaskDataSource taskRepository;
     private final LiveData<List<Task>> pendingTasks;
     private final LiveData<List<Plant>> plantsLiveData;
+    private final Observer<List<Plant>> plantObserver;
     private final MutableLiveData<List<String>> reminders = new MutableLiveData<>();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -65,7 +67,8 @@ public class HomeViewModel extends AndroidViewModel {
         this.wateringScheduler = scheduler;
         plantsLiveData = plantRepository.getAllPlants();
         pendingTasks = taskRepository.getPendingTasks();
-        plantsLiveData.observeForever(this::launchChecks);
+        plantObserver = this::launchChecks;
+        plantsLiveData.observeForever(plantObserver);
     }
 
     @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
@@ -138,6 +141,7 @@ public class HomeViewModel extends AndroidViewModel {
     @Override
     protected void onCleared() {
         super.onCleared();
+        plantsLiveData.removeObserver(plantObserver);
         if (diaryRepository instanceof DiaryRepository) {
             ((DiaryRepository) diaryRepository).shutdown();
         }
