@@ -1,5 +1,6 @@
 package de.omagh.feature_plantdb.ui;
 
+import android.Manifest;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,6 +23,7 @@ import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_plantdb.di.DaggerPlantDbComponent;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
+import de.omagh.core_infra.util.PermissionUtils;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -49,6 +53,38 @@ public class PlantDetailFragment extends Fragment {
     PlantDbViewModelFactory viewModelFactory;
     private ImageView plantImageView;
     private TextView careInfoView;
+    private EditText dialogNameInput;
+    private EditText dialogTypeInput;
+    private ImageView dialogImagePreview;
+    private final ActivityResultLauncher<String> imagePickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
+                if (uri != null && dialogImagePreview != null) {
+                    Uri internal = de.omagh.core_infra.util.ImageUtils.copyUriToInternalStorage(requireContext(), uri);
+                    dialogImagePreview.setImageURI(internal);
+                    try {
+                        android.graphics.Bitmap bmp = android.graphics.ImageDecoder.decodeBitmap(
+                                android.graphics.ImageDecoder.createSource(requireActivity().getContentResolver(), internal));
+                        identifyWithApi(bmp);
+                    } catch (java.io.IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+    private final ActivityResultLauncher<Void> captureImageLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bmp -> {
+                if (bmp != null && dialogImagePreview != null) {
+                    dialogImagePreview.setImageBitmap(bmp);
+                    identifyWithApi(bmp);
+                }
+            });
+    private final ActivityResultLauncher<String> cameraPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), granted -> {
+                if (granted) {
+                    captureImageLauncher.launch(null);
+                } else {
+                    PermissionUtils.showPermissionDenied(this, getString(R.string.camera_permission_required));
+                }
+            });
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -154,25 +190,40 @@ public class PlantDetailFragment extends Fragment {
         if (current == null) return;
 
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_add_plant, null);
-        EditText nameInput = dialogView.findViewById(R.id.editPlantName);
-        EditText typeInput = dialogView.findViewById(R.id.editPlantType);
-        ImageView imagePreview = dialogView.findViewById(R.id.plantImagePreview);
+        dialogNameInput = dialogView.findViewById(R.id.editPlantName);
+        dialogTypeInput = dialogView.findViewById(R.id.editPlantType);
+        dialogImagePreview = dialogView.findViewById(R.id.plantImagePreview);
         Button searchPlantBtn = dialogView.findViewById(R.id.searchPlantBtn);
+        View pickImageBtn = dialogView.findViewById(R.id.pickImageBtn);
+        View captureImageBtn = dialogView.findViewById(R.id.captureImageBtn);
 
-        nameInput.setText(current.getName());
-        typeInput.setText(current.getType());
+        dialogNameInput.setText(current.getName());
+        dialogTypeInput.setText(current.getType());
 
-        if (imagePreview != null && current.getImageUri() != null && !current.getImageUri().isEmpty()) {
+        if (dialogImagePreview != null && current.getImageUri() != null && !current.getImageUri().isEmpty()) {
             try {
-                imagePreview.setImageURI(Uri.parse(current.getImageUri()));
+                dialogImagePreview.setImageURI(Uri.parse(current.getImageUri()));
             } catch (Exception e) {
-                imagePreview.setImageResource(R.drawable.ic_eco);
+                dialogImagePreview.setImageResource(R.drawable.ic_eco);
             }
         }
 
+        pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
+        captureImageBtn.setOnClickListener(v -> {
+            if (PermissionUtils.hasPermission(requireContext(), Manifest.permission.CAMERA)) {
+                captureImageLauncher.launch(null);
+            } else {
+                PermissionUtils.requestPermissionWithRationale(
+                        this,
+                        Manifest.permission.CAMERA,
+                        getString(R.string.camera_permission_rationale),
+                        cameraPermissionLauncher);
+            }
+        });
+
         searchPlantBtn.setOnClickListener(v -> {
             // Trigger remote species search using the ViewModel
-            String query = nameInput.getText().toString().trim();
+            String query = dialogNameInput.getText().toString().trim();
             viewModel.searchSpecies(query).observe(getViewLifecycleOwner(), results -> {
                 if (results == null || results.isEmpty()) return;
                 String[] names = new String[results.size()];
@@ -181,8 +232,8 @@ public class PlantDetailFragment extends Fragment {
                         .setTitle("Select Plant")
                         .setItems(names, (d, which) -> {
                             PlantSpecies info = results.get(which);
-                            nameInput.setText(info.getCommonName());
-                            typeInput.setText(info.getScientificName());
+                            dialogNameInput.setText(info.getCommonName());
+                            dialogTypeInput.setText(info.getScientificName());
                         })
                         .setNegativeButton("Cancel", null)
                         .show();
@@ -193,8 +244,8 @@ public class PlantDetailFragment extends Fragment {
                 .setTitle("Edit Plant")
                 .setView(dialogView)
                 .setPositiveButton("Save", (dialog, which) -> {
-                    String newName = nameInput.getText().toString().trim();
-                    String newType = typeInput.getText().toString().trim();
+                    String newName = dialogNameInput.getText().toString().trim();
+                    String newType = dialogTypeInput.getText().toString().trim();
 
                     if (newName.isEmpty() || newType.isEmpty()) {
                         Toast.makeText(getContext(), "Fields cannot be empty", Toast.LENGTH_SHORT).show();
@@ -209,5 +260,21 @@ public class PlantDetailFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    private void identifyWithApi(android.graphics.Bitmap bmp) {
+        Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
+        viewModel.identifyPlantWithApi(bmp);
+        viewModel.getIdentificationResult().removeObservers(getViewLifecycleOwner());
+        viewModel.getIdentificationResult().observe(getViewLifecycleOwner(), suggestion -> {
+            if (suggestion != null) {
+                if (dialogNameInput != null) dialogNameInput.setText(suggestion.getCommonName());
+                if (dialogTypeInput != null)
+                    dialogTypeInput.setText(suggestion.getScientificName());
+                Toast.makeText(getContext(), "Identified with Plant.id", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Identification failed", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
