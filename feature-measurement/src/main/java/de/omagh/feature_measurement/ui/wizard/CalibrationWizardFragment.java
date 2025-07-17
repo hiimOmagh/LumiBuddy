@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.feature_measurement.R;
 
 /**
@@ -30,13 +30,13 @@ public class CalibrationWizardFragment extends Fragment {
     private Spinner typeSpinner;
     private TextView instructions;
     private Button nextBtn;
-    private LightCorrectionStore correctionStore;
+    private LightCorrectionRepository correctionStore;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-        correctionStore = core.lightCorrectionStore();
+        correctionStore = core.lightCorrectionRepository();
     }
 
     @Nullable
@@ -62,8 +62,8 @@ public class CalibrationWizardFragment extends Fragment {
         if (step == 0) {
             step = 1;
         } else if (step == 1) {
-            // Normally this would capture sensor data to compute the factor
-            float result = 0.02f; // stub value
+            // TODO capture sensor data to compute the factor
+            float result = 0.02f; // placeholder value until sensor code added
             String type = (String) typeSpinner.getSelectedItem();
             correctionStore.setFactor(type, result);
             step = 2;

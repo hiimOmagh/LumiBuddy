@@ -21,7 +21,7 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
 import de.omagh.core_infra.environment.SunlightEstimator;
 import de.omagh.core_data.repository.DiaryRepository;
@@ -45,7 +45,7 @@ public class MeasureViewModelMockitoTest {
     @Mock
     DiaryRepository diaryRepository;
     @Mock
-    LightCorrectionStore lightCorrectionStore;
+    LightCorrectionRepository lightCorrectionStore;
 
     private MeasureViewModel vm;
 

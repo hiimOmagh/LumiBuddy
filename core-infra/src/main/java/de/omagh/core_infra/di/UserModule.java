@@ -9,7 +9,8 @@ import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_data.repository.LightCorrectionRepository;
+import de.omagh.core_data.db.LightCorrectionDao;
 import de.omagh.core_infra.firebase.FirebaseManager;
 
 /**
@@ -43,7 +44,7 @@ public class UserModule {
     }
 
     @Provides
-    LightCorrectionStore provideLightCorrectionStore(Application app) {
-        return new LightCorrectionStore(app.getApplicationContext());
+    LightCorrectionRepository provideLightCorrectionRepository(LightCorrectionDao dao) {
+        return new LightCorrectionRepository(dao);
     }
 }

@@ -19,7 +19,9 @@ import de.omagh.feature_measurement.R;
 import de.omagh.core_domain.model.CalibrationProfile;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_data.repository.LightCorrectionRepository;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
 
 /**
  * Simple settings screen for user preferences.
@@ -27,7 +29,7 @@ import de.omagh.core_infra.user.LightCorrectionStore;
 public class SettingsFragment extends Fragment {
     private SettingsManager settingsManager;
     private CalibrationProfilesManager calibrationManager;
-    private LightCorrectionStore lightCorrectionStore;
+    private LightCorrectionRepository lightCorrectionStore;
     private List<CalibrationProfile> profileList = new ArrayList<>();
     private Spinner unitsSpinner;
     private EditText hoursInput;
@@ -47,7 +49,8 @@ public class SettingsFragment extends Fragment {
 
         settingsManager = new SettingsManager(requireContext());
         calibrationManager = new CalibrationProfilesManager(requireContext());
-        lightCorrectionStore = new LightCorrectionStore(requireContext());
+        CoreComponent core = ((CoreComponentProvider) requireContext().getApplicationContext()).getCoreComponent();
+        lightCorrectionStore = core.lightCorrectionRepository();
 
         unitsSpinner = view.findViewById(R.id.unitsSpinner);
         hoursInput = view.findViewById(R.id.lightDurationInput);

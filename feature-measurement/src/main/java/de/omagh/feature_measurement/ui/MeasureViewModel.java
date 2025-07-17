@@ -18,7 +18,7 @@ import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.environment.SunlightEstimator;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.model.DiaryEntry;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -49,7 +49,7 @@ public class MeasureViewModel extends AndroidViewModel {
     @Inject
     DiaryRepository diaryRepository;
     @Inject
-    LightCorrectionStore lightCorrectionStore;
+    LightCorrectionRepository lightCorrectionStore;
     private MutableLiveData<String> lampIdLiveData;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
@@ -63,7 +63,7 @@ public class MeasureViewModel extends AndroidViewModel {
                             CalibrationManager calibrationManager,
                             SunlightEstimator sunlightEstimator,
                             DiaryRepository diaryRepository,
-                            LightCorrectionStore lightCorrectionStore) {
+                            LightCorrectionRepository lightCorrectionStore) {
         super(application);
         this.profileManager = profileManager;
         this.growLightManager = growLightManager;

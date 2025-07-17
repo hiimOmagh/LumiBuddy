@@ -12,7 +12,7 @@ import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
-import de.omagh.core_infra.user.LightCorrectionStore;
+import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_infra.firebase.FirebaseManager;
 import de.omagh.core_infra.di.ExecutorModule;
 import de.omagh.core_infra.di.SyncModule;
@@ -53,7 +53,7 @@ public interface CoreComponent {
 
     UserProfileSyncManager userProfileSyncManager();
 
-    LightCorrectionStore lightCorrectionStore();
+    LightCorrectionRepository lightCorrectionRepository();
 
     FirebaseManager firebaseManager();
 
