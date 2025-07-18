@@ -4,6 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Log entry associated with a particular plant.
+ * <p>
+ * Entries record events such as watering or light measurements along with
+ * optional notes and images. They are stored in the {@code diary_entries} table
+ * with {@code timestamp} describing when the event occurred.
+ */
 @Entity(tableName = "diary_entries")
 public class DiaryEntry {
 

@@ -4,6 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ * Simple to-do item tied to a plant. Tasks may represent watering,
+ * fertilizing or other scheduled activities. They are persisted in the
+ * {@code tasks} table and include a due date and completion status.
+ */
 @Entity(tableName = "tasks")
 public class Task {
     @PrimaryKey
