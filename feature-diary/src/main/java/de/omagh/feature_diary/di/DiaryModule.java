@@ -1,5 +1,10 @@
 package de.omagh.feature_diary.di;
 
+/**
+ * Provides database DAOs and repositories for the Diary feature.
+ * This module works in conjunction with {@link DiaryComponent}.
+ */
+
 import dagger.Module;
 import dagger.Provides;
 import de.omagh.core_data.db.AppDatabase;

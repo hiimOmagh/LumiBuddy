@@ -1,5 +1,11 @@
 package de.omagh.feature_plantdb.di;
 
+/**
+ * Module that provides ML and repository classes for the Plant database feature.
+ * Used by {@link PlantDbComponent} and depends on core infrastructure for
+ * executors and application context.
+ */
+
 import android.app.Application;
 
 import dagger.Module;

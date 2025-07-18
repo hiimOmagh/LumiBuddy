@@ -1,5 +1,11 @@
 package de.omagh.feature_measurement.di;
 
+/**
+ * Dagger component for the Measurement feature. It depends on
+ * {@link de.omagh.core_infra.di.CoreComponent} and uses
+ * {@link MeasurementModule} to provide feature specific bindings.
+ */
+
 import dagger.Component;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.FeatureScope;

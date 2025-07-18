@@ -1,5 +1,10 @@
 package de.omagh.core_infra.di;
 
+/**
+ * Provides networking instances such as the shared {@link Retrofit} client used
+ * across the app.
+ */
+
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;

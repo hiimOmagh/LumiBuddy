@@ -1,5 +1,11 @@
 package de.omagh.feature_ar.di;
 
+/**
+ * Dagger component for AR functionality. It links the AR activities to the
+ * dependencies provided by {@link de.omagh.core_infra.di.CoreComponent} and
+ * bindings in {@link ArModule}.
+ */
+
 import dagger.Component;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.FeatureScope;

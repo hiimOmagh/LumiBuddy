@@ -1,5 +1,11 @@
 package de.omagh.core_infra.di;
 
+/**
+ * Root component exposing singletons used across all features. Other Dagger
+ * components depend on this component to access repositories, managers and
+ * executors.
+ */
+
 import android.app.Application;
 
 import dagger.BindsInstance;

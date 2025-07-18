@@ -1,5 +1,11 @@
 package de.omagh.feature_growschedule.di;
 
+/**
+ * Module supplying use cases and schedulers for the Grow Schedule feature.
+ * Installed in {@link GrowScheduleComponent} and relies on
+ * {@link de.omagh.core_infra.di.CoreComponent} provided dependencies.
+ */
+
 import android.app.Application;
 
 import dagger.Binds;

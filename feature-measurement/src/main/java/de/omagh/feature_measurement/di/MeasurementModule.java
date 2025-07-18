@@ -1,5 +1,11 @@
 package de.omagh.feature_measurement.di;
 
+/**
+ * Dagger module for the Measurement feature. Provides use cases and helpers
+ * needed by {@link de.omagh.feature_measurement.ui.MeasureFragment} and
+ * related view models.
+ */
+
 import android.app.Application;
 
 import dagger.Module;
