@@ -27,6 +27,7 @@ import java.util.Locale;
 import de.omagh.feature_growschedule.R;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.util.PermissionUtils;
+import de.omagh.core_infra.util.NotificationPermissionHelper;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.feature_growschedule.di.DaggerGrowScheduleComponent;
@@ -92,20 +93,14 @@ public class HomeFragment extends Fragment {
 
         viewModel.getPlants().observe(getViewLifecycleOwner(), plants -> {
             if (!settingsManager.isCareRemindersEnabled()) return;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                    !PermissionUtils.hasPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS)) {
-                PermissionUtils.requestPermissionWithRationale(
+            if (!NotificationPermissionHelper.hasPermission(requireContext())) {
+                NotificationPermissionHelper.requestPermissionIfNeeded(
                         this,
-                        Manifest.permission.POST_NOTIFICATIONS,
                         getString(R.string.notification_permission_rationale),
                         notifPermissionLauncher);
             } else {
-                try {
-                    new de.omagh.core_infra.recommendation.WateringWorkScheduler(requireContext()).scheduleDaily();
-                    viewModel.refresh();
-                } catch (SecurityException ignored) {
-                    // Permission might still be missing
-                }
+                new de.omagh.core_infra.recommendation.WateringWorkScheduler(requireContext()).scheduleDaily();
+                viewModel.refresh();
             }
         });
 
