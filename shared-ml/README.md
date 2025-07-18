@@ -19,3 +19,20 @@ LiveData<PlantIdentifier.Prediction> result = identifier.identifyPlant(bitmap);
 
 Any other `ModelProvider` implementation can be supplied, e.g. one that
 retrieves a model from disk or downloads it.
+
+## Lamp Identifier
+
+`LampIdentifier` mirrors `PlantIdentifier` but targets grow lights. It relies on a small on-device
+TensorFlow Lite model, loaded via a `ModelProvider`. The default provider loads
+`lamp_identifier.tflite` from the module assets.
+
+### Basic Usage
+
+```java
+ModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
+LampIdentifier identifier = new LampIdentifier(context, provider, executors);
+LiveData<LampIdentifier.Prediction> result = identifier.identifyLamp(bitmap);
+```
+
+Results return a label only when the confidence exceeds the built‑in threshold. A cloud fallback
+service could be queried when the label is `null` to improve accuracy.

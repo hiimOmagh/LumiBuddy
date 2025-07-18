@@ -36,8 +36,9 @@ import de.omagh.core_infra.ar.HeatmapOverlayView;
 import de.omagh.feature_measurement.R;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
-import de.omagh.core_infra.ml.BasicLampTypeClassifier;
 import de.omagh.core_infra.ml.LampTypeClassifier;
+import de.omagh.shared_ml.AssetModelProvider;
+import de.omagh.shared_ml.LampIdentifier;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.util.OnSwipeTouchListener;
 import de.omagh.core_infra.util.PermissionUtils;
@@ -70,7 +71,8 @@ public class MeasureFragment extends Fragment {
     private CameraLightMeterX cameraLightMeterX;
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
 
-    private LampTypeClassifier lampTypeClassifier;
+    @Inject
+    LampIdentifier lampIdentifier;
     // AR overlay integration
     private boolean enableAROverlay = false;
     private de.omagh.core_infra.ar.AROverlayRenderer arOverlayRenderer;
@@ -100,8 +102,8 @@ public class MeasureFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
         settingsManager = new SettingsManager(requireContext());
         enableAROverlay = settingsManager.isArMeasureOverlayEnabled();
-        if (settingsManager.isMlFeaturesEnabled()) {
-            lampTypeClassifier = new BasicLampTypeClassifier();
+        if (!settingsManager.isMlFeaturesEnabled()) {
+            lampIdentifier = null;
         }
 
         // Lamp selection spinner
@@ -329,11 +331,17 @@ public class MeasureFragment extends Fragment {
                                         String lampSuggestion = analysis[0];
                                         String warning = analysis[1];
 
-                                        if (lampTypeClassifier != null) {
+                                        if (lampIdentifier != null) {
                                             Bitmap sample = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
                                             sample.eraseColor(Color.rgb((int) Math.min(255, meanR), (int) Math.min(255, meanG), (int) Math.min(255, meanB)));
-                                            lampTypeClassifier.classify(sample);
-                                            Timber.tag("MeasureFragment").d("Lamp classifier result=%s", lampTypeClassifier.getLastResult());
+                                            lampIdentifier.identifyLamp(sample)
+                                                    .observe(getViewLifecycleOwner(), pred -> {
+                                                        if (pred != null) {
+                                                            Timber.tag("MeasureFragment").d(
+                                                                    "Lamp identifier result=%s conf=%.2f",
+                                                                    pred.getLabel(), pred.getConfidence());
+                                                        }
+                                                    });
                                         }
 
                                         int index = lampTypeStringToIndex(lampSuggestion);

@@ -10,6 +10,9 @@ import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.feature_measurement.ui.MeasureViewModelFactory;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
+import de.omagh.shared_ml.AssetModelProvider;
+import de.omagh.shared_ml.LampIdentifier;
+import de.omagh.core_domain.util.AppExecutors;
 
 import javax.inject.Provider;
 
@@ -28,6 +31,12 @@ public class MeasurementModule {
     @Provides
     static GrowLightProfileManager provideGrowLightProfileManager(Application app) {
         return new GrowLightProfileManager(app.getApplicationContext());
+    }
+
+    @Provides
+    static LampIdentifier provideLampIdentifier(Application app, AppExecutors executors) {
+        AssetModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
+        return new LampIdentifier(app.getApplicationContext(), provider, executors);
     }
 
     @Provides
