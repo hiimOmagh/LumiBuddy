@@ -21,6 +21,7 @@ import de.omagh.core_data.model.DiaryEntry;
 public class FirestoreDiaryEntryDao {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String uid;
+    private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public FirestoreDiaryEntryDao(String uid) {
         this.uid = uid;
@@ -31,11 +32,22 @@ public class FirestoreDiaryEntryDao {
     }
 
     /**
+     * Returns a LiveData emitting error messages.
+     */
+    public LiveData<String> getError() {
+        return errorLiveData;
+    }
+
+    /**
      * Returns all diary entries as LiveData.
      */
     public LiveData<List<DiaryEntry>> getAll() {
         MutableLiveData<List<DiaryEntry>> liveData = new MutableLiveData<>();
         collection().addSnapshotListener((snap, e) -> {
+            if (e != null) {
+                errorLiveData.postValue(e.getMessage());
+                return;
+            }
             List<DiaryEntry> list = new ArrayList<>();
             if (snap != null) {
                 for (DocumentSnapshot d : snap.getDocuments()) {
@@ -59,6 +71,7 @@ public class FirestoreDiaryEntryDao {
             }
             return list;
         } catch (Exception e) {
+            errorLiveData.postValue(e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -71,6 +84,10 @@ public class FirestoreDiaryEntryDao {
         collection()
                 .whereEqualTo("plantId", plantId)
                 .addSnapshotListener((snap, e) -> {
+                    if (e != null) {
+                        errorLiveData.postValue(e.getMessage());
+                        return;
+                    }
                     List<DiaryEntry> list = new ArrayList<>();
                     if (snap != null) {
                         for (DocumentSnapshot d : snap.getDocuments()) {
@@ -96,6 +113,7 @@ public class FirestoreDiaryEntryDao {
             }
             return list;
         } catch (Exception e) {
+            errorLiveData.postValue(e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -106,7 +124,8 @@ public class FirestoreDiaryEntryDao {
     public void insert(DiaryEntry entry) {
         collection()
                 .document(entry.getId())
-                .set(toMap(entry));
+                .set(toMap(entry))
+                .addOnFailureListener(e -> errorLiveData.postValue(e.getMessage()));
     }
 
     public void update(DiaryEntry entry) {
@@ -119,7 +138,8 @@ public class FirestoreDiaryEntryDao {
     public void delete(DiaryEntry entry) {
         collection()
                 .document(entry.getId())
-                .delete();
+                .delete()
+                .addOnFailureListener(e -> errorLiveData.postValue(e.getMessage()));
     }
 
     private DiaryEntry fromDoc(DocumentSnapshot doc) {

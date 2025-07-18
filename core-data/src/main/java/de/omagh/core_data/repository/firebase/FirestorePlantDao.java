@@ -21,6 +21,7 @@ import de.omagh.core_domain.model.Plant;
 public class FirestorePlantDao {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String uid;
+    private final MutableLiveData<String> errorLiveData = new MutableLiveData<>();
 
     public FirestorePlantDao(String uid) {
         this.uid = uid;
@@ -31,11 +32,22 @@ public class FirestorePlantDao {
     }
 
     /**
+     * Returns a LiveData emitting error messages.
+     */
+    public LiveData<String> getError() {
+        return errorLiveData;
+    }
+
+    /**
      * Returns a LiveData list of all plants.
      */
     public LiveData<List<Plant>> getAll() {
         MutableLiveData<List<Plant>> liveData = new MutableLiveData<>();
         collection().addSnapshotListener((snap, e) -> {
+            if (e != null) {
+                errorLiveData.postValue(e.getMessage());
+                return;
+            }
             List<Plant> list = new ArrayList<>();
             if (snap != null) {
                 for (DocumentSnapshot d : snap.getDocuments()) {
@@ -59,6 +71,7 @@ public class FirestorePlantDao {
             }
             return list;
         } catch (Exception e) {
+            errorLiveData.postValue(e.getMessage());
             return new ArrayList<>();
         }
     }
@@ -69,6 +82,10 @@ public class FirestorePlantDao {
     public LiveData<Plant> getById(String id) {
         MutableLiveData<Plant> liveData = new MutableLiveData<>();
         collection().document(id).addSnapshotListener((snap, e) -> {
+            if (e != null) {
+                errorLiveData.postValue(e.getMessage());
+                return;
+            }
             if (snap != null && snap.exists()) {
                 liveData.postValue(fromDoc(snap));
             }
@@ -80,7 +97,10 @@ public class FirestorePlantDao {
      * Inserts or replaces a plant.
      */
     public void insert(Plant plant) {
-        collection().document(plant.getId()).set(toMap(plant));
+        collection()
+                .document(plant.getId())
+                .set(toMap(plant))
+                .addOnFailureListener(e -> errorLiveData.postValue(e.getMessage()));
     }
 
     /**
@@ -94,7 +114,10 @@ public class FirestorePlantDao {
      * Deletes a plant document.
      */
     public void delete(Plant plant) {
-        collection().document(plant.getId()).delete();
+        collection()
+                .document(plant.getId())
+                .delete()
+                .addOnFailureListener(e -> errorLiveData.postValue(e.getMessage()));
     }
 
     private Plant fromDoc(DocumentSnapshot doc) {
