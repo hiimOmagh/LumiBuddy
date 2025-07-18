@@ -13,7 +13,11 @@ import de.omagh.core_data.repository.DiaryDataSource;
  * Firestore-backed implementation of {@link DiaryDataSource}.
  */
 public class FirebaseDiaryRepository implements DiaryDataSource {
-    private final FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao();
+    private final FirestoreDiaryEntryDao dao;
+
+    public FirebaseDiaryRepository(String uid) {
+        this.dao = new FirestoreDiaryEntryDao(uid);
+    }
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {

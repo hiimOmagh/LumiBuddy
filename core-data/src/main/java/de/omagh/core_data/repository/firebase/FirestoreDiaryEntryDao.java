@@ -20,13 +20,22 @@ import de.omagh.core_data.model.DiaryEntry;
  */
 public class FirestoreDiaryEntryDao {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final String uid;
+
+    public FirestoreDiaryEntryDao(String uid) {
+        this.uid = uid;
+    }
+
+    private com.google.firebase.firestore.CollectionReference collection() {
+        return db.collection("users").document(uid).collection("diary_entries");
+    }
 
     /**
      * Returns all diary entries as LiveData.
      */
     public LiveData<List<DiaryEntry>> getAll() {
         MutableLiveData<List<DiaryEntry>> liveData = new MutableLiveData<>();
-        db.collection("diary_entries").addSnapshotListener((snap, e) -> {
+        collection().addSnapshotListener((snap, e) -> {
             List<DiaryEntry> list = new ArrayList<>();
             if (snap != null) {
                 for (DocumentSnapshot d : snap.getDocuments()) {
@@ -43,7 +52,7 @@ public class FirestoreDiaryEntryDao {
      */
     public List<DiaryEntry> getAllSync() {
         try {
-            QuerySnapshot snap = Tasks.await(db.collection("diary_entries").get());
+            QuerySnapshot snap = Tasks.await(collection().get());
             List<DiaryEntry> list = new ArrayList<>();
             for (DocumentSnapshot d : snap.getDocuments()) {
                 list.add(fromDoc(d));
@@ -59,7 +68,7 @@ public class FirestoreDiaryEntryDao {
      */
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {
         MutableLiveData<List<DiaryEntry>> liveData = new MutableLiveData<>();
-        db.collection("diary_entries")
+        collection()
                 .whereEqualTo("plantId", plantId)
                 .addSnapshotListener((snap, e) -> {
                     List<DiaryEntry> list = new ArrayList<>();
@@ -78,7 +87,7 @@ public class FirestoreDiaryEntryDao {
      */
     public List<DiaryEntry> getEntriesForPlantSync(String plantId) {
         try {
-            QuerySnapshot snap = Tasks.await(db.collection("diary_entries")
+            QuerySnapshot snap = Tasks.await(collection()
                     .whereEqualTo("plantId", plantId)
                     .get());
             List<DiaryEntry> list = new ArrayList<>();
@@ -95,7 +104,7 @@ public class FirestoreDiaryEntryDao {
      * Inserts or replaces a diary entry.
      */
     public void insert(DiaryEntry entry) {
-        db.collection("diary_entries")
+        collection()
                 .document(entry.getId())
                 .set(toMap(entry));
     }
@@ -108,7 +117,7 @@ public class FirestoreDiaryEntryDao {
      * Deletes a diary entry.
      */
     public void delete(DiaryEntry entry) {
-        db.collection("diary_entries")
+        collection()
                 .document(entry.getId())
                 .delete();
     }

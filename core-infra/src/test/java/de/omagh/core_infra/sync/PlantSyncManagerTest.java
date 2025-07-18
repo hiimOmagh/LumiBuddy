@@ -14,7 +14,6 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import de.omagh.core_data.repository.PlantRepository;
-import de.omagh.core_data.repository.firebase.FirestorePlantDao;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.firebase.FirebaseManager;
@@ -30,7 +29,6 @@ public class PlantSyncManagerTest {
         Plant remote = new Plant("1", "B", "t", "", 2L);
         PlantSyncManager mgr = new PlantSyncManager(
                 Mockito.mock(PlantRepository.class),
-                Mockito.mock(FirestorePlantDao.class),
                 Mockito.mock(FirebaseManager.class),
                 Mockito.mock(SettingsManager.class),
                 new AppExecutors());
@@ -43,11 +41,10 @@ public class PlantSyncManagerTest {
     @Test
     public void sync_errorUpdatesStatus() throws Exception {
         PlantRepository repo = Mockito.mock(PlantRepository.class);
-        FirestorePlantDao cloud = Mockito.mock(FirestorePlantDao.class);
         FirebaseManager fb = Mockito.mock(FirebaseManager.class);
         Mockito.when(fb.signInAnonymously()).thenReturn(Tasks.forException(new RuntimeException("fail")));
         SettingsManager settings = Mockito.mock(SettingsManager.class);
-        PlantSyncManager mgr = new PlantSyncManager(repo, cloud, fb, settings, new AppExecutors(java.util.concurrent.Executors.newSingleThreadExecutor(), java.util.concurrent.Executors.newSingleThreadExecutor()));
+        PlantSyncManager mgr = new PlantSyncManager(repo, fb, settings, new AppExecutors(java.util.concurrent.Executors.newSingleThreadExecutor(), java.util.concurrent.Executors.newSingleThreadExecutor()));
         mgr.sync();
         // allow task
         Thread.sleep(100);

@@ -32,7 +32,6 @@ public class DiarySyncManager {
     private static final String TAG = "DiarySyncManager";
 
     private final FirebaseManager firebaseManager;
-    private final FirestoreDiaryEntryDao cloudDao;
     private final DiaryRepository localRepository;
     private final ExecutorService executor;
     private final SettingsManager settings;
@@ -42,12 +41,10 @@ public class DiarySyncManager {
 
     @Inject
     public DiarySyncManager(DiaryRepository localRepository,
-                            FirestoreDiaryEntryDao cloudDao,
                             FirebaseManager firebaseManager,
                             SettingsManager settingsManager,
                             AppExecutors executors) {
         this.localRepository = localRepository;
-        this.cloudDao = cloudDao;
         this.firebaseManager = firebaseManager;
         this.settings = settingsManager;
         this.executor = executors.single();
@@ -59,9 +56,10 @@ public class DiarySyncManager {
     public void syncToCloud() {
         executor.execute(() -> firebaseManager.signInAnonymously()
                 .addOnSuccessListener(executor, r -> {
+                    FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao(firebaseManager.getUser().getUid());
                     List<DiaryEntry> local = localRepository.getAllEntriesSync();
                     for (DiaryEntry e : local) {
-                        cloudDao.insert(e);
+                        dao.insert(e);
                     }
                 }));
     }
@@ -73,6 +71,7 @@ public class DiarySyncManager {
     public void loadFromCloud() {
         executor.execute(() -> firebaseManager.signInAnonymously()
                 .addOnSuccessListener(executor, r -> {
+                    FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao(firebaseManager.getUser().getUid());
                     List<DiaryEntry> local = localRepository.getAllEntriesSync();
                     Set<String> plantIds = new HashSet<>();
                     for (DiaryEntry e : local) {
@@ -80,7 +79,7 @@ public class DiarySyncManager {
                     }
                     List<DiaryEntry> remote = new ArrayList<>();
                     for (String id : plantIds) {
-                        remote.addAll(cloudDao.getEntriesForPlantSync(id));
+                        remote.addAll(dao.getEntriesForPlantSync(id));
                     }
 
                     List<DiaryEntry> merged = resolveConflicts(local, remote);
@@ -117,6 +116,7 @@ public class DiarySyncManager {
         executor.execute(() -> {
             try {
                 com.google.android.gms.tasks.Tasks.await(firebaseManager.signInAnonymously());
+                FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao(firebaseManager.getUser().getUid());
                 List<DiaryEntry> local = localRepository.getAllEntriesSync();
                 Set<String> plantIds = new HashSet<>();
                 for (DiaryEntry e : local) {
@@ -124,7 +124,7 @@ public class DiarySyncManager {
                 }
                 List<DiaryEntry> remote = new ArrayList<>();
                 for (String id : plantIds) {
-                    remote.addAll(cloudDao.getEntriesForPlantSync(id));
+                    remote.addAll(dao.getEntriesForPlantSync(id));
                 }
                 List<DiaryEntry> merged = resolveConflicts(local, remote);
                 Map<String, DiaryEntry> localMap = new HashMap<>();
@@ -140,7 +140,7 @@ public class DiarySyncManager {
                     }
                 }
                 for (DiaryEntry e : merged) {
-                    cloudDao.insert(e);
+                    dao.insert(e);
                 }
                 settings.setDiaryLastSync(System.currentTimeMillis());
                 status.postValue(SyncStatus.SUCCESS);

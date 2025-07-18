@@ -26,7 +26,7 @@ public class FirestoreDaoMappingTest {
         Mockito.when(doc.getString("imageUri")).thenReturn("img");
         Mockito.when(doc.getLong("updatedAt")).thenReturn(5L);
 
-        FirestorePlantDao dao = new FirestorePlantDao();
+        FirestorePlantDao dao = new FirestorePlantDao("uid");
         Method m = FirestorePlantDao.class.getDeclaredMethod("fromDoc", DocumentSnapshot.class);
         m.setAccessible(true);
         Plant result = (Plant) m.invoke(dao, doc);
@@ -49,7 +49,7 @@ public class FirestoreDaoMappingTest {
         Mockito.when(doc.getString("imageUri")).thenReturn("img");
         Mockito.when(doc.getString("eventType")).thenReturn("watering");
 
-        FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao();
+        FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao("uid");
         Method m = FirestoreDiaryEntryDao.class.getDeclaredMethod("fromDoc", DocumentSnapshot.class);
         m.setAccessible(true);
         DiaryEntry entry = (DiaryEntry) m.invoke(dao, doc);

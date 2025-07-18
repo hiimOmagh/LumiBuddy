@@ -12,8 +12,7 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.Objects;
 
 import de.omagh.core_data.model.DiaryEntry;
-import de.omagh.core_data.repository.DiaryDataSource;
-import de.omagh.core_infra.di.Remote;
+import de.omagh.core_data.repository.firebase.FirestoreDiaryEntryDao;
 import de.omagh.core_infra.firebase.FirebaseManager;
 
 /**
@@ -27,15 +26,12 @@ public class UploadDiaryEntryWorker extends Worker {
     public static final String KEY_IMAGE_URI = "imageUri";
     public static final String KEY_EVENT_TYPE = "eventType";
 
-    private final DiaryDataSource repository;
     private final FirebaseManager firebaseManager;
 
     public UploadDiaryEntryWorker(@NonNull Context context,
                                   @NonNull WorkerParameters params,
-                                  @Remote DiaryDataSource repository,
                                   FirebaseManager firebaseManager) {
         super(context, params);
-        this.repository = repository;
         this.firebaseManager = firebaseManager;
     }
 
@@ -56,7 +52,8 @@ public class UploadDiaryEntryWorker extends Worker {
                 data.getString(KEY_IMAGE_URI),
                 data.getString(KEY_EVENT_TYPE)
         );
-        repository.insert(entry);
+        FirestoreDiaryEntryDao dao = new FirestoreDiaryEntryDao(firebaseManager.getUser().getUid());
+        dao.insert(entry);
         return Result.success();
     }
 }

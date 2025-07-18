@@ -20,13 +20,22 @@ import de.omagh.core_domain.model.Plant;
  */
 public class FirestorePlantDao {
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final String uid;
+
+    public FirestorePlantDao(String uid) {
+        this.uid = uid;
+    }
+
+    private com.google.firebase.firestore.CollectionReference collection() {
+        return db.collection("users").document(uid).collection("plants");
+    }
 
     /**
      * Returns a LiveData list of all plants.
      */
     public LiveData<List<Plant>> getAll() {
         MutableLiveData<List<Plant>> liveData = new MutableLiveData<>();
-        db.collection("plants").addSnapshotListener((snap, e) -> {
+        collection().addSnapshotListener((snap, e) -> {
             List<Plant> list = new ArrayList<>();
             if (snap != null) {
                 for (DocumentSnapshot d : snap.getDocuments()) {
@@ -43,7 +52,7 @@ public class FirestorePlantDao {
      */
     public List<Plant> getAllSync() {
         try {
-            QuerySnapshot snap = Tasks.await(db.collection("plants").get());
+            QuerySnapshot snap = Tasks.await(collection().get());
             List<Plant> list = new ArrayList<>();
             for (DocumentSnapshot d : snap.getDocuments()) {
                 list.add(fromDoc(d));
@@ -59,7 +68,7 @@ public class FirestorePlantDao {
      */
     public LiveData<Plant> getById(String id) {
         MutableLiveData<Plant> liveData = new MutableLiveData<>();
-        db.collection("plants").document(id).addSnapshotListener((snap, e) -> {
+        collection().document(id).addSnapshotListener((snap, e) -> {
             if (snap != null && snap.exists()) {
                 liveData.postValue(fromDoc(snap));
             }
@@ -71,7 +80,7 @@ public class FirestorePlantDao {
      * Inserts or replaces a plant.
      */
     public void insert(Plant plant) {
-        db.collection("plants").document(plant.getId()).set(toMap(plant));
+        collection().document(plant.getId()).set(toMap(plant));
     }
 
     /**
@@ -85,7 +94,7 @@ public class FirestorePlantDao {
      * Deletes a plant document.
      */
     public void delete(Plant plant) {
-        db.collection("plants").document(plant.getId()).delete();
+        collection().document(plant.getId()).delete();
     }
 
     private Plant fromDoc(DocumentSnapshot doc) {

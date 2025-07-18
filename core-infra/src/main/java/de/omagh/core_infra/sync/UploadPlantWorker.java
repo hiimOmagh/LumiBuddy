@@ -9,8 +9,8 @@ import androidx.work.WorkerParameters;
 
 import com.google.android.gms.tasks.Tasks;
 
-import de.omagh.core_data.repository.PlantDataSource;
-import de.omagh.core_infra.di.Remote;
+import de.omagh.core_data.repository.firebase.FirestorePlantDao;
+
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.firebase.FirebaseManager;
 
@@ -27,15 +27,12 @@ public class UploadPlantWorker extends Worker {
     */
     public static final String KEY_UPDATED_AT = "updatedAt";
 
-    private final PlantDataSource repository;
     private final FirebaseManager firebaseManager;
 
     public UploadPlantWorker(@NonNull Context context,
                              @NonNull WorkerParameters params,
-                             @Remote PlantDataSource repository,
                              FirebaseManager firebaseManager) {
         super(context, params);
-        this.repository = repository;
         this.firebaseManager = firebaseManager;
     }
 
@@ -57,7 +54,8 @@ public class UploadPlantWorker extends Worker {
 /*                d.getString(KEY_IMAGE_URI),
                 d.getLong(KEY_UPDATED, System.currentTimeMillis())*/
         );
-        repository.insertPlant(plant);
+        FirestorePlantDao dao = new FirestorePlantDao(firebaseManager.getUser().getUid());
+        dao.insert(plant);
         return Result.success();
     }
 }

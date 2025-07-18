@@ -13,7 +13,11 @@ import de.omagh.core_domain.model.Plant;
  * Remote {@link PlantDataSource} implementation backed by Firebase Firestore.
  */
 public class FirebasePlantRepository implements PlantDataSource {
-    private final FirestorePlantDao dao = new FirestorePlantDao();
+    private final FirestorePlantDao dao;
+
+    public FirebasePlantRepository(String uid) {
+        this.dao = new FirestorePlantDao(uid);
+    }
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public LiveData<List<Plant>> getAllPlants() {

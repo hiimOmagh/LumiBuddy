@@ -11,23 +11,14 @@ import androidx.work.WorkerParameters;
 import javax.inject.Provider;
 
 import de.omagh.core_infra.firebase.FirebaseManager;
-import de.omagh.core_data.repository.DiaryDataSource;
-import de.omagh.core_data.repository.PlantDataSource;
 
 /**
  * WorkerFactory that injects repositories into sync workers.
  */
 public class SyncWorkerFactory extends WorkerFactory {
-    private final Provider<PlantDataSource> plantRepoProvider;
-    private final Provider<DiaryDataSource> diaryRepoProvider;
-
     private final Provider<FirebaseManager> firebaseManagerProvider;
 
-    public SyncWorkerFactory(Provider<PlantDataSource> plantRepoProvider,
-                             Provider<DiaryDataSource> diaryRepoProvider,
-                             Provider<FirebaseManager> firebaseManagerProvider) {
-        this.plantRepoProvider = plantRepoProvider;
-        this.diaryRepoProvider = diaryRepoProvider;
+    public SyncWorkerFactory(Provider<FirebaseManager> firebaseManagerProvider) {
         this.firebaseManagerProvider = firebaseManagerProvider;
     }
 
@@ -37,9 +28,9 @@ public class SyncWorkerFactory extends WorkerFactory {
                                          @NonNull String workerClassName,
                                          @NonNull WorkerParameters workerParameters) {
         if (workerClassName.equals(UploadPlantWorker.class.getName())) {
-            return new UploadPlantWorker(context, workerParameters, plantRepoProvider.get(), firebaseManagerProvider.get());
+            return new UploadPlantWorker(context, workerParameters, firebaseManagerProvider.get());
         } else if (workerClassName.equals(UploadDiaryEntryWorker.class.getName())) {
-            return new UploadDiaryEntryWorker(context, workerParameters, diaryRepoProvider.get(), firebaseManagerProvider.get());
+            return new UploadDiaryEntryWorker(context, workerParameters, firebaseManagerProvider.get());
         }
         return null;
     }

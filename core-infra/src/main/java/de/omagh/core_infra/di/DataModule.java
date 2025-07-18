@@ -20,8 +20,6 @@ import de.omagh.core_data.repository.TaskRepository;
 import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_data.repository.firebase.FirebaseDiaryRepository;
 import de.omagh.core_data.repository.firebase.FirebasePlantRepository;
-import de.omagh.core_data.repository.firebase.FirestorePlantDao;
-import de.omagh.core_data.repository.firebase.FirestoreDiaryEntryDao;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.di.Remote;
 
@@ -47,12 +45,12 @@ public abstract class DataModule {
 
     @Provides
     static FirebasePlantRepository provideFirebasePlantRepository() {
-        return new FirebasePlantRepository();
+        return new FirebasePlantRepository("");
     }
 
     @Provides
     static FirebaseDiaryRepository provideFirebaseDiaryRepository() {
-        return new FirebaseDiaryRepository();
+        return new FirebaseDiaryRepository("");
     }
 
     @Provides
@@ -85,15 +83,6 @@ public abstract class DataModule {
         return new LightCorrectionRepository(dao);
     }
 
-    @Provides
-    static FirestorePlantDao provideFirestorePlantDao() {
-        return new FirestorePlantDao();
-    }
-
-    @Provides
-    static FirestoreDiaryEntryDao provideFirestoreDiaryEntryDao() {
-        return new FirestoreDiaryEntryDao();
-    }
 
     @Binds
 

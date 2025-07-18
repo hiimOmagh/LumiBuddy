@@ -14,8 +14,8 @@ import javax.inject.Inject;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_data.repository.PlantRepository;
-import de.omagh.core_data.repository.firebase.FirestorePlantDao;
 import de.omagh.core_infra.firebase.FirebaseManager;
+import de.omagh.core_data.repository.firebase.FirestorePlantDao;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.sync.SyncStatus;
 import timber.log.Timber;
@@ -29,7 +29,6 @@ public class PlantSyncManager {
     private static final String TAG = "PlantSyncManager";
 
     private final FirebaseManager firebaseManager;
-    private final FirestorePlantDao cloudDao;
     private final PlantRepository localRepository;
     private final ExecutorService executor;
     private final SettingsManager settings;
@@ -39,12 +38,10 @@ public class PlantSyncManager {
 
     @Inject
     public PlantSyncManager(PlantRepository localRepository,
-                            FirestorePlantDao cloudDao,
                             FirebaseManager firebaseManager,
                             SettingsManager settingsManager,
                             AppExecutors executors) {
         this.localRepository = localRepository;
-        this.cloudDao = cloudDao;
         this.firebaseManager = firebaseManager;
         this.settings = settingsManager;
         this.executor = executors.single();
@@ -57,7 +54,8 @@ public class PlantSyncManager {
     public void loadFromCloud(MergeCallback callback) {
         executor.execute(() -> firebaseManager.signInAnonymously()
                 .addOnSuccessListener(executor, r -> {
-                    List<Plant> remote = cloudDao.getAllSync();
+                    FirestorePlantDao dao = new FirestorePlantDao(firebaseManager.getUser().getUid());
+                    List<Plant> remote = dao.getAllSync();
                     List<Plant> local = localRepository.getAllPlantsSync();
                     List<Plant> merged = resolveConflicts(local, remote);
 
@@ -89,8 +87,9 @@ public class PlantSyncManager {
     public void syncToCloud(List<Plant> plants) {
         executor.execute(() -> firebaseManager.signInAnonymously()
                 .addOnSuccessListener(executor, r -> {
+                    FirestorePlantDao dao = new FirestorePlantDao(firebaseManager.getUser().getUid());
                     for (Plant p : plants) {
-                        cloudDao.insert(p);
+                        dao.insert(p);
                     }
                 }));
     }
@@ -115,7 +114,8 @@ public class PlantSyncManager {
         executor.execute(() -> {
             try {
                 com.google.android.gms.tasks.Tasks.await(firebaseManager.signInAnonymously());
-                List<Plant> remote = cloudDao.getAllSync();
+                FirestorePlantDao dao = new FirestorePlantDao(firebaseManager.getUser().getUid());
+                List<Plant> remote = dao.getAllSync();
                 List<Plant> local = localRepository.getAllPlantsSync();
                 List<Plant> merged = resolveConflicts(local, remote);
 
@@ -135,7 +135,7 @@ public class PlantSyncManager {
                             (lp.getImageUri() != null && !lp.getImageUri().equals(p.getImageUri()))) {
                         localRepository.updatePlant(p);
                     }
-                    cloudDao.insert(p);
+                    dao.insert(p);
                 }
                 settings.setPlantLastSync(System.currentTimeMillis());
                 status.postValue(SyncStatus.SUCCESS);

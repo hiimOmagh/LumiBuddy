@@ -56,8 +56,6 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
     public Configuration getWorkManagerConfiguration() {
         return new Configuration.Builder()
                 .setWorkerFactory(new SyncWorkerFactory(
-                        () -> coreComponent.remotePlantRepository(),
-                        () -> coreComponent.remoteDiaryRepository(),
                         () -> coreComponent.firebaseManager()))
                 .build();
     }
