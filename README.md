@@ -207,11 +207,18 @@ build());
 
 ### local.properties
 
+
 1. Copy `local.properties.example` to `local.properties` in the project root
 2. Set your Android SDK path:
    ```
    sdk.dir=/path/to/Android/sdk
    ```
+
+### Build Prerequisites
+
+Gradle requires a configured Android SDK in order to run tasks such as unit tests and
+lint. Provide the SDK location by adding it to `local.properties` as shown above or set
+the `ANDROID_HOME` environment variable to the same path.
 
 ### Build & Run
 
