@@ -61,6 +61,7 @@ public class DiarySyncManager {
                     for (DiaryEntry e : local) {
                         dao.insert(e);
                     }
+                    settings.setDiaryLastSync(System.currentTimeMillis());
                 }));
     }
 
@@ -97,6 +98,7 @@ public class DiarySyncManager {
                             localRepository.update(e);
                         }
                     }
+                    settings.setDiaryLastSync(System.currentTimeMillis());
                 }));
     }
 

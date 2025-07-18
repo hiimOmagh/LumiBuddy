@@ -24,9 +24,11 @@ public class UserProfileManager {
     private static final String KEY_THEME = "profile_theme";
 
     private final SharedPreferences prefs;
+    private final Context context;
 
     public UserProfileManager(Context context) {
-        prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        this.context = context.getApplicationContext();
+        prefs = this.context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     /**
@@ -82,18 +84,17 @@ public class UserProfileManager {
     }
 
     /**
-     * Placeholder for pushing the local profile to a cloud backend.
-     * No-op until cloud sync is implemented.
+     * Push the local profile to the cloud using {@link UserProfileSyncManager}.
      */
     public void syncToCloud() {
-        // Cloud sync not implemented yet; integrate Firebase/REST API in future
+        new UserProfileSyncManager(context).syncToCloud();
     }
 
     /**
-     * Placeholder for loading the profile from a cloud backend.
-     * No-op until cloud sync is implemented.
+     * Load the profile from the cloud and merge it locally using
+     * {@link UserProfileSyncManager}.
      */
     public void loadFromCloud() {
-        // Cloud sync not implemented yet; integrate Firebase/REST API in future
+        new UserProfileSyncManager(context).syncFromCloud();
     }
 }

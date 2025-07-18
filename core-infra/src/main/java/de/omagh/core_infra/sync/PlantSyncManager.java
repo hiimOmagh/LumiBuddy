@@ -78,6 +78,7 @@ public class PlantSyncManager {
                     if (callback != null) {
                         callback.mergeWithLocal(merged);
                     }
+                    settings.setPlantLastSync(System.currentTimeMillis());
                 }));
     }
 
@@ -91,6 +92,7 @@ public class PlantSyncManager {
                     for (Plant p : plants) {
                         dao.insert(p);
                     }
+                    settings.setPlantLastSync(System.currentTimeMillis());
                 }));
     }
 
