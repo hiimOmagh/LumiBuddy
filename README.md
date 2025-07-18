@@ -322,6 +322,15 @@ Default lux→PPFD conversion factors used by LumiBuddy:
 - [ ] Improve test coverage on ViewModels and Repos
 - [ ] GitHub Actions for PR builds and unit test automation
 
+## ⚠️ Stub / Demo Code
+
+Several classes in this repository are intentionally minimal to keep the demo
+project compiling. Examples include
+`DiffuserGuide`, `ExportUtils`, `NetworkUtils`, `DateUtils`, `MeasurementDao`,
+`UserDao`, `UserProfile`, `NotificationEvent`, `SpectrumEstimate`, and the
+various *Basic* classifiers under `core-infra/ml`. They can be removed or
+replaced with real implementations as features mature.
+
 ---
 
 ## 🌍 License

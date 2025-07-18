@@ -7,6 +7,8 @@ import timber.log.Timber;
 /**
  * Simple stub implementation of {@link PlantClassifier}.
  * Always returns "Unknown" and logs method invocations.
+ * This class exists only for demo/testing purposes and should be replaced
+ * with a real ML-based classifier when available.
  */
 public class BasicPlantClassifier implements PlantClassifier {
 

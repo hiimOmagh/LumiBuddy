@@ -9,6 +9,7 @@ import timber.log.Timber;
  * <p>
  * This class performs no real AR processing. It simply logs method calls
  * and acts as a placeholder until a proper ARCore-based solution is added.
+ * </p>
  */
 public class DummyARGrowthTracker implements ARGrowthTracker {
 

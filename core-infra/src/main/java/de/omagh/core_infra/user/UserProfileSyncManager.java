@@ -11,6 +11,7 @@ import de.omagh.core_infra.firebase.FirebaseManager;
 
 /**
  * Stub manager simulating user profile sync with a future cloud backend.
+ * Only demonstrates basic Firebase usage and is not production ready.
  */
 public class UserProfileSyncManager {
     private final UserProfileManager localManager;

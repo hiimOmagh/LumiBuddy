@@ -7,6 +7,7 @@ import timber.log.Timber;
 /**
  * Stub implementation of {@link LampTypeClassifier}.
  * Always returns "Unknown Lamp" and logs calls.
+ * Provided only as a demo; replace with a real implementation.
  */
 public class BasicLampTypeClassifier implements LampTypeClassifier {
 
