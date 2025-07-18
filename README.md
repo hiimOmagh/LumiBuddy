@@ -41,6 +41,8 @@ For more details on fragment routes, dependency injection and module boundaries 
 [docs/architecture/navigation_overview.md](docs/architecture/navigation_overview.md),
 [docs/architecture/dagger_graph.md](docs/architecture/dagger_graph.md) and
 [docs/architecture/module_map.md](docs/architecture/module_map.md).
+[docs/architecture/class_overview.md](docs/architecture/class_overview.md)
+summarises helper classes like `OnSwipeTouchListener` and the data layer.
 Diagram source files live under `docs/diagrams`.
 
 ---
