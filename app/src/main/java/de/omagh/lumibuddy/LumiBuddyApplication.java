@@ -40,6 +40,9 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
         appComponent = DaggerAppComponent.factory()
                 .create(coreComponent);
         appComponent.inject(this);
+
+        // Schedule periodic sync on startup
+        new de.omagh.core_infra.sync.SyncScheduler(this).scheduleDaily();
     }
 
     @Override

@@ -33,7 +33,7 @@ public class PlantRepositoryTest {
         AppExecutors executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
-        repo = new PlantRepository(db, executors);
+        repo = new PlantRepository(context, db, executors);
     }
 
     @After

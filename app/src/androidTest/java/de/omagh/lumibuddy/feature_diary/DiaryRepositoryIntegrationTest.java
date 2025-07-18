@@ -41,7 +41,7 @@ public class DiaryRepositoryIntegrationTest {
         AppExecutors executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
-        repository = new DiaryRepository(db.diaryDao(), executors);
+        repository = new DiaryRepository(context, db.diaryDao(), executors);
     }
 
     @After

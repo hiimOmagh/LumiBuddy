@@ -36,7 +36,7 @@ public class PeriodicScanWorker extends Worker {
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         AppExecutors executors = core.appExecutors();
         AppDatabase db = AppDatabase.getInstance(context);
-        plantRepository = new PlantRepository(db, executors);
+        plantRepository = new PlantRepository(context, db, executors);
         DiaryDao diaryDao = db.diaryDao();
         RecommendationEngine engine = new RecommendationEngine();
         NotificationManager notifications = new NotificationManager(context);

@@ -32,7 +32,8 @@ public class DiaryRepositoryTest {
         executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
-        repository = new DiaryRepository(dao, executors);
+        android.content.Context context = androidx.test.core.app.ApplicationProvider.getApplicationContext();
+        repository = new DiaryRepository(context, dao, executors);
     }
 
     @Test

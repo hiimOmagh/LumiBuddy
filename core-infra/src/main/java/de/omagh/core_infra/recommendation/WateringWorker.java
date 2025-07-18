@@ -33,7 +33,7 @@ public class WateringWorker extends Worker {
         super(context, params);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         AppDatabase db = AppDatabase.getInstance(context);
-        plantRepository = new PlantRepository(db, core.appExecutors());
+        plantRepository = new PlantRepository(context, db, core.appExecutors());
         scheduler = new WateringScheduler(new RecommendationEngine(), new NotificationManager(context), db.diaryDao());
     }
 

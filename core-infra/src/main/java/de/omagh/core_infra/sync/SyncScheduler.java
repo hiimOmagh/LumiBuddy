@@ -2,7 +2,9 @@ package de.omagh.core_infra.sync;
 
 import android.content.Context;
 
+import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
@@ -19,9 +21,13 @@ public class SyncScheduler {
     }
 
     public void scheduleDaily() {
+        Constraints netConnected = new Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build();
         PeriodicWorkRequest full = new PeriodicWorkRequest.Builder(
                 FullSyncWorker.class,
                 1, TimeUnit.DAYS)
+                .setConstraints(netConnected)
                 .build();
         PeriodicWorkRequest backup = new PeriodicWorkRequest.Builder(
                 BackupWorker.class,

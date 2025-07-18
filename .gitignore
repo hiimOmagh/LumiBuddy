@@ -10,3 +10,4 @@
 local.properties
 .idx/dev.nix
 .vscode/settings.json
+.vscode/launch.json

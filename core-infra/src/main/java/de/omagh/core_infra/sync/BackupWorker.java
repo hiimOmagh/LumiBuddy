@@ -31,7 +31,7 @@ public class BackupWorker extends Worker {
     public Result doWork() {
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getInstance(context);
-        PlantRepository plantRepo = new PlantRepository(db, new AppExecutors());
+        PlantRepository plantRepo = new PlantRepository(context, db, new AppExecutors());
         List<Plant> plants = plantRepo.getAllPlantsSync();
         if (plants == null) plants = new ArrayList<>();
         WorkManager wm = WorkManager.getInstance(context);

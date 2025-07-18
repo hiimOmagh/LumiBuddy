@@ -1,5 +1,7 @@
 package de.omagh.core_data.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
@@ -16,10 +18,12 @@ import de.omagh.core_data.model.DiaryEntry;
 public class DiaryRepository implements DiaryDataSource {
     private final DiaryDao diaryDao;
     private final ExecutorService executor;
+    private final de.omagh.core_infra.sync.SyncScheduler scheduler;
 
-    public DiaryRepository(DiaryDao dao, AppExecutors executors) {
+    public DiaryRepository(Context context, DiaryDao dao, AppExecutors executors) {
         this.diaryDao = dao;
         this.executor = executors.single();
+        this.scheduler = new de.omagh.core_infra.sync.SyncScheduler(context.getApplicationContext());
     }
 
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {
@@ -40,14 +44,17 @@ public class DiaryRepository implements DiaryDataSource {
 
     public void insert(DiaryEntry entry) {
         executor.execute(() -> diaryDao.insert(entry));
+        scheduler.scheduleDaily();
     }
 
     public void update(DiaryEntry entry) {
         executor.execute(() -> diaryDao.update(entry));
+        scheduler.scheduleDaily();
     }
 
     public void delete(DiaryEntry entry) {
         executor.execute(() -> diaryDao.delete(entry));
+        scheduler.scheduleDaily();
     }
 
     public void shutdown() {

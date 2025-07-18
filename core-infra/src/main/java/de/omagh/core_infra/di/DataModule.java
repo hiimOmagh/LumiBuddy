@@ -39,8 +39,8 @@ public abstract class DataModule {
     }
 
     @Provides
-    static PlantRepository providePlantRepository(AppDatabase db, AppExecutors executors) {
-        return new PlantRepository(db, executors);
+    static PlantRepository providePlantRepository(Application app, AppDatabase db, AppExecutors executors) {
+        return new PlantRepository(app, db, executors);
     }
 
     @Provides
@@ -64,8 +64,8 @@ public abstract class DataModule {
     }
 
     @Provides
-    static DiaryRepository provideDiaryRepository(DiaryDao dao, AppExecutors executors) {
-        return new DiaryRepository(dao, executors);
+    static DiaryRepository provideDiaryRepository(Application app, DiaryDao dao, AppExecutors executors) {
+        return new DiaryRepository(app, dao, executors);
     }
 
     @Provides

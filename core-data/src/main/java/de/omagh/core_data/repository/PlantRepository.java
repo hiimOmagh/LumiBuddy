@@ -1,5 +1,7 @@
 package de.omagh.core_data.repository;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 
@@ -15,10 +17,14 @@ import de.omagh.core_domain.model.Plant;
 public class PlantRepository implements PlantDataSource {
     private final PlantDao plantDao;
     private final ExecutorService executor;
+    private final de.omagh.core_infra.sync.SyncScheduler scheduler;
+    private final Context context;
 
-    public PlantRepository(AppDatabase db, AppExecutors executors) {
+public PlantRepository(Context context, AppDatabase db, AppExecutors executors) {
+        this.context = context.getApplicationContext();
         this.plantDao = db.plantDao();
         this.executor = executors.single();
+        this.scheduler = new de.omagh.core_infra.sync.SyncScheduler(this.context);
     }
 
     public LiveData<List<Plant>> getAllPlants() {
@@ -48,14 +54,17 @@ public class PlantRepository implements PlantDataSource {
 
     public void insertPlant(Plant plant) {
         executor.execute(() -> plantDao.insert(toEntity(plant)));
+        scheduler.scheduleDaily();
     }
 
     public void updatePlant(Plant plant) {
         executor.execute(() -> plantDao.update(toEntity(plant)));
+        scheduler.scheduleDaily();
     }
 
     public void deletePlant(Plant plant) {
         executor.execute(() -> plantDao.delete(toEntity(plant)));
+        scheduler.scheduleDaily();
     }
 
     private Plant toDomain(de.omagh.core_data.model.Plant entity) {
