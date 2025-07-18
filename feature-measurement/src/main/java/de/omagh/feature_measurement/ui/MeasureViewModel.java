@@ -79,18 +79,10 @@ public class MeasureViewModel extends AndroidViewModel {
         this.lightCorrectionStore = lightCorrectionStore;
 
         int hours = settingsManager.getLightDuration();
-        if (settingsManager.isAutoSunlightEstimationEnabled()) {
-            boolean hasFine = PermissionUtils.hasPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION);
-            boolean hasCoarse = PermissionUtils.hasPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION);
-            if (hasFine || hasCoarse) {
-                int est = sunlightEstimator.estimateDailySunlightHours();
-                if (est > 0) {
-                    hours = est;
-                    settingsManager.setLightDuration(est);
-                }
-            }
-        }
         hoursLiveData.setValue(hours);
+        if (settingsManager.isAutoSunlightEstimationEnabled()) {
+            refreshSunlightEstimate();
+        }
 
         String lampId = settingsManager.getSelectedCalibrationProfileId();
         if (lampId == null || lampId.isEmpty()) {
@@ -227,6 +219,28 @@ public class MeasureViewModel extends AndroidViewModel {
     private float getDliValue() {
         Float v = dliLiveData.getValue();
         return (v == null ? 0f : v);
+    }
+
+    /**
+     * Re-computes the default light duration using {@link SunlightEstimator}
+     * when location permissions are granted and automatic estimation is
+     * enabled.
+     */
+    public void refreshSunlightEstimate() {
+        if (!settingsManager.isAutoSunlightEstimationEnabled()) {
+            return;
+        }
+        boolean hasFine = PermissionUtils.hasPermission(getApplication(), Manifest.permission.ACCESS_FINE_LOCATION);
+        boolean hasCoarse = PermissionUtils.hasPermission(getApplication(), Manifest.permission.ACCESS_COARSE_LOCATION);
+        if (!hasFine && !hasCoarse) {
+            return;
+        }
+        int est = sunlightEstimator.estimateDailySunlightHours();
+        if (est > 0) {
+            hoursLiveData.setValue(est);
+            settingsManager.setLightDuration(est);
+            updateDLI(getPPFDValue(), est);
+        }
     }
 
     /**

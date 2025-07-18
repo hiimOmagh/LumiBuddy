@@ -3,6 +3,7 @@ package de.omagh.lumibuddy.ui;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -44,20 +45,37 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        permissionLauncher.launch(new String[]{
-                Manifest.permission.BODY_SENSORS,
-                Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-        });
+        String[] permissions;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions = new String[]{
+                    Manifest.permission.BODY_SENSORS,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_MEDIA_IMAGES
+            };
+        } else {
+            permissions = new String[]{
+                    Manifest.permission.BODY_SENSORS,
+                    Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+        }
+        permissionLauncher.launch(permissions);
     }
 
     private boolean allPermissionsGranted() {
+        boolean storageGranted;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            storageGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+                    == PackageManager.PERMISSION_GRANTED;
+        } else {
+            storageGranted = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
         return ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS)
                         == PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                        == PackageManager.PERMISSION_GRANTED;
+                        storageGranted;
     }
 
     private void checkReady() {

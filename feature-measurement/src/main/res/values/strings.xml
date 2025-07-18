@@ -48,6 +48,8 @@
     <string name="measure_with_camera">Measure with Camera</string>
     <string name="camera_permission_required">Camera permission required</string>
     <string name="camera_permission_rationale">Camera access is needed to capture plant photos and measure light.</string>
+    <string name="location_permission_required">Location permission required</string>
+    <string name="location_permission_rationale">Location access is needed for automatic sunlight estimation.</string>
     <string name="notification_permission_rationale">Notification permission lets LumiBuddy remind you about watering and care tasks.</string>
     <string name="notification_permission_denied">Notifications disabled - reminders won\'t appear.</string>
     <string name="device_not_supported">This device does not support AR features.</string>

@@ -70,6 +70,7 @@ public class MeasureFragment extends Fragment {
     private Button cameraMeasureButton;
     private CameraLightMeterX cameraLightMeterX;
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
+    private androidx.activity.result.ActivityResultLauncher<String> locationPermissionLauncher;
 
     @Inject
     LampIdentifier lampIdentifier;
@@ -224,6 +225,31 @@ public class MeasureFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this, viewModelFactory).get(MeasureViewModel.class);
 
+        locationPermissionLauncher = registerForActivityResult(
+                new androidx.activity.result.contract.ActivityResultContracts.RequestPermission(),
+                granted -> {
+                    if (granted) {
+                        mViewModel.refreshSunlightEstimate();
+                    } else {
+                        PermissionUtils.showPermissionDenied(this,
+                                getString(R.string.location_permission_required));
+                    }
+                });
+
+        if (settingsManager.isAutoSunlightEstimationEnabled()) {
+            boolean hasFine = PermissionUtils.hasPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
+            boolean hasCoarse = PermissionUtils.hasPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
+            if (!hasFine && !hasCoarse) {
+                PermissionUtils.requestPermissionWithRationale(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        getString(R.string.location_permission_rationale),
+                        locationPermissionLauncher);
+            } else {
+                mViewModel.refreshSunlightEstimate();
+            }
+        }
+        
         if (enableAROverlay && isArSupported()) {
             arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);
             arOverlayRenderer.init();
