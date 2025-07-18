@@ -7,6 +7,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 
+import de.omagh.lumibuddy.ui.PrivacyPolicyActivity;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,12 +37,15 @@ public class OnboardingActivity extends AppCompatActivity {
         Button permButton = findViewById(R.id.requestPermissionsButton);
         Button signInButton = findViewById(R.id.signInButton);
         Button skipButton = findViewById(R.id.skipButton);
+        Button privacyButton = findViewById(R.id.privacyPolicyButton);
 
         permButton.setOnClickListener(v -> requestPermissions());
         signInButton.setOnClickListener(v -> auth.signInAnonymously()
                 .addOnCompleteListener(t -> finishOnboarding()));
         skipButton.setOnClickListener(v -> finishOnboarding());
-
+        privacyButton.setOnClickListener(v ->
+        startActivity(new Intent(this, PrivacyPolicyActivity.class)));
+        
         checkReady();
     }
 

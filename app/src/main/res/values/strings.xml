@@ -97,6 +97,7 @@
     <string name="sync_now">Sync Now</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="privacy_summary">Your data is stored only on your device. When cloud sync is enabled, plant logs and photos will be uploaded securely.</string>
+    <string name="privacy_policy_full">LumiBuddy uses your device sensors and optional Firebase sync to manage your plant data. Camera and light sensor readings stay on your device unless you enable sync. If you sign in, logs and images are stored in your personal Firebase account. Machine learning features may process images for identification but are not used for advertising. You can opt out of sync at any time.</string>
     <string name="dli_icon">dli icon</string>
     <string name="ic_eco">ic_eco</string>
 

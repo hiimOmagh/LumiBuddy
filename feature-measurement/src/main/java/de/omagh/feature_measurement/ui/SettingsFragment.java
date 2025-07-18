@@ -167,12 +167,8 @@ public class SettingsFragment extends Fragment {
         });
 
         privacyPolicyBtn.setOnClickListener(v ->
-                new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                        .setTitle(R.string.privacy_policy)
-                        .setMessage(R.string.privacy_summary)
-                        .setPositiveButton(android.R.string.ok, null)
-                        .show());
-
+        startActivity(new android.content.Intent(requireContext(),
+        de.omagh.lumibuddy.ui.PrivacyPolicyActivity.class)));
         return view;
     }
 
