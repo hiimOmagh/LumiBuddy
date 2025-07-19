@@ -1,21 +1,25 @@
 # Plant Database Feature
 
-Contains screens for managing plant profiles and connecting them with diary entries from the diary
-feature.
+### Purpose
+Handles CRUD operations for plant profiles and exposes them to other modules.
 
-**Entry point:** `PlantListFragment` as described in the architecture docs.
+### Entry points
+- `PlantListFragment`
+- `PlantDetailFragment`
+- `AddPlantFragment`
 
-## Dagger component
+### Main classes
+- `PlantDbViewModel`
+- `PlantRepository` from `core-data`
+- `PlantDetailAdapter`
 
-`PlantDbComponent` depends on `CoreComponent` and supplies a `PlantDbViewModelFactory`. Fragments
-build the component on attach:
+### Dagger component
+`PlantDbComponent` depends on `CoreComponent` and exposes a `PlantDbViewModelFactory`.
 
-```java
-CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
-viewModelFactory =component.
+### Dependencies
+- `core-data` for Room access
+- `core-infra` for sync scheduling
+- links to `feature-diary` for care history
 
-viewModelFactory();
-```
-
-See [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md) for the full graph.
+### Integration
+Fragments obtain `PlantDbComponent` from the application's `CoreComponent`. Plant IDs are passed via the NavController to other features such as the diary and measurement screens.

@@ -1,21 +1,24 @@
 # Diary Feature
 
-Tracks plant care tasks and history.
+### Purpose
+Stores and displays plant care events such as watering or fertilising. Allows browsing a timeline of actions for each plant.
 
-**Entry point:** `PlantDiaryFragment`.
+### Entry points
+- `PlantDiaryFragment` – default destination in `diary_nav_graph.xml`
+- `AddDiaryEntryDialog` – dialog for creating new entries
 
-## Dagger component
+### Main classes
+- `DiaryViewModel` – exposes LiveData of diary records
+- `TaskViewModel` – schedules upcoming tasks
+- `DiaryRepository` – persists entries using `core-data`
 
-`DiaryComponent` depends on `CoreComponent` and injects `DiaryViewModel` and `TaskViewModel`.
-Fragments create the component when their view models are constructed:
+### Dagger component
+`DiaryComponent` depends on `CoreComponent` and injects the view models above.
 
-```java
-CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-DiaryComponent component = DaggerDiaryComponent.factory().create(core);
-component.
+### Dependencies
+- `core-data` for Room entities
+- `core-infra` for background sync
+- `feature-plantdb` for linking diary entries to a plant
 
-inject(this);
-```
-
-More details are shown
-in [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md).
+### Integration
+Other features navigate to `PlantDiaryFragment` using the shared NavController. `DiaryComponent` is created when the fragment attaches and obtains `CoreComponent` from the application.

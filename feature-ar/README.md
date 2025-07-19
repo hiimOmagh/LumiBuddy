@@ -1,27 +1,21 @@
 # Augmented Reality Feature
 
-Experimental module for visualizing light intensity in AR.
+### Purpose
+Experimental ARCore module that renders a heatmap of light intensity in real time.
 
-**Entry point:** `ArEntryActivity`.
+### Entry points
+- `ArEntryActivity` – initialises ARCore
+- `ArHeatmapActivity` – overlay for measurement visualisation
 
-Additional demo overlay: `ArHeatmapActivity` shows a heatmap of
-live light measurements using `ARMeasureOverlay`.
+### Main classes
+- `ArComponent` – DI entry point
+- `ARMeasureOverlay` – draws heatmap using camera frames
+- `LightProbeManager` (planned)
 
-## Dagger component
+### Dependencies
+- `core-infra` for measurement services
+- `feature-measurement` to obtain light data
+- Google ARCore / Sceneform libraries
 
-`ArComponent` depends on `CoreComponent` and injects `ArEntryActivity`
-and `ArHeatmapActivity`.
-
-```java
-CoreComponent core = ((CoreComponentProvider) getApplicationContext()).getCoreComponent();
-DaggerArComponent.
-
-factory().
-
-create(core).
-
-inject(this);
-```
-
-See [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md) for more
-information.
+### Integration
+Activities build `ArComponent` from the application's `CoreComponent`. Collected measurements may be stored via the measurement feature or displayed alongside plant details.

@@ -19,6 +19,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import de.omagh.lumibuddy.R;
 import de.omagh.core_infra.user.SettingsManager;
 
+/**
+ * First-run flow that requests runtime permissions and allows anonymous sign-in.
+ * Once prerequisites are satisfied, launches {@link MainActivity}.
+ */
 public class OnboardingActivity extends AppCompatActivity {
     private SettingsManager settingsManager;
     private ActivityResultLauncher<String[]> permissionLauncher;

@@ -1,21 +1,23 @@
 # Grow Schedule Feature
 
-Provides reminders and scheduling for plant care tasks.
+### Purpose
+Shows an agenda of upcoming care tasks and triggers reminders.
 
-**Entry point:** `HomeFragment`.
+### Entry points
+- `HomeFragment` – displays today's tasks
+- `ScheduleSetupFragment` – (optional) configure schedules
 
-## Dagger component
+### Main classes
+- `AgendaViewModel` – exposes a list of `DiaryEntry` items
+- `GrowReminderWorker` – WorkManager job for notifications
 
-`GrowScheduleComponent` depends on `CoreComponent` and exposes a `HomeViewModelFactory` while
-injecting `HomeFragment`.
+### Dagger component
+`GrowScheduleComponent` depends on `CoreComponent` and provides a `HomeViewModelFactory`.
 
-```java
-CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-GrowScheduleComponent component = DaggerGrowScheduleComponent.factory().create(core);
-viewModelFactory =component.
+### Dependencies
+- `core-data` for task repositories
+- `core-infra` for Worker scheduling
+- interacts with `feature-diary` to record completed tasks
 
-viewModelFactory();
-```
-
-See [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md) for how this fits
-into the overall graph.
+### Integration
+`HomeFragment` builds `GrowScheduleComponent` in `onAttach`. Navigation routes are defined in `feature-growschedule/src/main/res/navigation/nav_graph.xml`.

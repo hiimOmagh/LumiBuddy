@@ -14,6 +14,11 @@ import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_domain.model.Plant;
 
+/**
+ * Repository providing CRUD access to {@link de.omagh.core_domain.model.Plant} entities.
+ * All operations run on a background executor and schedule a sync via
+ * {@link de.omagh.core_infra.sync.SyncScheduler}.
+ */
 public class PlantRepository implements PlantDataSource {
     private final PlantDao plantDao;
     private final ExecutorService executor;

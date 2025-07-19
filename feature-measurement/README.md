@@ -1,21 +1,24 @@
 # Measurement Feature
 
-Responsible for displaying live light readings and converting them to PPFD/DLI values.
+### Purpose
+Captures live lux readings using the light sensor or camera and converts them into PPFD and DLI metrics.
 
-**Entry point:** `MeasureFragment` as noted in the table of feature entry points.
+### Entry points
+- `MeasureFragment`
+- `CalibrationFragment` (planned)
 
-## Dagger component
+### Main classes
+- `MeasurementViewModel`
+- `CameraLightMeter`
+- `MeasurementEngine` from `core-infra`
 
-`MeasurementComponent` lives in this module. It depends on `CoreComponent` and provides a
-`MeasureViewModelFactory`. `MeasureFragment` builds the component in `onAttach`:
+### Dagger component
+`MeasurementComponent` depends on `CoreComponent` and injects `MeasureFragment`.
 
-```java
-CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
-MeasurementComponent component = DaggerMeasurementComponent.factory().create(core);
-component.
+### Dependencies
+- `core-data` to store results
+- `core-infra` for sensor access
+- `shared-ml` for optional ML analysis
 
-inject(this);
-```
-
-See [../docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md) for the complete
-dependency diagram
+### Integration
+Measurement results can be attached to diary entries or used by the grow schedule feature to verify light requirements.
