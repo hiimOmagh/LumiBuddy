@@ -21,13 +21,11 @@ import de.omagh.feature_plantdb.di.PlantDbComponent;
  * ViewModel for AddPlantFragment handling photo identification via Plant.id.
  */
 public class AddPlantViewModel extends AndroidViewModel {
+    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
     @Inject
     PlantIdentifier plantIdentifier;
-
     @Inject
     PlantIdRepository plantIdRepository;
-
-    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
 
     @Inject
     public AddPlantViewModel(@NonNull Application application,

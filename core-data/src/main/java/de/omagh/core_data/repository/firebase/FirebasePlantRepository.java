@@ -14,11 +14,11 @@ import de.omagh.core_domain.model.Plant;
  */
 public class FirebasePlantRepository implements PlantDataSource {
     private final FirestorePlantDao dao;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public FirebasePlantRepository(String uid) {
         this.dao = new FirestorePlantDao(uid);
     }
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public LiveData<List<Plant>> getAllPlants() {
         return dao.getAll();

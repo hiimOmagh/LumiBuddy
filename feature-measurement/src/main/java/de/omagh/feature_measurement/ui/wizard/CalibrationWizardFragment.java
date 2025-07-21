@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AlertDialog;
+
 import android.app.ProgressDialog;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ import de.omagh.feature_measurement.R;
  * {@link de.omagh.core_infra.user.CalibrationProfilesManager}.
  */
 public class CalibrationWizardFragment extends Fragment {
+    private final CompositeDisposable disposables = new CompositeDisposable();
     private int step = 0;
     private Spinner typeSpinner;
     private TextView instructions;
@@ -42,7 +44,6 @@ public class CalibrationWizardFragment extends Fragment {
     private LightCorrectionRepository correctionStore;
     private MeasurementRepository measurementRepository;
     private AppExecutors executors;
-    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     public void onAttach(@NonNull Context context) {

@@ -1,12 +1,16 @@
 # Test Coverage Review
 
-This document summarizes the current state of LumiBuddy's automated tests and highlights areas lacking coverage.
+This document summarizes the current state of LumiBuddy's automated tests and highlights areas
+lacking coverage.
 
 ## Existing Unit Tests
 
-- **core-infra** – covers sync logic (`DiarySyncManagerTest`, `PlantSyncManagerTest`, `SyncSchedulerTest`).
-- **feature-measurement** – tests for `MeasureViewModel` and `LampProfilesViewModel` plus repository tests.
-- **feature-plantdb** – extensive ViewModel tests (`AddPlantViewModel`, `PlantDetailViewModel`, etc.).
+- **core-infra** – covers sync logic (`DiarySyncManagerTest`, `PlantSyncManagerTest`,
+  `SyncSchedulerTest`).
+- **feature-measurement** – tests for `MeasureViewModel` and `LampProfilesViewModel` plus repository
+  tests.
+- **feature-plantdb** – extensive ViewModel tests (`AddPlantViewModel`, `PlantDetailViewModel`,
+  etc.).
 - **feature-growschedule** – `HomeViewModelTest` and `AgendaViewModelTest`.
 - **feature-diary** – repository and `DiaryViewModel` tests.
 - **app** – high level `HomeViewModelTest` and some integration tests.
@@ -15,7 +19,9 @@ Most modules include the default `ExampleUnitTest`, but the above represent mean
 
 ## Existing Instrumentation Tests
 
-Instrumentation tests are limited. The app module exercises navigation and a few manager classes (e.g. `CalibrationManagerTest`, `WateringSchedulerTest`). Other modules only contain placeholder `ExampleInstrumentedTest` files.
+Instrumentation tests are limited. The app module exercises navigation and a few manager classes (
+e.g. `CalibrationManagerTest`, `WateringSchedulerTest`). Other modules only contain placeholder
+`ExampleInstrumentedTest` files.
 
 ## ViewModels Without Tests
 
@@ -27,15 +33,18 @@ All UI Fragments lack dedicated tests. This includes:
 
 - `HomeFragment` and `AgendaFragment` (feature-growschedule)
 - `PlantDiaryFragment`, `PlantTaskFragment`, and `PlantGrowthTimelineFragment` (feature-diary)
-- `AddPlantFragment`, `PlantListFragment`, `PlantDetailFragment`, `ProfileFragment` (feature-plantdb)
-- `MeasureFragment`, `LampProfilesFragment`, `CalibrationFragment`, `SettingsFragment`, `CalibrationWizardFragment` (feature-measurement)
+- `AddPlantFragment`, `PlantListFragment`, `PlantDetailFragment`, `ProfileFragment` (
+  feature-plantdb)
+- `MeasureFragment`, `LampProfilesFragment`, `CalibrationFragment`, `SettingsFragment`,
+  `CalibrationWizardFragment` (feature-measurement)
 
 ## Sample Tests
 
 Two new sample tests demonstrate how to exercise measurement and sync components:
 
 - `MeasurementEngineTest` verifies that `MeasurementEngine` delegates to `LightSensorProvider`.
-- `GrowLightSyncManagerTest` uses reflection to inject a mock `GrowLightApiService` and asserts that profiles are inserted into the DAO.
+- `GrowLightSyncManagerTest` uses reflection to inject a mock `GrowLightApiService` and asserts that
+  profiles are inserted into the DAO.
 
 ## Checklist Toward Full Coverage
 
@@ -47,7 +56,8 @@ Two new sample tests demonstrate how to exercise measurement and sync components
 
 ## Continuous Integration
 
-GitHub Actions workflows already run `./gradlew test` on pull requests. To execute instrumentation tests automatically, extend the workflow with the Android emulator container and run:
+GitHub Actions workflows already run `./gradlew test` on pull requests. To execute instrumentation
+tests automatically, extend the workflow with the Android emulator container and run:
 
 ```yaml
 - name: Run instrumentation tests

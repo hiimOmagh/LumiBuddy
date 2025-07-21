@@ -28,6 +28,7 @@ import de.omagh.core_infra.util.PermissionUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.content.Context;
+
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
@@ -47,10 +48,10 @@ public class PlantDetailFragment extends Fragment {
     public static final String ARG_NAME = "plant_name";
     public static final String ARG_TYPE = "plant_type";
     public static final String ARG_IMAGE_URI = "plant_image_uri";
-    private PlantDetailViewModel viewModel;
-    private PlantListViewModel listViewModel;
     @Inject
     PlantDbViewModelFactory viewModelFactory;
+    private PlantDetailViewModel viewModel;
+    private PlantListViewModel listViewModel;
     private ImageView plantImageView;
     private TextView careInfoView;
     private EditText dialogNameInput;

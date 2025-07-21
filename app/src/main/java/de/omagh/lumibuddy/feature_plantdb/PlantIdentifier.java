@@ -28,7 +28,7 @@ public class PlantIdentifier {
     /**
      * Stub for photo-based identification. Returns {@code null} for now.
      * Replace this with an ML Kit or cloud API call when available.
-    */
+     */
     public PlantInfo identifyByPhoto(Bitmap image) {
         // In the future use ML Kit or an online API to identify the plant
         return null;

@@ -14,11 +14,11 @@ import de.omagh.core_data.repository.DiaryDataSource;
  */
 public class FirebaseDiaryRepository implements DiaryDataSource {
     private final FirestoreDiaryEntryDao dao;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public FirebaseDiaryRepository(String uid) {
         this.dao = new FirestoreDiaryEntryDao(uid);
     }
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {
         return dao.getEntriesForPlant(plantId);

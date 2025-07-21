@@ -36,7 +36,9 @@ import de.omagh.core_infra.ar.ARCoreGrowthTracker;
 import de.omagh.feature_ar.di.DaggerArComponent;
 
 import de.omagh.core_domain.util.AppExecutors;
+
 import java.util.function.Consumer;
+
 import timber.log.Timber;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;

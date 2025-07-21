@@ -10,6 +10,7 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 
 import javax.inject.Singleton;
+
 import retrofit2.converter.gson.GsonConverterFactory;
 import de.omagh.core_domain.Config;
 

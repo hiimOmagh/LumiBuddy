@@ -11,6 +11,7 @@ import org.tensorflow.lite.Interpreter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
+
 import timber.log.Timber;
 
 import de.omagh.core_domain.util.AppExecutors;
@@ -27,6 +28,7 @@ public class PlantIdentifier {
     private final ExecutorService executor;
     private final String[] labels = {"Unknown", "Plant"};
     private final ByteBuffer inputBuffer;
+
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
         this(context, provider, executors, DEFAULT_THRESHOLD);
     }
@@ -39,7 +41,7 @@ public class PlantIdentifier {
             Timber.e(e, "Failed to load plant model");
             throw new IllegalStateException("ML model unavailable", e);
         }
-            interpreter = new Interpreter(model);
+        interpreter = new Interpreter(model);
         this.executor = executors.single();
         this.threshold = threshold;
         int inputSize = 224;

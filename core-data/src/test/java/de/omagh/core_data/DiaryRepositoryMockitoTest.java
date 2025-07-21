@@ -36,7 +36,7 @@ public class DiaryRepositoryMockitoTest {
         Mockito.when(executors.single()).thenReturn(executor);
         android.content.Context context = androidx.test.core.app.ApplicationProvider.getApplicationContext();
         repository = new DiaryRepository(context, dao, executors);
-        }
+    }
 
     @Test
     public void insert_callsDao() {

@@ -17,6 +17,7 @@ public class UserProfileSyncManager {
     private final UserProfileManager localManager;
     private final FirebaseManager firebaseManager = new FirebaseManager();
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
+
     public UserProfileSyncManager(Context context) {
         this.localManager = new UserProfileManager(context);
     }

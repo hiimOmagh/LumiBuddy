@@ -25,7 +25,7 @@ public class PlantRepository implements PlantDataSource {
     private final de.omagh.core_infra.sync.SyncScheduler scheduler;
     private final Context context;
 
-public PlantRepository(Context context, AppDatabase db, AppExecutors executors) {
+    public PlantRepository(Context context, AppDatabase db, AppExecutors executors) {
         this.context = context.getApplicationContext();
         this.plantDao = db.plantDao();
         this.executor = executors.single();

@@ -42,7 +42,7 @@ public class PlantRepositoryMockitoTest {
         Mockito.when(executors.single()).thenReturn(executor);
         android.content.Context context = androidx.test.core.app.ApplicationProvider.getApplicationContext();
         repository = new PlantRepository(context, db, executors);
-        }
+    }
 
     @Test
     public void getPlant_delegatesToDao() {

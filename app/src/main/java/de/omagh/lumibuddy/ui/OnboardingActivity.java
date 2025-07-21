@@ -48,8 +48,8 @@ public class OnboardingActivity extends AppCompatActivity {
                 .addOnCompleteListener(t -> finishOnboarding()));
         skipButton.setOnClickListener(v -> finishOnboarding());
         privacyButton.setOnClickListener(v ->
-        startActivity(new Intent(this, PrivacyPolicyActivity.class)));
-        
+                startActivity(new Intent(this, PrivacyPolicyActivity.class)));
+
         checkReady();
     }
 
@@ -84,7 +84,7 @@ public class OnboardingActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.BODY_SENSORS)
                         == PackageManager.PERMISSION_GRANTED &&
-                        storageGranted;
+                storageGranted;
     }
 
     private void checkReady() {

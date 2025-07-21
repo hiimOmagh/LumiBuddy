@@ -15,6 +15,7 @@ public class PlantIdRequest {
     @SerializedName("similar_images")
     @Nullable
     private final Boolean similarImages;
+
     public PlantIdRequest(List<String> images) {
         this(images, null);
     }

@@ -32,11 +32,11 @@ import de.omagh.feature_plantdb.di.PlantDbComponent;
 public class PlantDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
+    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
     @Inject
     PlantInfoRepository infoRepository;
     @Inject
     PlantRepository repository;
-    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
     @Inject
     PlantIdentifier plantIdentifier;
     @Inject

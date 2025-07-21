@@ -6,7 +6,9 @@ import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.Locale;
+
 import timber.log.Timber;
 
 import de.omagh.core_infra.ar.HeatmapOverlayView;
@@ -33,6 +35,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
     private AnchorNode anchorNode;
     private ViewRenderable viewRenderable;
     private TextView textView;
+
     public ARMeasureOverlay(HeatmapOverlayView view) {
         this.overlayView = view;
     }

@@ -48,10 +48,11 @@ import timber.log.Timber;
 import com.google.ar.core.ArCoreApk;
 
 public class MeasureFragment extends Fragment {
-    private MeasureViewModel mViewModel;
     @Inject
     MeasureViewModelFactory viewModelFactory;
-
+    @Inject
+    LampIdentifier lampIdentifier;
+    private MeasureViewModel mViewModel;
     // Lamp type selection
     private Spinner lampTypeSpinner;
     private TextView calibrationFactorText;
@@ -64,7 +65,6 @@ public class MeasureFragment extends Fragment {
     private Button preset18h;
     private Button preset24h;
     private TextView hourValue, dliWidgetValue;
-
     // CameraX measurement
     private PreviewView cameraPreview;
     private de.omagh.core_infra.ar.HeatmapOverlayView heatmapOverlay;
@@ -72,21 +72,18 @@ public class MeasureFragment extends Fragment {
     private CameraLightMeterX cameraLightMeterX;
     private androidx.activity.result.ActivityResultLauncher<String> cameraPermissionLauncher;
     private androidx.activity.result.ActivityResultLauncher<String> locationPermissionLauncher;
-
-    @Inject
-    LampIdentifier lampIdentifier;
     // AR overlay integration
     private boolean enableAROverlay = false;
     private de.omagh.core_infra.ar.AROverlayRenderer arOverlayRenderer;
     private TextView luxValue, ppfdValue, dliValue;
 
+    public static MeasureFragment newInstance() {
+        return new MeasureFragment();
+    }
+
     private boolean isArSupported() {
         ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(requireContext());
         return availability.isSupported();
-    }
-
-    public static MeasureFragment newInstance() {
-        return new MeasureFragment();
     }
 
     @Override
@@ -250,7 +247,7 @@ public class MeasureFragment extends Fragment {
                 mViewModel.refreshSunlightEstimate();
             }
         }
-        
+
         if (enableAROverlay && isArSupported()) {
             arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);
             arOverlayRenderer.init();
@@ -372,7 +369,8 @@ public class MeasureFragment extends Fragment {
                                                                 "Lamp identifier result=%s conf=%.2f",
                                                                 pred.getLabel(), pred.getConfidence());
                                                         if (pred.getLabel() == null) {
-                                                            Toast.makeText(getContext(), R.string.ml_low_confidence, Toast.LENGTH_SHORT).show();                                                        }
+                                                            Toast.makeText(getContext(), R.string.ml_low_confidence, Toast.LENGTH_SHORT).show();
+                                                        }
                                                     });
                                         }
 

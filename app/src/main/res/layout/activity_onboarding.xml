@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/onboarding_finish" />
+
     <Button
         android:id="@+id/privacyPolicyButton"
         android:layout_width="wrap_content"

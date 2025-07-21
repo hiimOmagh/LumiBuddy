@@ -96,10 +96,6 @@ public class PlantSyncManager {
                 }));
     }
 
-    public interface MergeCallback {
-        void mergeWithLocal(List<Plant> plants);
-    }
-
     public LiveData<SyncStatus> getSyncStatus() {
         return status;
     }
@@ -168,5 +164,9 @@ public class PlantSyncManager {
             }
         }
         return new ArrayList<>(result.values());
+    }
+
+    public interface MergeCallback {
+        void mergeWithLocal(List<Plant> plants);
     }
 }

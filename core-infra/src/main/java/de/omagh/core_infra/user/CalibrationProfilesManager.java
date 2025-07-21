@@ -18,9 +18,11 @@ public class CalibrationProfilesManager {
     private static final String PREFS_NAME = "calibration_profiles";
     private static final String KEY_ACTIVE = "active_profile_id";
     private static final String KEY_LIST = "profiles";
-
+    // --- Per-light-type corrections ---
+    private static final String KEY_LIGHT_PREFIX = "light_factor_";
     private final SharedPreferences prefs;
     private final List<CalibrationProfile> profiles = new ArrayList<>();
+    private final java.util.Map<String, Float> lightCache = new java.util.HashMap<>();
 
     public CalibrationProfilesManager(Context context) {
         prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -85,10 +87,6 @@ public class CalibrationProfilesManager {
         }
         return 1f;
     }
-
-    // --- Per-light-type corrections ---
-    private static final String KEY_LIGHT_PREFIX = "light_factor_";
-    private final java.util.Map<String, Float> lightCache = new java.util.HashMap<>();
 
     /**
      * Returns the saved correction factor for the given light type or 1f if none is set.

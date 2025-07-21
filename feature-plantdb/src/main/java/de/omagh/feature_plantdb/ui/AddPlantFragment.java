@@ -52,12 +52,12 @@ public class AddPlantFragment extends Fragment {
     public static final String ARG_NAME = "plant_name";
     public static final String ARG_TYPE = "plant_type";
     public static final String ARG_IMAGE_URI = "plant_image_uri";
+    @Inject
+    PlantDbViewModelFactory viewModelFactory;
     private EditText nameInput, typeInput;
     private ImageView imagePreview;
     private PlantListViewModel plantListViewModel;
     private AddPlantViewModel addPlantViewModel;
-    @Inject
-    PlantDbViewModelFactory viewModelFactory;
     private Uri selectedImageUri = null;
     private String existingPlantId = null;
     // ML plant recognition

@@ -12,7 +12,8 @@ import androidx.fragment.app.Fragment;
  */
 public class NotificationPermissionHelper {
 
-    private NotificationPermissionHelper() {}
+    private NotificationPermissionHelper() {
+    }
 
     /**
      * Returns true if the notification permission is granted or not required.

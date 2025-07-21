@@ -10,6 +10,7 @@ import dagger.Module;
 import dagger.Provides;
 
 import javax.inject.Singleton;
+
 import de.omagh.core_domain.repository.MeasurementRepository;
 import de.omagh.core_infra.measurement.ALSLightSensorProvider;
 import de.omagh.core_infra.measurement.ALSManager;

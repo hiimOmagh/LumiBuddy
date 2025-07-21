@@ -17,5 +17,6 @@ public interface DiaryDataSource {
     void insert(DiaryEntry entry);
 
     void update(DiaryEntry entry);
+
     void delete(DiaryEntry entry);
 }

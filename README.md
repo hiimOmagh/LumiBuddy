@@ -81,21 +81,21 @@ Diagram source files live under `docs/diagrams`.
 ### Key Techniques Used
 
 - **Camera-based PPFD approximation**:
-  - Use of diffuser (matte white paper)
-  - Exposure locking and color calibration
-  - Spectrum-type-specific conversion factors (sunlight, blurple LED, HPS, etc.)
+    - Use of diffuser (matte white paper)
+    - Exposure locking and color calibration
+    - Spectrum-type-specific conversion factors (sunlight, blurple LED, HPS, etc.)
 
 - **Lux-to-PPFD Conversion**:
-  - Accurate mapping per light type (e.g., 1 lux = 0.0185 μmol/s for sunlight)
-  - Dynamic factor adjustment for different LED spectrums
+    - Accurate mapping per light type (e.g., 1 lux = 0.0185 μmol/s for sunlight)
+    - Dynamic factor adjustment for different LED spectrums
 
 - **DLI Estimation**:
-  - Manual logging or periodic sensor snapshots
-  - Formula: `DLI = PPFD * light_hours * 3600 / 1e6`
+    - Manual logging or periodic sensor snapshots
+    - Formula: `DLI = PPFD * light_hours * 3600 / 1e6`
 
 - **Spectrum Heuristics**:
-  - RGB ratios used to detect likely light source
-  - Visualized via approximate bar chart (red/green/blue photon distribution)
+    - RGB ratios used to detect likely light source
+    - Visualized via approximate bar chart (red/green/blue photon distribution)
 
 ---
 
@@ -129,7 +129,7 @@ Diagram source files live under `docs/diagrams`.
 @Singleton
 @Component(modules = {NetworkModule.class, DataModule.class, SensorModule.class})
 public interface CoreComponent {
-  void inject(LumiBuddyApplication app);
+    void inject(LumiBuddyApplication app);
 }
 ```
 
@@ -138,9 +138,9 @@ public interface CoreComponent {
 @Singleton
 @Component(dependencies = CoreComponent.class)
 public interface AppComponent {
-  void inject(MeasureViewModel vm);
+    void inject(MeasureViewModel vm);
 
-  void inject(PlantDetailViewModel vm);
+    void inject(PlantDetailViewModel vm);
 }
 ```
 
@@ -208,7 +208,6 @@ build());
 - **Android Studio Hedgehog (2023.1.1)** or newer
 
 ### local.properties
-
 
 1. Copy `local.properties.example` to `local.properties` in the project root
 2. Set your Android SDK path:

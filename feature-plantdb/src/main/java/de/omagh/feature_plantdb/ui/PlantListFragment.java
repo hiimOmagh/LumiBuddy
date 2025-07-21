@@ -14,6 +14,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
 import android.content.Context;
+
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -45,9 +46,9 @@ import de.omagh.core_data.plantdb.PlantInfo;
  * Tapping a plant navigates to its detail; long-pressing deletes it.
  */
 public class PlantListFragment extends Fragment {
-    private PlantListViewModel viewModel;
     @Inject
     PlantDbViewModelFactory viewModelFactory;
+    private PlantListViewModel viewModel;
     private Uri pickedImageUri = null;
     private ImageView plantImagePreview = null;
 

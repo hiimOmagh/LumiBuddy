@@ -167,8 +167,8 @@ public class SettingsFragment extends Fragment {
         });
 
         privacyPolicyBtn.setOnClickListener(v ->
-        startActivity(new android.content.Intent(requireContext(),
-        de.omagh.lumibuddy.ui.PrivacyPolicyActivity.class)));
+                startActivity(new android.content.Intent(requireContext(),
+                        de.omagh.lumibuddy.ui.PrivacyPolicyActivity.class)));
         return view;
     }
 

@@ -265,6 +265,12 @@ public class CameraLightMeterX {
         void onError(String message);
     }
 
+    public interface ResultCallback {
+        void onResult(float meanR, float meanG, float meanB);
+
+        void onError(String message);
+    }
+
     /**
      * Helper class to return grid results.
      */
@@ -280,11 +286,5 @@ public class CameraLightMeterX {
             this.meanB = meanB;
             this.intensity = intensity;
         }
-    }
-
-    public interface ResultCallback {
-        void onResult(float meanR, float meanG, float meanB);
-
-        void onError(String message);
     }
 }

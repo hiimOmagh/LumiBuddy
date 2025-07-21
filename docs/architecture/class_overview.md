@@ -11,7 +11,8 @@ Override `onSwipeTop()` or `onSwipeBottom()` to react when the user swipes.
 ## `FeatureScope`
 
 A custom `@Scope` annotation found in `core-infra/di`. Apply this to feature components so
-objects provided within the component live as long as the feature (often a fragment or screen) is active.
+objects provided within the component live as long as the feature (often a fragment or screen) is
+active.
 
 ## `NetworkModule`
 
