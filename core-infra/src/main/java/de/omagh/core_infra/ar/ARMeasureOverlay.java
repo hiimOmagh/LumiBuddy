@@ -5,6 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+import java.util.Locale;
+import timber.log.Timber;
 
 import de.omagh.core_infra.ar.HeatmapOverlayView;
 
@@ -29,6 +32,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
     private Anchor anchor;
     private AnchorNode anchorNode;
     private ViewRenderable viewRenderable;
+    private TextView textView;
     public ARMeasureOverlay(HeatmapOverlayView view) {
         this.overlayView = view;
     }
@@ -60,7 +64,12 @@ public class ARMeasureOverlay implements AROverlayRenderer {
             assert overlayView != null;
             sceneView = createSceneView(overlayView.getContext());
             sceneView.resume();
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            Timber.e(e, "AR scene init failed");
+            if (overlayView != null) {
+                Toast.makeText(overlayView.getContext(), R.string.ar_init_failed,
+                        Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -74,37 +83,31 @@ public class ARMeasureOverlay implements AROverlayRenderer {
             Session session = sceneView.getSession();
             if (session != null) {
                 try {
-                    if (anchor != null) {
-                        anchor.detach();
-                        anchor = null;
-                    }
-                    Frame frame = sceneView.getArFrame();
-                    if (frame != null) {
-                        anchor = session.createAnchor(frame.getCamera().getPose());
-                    }
-                    if (anchorNode != null) {
-                        anchorNode.setParent(null);
-                    }
-                    anchorNode = new AnchorNode(anchor);
-                    anchorNode.setParent(sceneView.getScene());
+                    if (anchor == null) {
+                        Frame frame = sceneView.getArFrame();
+                        if (frame != null) {
+                            anchor = session.createAnchor(frame.getCamera().getPose());
+                            anchorNode = new AnchorNode(anchor);
+                            anchorNode.setParent(sceneView.getScene());
 
-                    assert overlayView != null;
-                    TextView tv = new TextView(overlayView.getContext());
-                    tv.setBackgroundColor(Color.WHITE);
-                    tv.setTextColor(Color.BLACK);
-                    tv.setText(String.format(java.util.Locale.US, "%.1f", measurement.ppfd));
-
-                    try {
-                        viewRenderable = buildViewRenderable(tv);
-                    } catch (Exception ignored) {
+                            assert overlayView != null;
+                            textView = new TextView(overlayView.getContext());
+                            textView.setBackgroundColor(Color.WHITE);
+                            textView.setTextColor(Color.BLACK);
+                            viewRenderable = buildViewRenderable(textView);
+                            Node node = new Node();
+                            node.setParent(anchorNode);
+                            node.setRenderable(viewRenderable);
+                        }
                     }
 
-                    if (viewRenderable != null) {
-                        Node node = new Node();
-                        node.setParent(anchorNode);
-                        node.setRenderable(viewRenderable);
+                    if (textView != null) {
+                        textView.setText(String.format(Locale.US, "%.1f", measurement.ppfd));
                     }
-                } catch (Exception ignored) {
+                } catch (Exception e) {
+                    Timber.e(e, "AR render error");
+                    Toast.makeText(overlayView.getContext(), R.string.ar_render_error,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -123,6 +126,8 @@ public class ARMeasureOverlay implements AROverlayRenderer {
             anchor.detach();
             anchor = null;
         }
+        textView = null;
+        viewRenderable = null;
         if (sceneView != null) {
             sceneView.pause();
             sceneView.destroy();

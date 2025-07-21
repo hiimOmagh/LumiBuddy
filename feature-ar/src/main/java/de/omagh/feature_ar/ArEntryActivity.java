@@ -35,6 +35,10 @@ import de.omagh.core_infra.ar.ARGrowthTracker;
 import de.omagh.core_infra.ar.ARCoreGrowthTracker;
 import de.omagh.feature_ar.di.DaggerArComponent;
 
+import de.omagh.core_domain.util.AppExecutors;
+import java.util.function.Consumer;
+import timber.log.Timber;
+
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 
 /**
@@ -49,6 +53,8 @@ public class ArEntryActivity extends AppCompatActivity {
     @Inject
     DiaryRepository diaryRepository;
 
+    private AppExecutors executors;
+
     private String plantId;
 
     private ArFragment arFragment;
@@ -60,6 +66,7 @@ public class ArEntryActivity extends AppCompatActivity {
 
         CoreComponent core = ((CoreComponentProvider) getApplicationContext()).getCoreComponent();
         DaggerArComponent.factory().create(core).inject(this);
+        executors = core.appExecutors();
 
         plantId = getIntent().getStringExtra(EXTRA_PLANT_ID);
 
@@ -149,17 +156,18 @@ public class ArEntryActivity extends AppCompatActivity {
                                 tv.setText(String.format(Locale.US, "%.1f lx", lux));
                                 int color = heatmapColor(lux);
                                 tv.setBackgroundColor(color);
-                                Uri screenshot = captureScreenshot();
-                                DiaryEntry entry = new DiaryEntry(
-                                        java.util.UUID.randomUUID().toString(),
-                                        plantId,
-                                        System.currentTimeMillis(),
-                                        "",
-                                        screenshot != null ? screenshot.toString() : "",
-                                        "ar_scan"
-                                );
-                                diaryRepository.insert(entry);
-                                Toast.makeText(this, R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
+                                saveScreenshotAsync(uri -> {
+                                    DiaryEntry entry = new DiaryEntry(
+                                            java.util.UUID.randomUUID().toString(),
+                                            plantId,
+                                            System.currentTimeMillis(),
+                                            "",
+                                            uri != null ? uri.toString() : "",
+                                            "ar_scan"
+                                    );
+                                    diaryRepository.insert(entry);
+                                    Toast.makeText(this, R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
+                                });
                             });
                 })
                 .exceptionally(t -> {
@@ -175,24 +183,30 @@ public class ArEntryActivity extends AppCompatActivity {
         return Color.argb(200, red, 0, blue);
     }
 
-    private Uri captureScreenshot() {
-        try {
-            android.view.View view = getWindow().getDecorView().getRootView();
-            Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            view.draw(canvas);
-            java.io.File dir = new java.io.File(getFilesDir(), "images");
-            if (!dir.exists()) dir.mkdirs();
-            java.io.File file = java.io.File.createTempFile("ar_", ".png", dir);
-            try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-                out.flush();
+    private void saveScreenshotAsync(Consumer<Uri> callback) {
+        android.view.View view = getWindow().getDecorView().getRootView();
+        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        view.draw(canvas);
+        executors.io().execute(() -> {
+            try {
+                java.io.File dir = new java.io.File(getFilesDir(), "images");
+                if (!dir.exists()) dir.mkdirs();
+                java.io.File file = java.io.File.createTempFile("ar_", ".png", dir);
+                try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+                    out.flush();
+                }
+                runOnUiThread(() -> callback.accept(Uri.fromFile(file)));
+            } catch (Exception e) {
+                Timber.e(e, "Screenshot failed");
+                runOnUiThread(() -> {
+                    Toast.makeText(this, R.string.screenshot_error, Toast.LENGTH_LONG).show();
+                    callback.accept(null);
+                });
             }
             return Uri.fromFile(file);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        });
     }
 
     @Override

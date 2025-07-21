@@ -92,7 +92,7 @@ public class CameraLightMeterX {
         if (analysisActive) return;
         analysisActive = true;
 
-        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(activity), image -> {
+        imageAnalysis.setAnalyzer(cameraExecutor, image -> {
             float[] mean = computeMeanRGB(image);
             image.close();
             analysisActive = false;
@@ -116,7 +116,7 @@ public class CameraLightMeterX {
         if (analysisActive) return;
         analysisActive = true;
 
-        imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(activity), image -> {
+        imageAnalysis.setAnalyzer(cameraExecutor, image -> {
             AnalysisResult result = computeGridRGB(image, cols, rows);
             image.close();
             analysisActive = false;

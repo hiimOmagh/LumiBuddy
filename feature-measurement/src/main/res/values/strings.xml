@@ -144,4 +144,11 @@
     <string name="next">next</string>
     <string name="finish">Finish</string>
     <string name="light_type_factor">Light Type Factor</string>
+    <string name="calibrating">Calibrating…</string>
+    <string name="sensor_error">Sensor error</string>
+    <string name="ar_init_failed">AR initialization failed</string>
+    <string name="ar_render_error">AR render error</string>
+    <string name="screenshot_error">Screenshot failed</string>
+    <string name="ml_inference_error">Recognition failed</string>
+    <string name="ml_low_confidence">Low confidence result</string>
 </resources>

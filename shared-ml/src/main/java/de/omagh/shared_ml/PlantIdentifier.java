@@ -11,6 +11,7 @@ import org.tensorflow.lite.Interpreter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
+import timber.log.Timber;
 
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.shared_ml.ModelProvider;
@@ -25,32 +26,46 @@ public class PlantIdentifier {
     private final Interpreter interpreter;
     private final ExecutorService executor;
     private final String[] labels = {"Unknown", "Plant"};
+    private final ByteBuffer inputBuffer;
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
         this(context, provider, executors, DEFAULT_THRESHOLD);
     }
 
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors, float threshold) {
-        ByteBuffer model = provider.loadModel(context);
-        interpreter = new Interpreter(model);
+        ByteBuffer model;
+        try {
+            model = provider.loadModel(context);
+        } catch (Exception e) {
+            Timber.e(e, "Failed to load plant model");
+            throw new IllegalStateException("ML model unavailable", e);
+        }
+            interpreter = new Interpreter(model);
         this.executor = executors.single();
         this.threshold = threshold;
+        int inputSize = 224;
+        inputBuffer = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
+        inputBuffer.order(ByteOrder.nativeOrder());
     }
 
     private Prediction run(Bitmap bitmap) {
         int inputSize = 224;
         Bitmap scaled = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true);
-        ByteBuffer buf = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
-        buf.order(ByteOrder.nativeOrder());
+        inputBuffer.rewind();
         int[] pixels = new int[inputSize * inputSize];
         scaled.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize);
         int idx = 0;
         for (int val : pixels) {
-            buf.putFloat(((val >> 16) & 0xFF) / 255f);
-            buf.putFloat(((val >> 8) & 0xFF) / 255f);
-            buf.putFloat((val & 0xFF) / 255f);
+            inputBuffer.putFloat(((val >> 16) & 0xFF) / 255f);
+            inputBuffer.putFloat(((val >> 8) & 0xFF) / 255f);
+            inputBuffer.putFloat((val & 0xFF) / 255f);
         }
         float[][] out = new float[1][labels.length];
-        interpreter.run(buf, out);
+        try {
+            interpreter.run(inputBuffer, out);
+        } catch (Exception e) {
+            Timber.e(e, "Inference failed");
+            return new Prediction(null, 0f);
+        }
         int best = 0;
         float bestScore = -1f;
         for (int i = 0; i < labels.length; i++) {
@@ -69,10 +84,16 @@ public class PlantIdentifier {
         MutableLiveData<Prediction> result = new MutableLiveData<>();
         executor.execute(() -> {
             Prediction pred = run(bitmap);
-            if (pred.getConfidence() < threshold) {
-                pred = new Prediction(null, pred.getConfidence());
+            if (pred.getLabel() == null) {
+                Timber.e("Plant identifier returned null label");
+                result.postValue(null);
+                return;
             }
-            result.postValue(pred);
+            if (pred.getConfidence() < threshold) {
+                result.postValue(new Prediction(null, pred.getConfidence()));
+            } else {
+                result.postValue(pred);
+            }
         });
         return result;
     }

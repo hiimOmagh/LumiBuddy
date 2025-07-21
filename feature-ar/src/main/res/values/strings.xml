@@ -4,5 +4,8 @@
     <string name="camera_permission_required">Camera permission required</string>
     <string name="add_diary_entry">Add Diary Entry</string>
     <string name="ar_heatmap_title">AR Heatmap</string>
+    <string name="screenshot_error">Failed to save screenshot</string>
+    <string name="ar_init_failed">AR initialization failed</string>
+    <string name="ar_render_error">AR render error</string>
 
 </resources>

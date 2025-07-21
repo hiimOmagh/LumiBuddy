@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -360,13 +361,18 @@ public class MeasureFragment extends Fragment {
                                         if (lampIdentifier != null) {
                                             Bitmap sample = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
                                             sample.eraseColor(Color.rgb((int) Math.min(255, meanR), (int) Math.min(255, meanG), (int) Math.min(255, meanB)));
+                                            Toast.makeText(getContext(), R.string.calibrating, Toast.LENGTH_SHORT).show();
                                             lampIdentifier.identifyLamp(sample)
                                                     .observe(getViewLifecycleOwner(), pred -> {
-                                                        if (pred != null) {
-                                                            Timber.tag("MeasureFragment").d(
-                                                                    "Lamp identifier result=%s conf=%.2f",
-                                                                    pred.getLabel(), pred.getConfidence());
+                                                        if (pred == null) {
+                                                            Toast.makeText(getContext(), R.string.ml_inference_error, Toast.LENGTH_LONG).show();
+                                                            return;
                                                         }
+                                                        Timber.tag("MeasureFragment").d(
+                                                                "Lamp identifier result=%s conf=%.2f",
+                                                                pred.getLabel(), pred.getConfidence());
+                                                        if (pred.getLabel() == null) {
+                                                            Toast.makeText(getContext(), R.string.ml_low_confidence, Toast.LENGTH_SHORT).show();                                                        }
                                                     });
                                         }
 

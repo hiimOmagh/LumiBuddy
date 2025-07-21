@@ -41,7 +41,7 @@ dependencies {
         exclude("com.google.flatbuffers", "flatbuffers-java")
     }
     implementation(libs.androidx.lifecycle.livedata)
-
+    implementation(libs.timber)
     implementation(libs.appcompat)
     implementation(libs.material)
     testImplementation(libs.junit)

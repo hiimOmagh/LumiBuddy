@@ -14,10 +14,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.widget.Toast;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_data.repository.LightCorrectionRepository;
+import de.omagh.core_domain.repository.MeasurementRepository;
+import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.feature_measurement.R;
 
 /**
@@ -31,12 +40,17 @@ public class CalibrationWizardFragment extends Fragment {
     private TextView instructions;
     private Button nextBtn;
     private LightCorrectionRepository correctionStore;
+    private MeasurementRepository measurementRepository;
+    private AppExecutors executors;
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         correctionStore = core.lightCorrectionRepository();
+        measurementRepository = core.measurementRepository();
+        executors = core.appExecutors();
     }
 
     @Nullable
@@ -62,11 +76,32 @@ public class CalibrationWizardFragment extends Fragment {
         if (step == 0) {
             step = 1;
         } else if (step == 1) {
-            // TODO capture sensor data to compute the factor
-            float result = 0.02f; // placeholder value until sensor code added
+            ProgressDialog dlg = ProgressDialog.show(requireContext(), null,
+                    getString(R.string.calibrating), true, false);
             String type = (String) typeSpinner.getSelectedItem();
-            correctionStore.setFactor(type, result);
-            step = 2;
+            disposables.add(
+                    measurementRepository.observeLux()
+                            .take(20)
+                            .reduce(new float[]{0f, 0f}, (acc, val) -> {
+                                acc[0] += val;
+                                acc[1] += 1f;
+                                return acc;
+                            })
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(data -> {
+                                dlg.dismiss();
+                                float avg = data[0] / Math.max(1f, data[1]);
+                                float factor = 1f / Math.max(1f, avg);
+                                correctionStore.setFactor(type, factor);
+                                step = 2;
+                                updateUi();
+                            }, e -> {
+                                dlg.dismiss();
+                                Toast.makeText(getContext(), R.string.sensor_error,
+                                        Toast.LENGTH_LONG).show();
+                            }));
+            return;
         } else {
             ActivityCompat.finishAffinity(requireActivity());
         }
@@ -84,5 +119,11 @@ public class CalibrationWizardFragment extends Fragment {
             instructions.setText(R.string.calib_step_done);
             nextBtn.setText(R.string.finish);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        disposables.clear();
     }
 }
