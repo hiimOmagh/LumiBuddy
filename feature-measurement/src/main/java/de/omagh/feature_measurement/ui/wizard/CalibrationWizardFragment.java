@@ -14,10 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AlertDialog;
 
-import android.app.ProgressDialog;
 import android.widget.Toast;
+import de.omagh.feature_measurement.ui.widget.LoadingDialogFragment;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -27,7 +26,6 @@ import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_domain.repository.MeasurementRepository;
-import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.feature_measurement.R;
 
 /**
@@ -43,7 +41,8 @@ public class CalibrationWizardFragment extends Fragment {
     private Button nextBtn;
     private LightCorrectionRepository correctionStore;
     private MeasurementRepository measurementRepository;
-    private AppExecutors executors;
+    /** Dialog shown while recording calibration samples. */
+    private LoadingDialogFragment progressDialog;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -51,7 +50,6 @@ public class CalibrationWizardFragment extends Fragment {
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         correctionStore = core.lightCorrectionRepository();
         measurementRepository = core.measurementRepository();
-        executors = core.appExecutors();
     }
 
     @Nullable
@@ -77,8 +75,8 @@ public class CalibrationWizardFragment extends Fragment {
         if (step == 0) {
             step = 1;
         } else if (step == 1) {
-            ProgressDialog dlg = ProgressDialog.show(requireContext(), null,
-                    getString(R.string.calibrating), true, false);
+            progressDialog = new LoadingDialogFragment();
+            progressDialog.show(getChildFragmentManager(), "calib");
             String type = (String) typeSpinner.getSelectedItem();
             disposables.add(
                     measurementRepository.observeLux()
@@ -91,14 +89,14 @@ public class CalibrationWizardFragment extends Fragment {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(data -> {
-                                dlg.dismiss();
+                                if (progressDialog != null) progressDialog.dismiss();
                                 float avg = data[0] / Math.max(1f, data[1]);
                                 float factor = 1f / Math.max(1f, avg);
                                 correctionStore.setFactor(type, factor);
                                 step = 2;
                                 updateUi();
                             }, e -> {
-                                dlg.dismiss();
+                                if (progressDialog != null) progressDialog.dismiss();
                                 Toast.makeText(getContext(), R.string.sensor_error,
                                         Toast.LENGTH_LONG).show();
                             }));
@@ -126,5 +124,12 @@ public class CalibrationWizardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         disposables.clear();
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        if (measurementRepository != null) {
+            measurementRepository.stopALS();
+        }
     }
 }

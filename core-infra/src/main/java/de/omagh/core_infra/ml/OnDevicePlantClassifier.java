@@ -16,6 +16,7 @@ import java.nio.ByteOrder;
 public class OnDevicePlantClassifier implements PlantClassifier {
     private final Interpreter interpreter;
     private String last;
+    private boolean closed;
 
     public OnDevicePlantClassifier(Context context) {
         try {
@@ -29,6 +30,12 @@ public class OnDevicePlantClassifier implements PlantClassifier {
         }
     }
 
+    /** Release model resources. */
+    public void close() {
+        closed = true;
+        interpreter.close();
+    }
+    
     @Override
     public void classify(Bitmap bitmap) {
         int size = 224;
@@ -46,6 +53,7 @@ public class OnDevicePlantClassifier implements PlantClassifier {
                 buf.putFloat((val & 0xFF) / 255f);
             }
         }
+        if (closed) return;
         float[][] out = new float[1][1];
         interpreter.run(buf, out);
         last = out[0][0] > 0.5f ? "Known" : "Unknown";

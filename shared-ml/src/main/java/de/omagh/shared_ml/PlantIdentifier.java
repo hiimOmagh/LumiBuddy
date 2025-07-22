@@ -28,6 +28,7 @@ public class PlantIdentifier {
     private final ExecutorService executor;
     private final String[] labels = {"Unknown", "Plant"};
     private final ByteBuffer inputBuffer;
+    private boolean closed = false;
 
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
         this(context, provider, executors, DEFAULT_THRESHOLD);
@@ -47,6 +48,13 @@ public class PlantIdentifier {
         int inputSize = 224;
         inputBuffer = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
         inputBuffer.order(ByteOrder.nativeOrder());
+    }
+
+    /** Release model resources. */
+    public void close() {
+        closed = true;
+        interpreter.close();
+        executor.shutdown();
     }
 
     private Prediction run(Bitmap bitmap) {
@@ -85,6 +93,10 @@ public class PlantIdentifier {
     public LiveData<Prediction> identifyPlant(Bitmap bitmap) {
         MutableLiveData<Prediction> result = new MutableLiveData<>();
         executor.execute(() -> {
+            if (closed) {
+                result.postValue(null);
+                return;
+            }
             Prediction pred = run(bitmap);
             if (pred.getLabel() == null) {
                 Timber.e("Plant identifier returned null label");

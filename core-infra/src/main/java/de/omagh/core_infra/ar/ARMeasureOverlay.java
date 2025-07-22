@@ -36,6 +36,12 @@ public class ARMeasureOverlay implements AROverlayRenderer {
     private ViewRenderable viewRenderable;
     private TextView textView;
 
+    private void showToast(int resId) {
+        if (overlayView != null) {
+            Toast.makeText(overlayView.getContext(), resId, Toast.LENGTH_LONG).show();
+        }
+    }
+    
     public ARMeasureOverlay(HeatmapOverlayView view) {
         this.overlayView = view;
     }
@@ -69,10 +75,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
             sceneView.resume();
         } catch (Exception e) {
             Timber.e(e, "AR scene init failed");
-            if (overlayView != null) {
-                Toast.makeText(overlayView.getContext(), R.string.ar_init_failed,
-                        Toast.LENGTH_LONG).show();
-            }
+            showToast(R.string.ar_init_failed);
         }
     }
 
@@ -82,37 +85,39 @@ public class ARMeasureOverlay implements AROverlayRenderer {
             overlayView.setIntensityGrid(intensityGrid);
         }
 
-        if (sceneView != null && measurement != null) {
-            Session session = sceneView.getSession();
-            if (session != null) {
-                try {
-                    if (anchor == null) {
-                        Frame frame = sceneView.getArFrame();
-                        if (frame != null) {
-                            anchor = session.createAnchor(frame.getCamera().getPose());
-                            anchorNode = new AnchorNode(anchor);
-                            anchorNode.setParent(sceneView.getScene());
+        if (sceneView == null || measurement == null) {
+            return;
+        }
 
-                            assert overlayView != null;
-                            textView = new TextView(overlayView.getContext());
-                            textView.setBackgroundColor(Color.WHITE);
-                            textView.setTextColor(Color.BLACK);
-                            viewRenderable = buildViewRenderable(textView);
-                            Node node = new Node();
-                            node.setParent(anchorNode);
-                            node.setRenderable(viewRenderable);
-                        }
-                    }
+        Session session = sceneView.getSession();
+        if (session == null) {
+            return;
+        }
 
-                    if (textView != null) {
-                        textView.setText(String.format(Locale.US, "%.1f", measurement.ppfd));
-                    }
-                } catch (Exception e) {
-                    Timber.e(e, "AR render error");
-                    Toast.makeText(overlayView.getContext(), R.string.ar_render_error,
-                            Toast.LENGTH_LONG).show();
+        try {
+            if (anchor == null) {
+                Frame frame = sceneView.getArFrame();
+                if (frame != null) {
+                    anchor = session.createAnchor(frame.getCamera().getPose());
+                    anchorNode = new AnchorNode(anchor);
+                    anchorNode.setParent(sceneView.getScene());
+
+                    textView = new TextView(overlayView.getContext());
+                    textView.setBackgroundColor(Color.WHITE);
+                    textView.setTextColor(Color.BLACK);
+                    viewRenderable = buildViewRenderable(textView);
+                    Node node = new Node();
+                    node.setParent(anchorNode);
+                    node.setRenderable(viewRenderable);
                 }
             }
+
+            if (textView != null) {
+                textView.setText(String.format(Locale.US, "%.1f", measurement.ppfd));
+            }
+        } catch (Exception e) {
+            Timber.e(e, "AR render error");
+            showToast(R.string.ar_render_error);
         }
     }
 
@@ -120,6 +125,7 @@ public class ARMeasureOverlay implements AROverlayRenderer {
     public void cleanup() {
         if (overlayView != null) {
             overlayView.setVisibility(View.GONE);
+            overlayView.setIntensityGrid(null);
         }
         if (anchorNode != null) {
             anchorNode.setParent(null);

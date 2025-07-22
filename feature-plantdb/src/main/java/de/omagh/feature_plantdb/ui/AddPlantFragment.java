@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import de.omagh.feature_plantdb.ui.widget.LoadingDialogFragment;
 
 import javax.inject.Inject;
 
@@ -63,6 +64,7 @@ public class AddPlantFragment extends Fragment {
     // ML plant recognition
     private HealthStatusClassifier healthClassifier;
     private DummyARGrowthTracker growthTracker;
+    private LoadingDialogFragment progressDialog;
     private final ActivityResultLauncher<String> imagePickerLauncher =
             registerForActivityResult(new ActivityResultContracts.GetContent(), uri -> {
                 if (uri != null) {
@@ -117,6 +119,19 @@ public class AddPlantFragment extends Fragment {
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         PlantDbComponent component = DaggerPlantDbComponent.factory().create(core);
         viewModelFactory = component.viewModelFactory();
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
+        if (growthTracker != null) {
+            growthTracker.cleanup();
+            growthTracker = null;
+        }
+        super.onDestroyView();
     }
 
     @Nullable
@@ -265,16 +280,19 @@ public class AddPlantFragment extends Fragment {
      */
 
     private void identifyWithApi(Bitmap bmp) {
-        Toast.makeText(getContext(), "Identifying...", Toast.LENGTH_SHORT).show();
+if (progressDialog != null) progressDialog.dismiss();
+        progressDialog = new LoadingDialogFragment();
+        progressDialog.show(getChildFragmentManager(), "identify");
         addPlantViewModel.identifyPlantWithApi(bmp);
         addPlantViewModel.getIdentificationResult().removeObservers(getViewLifecycleOwner());
         addPlantViewModel.getIdentificationResult().observe(getViewLifecycleOwner(), suggestion -> {
+            if (progressDialog != null) progressDialog.dismiss();
             if (suggestion != null) {
                 nameInput.setText(suggestion.getCommonName());
                 typeInput.setText(suggestion.getScientificName());
-                Toast.makeText(getContext(), "Identified with Plant.id", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.identified_with_api), Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getContext(), "Identification failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.identification_failed), Toast.LENGTH_SHORT).show();
             }
         });
     }

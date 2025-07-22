@@ -29,6 +29,7 @@ public class CameraLightMeterX {
     private final Activity activity;
     private final PreviewView previewView;
     private ImageAnalysis imageAnalysis;
+    /** Executor running image analysis off the UI thread. */
     private ExecutorService cameraExecutor;
     private boolean analysisActive = false;
 
@@ -41,6 +42,9 @@ public class CameraLightMeterX {
      * Start the camera preview with CameraX
      */
     public void startCamera() {
+        if (cameraExecutor != null && !cameraExecutor.isShutdown()) {
+            return; // already started
+        }
         cameraExecutor = Executors.newSingleThreadExecutor();
         getInstance(activity).addListener(() -> {
             try {
@@ -72,7 +76,7 @@ public class CameraLightMeterX {
      */
     public void stopCamera() {
         if (cameraExecutor != null) {
-            cameraExecutor.shutdown();
+            cameraExecutor.shutdownNow();
             cameraExecutor = null;
         }
         if (imageAnalysis != null) {

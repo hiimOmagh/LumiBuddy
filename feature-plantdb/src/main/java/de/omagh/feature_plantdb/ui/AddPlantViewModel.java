@@ -67,4 +67,10 @@ public class AddPlantViewModel extends AndroidViewModel {
         });
         return identificationResult;
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        plantIdentifier.close();
+    }
 }

@@ -199,7 +199,12 @@ public class ArEntryActivity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
                     out.flush();
                 }
-                runOnUiThread(() -> callback.accept(Uri.fromFile(file)));
+                runOnUiThread(() -> {
+                    if (!isDestroyed()) {
+                        callback.accept(Uri.fromFile(file));
+                    }
+                });
+                bitmap.recycle();
             } catch (Exception e) {
                 Timber.e(e, "Screenshot failed");
                 runOnUiThread(() -> {
@@ -207,7 +212,6 @@ public class ArEntryActivity extends AppCompatActivity {
                     callback.accept(null);
                 });
             }
-            return Uri.fromFile(file);
         });
     }
 

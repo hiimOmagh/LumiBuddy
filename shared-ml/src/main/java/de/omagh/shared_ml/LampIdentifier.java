@@ -27,6 +27,7 @@ public class LampIdentifier {
     private final ExecutorService executor;
     private final String[] labels = {"Unknown", "Lamp"};
     private final ByteBuffer inputBuffer;
+    private boolean closed = false;
 
     public LampIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
         this(context, provider, executors, DEFAULT_THRESHOLD);
@@ -46,6 +47,13 @@ public class LampIdentifier {
         int inputSize = 224;
         inputBuffer = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
         inputBuffer.order(ByteOrder.nativeOrder());
+    }
+
+    /** Release model resources. */
+    public void close() {
+        closed = true;
+        interpreter.close();
+        executor.shutdown();
     }
 
     private Prediction run(Bitmap bitmap) {
@@ -83,6 +91,10 @@ public class LampIdentifier {
     public LiveData<Prediction> identifyLamp(Bitmap bitmap) {
         MutableLiveData<Prediction> result = new MutableLiveData<>();
         executor.execute(() -> {
+        if (closed) {
+                result.postValue(null);
+                return;
+            }
             Prediction pred = run(bitmap);
             if (pred.getLabel() == null) {
                 Timber.e("Lamp identifier returned null label");
