@@ -46,3 +46,26 @@ The signed artifacts are written to:
 - `app/build/outputs/apk/release/` – signed APK
 - `app/build/outputs/bundle/release/` – signed AAB
 
+## 5. Beta testing & distribution
+
+After generating a signed build you can upload it to Google Play or share it via
+another service for testers.
+
+### Google Play internal testing
+
+1. Open the **Google Play Console** for your app.
+2. Select **Testing > Internal testing** and choose *Create new release*.
+3. Upload the signed AAB or APK and add release notes.
+4. Add tester Gmail addresses or upload a CSV list.
+5. Roll out the release to send invitation emails.
+
+### Other distribution options
+
+You may distribute the APK through services such as **Firebase App
+Distribution** or by providing a direct download link.
+
+### Gathering feedback
+
+Encourage testers to report issues via the GitHub Issues page or a shared
+feedback form linked in the invitation email.
+

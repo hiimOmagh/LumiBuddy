@@ -240,7 +240,7 @@ the `ANDROID_HOME` environment variable to the same path.
 
 ### Release Builds
 
-See [docs/release_build.md](docs/release_build.md) for instructions on creating a keystore, configuring signing properties and generating a signed APK or App Bundle.
+See [docs/release_build.md](docs/release_build.md) for instructions on creating a keystore, configuring signing properties, generating a signed build and distributing it to testers.
 
 ### Recommended Emulator Profiles
 
