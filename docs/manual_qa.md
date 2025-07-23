@@ -39,3 +39,4 @@ This checklist outlines the key device-based validation steps for LumiBuddy. Run
 - Put the app in the background and then bring it to the foreground to verify it restores to the last screen.
 - Deny a previously granted permission and re-enable it to confirm the feature recovers without a restart.
 - Watch logcat or LeakCanary for signs of memory leaks or crashes during extended use.
+Following this checklist helps catch regressions before release.

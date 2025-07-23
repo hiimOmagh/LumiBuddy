@@ -69,3 +69,4 @@ Distribution** or by providing a direct download link.
 Encourage testers to report issues via the GitHub Issues page or a shared
 feedback form linked in the invitation email.
 
+Following these instructions will ensure testers can install and review your release properly.
