@@ -32,3 +32,10 @@ This checklist outlines the key device-based validation steps for LumiBuddy. Run
 
 - First use of camera, storage or notifications should request permissions.
 - If a permission is denied a rationale is shown and the feature remains disabled until granted.
+
+## General Stability
+
+- Rotate the device and ensure each screen retains state when returning from the rotated orientation.
+- Put the app in the background and then bring it to the foreground to verify it restores to the last screen.
+- Deny a previously granted permission and re-enable it to confirm the feature recovers without a restart.
+- Watch logcat or LeakCanary for signs of memory leaks or crashes during extended use.
