@@ -335,7 +335,17 @@ project compiling. Examples include
 `DiffuserGuide`, `ExportUtils`, `NetworkUtils`, `DateUtils`, `MeasurementDao`,
 `UserDao`, `UserProfile`, `NotificationEvent`, `SpectrumEstimate`, and the
 various *Basic* classifiers under `core-infra/ml`. They can be removed or
+
 replaced with real implementations as features mature.
+
+---
+
+## 🔒 Privacy
+
+Sensor readings and plant entries are processed on your device. Cloud sync via
+Firebase stores data under your account. See the full
+[privacy policy](docs/privacy_policy.md) for information on data collection and
+deletion.
 
 ---
 
