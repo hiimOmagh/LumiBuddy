@@ -15,6 +15,12 @@ Common steps:
 4. When LiveData is returned, an observer can be attached with
    `observeForever` so the value is emitted synchronously.
 
+Before running tests, ensure the Android SDK path is configured. Copy
+`local.properties.example` to `local.properties` in the project root and set
+`sdk.dir` to your SDK location. See the
+[Developer Setup](../README.md#developer-setup) section of the README for full
+instructions.
+
 Run lint and all unit tests locally with:
 
 ```bash

@@ -34,7 +34,6 @@ LumiBuddy/
 ### Planned Modules
 
 - `:feature-ar` – ARCore features (WIP)
-- `:shared-sensor` – Light, camera, external BLE sensor abstraction
 - `:shared-ml` – On-device TFLite inference
 
 For more details on fragment routes, dependency injection and module boundaries see
