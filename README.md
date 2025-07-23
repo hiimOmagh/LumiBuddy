@@ -349,6 +349,12 @@ deletion.
 
 ---
 
+## 📋 Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes.
+
+---
+
 ## 🌍 License
 
 License: MIT
