@@ -237,7 +237,12 @@ the `ANDROID_HOME` environment variable to the same path.
   ./gradlew installDebug
   ```
 - Or open the project in Android Studio and press **Run**.
-- ### Recommended Emulator Profiles
+
+### Release Builds
+
+See [docs/release_build.md](docs/release_build.md) for instructions on creating a keystore, configuring signing properties and generating a signed APK or App Bundle.
+
+### Recommended Emulator Profiles
 
 | Device Profile | API Level       | Notes                                |
 |----------------|-----------------|--------------------------------------|
