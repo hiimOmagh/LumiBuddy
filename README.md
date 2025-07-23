@@ -178,6 +178,12 @@ build());
 
 ---
 
+## 📋 Manual QA
+
+See [docs/manual_qa.md](docs/manual_qa.md) for device-based validation steps covering calibration, AR overlays, ML recognition, navigation flows and permission handling.
+
+---
+
 ## 📄 Documentation Plan
 
 **README Sections**
