@@ -81,3 +81,4 @@ app/bin/default/res/values-night/strings.xml
 app/bin/default/res/values-night/themes.xml
 app/bin/default/res/xml/backup_rules.xml
 app/bin/default/res/xml/data_extraction_rules.xml
+.idx/integrations.json
