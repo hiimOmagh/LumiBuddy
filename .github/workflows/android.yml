@@ -1,4 +1,4 @@
-name: Android CI
+name: Android Instrumentation
 
 on:
   push:
@@ -10,20 +10,36 @@ permissions:
   contents: read
 
 jobs:
-  build:
-
+  instrumentation:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-      - name: set up JDK 11
+
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '11'
+          java-version: '17'
           distribution: 'temurin'
           cache: gradle
 
+      - uses: android-actions/setup-android@v3
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Build with Gradle
-        run: ./gradlew build
+
+      - name: Run instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 30
+          target: google_apis
+          arch: x86_64
+          script: ./gradlew connectedCheck
+
+      - name: Build release bundle
+        run: ./gradlew bundleRelease
+
+      - name: Upload release bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: app/build/outputs/bundle/release/*.aab
