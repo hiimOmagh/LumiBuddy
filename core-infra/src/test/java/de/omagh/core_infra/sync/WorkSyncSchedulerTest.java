@@ -11,13 +11,15 @@ import androidx.work.WorkManager;
 import androidx.work.testing.WorkManagerTestInitHelper;
 import androidx.work.testing.TestDriver;
 
+import de.omagh.core_infra.sync.WorkSyncScheduler;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
 
-public class SyncSchedulerTest {
+public class WorkSyncSchedulerTest {
     private Context context;
 
     @Before
@@ -34,7 +36,7 @@ public class SyncSchedulerTest {
 
     @Test
     public void fullSync_runsAfterConstraintsMet() throws Exception {
-        SyncScheduler scheduler = new SyncScheduler(context);
+        WorkSyncScheduler scheduler = new WorkSyncScheduler(context);
         scheduler.scheduleDaily();
 
         WorkManager wm = WorkManager.getInstance(context);

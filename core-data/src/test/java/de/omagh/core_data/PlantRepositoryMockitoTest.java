@@ -20,6 +20,7 @@ import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.db.PlantDao;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.sync.SyncScheduler;
 import de.omagh.core_domain.util.AppExecutors;
 
 /**
@@ -41,7 +42,8 @@ public class PlantRepositoryMockitoTest {
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
         android.content.Context context = androidx.test.core.app.ApplicationProvider.getApplicationContext();
-        repository = new PlantRepository(context, db, executors);
+        SyncScheduler scheduler = Mockito.mock(SyncScheduler.class);
+        repository = new PlantRepository(context, db, executors, scheduler);
     }
 
     @Test

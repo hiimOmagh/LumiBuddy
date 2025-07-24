@@ -21,6 +21,7 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.sync.WorkSyncScheduler;
 
 /**
  * Worker performing periodic care checks using {@link WorkManager}.
@@ -36,7 +37,7 @@ public class PeriodicScanWorker extends Worker {
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         AppExecutors executors = core.appExecutors();
         AppDatabase db = AppDatabase.getInstance(context);
-        plantRepository = new PlantRepository(context, db, executors);
+        plantRepository = new PlantRepository(context, db, executors, new WorkSyncScheduler(context));
         DiaryDao diaryDao = db.diaryDao();
         RecommendationEngine engine = new RecommendationEngine();
         NotificationManager notifications = new NotificationManager(context);

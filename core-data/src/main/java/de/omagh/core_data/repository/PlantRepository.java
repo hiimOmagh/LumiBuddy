@@ -17,19 +17,22 @@ import de.omagh.core_domain.model.Plant;
 /**
  * Repository providing CRUD access to {@link de.omagh.core_domain.model.Plant} entities.
  * All operations run on a background executor and schedule a sync via
- * {@link de.omagh.core_infra.sync.SyncScheduler}.
+ * {@link de.omagh.core_domain.sync.SyncScheduler}.
  */
 public class PlantRepository implements PlantDataSource {
     private final PlantDao plantDao;
     private final ExecutorService executor;
-    private final de.omagh.core_infra.sync.SyncScheduler scheduler;
+    private final de.omagh.core_domain.sync.SyncScheduler scheduler;
     private final Context context;
 
-    public PlantRepository(Context context, AppDatabase db, AppExecutors executors) {
+    public PlantRepository(Context context,
+                           AppDatabase db,
+                           AppExecutors executors,
+                           de.omagh.core_domain.sync.SyncScheduler scheduler) {
         this.context = context.getApplicationContext();
         this.plantDao = db.plantDao();
         this.executor = executors.single();
-        this.scheduler = new de.omagh.core_infra.sync.SyncScheduler(this.context);
+        this.scheduler = scheduler;
     }
 
     public LiveData<List<Plant>> getAllPlants() {

@@ -18,12 +18,15 @@ import de.omagh.core_data.model.DiaryEntry;
 public class DiaryRepository implements DiaryDataSource {
     private final DiaryDao diaryDao;
     private final ExecutorService executor;
-    private final de.omagh.core_infra.sync.SyncScheduler scheduler;
+    private final de.omagh.core_domain.sync.SyncScheduler scheduler;
 
-    public DiaryRepository(Context context, DiaryDao dao, AppExecutors executors) {
+    public DiaryRepository(Context context,
+                           DiaryDao dao,
+                           AppExecutors executors,
+                           de.omagh.core_domain.sync.SyncScheduler scheduler) {
         this.diaryDao = dao;
         this.executor = executors.single();
-        this.scheduler = new de.omagh.core_infra.sync.SyncScheduler(context.getApplicationContext());
+        this.scheduler = scheduler;
     }
 
     public LiveData<List<DiaryEntry>> getEntriesForPlant(String plantId) {

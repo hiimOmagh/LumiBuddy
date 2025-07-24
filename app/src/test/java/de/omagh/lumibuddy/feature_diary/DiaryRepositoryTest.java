@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import de.omagh.core_data.db.DiaryDao;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_domain.sync.SyncScheduler;
 import de.omagh.core_domain.util.AppExecutors;
 
 import org.junit.Before;
@@ -34,7 +35,8 @@ public class DiaryRepositoryTest {
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
         android.content.Context context = androidx.test.core.app.ApplicationProvider.getApplicationContext();
-        repository = new DiaryRepository(context, dao, executors);
+        SyncScheduler scheduler = Mockito.mock(SyncScheduler.class);
+        repository = new DiaryRepository(context, dao, executors, scheduler);
     }
 
     /**

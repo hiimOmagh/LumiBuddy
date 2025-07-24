@@ -16,6 +16,7 @@ import org.junit.runner.RunWith;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
+import de.omagh.core_domain.sync.SyncScheduler;
 import de.omagh.core_domain.util.AppExecutors;
 
 import org.mockito.Mockito;
@@ -41,7 +42,8 @@ public class DiaryRepositoryIntegrationTest {
         AppExecutors executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
-        repository = new DiaryRepository(context, db.diaryDao(), executors);
+        SyncScheduler scheduler = Mockito.mock(SyncScheduler.class);
+        repository = new DiaryRepository(context, db.diaryDao(), executors, scheduler);
     }
 
     @After

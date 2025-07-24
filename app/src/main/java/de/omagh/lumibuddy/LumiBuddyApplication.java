@@ -43,7 +43,7 @@ public class LumiBuddyApplication extends Application implements CoreComponentPr
         appComponent.inject(this);
 
         // Schedule periodic sync on startup
-        new de.omagh.core_infra.sync.SyncScheduler(this).scheduleDaily();
+        new de.omagh.core_infra.sync.WorkSyncScheduler(this).scheduleDaily();
     }
 
     @Override

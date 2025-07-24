@@ -15,6 +15,7 @@ import java.util.List;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.PlantRepository;
+import de.omagh.core_infra.sync.WorkSyncScheduler;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 
@@ -31,7 +32,7 @@ public class BackupWorker extends Worker {
     public Result doWork() {
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getInstance(context);
-        PlantRepository plantRepo = new PlantRepository(context, db, new AppExecutors());
+        PlantRepository plantRepo = new PlantRepository(context, db, new AppExecutors(), new WorkSyncScheduler(context));
         List<Plant> plants = plantRepo.getAllPlantsSync();
         if (plants == null) plants = new ArrayList<>();
         WorkManager wm = WorkManager.getInstance(context);

@@ -10,6 +10,7 @@ import androidx.test.core.app.ApplicationProvider;
 import de.omagh.core_data.db.AppDatabase;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_domain.sync.SyncScheduler;
 import de.omagh.core_domain.util.AppExecutors;
 
 import org.mockito.Mockito;
@@ -33,7 +34,8 @@ public class PlantRepositoryTest {
         AppExecutors executors = Mockito.mock(AppExecutors.class);
         java.util.concurrent.ExecutorService executor = java.util.concurrent.Executors.newSingleThreadExecutor();
         Mockito.when(executors.single()).thenReturn(executor);
-        repo = new PlantRepository(context, db, executors);
+        SyncScheduler scheduler = Mockito.mock(SyncScheduler.class);
+        repo = new PlantRepository(context, db, executors, scheduler);
     }
 
     @After

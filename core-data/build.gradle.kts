@@ -33,6 +33,7 @@ android {
 dependencies {
 
     implementation(project(":core-domain"))
+    //implementation(project(":core-infra"))
     api(libs.room.runtime)
     implementation(libs.androidx.lifecycle.livedata.core)
     implementation(libs.androidx.lifecycle.viewmodel)

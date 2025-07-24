@@ -23,6 +23,8 @@ import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.Node;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 
+import de.omagh.core_infra.R;
+
 /**
  * Simple implementation of {@link AROverlayRenderer} using Sceneform.
  * An anchor is placed at the current camera pose and a {@link ViewRenderable}

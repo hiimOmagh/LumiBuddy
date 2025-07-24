@@ -44,7 +44,9 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.appcompat)
     implementation(libs.material)
+    implementation(libs.androidx.test.core)
     testImplementation(libs.junit)
+    testImplementation("org.mockito:mockito-core:4.8.0")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }

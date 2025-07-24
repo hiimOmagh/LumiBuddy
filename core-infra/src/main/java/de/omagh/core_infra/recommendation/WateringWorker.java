@@ -19,6 +19,7 @@ import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.di.CoreComponent;
 import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.core_infra.sync.WorkSyncScheduler;
 
 /**
  * Worker that triggers {@link WateringScheduler} via WorkManager.
@@ -33,7 +34,7 @@ public class WateringWorker extends Worker {
         super(context, params);
         CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
         AppDatabase db = AppDatabase.getInstance(context);
-        plantRepository = new PlantRepository(context, db, core.appExecutors());
+        plantRepository = new PlantRepository(context, db, core.appExecutors(), new WorkSyncScheduler(context));
         scheduler = new WateringScheduler(new RecommendationEngine(), new NotificationManager(context), db.diaryDao());
     }
 

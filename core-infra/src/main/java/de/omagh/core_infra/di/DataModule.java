@@ -22,6 +22,7 @@ import de.omagh.core_data.repository.firebase.FirebaseDiaryRepository;
 import de.omagh.core_data.repository.firebase.FirebasePlantRepository;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.di.Remote;
+import de.omagh.core_infra.sync.WorkSyncScheduler;
 
 /**
  * Provides data layer dependencies.
@@ -39,8 +40,16 @@ public abstract class DataModule {
     }
 
     @Provides
-    static PlantRepository providePlantRepository(Application app, AppDatabase db, AppExecutors executors) {
-        return new PlantRepository(app, db, executors);
+    static WorkSyncScheduler provideWorkSyncScheduler(Application app) {
+        return new WorkSyncScheduler(app);
+    }
+
+    @Provides
+    static PlantRepository providePlantRepository(Application app,
+                                                  AppDatabase db,
+                                                  AppExecutors executors,
+                                                  WorkSyncScheduler scheduler) {
+        return new PlantRepository(app, db, executors, scheduler);
     }
 
     @Provides
@@ -64,8 +73,11 @@ public abstract class DataModule {
     }
 
     @Provides
-    static DiaryRepository provideDiaryRepository(Application app, DiaryDao dao, AppExecutors executors) {
-        return new DiaryRepository(app, dao, executors);
+    static DiaryRepository provideDiaryRepository(Application app,
+                                                  DiaryDao dao,
+                                                  AppExecutors executors,
+                                                  WorkSyncScheduler scheduler) {
+        return new DiaryRepository(app, dao, executors, scheduler);
     }
 
     @Provides

@@ -11,15 +11,17 @@ import androidx.work.WorkManager;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Schedules periodic background sync using WorkManager.
+ * WorkManager based implementation of {@link de.omagh.core_domain.sync.SyncScheduler}
+ * that enqueues periodic background sync tasks.
  */
-public class SyncScheduler {
+public class WorkSyncScheduler implements de.omagh.core_domain.sync.SyncScheduler {
     private final Context context;
 
-    public SyncScheduler(Context context) {
+    public WorkSyncScheduler(Context context) {
         this.context = context.getApplicationContext();
     }
 
+    @Override
     public void scheduleDaily() {
         Constraints netConnected = new Constraints.Builder()
                 .setRequiredNetworkType(NetworkType.CONNECTED)
