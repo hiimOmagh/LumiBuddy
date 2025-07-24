@@ -22,9 +22,7 @@ module.
 
 Each feature module (`feature-measurement`, `feature-plantdb`, `feature-diary`,
 `feature-growschedule`) exposes its own navigation graph which is included in the main app graph.
-Actions between fragments rely on Android Navigation component IDs as defined in their respective
-respective
-`res/navigation` XML files.
+Actions between fragments rely on Android Navigation component IDs as defined in their respective `res/navigation` XML files.
 
 See [Feature Entry Points](feature_entry_points.md) for the list of fragments or activities that
 start each module and the Dagger components that inject them. For an example of requesting a feature
