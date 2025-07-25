@@ -6,6 +6,10 @@ import static org.mockito.Mockito.*;
 
 import android.app.Activity;
 import android.graphics.ImageFormat;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.media.Image;
+import androidx.camera.core.ImageInfo;
 
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
@@ -111,10 +115,40 @@ public class CameraLightMeterXTest {
                 return new PlaneProxy[]{plane, plane, plane};
             }
             @Override public void close() {}
-            // unused methods
-            @Override public long getImageInfoTimestamp() { return 0; }
-            @Override public int getImageInfoRotationDegrees() { return 0; }
-            @Override public boolean getImageInfoIsComplete() { return true; }
+            @Override
+            @androidx.camera.core.ExperimentalGetImage
+            public Image getImage() { return null; }
+
+            @Override public Rect getCropRect() { return new Rect(); }
+
+            @Override public void setCropRect(Rect rect) { }
+
+            @Override public ImageInfo getImageInfo() {
+                return new ImageInfo() {
+                    @Override
+                    public androidx.camera.core.impl.TagBundle getTagBundle() {
+                        return androidx.camera.core.impl.TagBundle.emptyBundle();
+                    }
+
+                    @Override public long getTimestamp() { return 0; }
+
+                    @Override public int getRotationDegrees() { return 0; }
+
+                    @Override
+                    public Matrix getSensorToBufferTransformMatrix() {
+                        return new Matrix();
+                    }
+
+                    @Override
+                    public androidx.camera.core.impl.CameraCaptureResult getCameraCaptureResult() {
+                        return androidx.camera.core.impl.CameraCaptureResult.EmptyCameraCaptureResult.create();
+                    }
+
+                    @Override
+                    public void populateExifData(
+                            androidx.camera.core.impl.utils.ExifData.Builder exifBuilder) {}
+                };
+            }
         };
     }
 

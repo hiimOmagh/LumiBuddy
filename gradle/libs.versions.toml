@@ -44,6 +44,7 @@ arcore = "1.50.0"
 navigationTesting = "2.9.2"
 sceneform = "1.23.0"
 jspecify = "1.0.0"
+fragmentTesting = "1.8.8"
 
 [libraries]
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
@@ -98,6 +99,7 @@ arcore = { group = "com.google.ar", name = "core", version.ref = "arcore" }
 sceneform-core = { group = "com.gorisse.thomas.sceneform", name = "core", version.ref = "sceneform" }
 sceneform-ux = { group = "com.gorisse.thomas.sceneform", name = "ux", version.ref = "sceneform" }
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+androidx-fragment-testing = { group = "androidx.fragment", name = "fragment-testing", version.ref = "fragmentTesting" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

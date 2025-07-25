@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.timber)
     compileOnly(libs.jspecify)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

@@ -61,7 +61,8 @@ public class ARMeasureOverlayBehaviorTest {
 
     @Test
     public void init_handlesFailure() {
-        when(sceneView.resume()).thenThrow(new RuntimeException("fail"));
+        doThrow(new RuntimeException("fail"))
+                .when(sceneView).resume();
         overlay.init();
         verify(overlayView).setVisibility(android.view.View.VISIBLE);
     }
@@ -69,7 +70,7 @@ public class ARMeasureOverlayBehaviorTest {
     @Test
     public void cleanup_resetsOverlay() {
         overlay.init();
-        Measurement m = new Measurement(10f, 20f);
+        Measurement m = new Measurement(10f, 0f, 0f, 0L, "test");
         overlay.renderOverlay(new Canvas(), m, new float[][]{{1f}});
         overlay.cleanup();
         verify(anchor).detach();

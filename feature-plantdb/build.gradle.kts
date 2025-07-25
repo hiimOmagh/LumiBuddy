@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
+    implementation(libs.androidx.fragment.testing)
     compileOnly(libs.jspecify)
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)

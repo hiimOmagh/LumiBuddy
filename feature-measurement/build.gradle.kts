@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":core-domain"))
     implementation(project(":core-infra"))
     implementation(project(":core-data"))
+    implementation(project(":shared-ml"))
     implementation(libs.dagger)
     implementation(libs.work.runtime)
     implementation(libs.arcore)
