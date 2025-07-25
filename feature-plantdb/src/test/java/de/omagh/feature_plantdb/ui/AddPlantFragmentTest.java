@@ -7,6 +7,7 @@ import static org.mockito.Mockito.*;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.app.Application;
 
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.MutableLiveData;
@@ -27,6 +28,7 @@ import de.omagh.feature_plantdb.R;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 import de.omagh.feature_plantdb.ui.widget.LoadingDialogFragment;
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
+import de.omagh.feature_plantdb.ui.PlantDbViewModelFactory;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
@@ -37,22 +39,18 @@ import de.omagh.core_infra.plantdb.PlantIdRepository;
  */
 @RunWith(AndroidJUnit4.class)
 public class AddPlantFragmentTest {
-    @Mock
-    PlantIdentifier identifier;
-    @Mock
-    PlantIdRepository repo;
-
-    private AutoCloseable mocks;
+    static PlantIdentifier identifier;
+    static PlantIdRepository repo;
 
     @Before
     public void setup() {
-        mocks = MockitoAnnotations.openMocks(this);
-        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(new Prediction("rose",0.9f)));
+        identifier = mock(PlantIdentifier.class);
+        repo = mock(PlantIdRepository.class);
+                when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(new Prediction("rose",0.9f)));
     }
 
     @After
     public void tearDown() throws Exception {
-        mocks.close();
     }
 
     @Test
@@ -79,12 +77,10 @@ public class AddPlantFragmentTest {
         @Override
         public void onAttach(Context context) {
             super.onAttach(context);
-            this.viewModelFactory = null; // not used
-        }
-        @Override
-        public void onAttach(Context context) {
-            super.onAttach(context);
-            this.viewModelFactory = (modelClass) -> new AddPlantViewModel(new android.app.Application(), identifier, repo);
+            this.viewModelFactory =
+            new PlantDbViewModelFactory(() -> null,
+                    () -> new AddPlantViewModel(new android.app.Application(), identifier, repo),
+                    () -> null);
         }
     }
 }

@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import java.lang.reflect.Method;
 
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.shared_ml.PlantIdentifier;
@@ -61,8 +62,10 @@ public class AddPlantViewModelFullTest {
     }
 
     @Test
-    public void onCleared_closesIdentifier() {
-        vm.onCleared();
+    public void onCleared_closesIdentifier() throws Exception {
+        Method m = AddPlantViewModel.class.getDeclaredMethod("onCleared");
+        m.setAccessible(true);
+        m.invoke(vm);
         verify(identifier).close();
     }
 }
