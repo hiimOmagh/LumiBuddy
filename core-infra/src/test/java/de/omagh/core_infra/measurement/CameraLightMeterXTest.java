@@ -140,11 +140,6 @@ public class CameraLightMeterXTest {
                     }
 
                     @Override
-                    public androidx.camera.core.impl.CameraCaptureResult getCameraCaptureResult() {
-                        return androidx.camera.core.impl.CameraCaptureResult.EmptyCameraCaptureResult.create();
-                    }
-
-                    @Override
                     public void populateExifData(
                             androidx.camera.core.impl.utils.ExifData.Builder exifBuilder) {}
                 };

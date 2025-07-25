@@ -61,6 +61,8 @@ dependencies {
     implementation(libs.timber)
     compileOnly(libs.jspecify)
     testImplementation(libs.junit)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
