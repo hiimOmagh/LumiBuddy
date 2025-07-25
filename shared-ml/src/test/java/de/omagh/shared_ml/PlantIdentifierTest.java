@@ -29,7 +29,7 @@ import org.tensorflow.lite.Interpreter;
  */
 public class PlantIdentifierTest {
     @Mock
-    PlantIdentifier.ModelProvider provider;
+    ModelProvider provider;
 
     private AutoCloseable mocks;
     private Context context;

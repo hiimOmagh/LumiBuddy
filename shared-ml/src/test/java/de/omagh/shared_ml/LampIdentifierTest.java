@@ -29,7 +29,7 @@ import org.tensorflow.lite.Interpreter;
  */
 public class LampIdentifierTest {
     @Mock
-    LampIdentifier.ModelProvider provider;
+    ModelProvider provider;
 
     private AutoCloseable mocks;
     private Context context;
@@ -49,8 +49,7 @@ public class LampIdentifierTest {
     public void identifyLamp_returnsPredictionAboveThreshold() throws Exception {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);
-        try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class,
-                (mock, c) -> when(mock.isCancelled()).thenReturn(false))) {
+        try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
             LampIdentifier id = new LampIdentifier(context, provider, new AppExecutors(), 0.2f);
             Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
             Interpreter interpreter = construction.constructed().get(0);
