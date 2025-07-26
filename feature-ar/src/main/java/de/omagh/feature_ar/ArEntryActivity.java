@@ -99,7 +99,7 @@ public class ArEntryActivity extends AppCompatActivity {
         }
     }
 
-    private boolean checkArSupport() {
+    protected boolean checkArSupport() {
         ArCoreApk.Availability availability = ArCoreApk.getInstance().checkAvailability(this);
         if (!availability.isSupported()) {
             Toast.makeText(this, R.string.device_not_supported, Toast.LENGTH_LONG).show();
@@ -108,7 +108,7 @@ public class ArEntryActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean requestArInstall() {
+    protected boolean requestArInstall() {
         try {
             ArCoreApk.InstallStatus status = ArCoreApk.getInstance().requestInstall(this, true);
             return status != ArCoreApk.InstallStatus.INSTALL_REQUESTED;

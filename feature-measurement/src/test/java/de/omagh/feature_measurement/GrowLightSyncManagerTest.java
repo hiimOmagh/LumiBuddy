@@ -29,7 +29,7 @@ public class GrowLightSyncManagerTest {
         GrowLightApiService api = mock(GrowLightApiService.class);
         Call<java.util.List<GrowLightProfile>> call = mock(Call.class);
         java.util.List<GrowLightProfile> list =
-                Collections.singletonList(new GrowLightProfile("1", "name", "", "", 0f, "", "", ""));
+                Collections.singletonList(new GrowLightProfile("1", "name", "", "", 0f, 0f));
         when(api.getLamps()).thenReturn(call);
         when(call.execute()).thenReturn(Response.success(list));
 

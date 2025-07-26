@@ -73,6 +73,7 @@ public class ArEntryActivityTest {
     public static class TestActivity extends ArEntryActivity {
         static ARGrowthTracker tracker = Mockito.mock(ARGrowthTracker.class);
 
+        // Skip AR checks to allow running on devices without ARCore.
         @Override
         protected boolean checkArSupport() { return true; }
 
