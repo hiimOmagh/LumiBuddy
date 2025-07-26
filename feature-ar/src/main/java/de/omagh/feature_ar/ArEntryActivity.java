@@ -38,10 +38,13 @@ import de.omagh.feature_ar.di.DaggerArComponent;
 import de.omagh.core_domain.util.AppExecutors;
 
 import java.util.function.Consumer;
+import java.io.IOException;
 
 import timber.log.Timber;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Activity displaying an AR scene that places light measurement markers on tapped planes.
@@ -56,6 +59,8 @@ public class ArEntryActivity extends AppCompatActivity {
     DiaryRepository diaryRepository;
 
     private AppExecutors executors;
+
+    private final CompositeDisposable disposables = new CompositeDisposable();
 
     private String plantId;
 
@@ -160,7 +165,7 @@ public class ArEntryActivity extends AppCompatActivity {
                     Node node = new Node();
                     node.setParent(anchorNode);
                     node.setRenderable(renderable);
-                    measurementRepository.observeLux()
+                    Disposable d = measurementRepository.observeLux()
                             .first(0f)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(lux -> {
@@ -179,10 +184,11 @@ public class ArEntryActivity extends AppCompatActivity {
                                     diaryRepository.insert(entry);
                                     Toast.makeText(this, R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
                                 });
-                            });
+                            }, Timber::e);
+                    disposables.add(d);
                 })
                 .exceptionally(t -> {
-                    t.printStackTrace();
+                    Timber.e(t);
                     return null;
                 });
     }
@@ -209,7 +215,9 @@ public class ArEntryActivity extends AppCompatActivity {
         executors.io().execute(() -> {
             try {
                 java.io.File dir = new java.io.File(getFilesDir(), "images");
-                if (!dir.exists()) dir.mkdirs();
+                if (!dir.exists() && !dir.mkdirs()) {
+                    throw new IOException("Failed to create directory " + dir.getAbsolutePath());
+                }
                 java.io.File file = java.io.File.createTempFile("ar_", ".png", dir);
                 try (java.io.FileOutputStream out = new java.io.FileOutputStream(file)) {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -237,6 +245,7 @@ public class ArEntryActivity extends AppCompatActivity {
             growthTracker.cleanup();
             growthTracker = null;
         }
+        disposables.clear();
         super.onDestroy();
     }
 }

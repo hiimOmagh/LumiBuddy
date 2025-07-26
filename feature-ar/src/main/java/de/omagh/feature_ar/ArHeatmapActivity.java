@@ -23,6 +23,8 @@ import de.omagh.core_infra.measurement.CameraLightMeterX;
 import de.omagh.feature_ar.di.DaggerArComponent;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.Disposable;
+import timber.log.Timber;
 
 /**
  * Activity displaying an AR scene with a heatmap overlay of light intensity.
@@ -36,6 +38,7 @@ public class ArHeatmapActivity extends AppCompatActivity {
     private HeatmapOverlayView heatmapView;
     private ARMeasureOverlay arOverlay;
     private CameraLightMeterX cameraMeter;
+    private Disposable luxDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,10 @@ public class ArHeatmapActivity extends AppCompatActivity {
         cameraMeter.analyzeFrameWithGrid(10, 10, new CameraLightMeterX.GridResultCallback() {
             @Override
             public void onResult(float meanR, float meanG, float meanB, float[][] intensity) {
-                measurementRepository.observeLux()
+                if (luxDisposable != null && !luxDisposable.isDisposed()) {
+                    luxDisposable.dispose();
+                }
+                luxDisposable = measurementRepository.observeLux()
                         .first(0f)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(lux -> {
@@ -112,7 +118,7 @@ public class ArHeatmapActivity extends AppCompatActivity {
                             m.lux = lux;
                             m.ppfd = lux; // simplified; conversion handled elsewhere
                             arOverlay.renderOverlay(new android.graphics.Canvas(), m, intensity);
-                        });
+                        }, Timber::e);
             }
 
             @Override
@@ -126,6 +132,8 @@ public class ArHeatmapActivity extends AppCompatActivity {
     protected void onDestroy() {
         if (arOverlay != null) arOverlay.cleanup();
         if (cameraMeter != null) cameraMeter.stopCamera();
-        super.onDestroy();
+        if (luxDisposable != null && !luxDisposable.isDisposed()) {
+            luxDisposable.dispose();
+        }super.onDestroy();
     }
 }

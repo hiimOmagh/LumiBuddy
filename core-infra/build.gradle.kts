@@ -43,7 +43,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    packagingOptions {
+    packaging {
         jniLibs {
             pickFirsts += setOf("**/com/google/flatbuffers/**")
         }
