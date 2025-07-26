@@ -3,9 +3,6 @@ package de.omagh.feature_ar;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -16,14 +13,11 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.ByteArrayInputStream;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
 
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_domain.repository.MeasurementRepository;
-import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_infra.ar.ARGrowthTracker;
 
 /**
@@ -69,26 +63,25 @@ public class ArEntryActivityTest {
     @Test
     public void onDestroy_cleansGrowthTracker() {
         try (ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(a -> {
-                assertNotNull(a.growthTracker);
-            });
+            scenario.onActivity(a -> {});
             scenario.moveToState(androidx.lifecycle.Lifecycle.State.DESTROYED);
-            verify(TestActivity.tracker).cleanup();
+            Mockito.verify(TestActivity.tracker).cleanup();
         }
     }
 
     /** Test activity overriding dependency setup. */
     public static class TestActivity extends ArEntryActivity {
-        static ARGrowthTracker tracker = mock(ARGrowthTracker.class);
+        static ARGrowthTracker tracker = Mockito.mock(ARGrowthTracker.class);
+
         @Override
         protected boolean checkArSupport() { return true; }
+
         @Override
         protected boolean requestArInstall() { return true; }
+
         @Override
-        protected void setupScene() {
-            executors = new AppExecutors();
-            growthTracker = tracker;
+        protected ARGrowthTracker createGrowthTracker(com.google.ar.sceneform.ux.ArFragment fragment) {
+            return tracker;
         }
-        void takeScreenshot(Consumer<Uri> cb) { saveScreenshotAsync(cb); }
     }
 }

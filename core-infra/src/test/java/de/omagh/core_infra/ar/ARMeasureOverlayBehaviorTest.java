@@ -60,13 +60,9 @@ public class ARMeasureOverlayBehaviorTest {
     }
 
     @Test
-    public void init_handlesFailure() {
-        try {
-            doThrow(new RuntimeException("fail"))
-                    .when(sceneView).resume();
-        } catch (Exception e) {
-            throw new AssertionError(e);
-        }
+    public void init_handlesFailure() throws Exception {
+        doThrow(new RuntimeException("fail"))
+                .when(sceneView).resume();
         overlay.init();
         verify(overlayView).setVisibility(android.view.View.VISIBLE);
     }

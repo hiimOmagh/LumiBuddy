@@ -17,8 +17,9 @@ import de.omagh.lumibuddy.R;
 import de.omagh.lumibuddy.LumiBuddyApplication;
 import de.omagh.lumibuddy.di.AppComponent;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.feature_measurement.ui.SettingsHost;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SettingsHost {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,5 +54,10 @@ public class MainActivity extends AppCompatActivity {
             navController.navigate(R.id.plantDetailFragment, args);
         }
 
+    }
+
+    @Override
+    public void onShowPrivacyPolicy() {
+        startActivity(new Intent(this, PrivacyPolicyActivity.class));
     }
 }

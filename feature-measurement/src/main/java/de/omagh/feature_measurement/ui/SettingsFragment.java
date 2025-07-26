@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+import android.content.Context;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +38,24 @@ public class SettingsFragment extends Fragment {
     private android.widget.TextView calibrationInfoText;
     private Spinner lightTypeFactorSpinner;
     private android.widget.TextView lightFactorInfoText;
+    private SettingsHost host;
 
     public SettingsFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(@androidx.annotation.NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof SettingsHost) {
+            host = (SettingsHost) context;
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        host = null;
     }
 
     @Override
@@ -166,9 +182,11 @@ public class SettingsFragment extends Fragment {
                     Toast.LENGTH_SHORT).show();
         });
 
-        privacyPolicyBtn.setOnClickListener(v ->
-                startActivity(new android.content.Intent(requireContext(),
-                        de.omagh.lumibuddy.ui.PrivacyPolicyActivity.class)));
+        privacyPolicyBtn.setOnClickListener(v -> {
+            if (host != null) {
+                host.onShowPrivacyPolicy();
+            }
+        });
         return view;
     }
 

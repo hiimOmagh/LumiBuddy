@@ -127,9 +127,18 @@ public class ArEntryActivity extends AppCompatActivity {
             statusView.setText(R.string.device_not_supported);
             return;
         }
-        growthTracker = new ARCoreGrowthTracker(arFragment);
+        growthTracker = createGrowthTracker(arFragment);
         growthTracker.init();
         arFragment.setOnTapArPlaneListener(this::placeMarker);
+    }
+
+    /**
+     * Factory method used to obtain the {@link ARGrowthTracker} implementation.
+     * Subclasses may override this to provide a mock or alternative
+     * implementation for testing.
+     */
+    protected ARGrowthTracker createGrowthTracker(ArFragment fragment) {
+        return new ARCoreGrowthTracker(fragment);
     }
 
     private void placeMarker(HitResult hitResult, com.google.ar.core.Plane plane, android.view.MotionEvent motionEvent) {
@@ -183,6 +192,13 @@ public class ArEntryActivity extends AppCompatActivity {
         int red = (int) (scaled * 255);
         int blue = 255 - red;
         return Color.argb(200, red, 0, blue);
+    }
+
+    /**
+     * Exposes screenshot functionality for testing.
+     */
+    public void takeScreenshot(Consumer<Uri> callback) {
+        saveScreenshotAsync(callback);
     }
 
     private void saveScreenshotAsync(Consumer<Uri> callback) {
