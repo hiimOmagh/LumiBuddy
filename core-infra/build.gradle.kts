@@ -6,7 +6,7 @@ apply(from = rootProject.file("gradle/packaging-options.gradle"))
 
 android {
     namespace = "de.omagh.core_infra"
-    compileSdk = 35
+    compileSdk = 36
 
     buildFeatures {
         buildConfig = true

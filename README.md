@@ -226,6 +226,18 @@ Gradle requires a configured Android SDK in order to run tasks such as unit test
 lint. Provide the SDK location by adding it to `local.properties` as shown above or set
 the `ANDROID_HOME` environment variable to the same path.
 
+### Git LFS
+
+TensorFlow Lite models are stored using [Git Large File Storage](https://git-lfs.com).
+Install the `git-lfs` package for your platform, then run:
+
+```bash
+git lfs install
+git lfs pull
+```
+
+This downloads the `*.tflite` model files required to build the app.
+
 ### Build & Run
 
 - Build debug APK:

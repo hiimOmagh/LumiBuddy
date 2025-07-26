@@ -6,7 +6,7 @@ apply(from = rootProject.file("gradle/packaging-options.gradle"))
 
 android {
     namespace = "de.omagh.shared_ml"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28
@@ -46,7 +46,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.test.core)
     testImplementation(libs.junit)
-    testImplementation("org.mockito:mockito-core:5.18.0")
+    testImplementation(libs.mockito.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
