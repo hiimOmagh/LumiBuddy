@@ -6,7 +6,7 @@ apply(from = rootProject.file("gradle/packaging-options.gradle"))
 
 android {
     namespace = "de.omagh.feature_plantdb"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28
@@ -57,5 +57,8 @@ dependencies {
     testImplementation(libs.fragment.testing)
     testImplementation(libs.mockito.core)
     androidTestImplementation(libs.ext.junit)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.fragment.testing)
+    androidTestImplementation(libs.mockito.core)
     androidTestImplementation(libs.espresso.core)
 }

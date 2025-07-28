@@ -9,6 +9,8 @@ import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.media.Image;
+
+import androidx.annotation.NonNull;
 import androidx.camera.core.ImageInfo;
 
 import androidx.camera.core.ImageAnalysis;
@@ -105,9 +107,11 @@ public class CameraLightMeterXTest {
             @Override public int getWidth() { return 2; }
             @Override public int getHeight() { return 2; }
             @Override public int getFormat() { return ImageFormat.YUV_420_888; }
+            @NonNull
             @Override public ImageProxy.PlaneProxy[] getPlanes() {
                 ByteBuffer buf = ByteBuffer.allocate(4);
                 PlaneProxy plane = new PlaneProxy() {
+                    @NonNull
                     @Override public ByteBuffer getBuffer() { return buf; }
                     @Override public int getPixelStride() { return 1; }
                     @Override public int getRowStride() { return 2; }
@@ -119,12 +123,15 @@ public class CameraLightMeterXTest {
             @androidx.camera.core.ExperimentalGetImage
             public Image getImage() { return null; }
 
+            @NonNull
             @Override public Rect getCropRect() { return new Rect(); }
 
             @Override public void setCropRect(Rect rect) { }
 
+            @NonNull
             @Override public ImageInfo getImageInfo() {
                 return new ImageInfo() {
+                    @NonNull
                     @Override
                     public androidx.camera.core.impl.TagBundle getTagBundle() {
                         return androidx.camera.core.impl.TagBundle.emptyBundle();
@@ -134,6 +141,7 @@ public class CameraLightMeterXTest {
 
                     @Override public int getRotationDegrees() { return 0; }
 
+                    @NonNull
                     @Override
                     public Matrix getSensorToBufferTransformMatrix() {
                         return new Matrix();
@@ -141,7 +149,7 @@ public class CameraLightMeterXTest {
 
                     @Override
                     public void populateExifData(
-                            androidx.camera.core.impl.utils.ExifData.Builder exifBuilder) {}
+                            @NonNull androidx.camera.core.impl.utils.ExifData.Builder exifBuilder) {}
                 };
             }
         };

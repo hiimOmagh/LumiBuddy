@@ -1,4 +1,4 @@
-package java.de.omagh.lumibuddy.data.db;
+package de.omagh.lumibuddy.data.db;
 
 /**
  * Stub DAO kept only for future Room database migration.

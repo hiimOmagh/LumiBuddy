@@ -21,7 +21,7 @@ public class WateringWorkScheduler {
     }
 
     public void scheduleDaily() {
-        if (!NotificationPermissionHelper.hasPermission(context)) {
+        if (NotificationPermissionHelper.hasPermission(context)) {
             return; // Permission not granted; don't schedule
         }
         PeriodicWorkRequest request = new PeriodicWorkRequest.Builder(

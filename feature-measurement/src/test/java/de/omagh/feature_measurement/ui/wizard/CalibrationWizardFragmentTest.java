@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.fragment.app.testing.FragmentScenario.FragmentAction;
 import androidx.fragment.app.testing.FragmentScenarioKt;
@@ -148,7 +149,7 @@ public class CalibrationWizardFragmentTest {
         }
 
         @Override
-        public void onAttach(Context context) {
+        public void onAttach(@NonNull @NonNull Context context) {
             super.onAttach(context);
             try {
                 java.lang.reflect.Field f = CalibrationWizardFragment.class.getDeclaredField("correctionStore");

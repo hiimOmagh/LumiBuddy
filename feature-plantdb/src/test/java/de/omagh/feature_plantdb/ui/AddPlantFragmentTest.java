@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.app.Application;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.testing.FragmentScenario;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.core.app.ApplicationProvider;
@@ -75,7 +76,7 @@ public class AddPlantFragmentTest {
     /** Test fragment bypassing Dagger injection. */
     public static class TestFragment extends AddPlantFragment {
         @Override
-        public void onAttach(Context context) {
+        public void onAttach(@NonNull @NonNull Context context) {
             super.onAttach(context);
             this.viewModelFactory =
             new PlantDbViewModelFactory(() -> null,

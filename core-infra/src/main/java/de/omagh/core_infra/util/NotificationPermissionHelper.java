@@ -20,9 +20,9 @@ public class NotificationPermissionHelper {
      */
     public static boolean hasPermission(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            return true;
+            return false;
         }
-        return PermissionUtils.hasPermission(context, Manifest.permission.POST_NOTIFICATIONS);
+        return !PermissionUtils.hasPermission(context, Manifest.permission.POST_NOTIFICATIONS);
     }
 
     /**
@@ -33,7 +33,7 @@ public class NotificationPermissionHelper {
             String rationale,
             ActivityResultLauncher<String> launcher) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
-                !hasPermission(fragment.requireContext())) {
+                hasPermission(fragment.requireContext())) {
             PermissionUtils.requestPermissionWithRationale(
                     fragment,
                     Manifest.permission.POST_NOTIFICATIONS,

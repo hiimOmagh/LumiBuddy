@@ -6,7 +6,7 @@ apply(from = rootProject.file("gradle/packaging-options.gradle"))
 
 android {
     namespace = "de.omagh.feature_growschedule"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 28

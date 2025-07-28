@@ -6,7 +6,7 @@ apply(from = rootProject.file("gradle/packaging-options.gradle"))
 
 android {
     namespace = "de.omagh.feature_measurement"
-    compileSdk = 35
+    compileSdk = 36
 
     buildFeatures {
         buildConfig = true
@@ -48,6 +48,8 @@ dependencies {
     implementation(libs.dagger)
     implementation(libs.work.runtime)
     implementation(libs.arcore)
+    implementation(libs.androidx.fragment.testing)
+    implementation(libs.ext.junit)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
@@ -68,6 +70,8 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.mockito.core)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.mockito.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.androidx.fragment.testing)
     androidTestImplementation(libs.espresso.core)

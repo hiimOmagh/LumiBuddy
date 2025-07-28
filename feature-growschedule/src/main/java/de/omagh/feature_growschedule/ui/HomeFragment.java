@@ -2,7 +2,6 @@ package de.omagh.feature_growschedule.ui;
 
 import android.Manifest;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,7 +93,7 @@ public class HomeFragment extends Fragment {
 
         viewModel.getPlants().observe(getViewLifecycleOwner(), plants -> {
             if (!settingsManager.isCareRemindersEnabled()) return;
-            if (!NotificationPermissionHelper.hasPermission(requireContext())) {
+            if (NotificationPermissionHelper.hasPermission(requireContext())) {
                 NotificationPermissionHelper.requestPermissionIfNeeded(
                         this,
                         getString(R.string.notification_permission_rationale),
