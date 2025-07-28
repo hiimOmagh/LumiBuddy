@@ -6,7 +6,6 @@ import static org.mockito.Mockito.*;
 
 import android.app.Activity;
 import android.graphics.ImageFormat;
-import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.media.Image;
 
@@ -140,12 +139,6 @@ public class CameraLightMeterXTest {
                     @Override public long getTimestamp() { return 0; }
 
                     @Override public int getRotationDegrees() { return 0; }
-
-                    @NonNull
-                    @Override
-                    public Matrix getSensorToBufferTransformMatrix() {
-                        return new Matrix();
-                    }
 
                     @Override
                     public void populateExifData(

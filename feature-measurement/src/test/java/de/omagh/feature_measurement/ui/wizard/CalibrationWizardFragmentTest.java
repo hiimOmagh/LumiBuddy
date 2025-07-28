@@ -28,11 +28,12 @@ import org.mockito.MockitoAnnotations;
 
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.plugins.RxJavaPlugins;
+import io.reactivex.rxjava3.android.plugins.RxAndroidPlugins;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_domain.repository.MeasurementRepository;
-import de.omagh.feature_measurement.R;
+import com.google.android.material.R;
 
 /**
  * Instrumented tests for {@link CalibrationWizardFragment} verifying sensor averaging,
@@ -55,7 +56,7 @@ public class CalibrationWizardFragmentTest {
         RxJavaPlugins.setInitComputationSchedulerHandler(s -> Schedulers.trampoline());
         RxJavaPlugins.setInitNewThreadSchedulerHandler(s -> Schedulers.trampoline());
         RxJavaPlugins.setInitSingleSchedulerHandler(s -> Schedulers.trampoline());
-        RxJavaPlugins.setInitMainThreadSchedulerHandler(s -> Schedulers.trampoline());
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler(s -> Schedulers.trampoline());
     }
 
     @After
@@ -76,13 +77,14 @@ public class CalibrationWizardFragmentTest {
         FragmentScenario<TestFragment> scenario = FragmentScenario.launchInContainer(
                 TestFragment.class,
                 null,
-                R.style.Theme_MaterialComponents,
-                (Context) ApplicationProvider.getApplicationContext());
+                R.style.Theme_Material3_DayNight_NoActionBar,
+                ApplicationProvider.getApplicationContext());
         scenario.onFragment(fragment -> {
             fragment.inject(correctionRepository, measurementRepository);
-            Spinner spinner = fragment.getView().findViewById(R.id.lightTypeSpinner);
+            assertNotNull(fragment.getView());
+            Spinner spinner = fragment.getView().findViewById(de.omagh.feature_measurement.R.id.lightTypeSpinner);
             spinner.setSelection(0);
-            Button next = fragment.getView().findViewById(R.id.nextBtn);
+            Button next = fragment.getView().findViewById(de.omagh.feature_measurement.R.id.nextBtn);
             // step 0 -> 1
             next.performClick();
             // start measurement
@@ -103,11 +105,12 @@ public class CalibrationWizardFragmentTest {
         FragmentScenario<TestFragment> scenario = FragmentScenario.launchInContainer(
                 TestFragment.class,
                 null,
-                R.style.Theme_MaterialComponents,
+                R.style.Theme_Material3_DayNight_NoActionBar,
                 (Context) ApplicationProvider.getApplicationContext());
         scenario.onFragment(fragment -> {
             fragment.inject(correctionRepository, measurementRepository);
-            Button next = fragment.getView().findViewById(R.id.nextBtn);
+            assertNotNull(fragment.getView());
+            Button next = fragment.getView().findViewById(de.omagh.feature_measurement.R.id.nextBtn);
             next.performClick(); // step 0->1
             next.performClick(); // fails
         });
@@ -126,11 +129,12 @@ public class CalibrationWizardFragmentTest {
         FragmentScenario<TestFragment> scenario = FragmentScenario.launchInContainer(
                 TestFragment.class,
                 null,
-                R.style.Theme_MaterialComponents,
+                R.style.Theme_Material3_DayNight_NoActionBar,
                 (Context) ApplicationProvider.getApplicationContext());
         scenario.onFragment(fragment -> {
             fragment.inject(correctionRepository, measurementRepository);
-            Button next = fragment.getView().findViewById(R.id.nextBtn);
+            assertNotNull(fragment.getView());
+            Button next = fragment.getView().findViewById(de.omagh.feature_measurement.R.id.nextBtn);
             next.performClick();
             next.performClick();
         });
@@ -149,7 +153,7 @@ public class CalibrationWizardFragmentTest {
         }
 
         @Override
-        public void onAttach(@NonNull @NonNull Context context) {
+        public void onAttach(@NonNull Context context) {
             super.onAttach(context);
             try {
                 java.lang.reflect.Field f = CalibrationWizardFragment.class.getDeclaredField("correctionStore");
