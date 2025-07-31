@@ -7,9 +7,14 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.ImageProcessor;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.image.ops.NormalizeOp;
+import org.tensorflow.lite.support.image.ops.ResizeOp;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.concurrent.ExecutorService;
 
 import timber.log.Timber;
@@ -26,7 +31,7 @@ public class LampIdentifier {
     private final Interpreter interpreter;
     private final ExecutorService executor;
     private final String[] labels = {"Unknown", "Lamp"};
-    private final ByteBuffer inputBuffer;
+    private final ImageProcessor processor;
     private boolean closed = false;
 
     public LampIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
@@ -45,8 +50,10 @@ public class LampIdentifier {
         this.executor = executors.single();
         this.threshold = threshold;
         int inputSize = 224;
-        inputBuffer = ByteBuffer.allocateDirect(inputSize * inputSize * 3 * 4);
-        inputBuffer.order(ByteOrder.nativeOrder());
+        processor = new ImageProcessor.Builder()
+                .add(new ResizeOp(inputSize, inputSize, ResizeOp.ResizeMethod.BILINEAR))
+                .add(new NormalizeOp(0f, 255f))
+                .build();
     }
 
     /** Release model resources. */
@@ -57,19 +64,18 @@ public class LampIdentifier {
     }
 
     private Prediction run(Bitmap bitmap) {
-        int inputSize = 224;
-        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, inputSize, inputSize, true);
-        inputBuffer.rewind();
-        int[] pixels = new int[inputSize * inputSize];
-        scaled.getPixels(pixels, 0, inputSize, 0, 0, inputSize, inputSize);
-        for (int val : pixels) {
-            inputBuffer.putFloat(((val >> 16) & 0xFF) / 255f);
-            inputBuffer.putFloat(((val >> 8) & 0xFF) / 255f);
-            inputBuffer.putFloat((val & 0xFF) / 255f);
-        }
+        TensorImage image = new TensorImage(DataType.FLOAT32);
+        image.load(bitmap);
+        image = processor.process(image);
+
+        TensorBuffer output = TensorBuffer.createFixedSize(new int[] {1, labels.length}, DataType.FLOAT32);
+
         float[][] out = new float[1][labels.length];
         try {
-            interpreter.run(inputBuffer, out);
+            interpreter.run(image.getBuffer(), output.getBuffer());
+            output.getBuffer().rewind();
+            float[] arr = output.getFloatArray();
+            System.arraycopy(arr, 0, out[0], 0, labels.length);
         } catch (Exception e) {
             Timber.e(e, "Inference failed");
             return new Prediction(null, 0f);
