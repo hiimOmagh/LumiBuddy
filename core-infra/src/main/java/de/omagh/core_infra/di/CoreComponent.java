@@ -1,11 +1,5 @@
 package de.omagh.core_infra.di;
 
-/**
- * Root component exposing singletons used across all features. Other Dagger
- * components depend on this component to access repositories, managers and
- * executors.
- */
-
 import android.app.Application;
 
 import dagger.BindsInstance;
@@ -30,7 +24,13 @@ import de.omagh.core_infra.sync.PlantSyncManager;
 import de.omagh.core_infra.sync.DiarySyncManager;
 import de.omagh.core_infra.di.Remote;
 import de.omagh.core_infra.environment.SunlightEstimator;
+import de.omagh.core_infra.calibration.CalibrationRepository;
 
+/**
+ * Root component exposing singletons used across all features. Other Dagger
+ * components depend on this component to access repositories, managers and
+ * executors.
+ */
 @Component(modules = {
         NetworkModule.class,
         DataModule.class,
@@ -56,6 +56,8 @@ public interface CoreComponent {
     CalibrationProfilesManager calibrationProfilesManager();
 
     UserProfileManager userProfileManager();
+
+    CalibrationRepository calibrationRepository();
 
     UserProfileSyncManager userProfileSyncManager();
 

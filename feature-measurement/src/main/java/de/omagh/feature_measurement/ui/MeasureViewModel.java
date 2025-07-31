@@ -20,6 +20,7 @@ import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.environment.SunlightEstimator;
 import de.omagh.core_infra.user.CalibrationProfilesManager;
 import de.omagh.core_infra.user.SettingsManager;
+import de.omagh.core_infra.calibration.CalibrationRepository;
 import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.model.DiaryEntry;
@@ -35,8 +36,7 @@ public class MeasureViewModel extends AndroidViewModel {
     private final MutableLiveData<Float> ppfdLiveData = new MutableLiveData<>(0f);
     private final MutableLiveData<Integer> hoursLiveData = new MutableLiveData<>(24);
     private final MutableLiveData<Float> dliLiveData = new MutableLiveData<>(0f);
-    private final MutableLiveData<LampType> lampTypeLiveData = new MutableLiveData<>(LampType.SUNLIGHT);
-    private final MutableLiveData<Float> calibrationFactorLiveData = new MutableLiveData<>(CalibrationManager.DEFAULT_FACTOR);
+    private final MutableLiveData<Float> calibrationFactorLiveData;
     @Inject
     CalibrationProfilesManager profileManager;
     @Inject
@@ -53,6 +53,8 @@ public class MeasureViewModel extends AndroidViewModel {
     DiaryRepository diaryRepository;
     @Inject
     LightCorrectionRepository lightCorrectionStore;
+    @Inject
+    CalibrationRepository calibrationRepository;
     private MutableLiveData<String> lampIdLiveData;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
@@ -67,7 +69,8 @@ public class MeasureViewModel extends AndroidViewModel {
                             CalibrationManager calibrationManager,
                             SunlightEstimator sunlightEstimator,
                             DiaryRepository diaryRepository,
-                            LightCorrectionRepository lightCorrectionStore) {
+                            LightCorrectionRepository lightCorrectionStore,
+                            CalibrationRepository calibrationRepository) {
         super(application);
         this.profileManager = profileManager;
         this.growLightManager = growLightManager;
@@ -77,6 +80,8 @@ public class MeasureViewModel extends AndroidViewModel {
         this.sunlightEstimator = sunlightEstimator;
         this.diaryRepository = diaryRepository;
         this.lightCorrectionStore = lightCorrectionStore;
+        this.calibrationRepository = calibrationRepository;
+        this.calibrationFactorLiveData = new MutableLiveData<>(calibrationRepository.getDefaultCalibrationFactor());
 
         int hours = settingsManager.getLightDuration();
         hoursLiveData.setValue(hours);
@@ -181,7 +186,7 @@ public class MeasureViewModel extends AndroidViewModel {
     }
 
     private void updatePPFD(float lux, String lampId) {
-        float lampFactor = CalibrationManager.DEFAULT_FACTOR;
+        float lampFactor = calibrationRepository.getDefaultCalibrationFactor();
         LampProduct def = growLightManager.getById(lampId);
         if (def != null) {
             lampFactor = def.calibrationFactor;
@@ -259,21 +264,5 @@ public class MeasureViewModel extends AndroidViewModel {
                 "light"
         );
         diaryRepository.insert(entry);
-    }
-
-    // Enum for lamp types and their lux-to-PPFD factors
-    public enum LampType {
-        SUNLIGHT(0.0185f),
-        WHITE_LED(0.019f),
-        WARM_LED(0.021f),
-        BLURPLE_LED(0.045f),
-        HPS(0.014f);
-
-        public final float luxToPPFD;
-
-
-        LampType(float factor) {
-            this.luxToPPFD = factor;
-        }
     }
 }

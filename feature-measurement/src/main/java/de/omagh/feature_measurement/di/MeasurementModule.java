@@ -1,11 +1,5 @@
 package de.omagh.feature_measurement.di;
 
-/**
- * Dagger module for the Measurement feature. Provides use cases and helpers
- * needed by {@link de.omagh.feature_measurement.ui.MeasureFragment} and
- * related view models.
- */
-
 import android.app.Application;
 
 import dagger.Module;
@@ -19,8 +13,15 @@ import de.omagh.feature_measurement.ui.MeasureViewModel;
 import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
 
+import de.omagh.core_infra.calibration.CalibrationRepository;
+
 import javax.inject.Provider;
 
+/**
+ * Dagger module for the Measurement feature. Provides use cases and helpers
+ * needed by {@link de.omagh.feature_measurement.ui.MeasureFragment} and
+ * related view models.
+ */
 @Module
 public class MeasurementModule {
     @Provides
@@ -39,9 +40,9 @@ public class MeasurementModule {
     }
 
     @Provides
-    static LampIdentifier provideLampIdentifier(Application app) {
+    static LampIdentifier provideLampIdentifier(Application app, CalibrationRepository repo) {
         AssetModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
-        return new LampIdentifier(app.getApplicationContext(), provider, "lamp_labels.txt", 0.7f);
+        return new LampIdentifier(app.getApplicationContext(), provider, "lamp_labels.txt", repo.getMlThreshold());
     }
 
     @Provides

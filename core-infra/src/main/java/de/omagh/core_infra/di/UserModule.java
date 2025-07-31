@@ -10,6 +10,7 @@ import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.user.UserProfileManager;
 import de.omagh.core_infra.user.UserProfileSyncManager;
 import de.omagh.core_infra.firebase.FirebaseManager;
+import de.omagh.core_infra.calibration.CalibrationRepository;
 
 /**
  * Provides user/profile related managers.
@@ -39,5 +40,10 @@ public class UserModule {
     @Provides
     FirebaseManager provideFirebaseManager() {
         return new FirebaseManager();
+    }
+
+    @Provides
+    CalibrationRepository provideCalibrationRepository(Application app) {
+        return new CalibrationRepository(app.getApplicationContext());
     }
 }
