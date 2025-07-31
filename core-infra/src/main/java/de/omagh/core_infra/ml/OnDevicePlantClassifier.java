@@ -5,9 +5,10 @@ import android.graphics.Bitmap;
 
 import org.tensorflow.lite.Interpreter;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import de.omagh.shared_ml.AssetModelProvider;
 
 /**
  * Very small on-device classifier using a bundled TFLite model.
@@ -20,11 +21,9 @@ public class OnDevicePlantClassifier implements PlantClassifier {
 
     public OnDevicePlantClassifier(Context context) {
         try {
-            InputStream is = context.getAssets().open("plant_classifier.tflite");
-            byte[] model = new byte[is.available()];
-            int r = is.read(model);
-            is.close();
-            interpreter = new Interpreter(ByteBuffer.wrap(model));
+            AssetModelProvider provider = new AssetModelProvider("plant_classifier.tflite");
+            ByteBuffer model = provider.loadModel(context);
+            interpreter = new Interpreter(model);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

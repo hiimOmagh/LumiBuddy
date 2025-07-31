@@ -66,6 +66,7 @@ public class AddPlantFragmentTest {
                 java.lang.reflect.Field pf = AddPlantFragment.class.getDeclaredField("progressDialog");
                 pf.setAccessible(true);
                 Object dlg = pf.get(f);
+                assertNotNull(dlg);
                 assertNull(((LoadingDialogFragment) dlg).getDialog());
             } catch (Exception e) {
                 throw new RuntimeException(e);
