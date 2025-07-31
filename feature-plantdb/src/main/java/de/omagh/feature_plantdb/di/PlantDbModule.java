@@ -38,7 +38,7 @@ public class PlantDbModule {
     @Provides
     static PlantIdentifier providePlantIdentifier(Application app, AppExecutors executors) {
         AssetModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
-        return new PlantIdentifier(app.getApplicationContext(), provider, executors);
+        return new PlantIdentifier(app.getApplicationContext(), provider, executors, "plant_labels.txt", 0.7f);
     }
 
     @Provides

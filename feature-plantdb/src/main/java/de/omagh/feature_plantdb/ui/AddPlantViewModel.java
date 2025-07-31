@@ -40,7 +40,7 @@ public class AddPlantViewModel extends AndroidViewModel {
         return identificationResult;
     }
 
-    public LiveData<Prediction> identifyPlant(Bitmap bitmap) {
+    public LiveData<java.util.List<Prediction>> identifyPlant(Bitmap bitmap) {
         return plantIdentifier.identifyPlant(bitmap);
     }
 
@@ -51,17 +51,18 @@ public class AddPlantViewModel extends AndroidViewModel {
      */
     public LiveData<PlantIdSuggestion> identifyPlantWithApi(Bitmap bitmap) {
         identificationResult.setValue(null);
-        LiveData<Prediction> local = plantIdentifier.identifyPlant(bitmap);
+        LiveData<java.util.List<Prediction>> local = plantIdentifier.identifyPlant(bitmap);
         identificationResult.addSource(local, prediction -> {
             identificationResult.removeSource(local);
-            if (prediction == null || prediction.getLabel() == null) {
+            Prediction top = (prediction == null || prediction.isEmpty()) ? null : prediction.get(0);
+            if (top == null || top.getConfidence() < plantIdentifier.getThreshold()) {
                 LiveData<PlantIdSuggestion> remote = plantIdRepository.identifyPlant(bitmap);
                 identificationResult.addSource(remote, suggestion -> {
                     identificationResult.postValue(suggestion);
                     identificationResult.removeSource(remote);
                 });
             } else {
-                identificationResult.postValue(new PlantIdSuggestion(prediction.getLabel(), prediction.getLabel()));
+                identificationResult.postValue(new PlantIdSuggestion(top.getLabel(), top.getLabel()));
 
             }
         });

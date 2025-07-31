@@ -50,7 +50,7 @@ public class PlantIdentifierTest {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);
         try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
-            PlantIdentifier id = new PlantIdentifier(context, provider, new AppExecutors(), 0.2f);
+            PlantIdentifier id = new PlantIdentifier(context, provider, new AppExecutors(), "plant_labels.txt", 0.2f);
             Interpreter interp = construction.constructed().get(0);
             doAnswer(inv -> {
                 float[][] out = (float[][]) inv.getArguments()[1];
@@ -59,7 +59,7 @@ public class PlantIdentifierTest {
             }).when(interp).run(any(), any());
             CountDownLatch latch = new CountDownLatch(1);
             id.identifyPlant(Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
-                assertEquals("Plant", p.getLabel());
+                assertEquals("Plant", p.get(0).getLabel());
                 latch.countDown();
             });
             assertTrue(latch.await(1, TimeUnit.SECONDS));

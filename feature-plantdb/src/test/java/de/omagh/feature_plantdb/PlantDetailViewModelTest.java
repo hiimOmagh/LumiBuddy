@@ -46,7 +46,8 @@ public class PlantDetailViewModelTest {
         Application app = ApplicationProvider.getApplicationContext();
         Mockito.when(infoRepo.searchSpecies(Mockito.anyString())).thenReturn(new MutableLiveData<>(Collections.emptyList()));
         Mockito.when(infoRepo.getCareProfile(Mockito.anyString())).thenReturn(new MutableLiveData<>(Collections.emptyList()));
-        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new Prediction("id", 0.9f)));
+        java.util.List<Prediction> list = java.util.Collections.singletonList(new Prediction("id", 0.9f));
+        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(list));
         Mockito.when(idRepo.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new PlantIdSuggestion("c", "s")));
         vm = new PlantDetailViewModel(app, infoRepo, repo, identifier, idRepo);
     }
@@ -81,7 +82,7 @@ public class PlantDetailViewModelTest {
     @Test
     public void identifyPlantWithApi_usesRepositoryWhenUnknown() {
         android.graphics.Bitmap bmp = android.graphics.Bitmap.createBitmap(1, 1, android.graphics.Bitmap.Config.ARGB_8888);
-        MutableLiveData<Prediction> local = new MutableLiveData<>(new Prediction(null, 0.1f));
+        MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction(null, 0.1f)));
         Mockito.when(identifier.identifyPlant(bmp)).thenReturn(local);
         MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("rose", "rosa"));
         Mockito.when(idRepo.identifyPlant(bmp)).thenReturn(remote);

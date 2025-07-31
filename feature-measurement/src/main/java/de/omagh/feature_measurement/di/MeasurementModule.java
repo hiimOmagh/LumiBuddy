@@ -42,7 +42,7 @@ public class MeasurementModule {
     @Provides
     static LampIdentifier provideLampIdentifier(Application app, AppExecutors executors) {
         AssetModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
-        return new LampIdentifier(app.getApplicationContext(), provider, executors);
+        return new LampIdentifier(app.getApplicationContext(), provider, executors, "lamp_labels.txt", 0.7f);
     }
 
     @Provides

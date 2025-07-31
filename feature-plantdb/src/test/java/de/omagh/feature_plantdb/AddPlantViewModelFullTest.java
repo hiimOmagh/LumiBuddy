@@ -36,14 +36,14 @@ public class AddPlantViewModelFullTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
-        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(new Prediction("rose", 0.9f)));
+        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f))));
         vm = new AddPlantViewModel(app, identifier, repository);
     }
 
     @Test
     public void identifyPlantWithApi_usesLocalResult_whenHighConfidence() {
         Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
-        MutableLiveData<Prediction> local = new MutableLiveData<>(new Prediction("rose", 0.9f));
+        MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f)));
         when(identifier.identifyPlant(bmp)).thenReturn(local);
         vm.identifyPlantWithApi(bmp);
         assertEquals("rose", vm.getIdentificationResult().getValue().getCommonName());
@@ -53,7 +53,7 @@ public class AddPlantViewModelFullTest {
     @Test
     public void identifyPlantWithApi_fallsBackToApi_whenUnknown() {
         Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
-        MutableLiveData<Prediction> local = new MutableLiveData<>(new Prediction(null, 0.1f));
+        MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction(null, 0.1f)));
         when(identifier.identifyPlant(bmp)).thenReturn(local);
         MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("c","s"));
         when(repository.identifyPlant(bmp)).thenReturn(remote);

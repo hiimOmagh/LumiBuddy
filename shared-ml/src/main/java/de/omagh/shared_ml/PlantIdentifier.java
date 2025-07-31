@@ -14,7 +14,12 @@ import org.tensorflow.lite.support.image.ops.NormalizeOp;
 import org.tensorflow.lite.support.image.ops.ResizeOp;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.IntStream;
 import java.util.concurrent.ExecutorService;
 
 import timber.log.Timber;
@@ -31,15 +36,36 @@ public class PlantIdentifier {
 
     private final Interpreter interpreter;
     private final ExecutorService executor;
-    private final String[] labels = {"Unknown", "Plant"};
+    private final String[] labels;
     private final ImageProcessor processor;
     private boolean closed = false;
 
+    private String[] loadLabels(Context context, String assetPath) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(context.getAssets().open(assetPath)))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Failed to load labels");
+            return new String[]{"Unknown"};
+        }
+        return lines.toArray(new String[0]);
+    }
+
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
-        this(context, provider, executors, DEFAULT_THRESHOLD);
+        this(context, provider, executors, "plant_labels.txt", DEFAULT_THRESHOLD);
     }
 
     public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors, float threshold) {
+        this(context, provider, executors, "plant_labels.txt", threshold);
+    }
+
+    public PlantIdentifier(Context context, ModelProvider provider,
+                           AppExecutors executors, String labelAsset,
+                           float threshold) {
         ByteBuffer model;
         try {
             model = provider.loadModel(context);
@@ -50,6 +76,7 @@ public class PlantIdentifier {
         interpreter = new Interpreter(model);
         this.executor = executors.single();
         this.threshold = threshold;
+        this.labels = loadLabels(context, labelAsset);
         int inputSize = 224;
         processor = new ImageProcessor.Builder()
                 .add(new ResizeOp(inputSize, inputSize, ResizeOp.ResizeMethod.BILINEAR))
@@ -64,7 +91,7 @@ public class PlantIdentifier {
         executor.shutdown();
     }
 
-    private Prediction run(Bitmap bitmap) {
+    private List<Prediction> run(Bitmap bitmap) {
         TensorImage image = new TensorImage(DataType.FLOAT32);
         image.load(bitmap);
         image = processor.process(image);
@@ -79,42 +106,44 @@ public class PlantIdentifier {
             System.arraycopy(arr, 0, out[0], 0, labels.length);
         } catch (Exception e) {
             Timber.e(e, "Inference failed");
-            return new Prediction(null, 0f);
+            return null;
         }
-        int best = 0;
-        float bestScore = -1f;
-        for (int i = 0; i < labels.length; i++) {
-            if (out[0][i] > bestScore) {
-                bestScore = out[0][i];
-                best = i;
-            }
+        int[] idx = java.util.stream.IntStream.range(0, labels.length)
+                .boxed()
+                .sorted((a,b) -> Float.compare(out[0][b], out[0][a]))
+                .mapToInt(Integer::intValue)
+                .toArray();
+        int topK = Math.min(3, labels.length);
+        List<Prediction> preds = new ArrayList<>(topK);
+        for (int i = 0; i < topK; i++) {
+            preds.add(new Prediction(labels[idx[i]], out[0][idx[i]]));
         }
-        return new Prediction(labels[best], bestScore);
+        return preds;
     }
 
     /**
      * Identify the plant in the given image asynchronously.
      */
-    public LiveData<Prediction> identifyPlant(Bitmap bitmap) {
-        MutableLiveData<Prediction> result = new MutableLiveData<>();
+    public LiveData<List<Prediction>> identifyPlant(Bitmap bitmap) {
+        MutableLiveData<List<Prediction>> result = new MutableLiveData<>();
         executor.execute(() -> {
             if (closed) {
                 result.postValue(null);
                 return;
             }
-            Prediction pred = run(bitmap);
-            if (pred.getLabel() == null) {
+            List<Prediction> preds = run(bitmap);
+            if (preds == null) {
                 Timber.e("Plant identifier returned null label");
                 result.postValue(null);
                 return;
             }
-            if (pred.getConfidence() < threshold) {
-                result.postValue(new Prediction(null, pred.getConfidence()));
-            } else {
-                result.postValue(pred);
-            }
+            result.postValue(preds);
         });
         return result;
+    }
+
+    public float getThreshold() {
+        return threshold;
     }
 
     public static class Prediction {

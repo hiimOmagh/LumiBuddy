@@ -112,17 +112,18 @@ public class PlantDetailViewModel extends AndroidViewModel {
 
     public LiveData<PlantIdSuggestion> identifyPlantWithApi(android.graphics.Bitmap bitmap) {
         identificationResult.setValue(null);
-        LiveData<Prediction> local = plantIdentifier.identifyPlant(bitmap);
+        LiveData<java.util.List<Prediction>> local = plantIdentifier.identifyPlant(bitmap);
         identificationResult.addSource(local, prediction -> {
             identificationResult.removeSource(local);
-            if (prediction == null || prediction.getLabel() == null) {
+            Prediction top = (prediction == null || prediction.isEmpty()) ? null : prediction.get(0);
+            if (top == null || top.getConfidence() < plantIdentifier.getThreshold()) {
                 LiveData<PlantIdSuggestion> remote = plantIdRepository.identifyPlant(bitmap);
                 identificationResult.addSource(remote, suggestion -> {
                     identificationResult.postValue(suggestion);
                     identificationResult.removeSource(remote);
                 });
             } else {
-                identificationResult.postValue(new PlantIdSuggestion(prediction.getLabel(), prediction.getLabel()));
+                identificationResult.postValue(new PlantIdSuggestion(top.getLabel(), top.getLabel()));
             }
         });
         return identificationResult;

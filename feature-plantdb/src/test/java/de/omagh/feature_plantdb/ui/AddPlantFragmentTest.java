@@ -47,7 +47,7 @@ public class AddPlantFragmentTest {
     public void setup() {
         identifier = mock(PlantIdentifier.class);
         repo = mock(PlantIdRepository.class);
-                when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(new Prediction("rose",0.9f)));
+        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose",0.9f))));
     }
 
     @After

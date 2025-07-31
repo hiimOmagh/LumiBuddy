@@ -14,7 +14,7 @@ The model is supplied by a `ModelProvider` which abstracts where the
 ```java
 ModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
 PlantIdentifier identifier = new PlantIdentifier(context, provider, executors);
-LiveData<PlantIdentifier.Prediction> result = identifier.identifyPlant(bitmap);
+LiveData<java.util.List<PlantIdentifier.Prediction>> result = identifier.identifyPlant(bitmap);
 ```
 
 Any other `ModelProvider` implementation can be supplied, e.g. one that
@@ -31,7 +31,7 @@ TensorFlow Lite model, loaded via a `ModelProvider`. The default provider loads
 ```java
 ModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
 LampIdentifier identifier = new LampIdentifier(context, provider, executors);
-LiveData<LampIdentifier.Prediction> result = identifier.identifyLamp(bitmap);
+LiveData<java.util.List<LampIdentifier.Prediction>> result = identifier.identifyLamp(bitmap);
 ```
 
 Results return a label only when the confidence exceeds the built‑in threshold. A cloud fallback
