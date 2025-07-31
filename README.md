@@ -348,12 +348,10 @@ Default lux→PPFD conversion factors used by LumiBuddy:
 ## ⚠️ Stub / Demo Code
 
 Several classes in this repository are intentionally minimal to keep the demo
-project compiling. Examples include
-`DiffuserGuide`, `ExportUtils`, `NetworkUtils`, `DateUtils`, `MeasurementDao`,
-`UserDao`, `UserProfile`, `NotificationEvent`, `SpectrumEstimate`, and the
-various *Basic* classifiers under `core-infra/ml`. They can be removed or
-
-replaced with real implementations as features mature.
+project compiling. Examples include `ExportUtils`, `NetworkUtils`,
+`DateUtils` and the various *Basic* classifiers under `core-infra/ml`.
+They can be removed or replaced with real implementations as features
+mature.
 
 ---
 

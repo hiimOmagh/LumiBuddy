@@ -14,17 +14,6 @@ local.properties
 app/bin/default/AndroidManifest.xml
 app/bin/default/assets/grow_lights.json
 app/bin/default/java/de/omagh/lumibuddy/LumiBuddyApplication.class
-app/bin/default/java/de/omagh/lumibuddy/data/db/MeasurementDao.class
-app/bin/default/java/de/omagh/lumibuddy/data/db/UserDao.class
-app/bin/default/java/de/omagh/lumibuddy/data/model/NotificationEvent.class
-app/bin/default/java/de/omagh/lumibuddy/data/model/PlantLogEntry.class
-app/bin/default/java/de/omagh/lumibuddy/data/model/SpectrumEstimate.class
-app/bin/default/java/de/omagh/lumibuddy/data/model/UserProfile.class
-app/bin/default/java/de/omagh/lumibuddy/di/AppComponent.class
-app/bin/default/java/de/omagh/lumibuddy/di/AppComponent$Factory.class
-app/bin/default/java/de/omagh/lumibuddy/feature_diary/AgendaManager.class
-app/bin/default/java/de/omagh/lumibuddy/feature_diary/PlantLogManager.class
-app/bin/default/java/de/omagh/lumibuddy/feature_plantdb/PlantIdentifier.class
 app/bin/default/java/de/omagh/lumibuddy/ui/MainActivity.class
 app/bin/default/java/de/omagh/lumibuddy/ui/OnboardingActivity.class
 app/bin/default/java/de/omagh/lumibuddy/ui/PrivacyPolicyActivity.class
