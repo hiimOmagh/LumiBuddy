@@ -1,11 +1,5 @@
 package de.omagh.feature_plantdb.di;
 
-/**
- * Module that provides ML and repository classes for the Plant database feature.
- * Used by {@link PlantDbComponent} and depends on core infrastructure for
- * executors and application context.
- */
-
 import android.app.Application;
 
 import dagger.Module;
@@ -23,6 +17,11 @@ import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
 
 import javax.inject.Provider;
 
+/**
+ * Module that provides ML and repository classes for the Plant database feature.
+ * Used by {@link PlantDbComponent} and depends on core infrastructure for
+ * executors and application context.
+ * **/
 @Module
 public class PlantDbModule {
     @Provides
@@ -36,9 +35,9 @@ public class PlantDbModule {
     }
 
     @Provides
-    static PlantIdentifier providePlantIdentifier(Application app, AppExecutors executors) {
+    static PlantIdentifier providePlantIdentifier(Application app) {
         AssetModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
-        return new PlantIdentifier(app.getApplicationContext(), provider, executors, "plant_labels.txt", 0.7f);
+        return new PlantIdentifier(app.getApplicationContext(), provider, "plant_labels.txt", 0.7f);
     }
 
     @Provides

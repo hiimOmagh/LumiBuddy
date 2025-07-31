@@ -16,15 +16,16 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import timber.log.Timber;
 
-import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.shared_ml.ModelProvider;
 
 /**
@@ -36,6 +37,7 @@ public class PlantIdentifier {
 
     private final Interpreter interpreter;
     private final ExecutorService executor;
+    private final boolean ownsExecutor;
     private final String[] labels;
     private final ImageProcessor processor;
     private boolean closed = false;
@@ -43,7 +45,7 @@ public class PlantIdentifier {
     private String[] loadLabels(Context context, String assetPath) {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(context.getAssets().open(assetPath)))) {
+                new InputStreamReader(context.getAssets().open(assetPath), StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 lines.add(line);
@@ -55,17 +57,32 @@ public class PlantIdentifier {
         return lines.toArray(new String[0]);
     }
 
-    public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors) {
-        this(context, provider, executors, "plant_labels.txt", DEFAULT_THRESHOLD);
+    public PlantIdentifier(Context context, ModelProvider provider) {
+        this(context, provider, "plant_labels.txt", DEFAULT_THRESHOLD);
     }
 
-    public PlantIdentifier(Context context, ModelProvider provider, AppExecutors executors, float threshold) {
-        this(context, provider, executors, "plant_labels.txt", threshold);
+    public PlantIdentifier(Context context, ModelProvider provider, float threshold) {
+        this(context, provider, "plant_labels.txt", threshold);
     }
 
     public PlantIdentifier(Context context, ModelProvider provider,
-                           AppExecutors executors, String labelAsset,
+                           String labelAsset,
                            float threshold) {
+        this(context, provider, Executors.newSingleThreadExecutor(), labelAsset, threshold, true);
+    }
+
+    public PlantIdentifier(Context context, ModelProvider provider,
+                           ExecutorService executor,
+                           String labelAsset,
+                           float threshold) {
+        this(context, provider, executor, labelAsset, threshold, false);
+    }
+
+    private PlantIdentifier(Context context, ModelProvider provider,
+                            ExecutorService executor,
+                            String labelAsset,
+                            float threshold,
+                            boolean ownsExecutor) {
         ByteBuffer model;
         try {
             model = provider.loadModel(context);
@@ -74,7 +91,8 @@ public class PlantIdentifier {
             throw new IllegalStateException("ML model unavailable", e);
         }
         interpreter = new Interpreter(model);
-        this.executor = executors.single();
+        this.executor = executor;
+        this.ownsExecutor = ownsExecutor;
         this.threshold = threshold;
         this.labels = loadLabels(context, labelAsset);
         int inputSize = 224;
@@ -88,7 +106,9 @@ public class PlantIdentifier {
     public void close() {
         closed = true;
         interpreter.close();
-        executor.shutdown();
+        if (ownsExecutor) {
+            executor.shutdown();
+        }
     }
 
     private List<Prediction> run(Bitmap bitmap) {

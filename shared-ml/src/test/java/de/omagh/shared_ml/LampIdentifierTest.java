@@ -20,8 +20,6 @@ import java.nio.ByteBuffer;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import de.omagh.core_domain.util.AppExecutors;
-
 import org.tensorflow.lite.Interpreter;
 
 /**
@@ -50,7 +48,7 @@ public class LampIdentifierTest {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);
         try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
-            LampIdentifier id = new LampIdentifier(context, provider, new AppExecutors(), 0.2f);
+            LampIdentifier id = new LampIdentifier(context, provider, 0.2f);
             Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
             Interpreter interpreter = construction.constructed().get(0);
             doAnswer(inv -> {
@@ -73,7 +71,7 @@ public class LampIdentifierTest {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);
         try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
-            LampIdentifier id = new LampIdentifier(context, provider, new AppExecutors());
+            LampIdentifier id = new LampIdentifier(context, provider);
             Interpreter interp = construction.constructed().get(0);
             id.close();
             verify(interp).close();

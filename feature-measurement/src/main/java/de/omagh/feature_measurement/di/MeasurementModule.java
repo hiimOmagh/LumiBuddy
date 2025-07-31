@@ -18,7 +18,6 @@ import de.omagh.feature_measurement.ui.MeasureViewModelFactory;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
 import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
-import de.omagh.core_domain.util.AppExecutors;
 
 import javax.inject.Provider;
 
@@ -40,9 +39,9 @@ public class MeasurementModule {
     }
 
     @Provides
-    static LampIdentifier provideLampIdentifier(Application app, AppExecutors executors) {
+    static LampIdentifier provideLampIdentifier(Application app) {
         AssetModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
-        return new LampIdentifier(app.getApplicationContext(), provider, executors, "lamp_labels.txt", 0.7f);
+        return new LampIdentifier(app.getApplicationContext(), provider, "lamp_labels.txt", 0.7f);
     }
 
     @Provides
