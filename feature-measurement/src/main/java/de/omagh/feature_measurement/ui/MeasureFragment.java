@@ -35,12 +35,10 @@ import de.omagh.core_infra.measurement.CameraLightMeterX;
 import de.omagh.core_infra.ar.ARMeasureOverlay;
 import de.omagh.core_infra.ar.HeatmapOverlayView;
 import de.omagh.feature_measurement.R;
-import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.core_infra.ml.LampTypeClassifier;
 import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
-import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.core_infra.util.OnSwipeTouchListener;
 import de.omagh.core_infra.util.PermissionUtils;
 import timber.log.Timber;
@@ -59,7 +57,6 @@ public class MeasureFragment extends Fragment {
     private ViewFlipper measureFlipper;
     private View dliWidget;
     private java.util.List<LampProduct> lampList;
-    private SettingsManager settingsManager;
     // DLI widget controls
     private Button preset12h;
     private Button preset18h;
@@ -99,17 +96,16 @@ public class MeasureFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
-        settingsManager = new SettingsManager(requireContext());
-        enableAROverlay = settingsManager.isArMeasureOverlayEnabled();
-        if (!settingsManager.isMlFeaturesEnabled()) {
+        mViewModel = new ViewModelProvider(this, viewModelFactory).get(MeasureViewModel.class);
+        enableAROverlay = mViewModel.isArOverlayEnabled();
+        if (!mViewModel.isMlFeaturesEnabled()) {
             lampIdentifier = null;
         }
 
         // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);
         calibrationFactorText = view.findViewById(R.id.calibrationFactorText);
-        GrowLightProfileManager lampManager = new GrowLightProfileManager(requireContext());
-        lampList = lampManager.getAllProfiles();
+        lampList = mViewModel.getLampProfiles();
 
         android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -117,7 +113,7 @@ public class MeasureFragment extends Fragment {
             adapter.add(p.name);
         }
         lampTypeSpinner.setAdapter(adapter);
-        String activeId = lampManager.getActiveLampProfile().id;
+        String activeId = mViewModel.getLampProfileId().getValue();
         for (int i = 0; i < lampList.size(); i++) {
             if (lampList.get(i).id.equalsIgnoreCase(activeId)) {
                 lampTypeSpinner.setSelection(i);
@@ -128,7 +124,7 @@ public class MeasureFragment extends Fragment {
         dliWidget = view.findViewById(R.id.dliWidget);
 
         // Default displayed metric based on user preference
-        String prefUnit = settingsManager.getPreferredUnit();
+        String prefUnit = mViewModel.getPreferredUnit();
         if ("PPFD".equalsIgnoreCase(prefUnit)) {
             measureFlipper.setDisplayedChild(1);
         } else if ("DLI".equalsIgnoreCase(prefUnit)) {
@@ -175,7 +171,7 @@ public class MeasureFragment extends Fragment {
                 return;
             }
             enableAROverlay = checked;
-            settingsManager.setArMeasureOverlayEnabled(checked);
+            mViewModel.setArOverlayEnabled(checked);
             if (checked) {
                 if (arOverlayRenderer == null) {
                     arOverlayRenderer = new ARMeasureOverlay(heatmapOverlay);
@@ -221,7 +217,6 @@ public class MeasureFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mViewModel = new ViewModelProvider(this, viewModelFactory).get(MeasureViewModel.class);
 
         locationPermissionLauncher = registerForActivityResult(
                 new androidx.activity.result.contract.ActivityResultContracts.RequestPermission(),
@@ -234,7 +229,7 @@ public class MeasureFragment extends Fragment {
                     }
                 });
 
-        if (settingsManager.isAutoSunlightEstimationEnabled()) {
+        if (mViewModel.isAutoSunlightEstimationEnabled()) {
             boolean hasFine = PermissionUtils.hasPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION);
             boolean hasCoarse = PermissionUtils.hasPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION);
             if (!hasFine && !hasCoarse) {

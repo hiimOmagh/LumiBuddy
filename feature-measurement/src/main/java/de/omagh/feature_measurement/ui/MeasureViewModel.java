@@ -140,6 +140,48 @@ public class MeasureViewModel extends AndroidViewModel {
     }
 
     /**
+     * Returns all available grow light lamp profiles.
+     */
+    public java.util.List<LampProduct> getLampProfiles() {
+        return growLightManager.getAllProfiles();
+    }
+
+    /**
+     * Indicates whether ML features are enabled.
+     */
+    public boolean isMlFeaturesEnabled() {
+        return settingsManager.isMlFeaturesEnabled();
+    }
+
+    /**
+     * Returns the preferred measurement unit (Lux/PPFD/DLI).
+     */
+    public String getPreferredUnit() {
+        return settingsManager.getPreferredUnit();
+    }
+
+    /**
+     * Current state of the AR measurement overlay feature.
+     */
+    public boolean isArOverlayEnabled() {
+        return settingsManager.isArMeasureOverlayEnabled();
+    }
+
+    /**
+     * Enables or disables the AR measurement overlay feature.
+     */
+    public void setArOverlayEnabled(boolean enabled) {
+        settingsManager.setArMeasureOverlayEnabled(enabled);
+    }
+
+    /**
+     * Whether automatic sunlight estimation is enabled.
+     */
+    public boolean isAutoSunlightEstimationEnabled() {
+        return settingsManager.isAutoSunlightEstimationEnabled();
+    }
+
+    /**
      * LiveData for active lamp profile ID.
      */
     public LiveData<String> getLampProfileId() {
