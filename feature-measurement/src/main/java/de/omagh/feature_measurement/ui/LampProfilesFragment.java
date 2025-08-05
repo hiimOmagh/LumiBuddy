@@ -1,5 +1,6 @@
 package de.omagh.feature_measurement.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import javax.inject.Inject;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -22,12 +25,27 @@ import java.util.UUID;
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.feature_measurement.R;
 import de.omagh.core_infra.measurement.LampProduct;
+import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
+import de.omagh.feature_measurement.di.DaggerMeasurementComponent;
+import de.omagh.feature_measurement.di.MeasurementComponent;
 
 /**
  * Screen for managing grow light profiles.
  */
 public class LampProfilesFragment extends Fragment {
+    @Inject
+    LampProfilesViewModelFactory viewModelFactory;
     private LampProfilesViewModel viewModel;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        CoreComponent core = ((CoreComponentProvider) context.getApplicationContext()).getCoreComponent();
+        MeasurementComponent component = DaggerMeasurementComponent.factory().create(core);
+        component.inject(this);
+        viewModelFactory = component.lampProfilesViewModelFactory();
+    }
 
     @Nullable
     @Override
@@ -59,8 +77,7 @@ public class LampProfilesFragment extends Fragment {
         fab.setOnClickListener(v -> showAddDialog());
         searchBtn.setOnClickListener(v -> showSearchDialog());
 
-        viewModel = new ViewModelProvider(this,
-                ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().getApplication()))
+        viewModel = new ViewModelProvider(this, viewModelFactory)
                 .get(LampProfilesViewModel.class);
 
         viewModel.getProfiles().observe(getViewLifecycleOwner(), adapter::update);

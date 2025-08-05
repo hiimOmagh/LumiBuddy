@@ -11,10 +11,13 @@ import de.omagh.core_infra.measurement.GrowLightProfileManager;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.feature_measurement.ui.MeasureViewModelFactory;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
+import de.omagh.feature_measurement.ui.LampProfilesViewModel;
+import de.omagh.feature_measurement.ui.LampProfilesViewModelFactory;
 import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
 
 import de.omagh.core_infra.calibration.CalibrationRepository;
+import de.omagh.feature_measurement.infra.GrowLightProductRepository;
 
 import javax.inject.Provider;
 
@@ -46,6 +49,11 @@ public class MeasurementModule {
     }
 
     @Provides
+    static GrowLightProductRepository provideGrowLightProductRepository(Application app) {
+        return new GrowLightProductRepository(app.getApplicationContext());
+    }
+
+    @Provides
     static LampIdentifier provideLampIdentifier(Application app, CalibrationRepository repo) {
         AssetModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
         return new LampIdentifier(app.getApplicationContext(), provider, "lamp_labels.txt", repo.getMlThreshold());
@@ -54,5 +62,10 @@ public class MeasurementModule {
     @Provides
     static MeasureViewModelFactory provideViewModelFactory(Provider<MeasureViewModel> provider) {
         return new MeasureViewModelFactory(provider);
+    }
+
+    @Provides
+    static LampProfilesViewModelFactory provideLampProfilesViewModelFactory(Provider<LampProfilesViewModel> provider) {
+        return new LampProfilesViewModelFactory(provider);
     }
 }

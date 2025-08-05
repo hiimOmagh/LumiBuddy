@@ -10,6 +10,8 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.feature_measurement.infra.GrowLightProductRepository;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
@@ -23,13 +25,7 @@ public class LampProfilesViewModel extends AndroidViewModel {
     private final GrowLightProfileManager manager;
     private final GrowLightProductRepository productRepository;
 
-    public LampProfilesViewModel(@NonNull Application application) {
-        this(application,
-                new GrowLightProfileManager(application.getApplicationContext()),
-                new GrowLightProductRepository(application.getApplicationContext()));
-    }
-
-    // Constructor for tests
+    @Inject
     public LampProfilesViewModel(@NonNull Application application,
                                  GrowLightProfileManager manager,
                                  GrowLightProductRepository repository) {
