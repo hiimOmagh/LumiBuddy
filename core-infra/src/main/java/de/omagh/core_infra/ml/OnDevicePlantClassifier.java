@@ -3,10 +3,18 @@ package de.omagh.core_infra.ml;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.Interpreter;
+import org.tensorflow.lite.gpu.GpuDelegate;
+import org.tensorflow.lite.nnapi.NnApiDelegate;
+import org.tensorflow.lite.support.image.ImageProcessor;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.image.ops.NormalizeOp;
+import org.tensorflow.lite.support.image.ops.ResizeOp;
 
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import de.omagh.shared_ml.AssetModelProvider;
 
@@ -16,14 +24,32 @@ import de.omagh.shared_ml.AssetModelProvider;
  */
 public class OnDevicePlantClassifier implements PlantClassifier {
     private final Interpreter interpreter;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     private String last;
     private boolean closed;
+    private GpuDelegate gpuDelegate;
+    private NnApiDelegate nnApiDelegate;
 
     public OnDevicePlantClassifier(Context context) {
         try {
             AssetModelProvider provider = new AssetModelProvider("plant_classifier.tflite");
             ByteBuffer model = provider.loadModel(context);
-            interpreter = new Interpreter(model);
+
+            Interpreter.Options options = new Interpreter.Options();
+            options.setNumThreads(2);
+            try {
+                gpuDelegate = new GpuDelegate();
+                options.addDelegate(gpuDelegate);
+            } catch (Exception e) {
+                try {
+                    nnApiDelegate = new NnApiDelegate();
+                    options.addDelegate(nnApiDelegate);
+                } catch (Exception ignored) {
+                    // Fall back to CPU
+                }
+            }
+
+            interpreter = new Interpreter(model, options);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -33,29 +59,31 @@ public class OnDevicePlantClassifier implements PlantClassifier {
     public void close() {
         closed = true;
         interpreter.close();
+        if (gpuDelegate != null) {
+            gpuDelegate.close();
+        }
+        if (nnApiDelegate != null) {
+            nnApiDelegate.close();
+        }
+        executor.shutdown();
     }
     
     @Override
     public void classify(Bitmap bitmap) {
-        int size = 224;
-        Bitmap scaled = Bitmap.createScaledBitmap(bitmap, size, size, true);
-        ByteBuffer buf = ByteBuffer.allocateDirect(size * size * 3 * 4);
-        buf.order(ByteOrder.nativeOrder());
-        int[] values = new int[size * size];
-        scaled.getPixels(values, 0, size, 0, 0, size, size);
-        int idx = 0;
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                int val = values[idx++];
-                buf.putFloat(((val >> 16) & 0xFF) / 255f);
-                buf.putFloat(((val >> 8) & 0xFF) / 255f);
-                buf.putFloat((val & 0xFF) / 255f);
-            }
-        }
-        if (closed) return;
-        float[][] out = new float[1][1];
-        interpreter.run(buf, out);
-        last = out[0][0] > 0.5f ? "Known" : "Unknown";
+        executor.execute(() -> {
+            int size = 224;
+            TensorImage image = new TensorImage(DataType.FLOAT32);
+            image.load(bitmap);
+            ImageProcessor processor = new ImageProcessor.Builder()
+                    .add(new ResizeOp(size, size, ResizeOp.ResizeMethod.BILINEAR))
+                    .add(new NormalizeOp(0f, 255f))
+                    .build();
+            image = processor.process(image);
+            if (closed) return;
+            float[][] out = new float[1][1];
+            interpreter.run(image.getBuffer(), out);
+            last = out[0][0] > 0.5f ? "Known" : "Unknown";
+        });
     }
 
     @Override

@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.tensorflow.lite)
+    implementation(libs.tensorflow.lite.support)
+    implementation(libs.tensorflow.lite.gpu)
     implementation(libs.arcore)
     implementation(libs.timber)
     implementation(libs.sceneform.core) {
