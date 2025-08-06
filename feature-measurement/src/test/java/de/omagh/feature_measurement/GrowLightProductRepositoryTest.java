@@ -19,11 +19,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+
+import com.google.common.util.concurrent.MoreExecutors;
 
 public class GrowLightProductRepositoryTest {
     @Mock
@@ -38,16 +40,20 @@ public class GrowLightProductRepositoryTest {
     @Before
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = MoreExecutors.newDirectExecutorService();
         repository = new GrowLightProductRepository(apiService, productDao, executor);
     }
 
     @Test
-    public void searchGrowLights_returnsApiResults() throws Exception {
+    public void searchGrowLights_returnsApiResults() {
         List<GrowLightProduct> list = Collections.singletonList(new GrowLightProduct("1", "B", "M", "", 10, 0f, "", "", ""));
         Response<List<GrowLightProduct>> resp = Response.success(list);
         Mockito.when(apiService.searchLamps(Mockito.eq("led"), Mockito.anyString())).thenReturn(call);
-        Mockito.when(call.execute()).thenReturn(resp);
+        Mockito.doAnswer(invocation -> {
+            Callback<List<GrowLightProduct>> cb = invocation.getArgument(0);
+            cb.onResponse(call, resp);
+            return null;
+        }).when(call).enqueue(Mockito.any());
         Mockito.when(productDao.search("%led%"))
                 .thenReturn(Collections.emptyList());
 

@@ -8,6 +8,7 @@ import de.omagh.core_domain.repository.MeasurementRepository;
 import de.omagh.core_domain.usecase.GetCurrentLuxUseCase;
 import de.omagh.core_infra.measurement.CalibrationManager;
 import de.omagh.core_infra.measurement.GrowLightProfileManager;
+import de.omagh.core_infra.network.GrowLightApiService;
 import de.omagh.core_infra.user.SettingsManager;
 import de.omagh.feature_measurement.ui.MeasureViewModelFactory;
 import de.omagh.feature_measurement.ui.MeasureViewModel;
@@ -17,9 +18,14 @@ import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
 
 import de.omagh.core_infra.calibration.CalibrationRepository;
-import de.omagh.feature_measurement.infra.GrowLightProductRepository;
+import de.omagh.core_data.db.AppDatabase;
+import de.omagh.core_data.db.GrowLightProductDao;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.inject.Provider;
+import retrofit2.Retrofit;
 
 /**
  * Dagger module for the Measurement feature. Provides use cases and helpers
@@ -49,8 +55,18 @@ public class MeasurementModule {
     }
 
     @Provides
-    static GrowLightProductRepository provideGrowLightProductRepository(Application app) {
-        return new GrowLightProductRepository(app.getApplicationContext());
+    static GrowLightApiService provideGrowLightApiService(Retrofit retrofit) {
+        return retrofit.create(GrowLightApiService.class);
+    }
+
+    @Provides
+    static GrowLightProductDao provideGrowLightProductDao(AppDatabase db) {
+        return db.growLightProductDao();
+    }
+
+    @Provides
+    static ExecutorService provideExecutorService() {
+        return Executors.newSingleThreadExecutor();
     }
 
     @Provides

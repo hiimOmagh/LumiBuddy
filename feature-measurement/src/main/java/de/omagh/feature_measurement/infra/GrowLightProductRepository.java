@@ -1,21 +1,19 @@
 package de.omagh.feature_measurement.infra;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import de.omagh.core_data.db.AppDatabase;
+import javax.inject.Inject;
+
 import de.omagh.core_data.db.GrowLightProductDao;
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.core_infra.network.GrowLightApiService;
-import de.omagh.core_infra.network.RetrofitClient;
 import de.omagh.feature_measurement.BuildConfig;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -28,13 +26,7 @@ public class GrowLightProductRepository {
     private final ExecutorService executor;
     private final String apiKey = BuildConfig.GROW_LIGHT_API_KEY;
 
-    public GrowLightProductRepository(Context context) {
-        this(RetrofitClient.getInstance().create(GrowLightApiService.class),
-                AppDatabase.getInstance(context.getApplicationContext()).growLightProductDao(),
-                Executors.newSingleThreadExecutor());
-    }
-
-    // Constructor for tests
+    @Inject
     public GrowLightProductRepository(GrowLightApiService apiService,
                                       GrowLightProductDao productDao,
                                       ExecutorService executor) {
@@ -48,20 +40,29 @@ public class GrowLightProductRepository {
      */
     public LiveData<List<GrowLightProduct>> searchGrowLights(String query) {
         MutableLiveData<List<GrowLightProduct>> liveData = new MutableLiveData<>();
-        executor.execute(() -> {
-            try {
-                Call<List<GrowLightProduct>> call = apiService.searchLamps(query, apiKey);
-                Response<List<GrowLightProduct>> resp = call.execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    List<GrowLightProduct> products = resp.body();
-                    productDao.insertAll(products);
+        Call<List<GrowLightProduct>> call = apiService.searchLamps(query, apiKey);
+        call.enqueue(new Callback<List<GrowLightProduct>>() {
+            @Override
+            public void onResponse(Call<List<GrowLightProduct>> call, Response<List<GrowLightProduct>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<GrowLightProduct> products = response.body();
+                    executor.execute(() -> productDao.insertAll(products));
                     liveData.postValue(products);
-                    return;
+                } else {
+                    loadFromCache();
                 }
-            } catch (Exception ignored) {
             }
-            List<GrowLightProduct> cached = productDao.search('%' + query + '%');
-            liveData.postValue(cached);
+            @Override
+            public void onFailure(Call<List<GrowLightProduct>> call, Throwable t) {
+                loadFromCache();
+            }
+
+            private void loadFromCache() {
+                executor.execute(() -> {
+                    List<GrowLightProduct> cached = productDao.search('%' + query + '%');
+                    liveData.postValue(cached);
+                });
+            }
         });
         return liveData;
     }
