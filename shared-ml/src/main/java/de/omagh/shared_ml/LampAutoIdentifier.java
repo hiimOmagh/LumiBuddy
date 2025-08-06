@@ -29,7 +29,7 @@ public class LampAutoIdentifier implements AutoCloseable {
     public LampAutoIdentifier(Context context) {
         this.classifier = new LampIdentifier(
                 context,
-                new AssetModelProvider("lamp_identifier.tflite"));
+                new AssetModelProvider(MlConfig.LAMP_MODEL));
         this.barcodeScanner = BarcodeScanning.getClient();
     }
 

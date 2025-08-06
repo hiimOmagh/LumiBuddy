@@ -7,12 +7,12 @@ This module contains lightweight machine learning helpers used across the app.
 `PlantIdentifier` wraps a small TensorFlow Lite model to classify plant photos.
 The model is supplied by a `ModelProvider` which abstracts where the
 `ByteBuffer` comes from. By default the app uses `AssetModelProvider` to load
-`plant_identifier.tflite` from the module's assets.
+`MlConfig.PLANT_MODEL` from the module's assets.
 
 ### Basic Usage
 
 ```java
-ModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
+ModelProvider provider = new AssetModelProvider(MlConfig.PLANT_MODEL);
 PlantIdentifier identifier = new PlantIdentifier(context, provider);
 LiveData<java.util.List<PlantIdentifier.Prediction>> result = identifier.identifyPlant(bitmap);
 ```
@@ -28,12 +28,12 @@ retrieves a model from disk or downloads it.
 
 `LampIdentifier` mirrors `PlantIdentifier` but targets grow lights. It relies on a small on-device
 TensorFlow Lite model, loaded via a `ModelProvider`. The default provider loads
-`lamp_identifier.tflite` from the module assets.
+`MlConfig.LAMP_MODEL` from the module assets.
 
 ### Basic Usage
 
 ```java
-ModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
+ModelProvider provider = new AssetModelProvider(MlConfig.LAMP_MODEL);
 LampIdentifier identifier = new LampIdentifier(context, provider);
 LiveData<java.util.List<LampIdentifier.Prediction>> result = identifier.identifyLamp(bitmap);
 ```

@@ -16,6 +16,7 @@ import de.omagh.feature_measurement.ui.LampProfilesViewModel;
 import de.omagh.feature_measurement.ui.LampProfilesViewModelFactory;
 import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
+import de.omagh.shared_ml.MlConfig;
 import de.omagh.core_infra.di.FeatureScope;
 
 import de.omagh.core_infra.calibration.CalibrationRepository;
@@ -74,8 +75,9 @@ public class MeasurementModule {
     @FeatureScope
     @Provides
     static LampIdentifier provideLampIdentifier(Application app, CalibrationRepository repo) {
-        AssetModelProvider provider = new AssetModelProvider("lamp_identifier.tflite");
-        return new LampIdentifier(app.getApplicationContext(), provider, "lamp_labels.txt", repo.getMlThreshold());
+        AssetModelProvider provider = new AssetModelProvider(MlConfig.LAMP_MODEL);
+        return new LampIdentifier(app.getApplicationContext(), provider, MlConfig.LAMP_LABELS,
+                MlConfig.LAMP_INPUT_SIZE, repo.getMlThreshold());
     }
 
     @Provides

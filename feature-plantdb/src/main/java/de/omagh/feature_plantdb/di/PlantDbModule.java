@@ -10,6 +10,7 @@ import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.AssetModelProvider;
+import de.omagh.shared_ml.MlConfig;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.feature_plantdb.ui.PlantDbViewModelFactory;
 import de.omagh.feature_plantdb.ui.PlantListViewModel;
@@ -40,8 +41,9 @@ public class PlantDbModule {
     @FeatureScope
     @Provides
     static PlantIdentifier providePlantIdentifier(Application app, CalibrationRepository repo) {
-        AssetModelProvider provider = new AssetModelProvider("plant_identifier.tflite");
-        return new PlantIdentifier(app.getApplicationContext(), provider, "plant_labels.txt", repo.getMlThreshold());
+        AssetModelProvider provider = new AssetModelProvider(MlConfig.PLANT_MODEL);
+        return new PlantIdentifier(app.getApplicationContext(), provider, MlConfig.PLANT_LABELS,
+                MlConfig.PLANT_INPUT_SIZE, repo.getMlThreshold());
     }
 
     @Provides

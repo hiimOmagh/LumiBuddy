@@ -21,6 +21,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import org.tensorflow.lite.Interpreter;
+import de.omagh.shared_ml.MlConfig;
 
 /**
  * Unit tests for {@link PlantIdentifier} verifying inference and executor shutdown.
@@ -48,7 +49,8 @@ public class PlantIdentifierTest {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);
         try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
-            PlantIdentifier id = new PlantIdentifier(context, provider, "plant_labels.txt", 0.2f);
+            PlantIdentifier id = new PlantIdentifier(context, provider, MlConfig.PLANT_LABELS,
+                    MlConfig.PLANT_INPUT_SIZE, 0.2f);
             Interpreter interp = construction.constructed().get(0);
             doAnswer(inv -> {
                 float[][] out = (float[][]) inv.getArguments()[1];
@@ -70,7 +72,8 @@ public class PlantIdentifierTest {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);
         try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
-            PlantIdentifier id = new PlantIdentifier(context, provider, "plant_labels.txt", 0.9f);
+            PlantIdentifier id = new PlantIdentifier(context, provider, MlConfig.PLANT_LABELS,
+                    MlConfig.PLANT_INPUT_SIZE, 0.9f);
             Interpreter interp = construction.constructed().get(0);
             doAnswer(inv -> {
                 float[][] out = (float[][]) inv.getArguments()[1];

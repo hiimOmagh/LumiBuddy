@@ -43,29 +43,30 @@ public class LampIdentifier {
     private boolean closed = false;
 
     public LampIdentifier(Context context, ModelProvider provider) {
-        this(context, provider, "lamp_labels.txt", DEFAULT_THRESHOLD);
+        this(context, provider, MlConfig.LAMP_LABELS, MlConfig.LAMP_INPUT_SIZE,
+                DEFAULT_THRESHOLD);
     }
 
     public LampIdentifier(Context context, ModelProvider provider, float threshold) {
-        this(context, provider, "lamp_labels.txt", threshold);
+        this(context, provider, MlConfig.LAMP_LABELS, MlConfig.LAMP_INPUT_SIZE, threshold);
     }
 
     public LampIdentifier(Context context, ModelProvider provider,
-                          String labelAsset,
-                          float threshold) {
-        this(context, provider, Executors.newSingleThreadExecutor(), labelAsset, threshold, true);
+                          String labelAsset, int inputSize, float threshold) {
+        this(context, provider, Executors.newSingleThreadExecutor(), labelAsset, inputSize,
+                threshold, true);
     }
 
     public LampIdentifier(Context context, ModelProvider provider,
                           ExecutorService executor,
-                          String labelAsset,
+                          String labelAsset, int inputSize,
                           float threshold) {
-        this(context, provider, executor, labelAsset, threshold, false);
+        this(context, provider, executor, labelAsset, inputSize, threshold, false);
     }
 
     private LampIdentifier(Context context, ModelProvider provider,
                            ExecutorService executor,
-                           String labelAsset,
+                           String labelAsset, int inputSize,
                            float threshold,
                            boolean ownsExecutor) {
         ByteBuffer model;
@@ -80,7 +81,6 @@ public class LampIdentifier {
         this.ownsExecutor = ownsExecutor;
         this.threshold = threshold;
         this.labels = loadLabels(context, labelAsset);
-        int inputSize = 224;
         processor = new ImageProcessor.Builder()
                 .add(new ResizeOp(inputSize, inputSize, ResizeOp.ResizeMethod.BILINEAR))
                 .add(new NormalizeOp(0f, 255f))
