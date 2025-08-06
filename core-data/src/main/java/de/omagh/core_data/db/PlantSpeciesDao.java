@@ -14,7 +14,7 @@ import de.omagh.core_data.model.PlantSpeciesEntity;
  */
 @Dao
 public interface PlantSpeciesDao {
-    @Query("SELECT * FROM PlantSpeciesEntity WHERE commonName LIKE :query OR scientificName LIKE :query")
+    @Query("SELECT * FROM plant_species WHERE commonName LIKE :query OR scientificName LIKE :query")
     List<PlantSpeciesEntity> search(String query);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
