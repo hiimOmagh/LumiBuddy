@@ -66,6 +66,28 @@ public class PlantIdentifierTest {
     }
 
     @Test
+    public void identifyPlant_filtersLowConfidence() throws Exception {
+        ByteBuffer model = ByteBuffer.allocate(4);
+        when(provider.loadModel(context)).thenReturn(model);
+        try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
+            PlantIdentifier id = new PlantIdentifier(context, provider, "plant_labels.txt", 0.9f);
+            Interpreter interp = construction.constructed().get(0);
+            doAnswer(inv -> {
+                float[][] out = (float[][]) inv.getArguments()[1];
+                out[0][1] = 0.8f;
+                return null;
+            }).when(interp).run(any(), any());
+            CountDownLatch latch = new CountDownLatch(1);
+            id.identifyPlant(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
+                assertTrue(p.isEmpty());
+                latch.countDown();
+            });
+            assertTrue(latch.await(1, TimeUnit.SECONDS));
+            id.close();
+        }
+    }
+
+    @Test
     public void close_releasesResources() throws Exception {
         ByteBuffer model = ByteBuffer.allocate(4);
         when(provider.loadModel(context)).thenReturn(model);

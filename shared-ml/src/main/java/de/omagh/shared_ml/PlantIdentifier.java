@@ -130,13 +130,17 @@ public class PlantIdentifier {
         }
         int[] idx = java.util.stream.IntStream.range(0, labels.length)
                 .boxed()
-                .sorted((a,b) -> Float.compare(out[0][b], out[0][a]))
+                .sorted((a, b) -> Float.compare(out[0][b], out[0][a]))
                 .mapToInt(Integer::intValue)
                 .toArray();
         int topK = Math.min(3, labels.length);
         List<Prediction> preds = new ArrayList<>(topK);
         for (int i = 0; i < topK; i++) {
-            preds.add(new Prediction(labels[idx[i]], out[0][idx[i]]));
+            float confidence = out[0][idx[i]];
+            if (confidence >= threshold) {
+                preds.add(new Prediction(labels[idx[i]], confidence));
+            }
+
         }
         return preds;
     }
