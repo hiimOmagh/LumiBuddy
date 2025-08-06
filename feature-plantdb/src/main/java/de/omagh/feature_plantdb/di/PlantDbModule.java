@@ -15,6 +15,7 @@ import de.omagh.feature_plantdb.ui.PlantListViewModel;
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
 import de.omagh.core_infra.calibration.CalibrationRepository;
+import de.omagh.core_infra.di.FeatureScope;
 
 import javax.inject.Provider;
 
@@ -35,6 +36,7 @@ public class PlantDbModule {
         return new PlantDatabaseManager();
     }
 
+    @FeatureScope
     @Provides
     static PlantIdentifier providePlantIdentifier(Application app, CalibrationRepository repo) {
         AssetModelProvider provider = new AssetModelProvider("plant_identifier.tflite");

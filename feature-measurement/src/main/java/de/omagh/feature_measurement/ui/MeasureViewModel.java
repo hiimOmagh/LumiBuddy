@@ -2,6 +2,7 @@ package de.omagh.feature_measurement.ui;
 
 import android.app.Application;
 import android.Manifest;
+import android.graphics.Bitmap;
 
 import androidx.annotation.RequiresPermission;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,6 +10,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -25,6 +28,7 @@ import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_infra.util.PermissionUtils;
+import de.omagh.shared_ml.LampIdentifier;
 import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
@@ -55,6 +59,8 @@ public class MeasureViewModel extends AndroidViewModel {
     LightCorrectionRepository lightCorrectionStore;
     @Inject
     CalibrationRepository calibrationRepository;
+    @Inject
+    LampIdentifier lampIdentifier;
     private MutableLiveData<String> lampIdLiveData;
     private Disposable luxDisposable;
     private String currentSource = "ALS";
@@ -70,7 +76,8 @@ public class MeasureViewModel extends AndroidViewModel {
                             SunlightEstimator sunlightEstimator,
                             DiaryRepository diaryRepository,
                             LightCorrectionRepository lightCorrectionStore,
-                            CalibrationRepository calibrationRepository) {
+                            CalibrationRepository calibrationRepository,
+                            LampIdentifier lampIdentifier) {
         super(application);
         this.profileManager = profileManager;
         this.growLightManager = growLightManager;
@@ -81,6 +88,7 @@ public class MeasureViewModel extends AndroidViewModel {
         this.diaryRepository = diaryRepository;
         this.lightCorrectionStore = lightCorrectionStore;
         this.calibrationRepository = calibrationRepository;
+        this.lampIdentifier = lampIdentifier;
         this.calibrationFactorLiveData = new MutableLiveData<>(calibrationRepository.getDefaultCalibrationFactor());
 
         int hours = settingsManager.getLightDuration();
@@ -196,6 +204,13 @@ public class MeasureViewModel extends AndroidViewModel {
     }
 
     /**
+     * Performs on-device lamp identification.
+     */
+    public LiveData<List<LampIdentifier.Prediction>> identifyLamp(Bitmap bitmap) {
+        return lampIdentifier.identifyLamp(bitmap);
+    }
+
+    /**
      * LiveData for the current calibration factor in PPFD/lux.
      */
     public LiveData<Float> getCalibrationFactor() {
@@ -306,5 +321,11 @@ public class MeasureViewModel extends AndroidViewModel {
                 "light"
         );
         diaryRepository.insert(entry);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        lampIdentifier.close();
     }
 }

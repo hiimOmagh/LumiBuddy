@@ -36,8 +36,6 @@ import de.omagh.core_infra.ar.ARMeasureOverlay;
 import de.omagh.core_infra.ar.HeatmapOverlayView;
 import de.omagh.feature_measurement.R;
 import de.omagh.core_infra.measurement.LampProduct;
-import de.omagh.core_infra.ml.LampTypeClassifier;
-import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.shared_ml.LampIdentifier;
 import de.omagh.core_infra.util.OnSwipeTouchListener;
 import de.omagh.core_infra.util.PermissionUtils;
@@ -48,8 +46,6 @@ import com.google.ar.core.ArCoreApk;
 public class MeasureFragment extends Fragment {
     @Inject
     MeasureViewModelFactory viewModelFactory;
-    @Inject
-    LampIdentifier lampIdentifier;
     private MeasureViewModel mViewModel;
     // Lamp type selection
     private Spinner lampTypeSpinner;
@@ -98,9 +94,6 @@ public class MeasureFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_measure, container, false);
         mViewModel = new ViewModelProvider(this, viewModelFactory).get(MeasureViewModel.class);
         enableAROverlay = mViewModel.isArOverlayEnabled();
-        if (!mViewModel.isMlFeaturesEnabled()) {
-            lampIdentifier = null;
-        }
 
         // Lamp selection spinner
         lampTypeSpinner = view.findViewById(R.id.lampTypeSpinner);
@@ -350,20 +343,22 @@ public class MeasureFragment extends Fragment {
                                         String lampSuggestion = analysis[0];
                                         String warning = analysis[1];
 
-                                        if (lampIdentifier != null) {
+                                        if (mViewModel.isMlFeaturesEnabled()) {
                                             Bitmap sample = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
                                             sample.eraseColor(Color.rgb((int) Math.min(255, meanR), (int) Math.min(255, meanG), (int) Math.min(255, meanB)));
                                             Toast.makeText(getContext(), R.string.calibrating, Toast.LENGTH_SHORT).show();
-                                            lampIdentifier.identifyLamp(sample)
-                                                    .observe(getViewLifecycleOwner(), pred -> {
-                                                        if (pred == null) {
+                                            mViewModel.identifyLamp(sample)
+                                                    .observe(getViewLifecycleOwner(), preds -> {
+                                                        if (preds == null) {
                                                             Toast.makeText(getContext(), R.string.ml_inference_error, Toast.LENGTH_LONG).show();
                                                             return;
                                                         }
+                                                        LampIdentifier.Prediction top = preds.isEmpty() ? null : preds.get(0);
                                                         Timber.tag("MeasureFragment").d(
                                                                 "Lamp identifier result=%s conf=%.2f",
-                                                                pred.getLabel(), pred.getConfidence());
-                                                        if (pred.getLabel() == null) {
+                                                                top != null ? top.getLabel() : null,
+                                                                top != null ? top.getConfidence() : 0f);
+                                                        if (top == null || top.getLabel() == null) {
                                                             Toast.makeText(getContext(), R.string.ml_low_confidence, Toast.LENGTH_SHORT).show();
                                                         }
                                                     });

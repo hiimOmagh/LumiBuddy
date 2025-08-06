@@ -98,7 +98,7 @@ public class PlantDetailViewModel extends AndroidViewModel {
      * @param name plant name
      * @return matching PlantInfo or null
      */
-    public LiveData<List<PlantSpeciesEntity>> searchSpecies(String name) {
+    public LiveData<List<PlantSpecies>> searchSpecies(String name) {
         return infoRepository.searchSpecies(name);
     }
 
@@ -127,5 +127,11 @@ public class PlantDetailViewModel extends AndroidViewModel {
             }
         });
         return identificationResult;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        plantIdentifier.close();
     }
 }
