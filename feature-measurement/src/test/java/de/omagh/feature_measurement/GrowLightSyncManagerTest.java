@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -31,7 +32,11 @@ public class GrowLightSyncManagerTest {
         java.util.List<GrowLightProfile> list =
                 Collections.singletonList(new GrowLightProfile("1", "name", "", "", 0f, 0f));
         when(api.getLamps()).thenReturn(call);
-        when(call.execute()).thenReturn(Response.success(list));
+        doAnswer(invocation -> {
+            Callback<java.util.List<GrowLightProfile>> cb = invocation.getArgument(0);
+            cb.onResponse(call, Response.success(list));
+            return null;
+        }).when(call).enqueue(any());
 
         GrowLightSyncManager mgr = new GrowLightSyncManager(db);
         // inject mock api via reflection
@@ -40,7 +45,7 @@ public class GrowLightSyncManagerTest {
         f.set(mgr, api);
 
         mgr.syncLamps();
-        Thread.sleep(100); // wait for executor
+        Thread.sleep(100); // wait for async insert
 
         verify(dao).insertAll(list);
     }

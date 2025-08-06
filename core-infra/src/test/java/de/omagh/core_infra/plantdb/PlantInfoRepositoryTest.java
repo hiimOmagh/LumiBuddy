@@ -25,6 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PlantInfoRepositoryTest {
@@ -53,7 +54,11 @@ public class PlantInfoRepositoryTest {
         List<PlantSpeciesEntity> list = Collections.singletonList(new PlantSpeciesEntity("1", "Sci", "Com", ""));
         Response<List<PlantSpeciesEntity>> resp = Response.success(list);
         Mockito.when(apiService.searchSpecies(Mockito.eq("tom"), Mockito.anyString())).thenReturn(speciesCall);
-        Mockito.when(speciesCall.execute()).thenReturn(resp);
+        Mockito.doAnswer(invocation -> {
+            Callback<List<PlantSpeciesEntity>> cb = invocation.getArgument(0);
+            cb.onResponse(speciesCall, resp);
+            return null;
+        }).when(speciesCall).enqueue(Mockito.any());
         Mockito.when(speciesDao.search("%tom%"))
                 .thenReturn(Collections.emptyList());
 

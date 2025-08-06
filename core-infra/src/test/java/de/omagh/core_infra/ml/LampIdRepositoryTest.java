@@ -24,6 +24,7 @@ import de.omagh.core_infra.network.lampid.LampIdRequest;
 import de.omagh.core_infra.network.lampid.LampIdResponse;
 import de.omagh.core_infra.network.lampid.LampIdService;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LampIdRepositoryTest {
@@ -50,7 +51,11 @@ public class LampIdRepositoryTest {
 
         LampIdResponse resp = new LampIdResponse();
         Mockito.when(service.identify(Mockito.any())).thenReturn(call);
-        Mockito.when(call.execute()).thenReturn(Response.success(resp));
+        Mockito.doAnswer(invocation -> {
+            Callback<LampIdResponse> cb = invocation.getArgument(0);
+            cb.onResponse(call, Response.success(resp));
+            return null;
+        }).when(call).enqueue(Mockito.any());
 
         LiveData<String> live = repository.identifyLamp(bmp);
         getValue(live);
@@ -68,7 +73,11 @@ public class LampIdRepositoryTest {
         f.setAccessible(true);
         f.set(resp, "LED Lamp");
         Mockito.when(service.identify(Mockito.any())).thenReturn(call);
-        Mockito.when(call.execute()).thenReturn(Response.success(resp));
+        Mockito.doAnswer(invocation -> {
+            Callback<LampIdResponse> cb = invocation.getArgument(0);
+            cb.onResponse(call, Response.success(resp));
+            return null;
+        }).when(call).enqueue(Mockito.any());
 
         LiveData<String> live = repository.identifyLamp(bmp);
         String result = getValue(live);
@@ -80,7 +89,11 @@ public class LampIdRepositoryTest {
     public void identifyLamp_failurePostsNull() throws Exception {
         Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         Mockito.when(service.identify(Mockito.any())).thenReturn(call);
-        Mockito.when(call.execute()).thenThrow(new RuntimeException());
+        Mockito.doAnswer(invocation -> {
+            Callback<LampIdResponse> cb = invocation.getArgument(0);
+            cb.onFailure(call, new RuntimeException());
+            return null;
+        }).when(call).enqueue(Mockito.any());
 
         LiveData<String> live = repository.identifyLamp(bmp);
         String result = getValue(live);

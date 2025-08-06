@@ -26,6 +26,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -98,20 +99,32 @@ public class PlantInfoRepository {
      */
     public LiveData<List<PlantSpeciesEntity>> searchSpecies(String query) {
         MutableLiveData<List<PlantSpeciesEntity>> liveData = new MutableLiveData<>();
-        executor.execute(() -> {
-            try {
-                Call<List<PlantSpeciesEntity>> call = apiService.searchSpecies(query, apiKey);
-                Response<List<PlantSpeciesEntity>> resp = call.execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    List<PlantSpeciesEntity> species = resp.body();
-                    speciesDao.insertAll(species);
-                    liveData.postValue(mapSpeciesList(species));
-                    return;
+        Call<List<PlantSpeciesEntity>> call = apiService.searchSpecies(query, apiKey);
+        call.enqueue(new Callback<List<PlantSpeciesEntity>>() {
+            @Override
+            public void onResponse(Call<List<PlantSpeciesEntity>> call, Response<List<PlantSpeciesEntity>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<PlantSpeciesEntity> species = response.body();
+                    executor.execute(() -> {
+                        speciesDao.insertAll(species);
+                        liveData.postValue(mapSpeciesList(species));
+                    });
+                } else {
+                    loadFromCache();
                 }
-            } catch (Exception ignored) {
             }
-            List<PlantSpeciesEntity> cached = speciesDao.search('%' + query + '%');
-            liveData.postValue(mapSpeciesList(cached));
+
+            @Override
+            public void onFailure(Call<List<PlantSpeciesEntity>> call, Throwable t) {
+                loadFromCache();
+            }
+
+            private void loadFromCache() {
+                executor.execute(() -> {
+                    List<PlantSpeciesEntity> cached = speciesDao.search('%' + query + '%');
+                    liveData.postValue(mapSpeciesList(cached));
+                });
+            }
         });
         return liveData;
     }
@@ -125,21 +138,29 @@ public class PlantInfoRepository {
             List<PlantCareProfileEntity> cached = profileDao.getBySpecies(speciesId);
             if (!cached.isEmpty()) {
                 liveData.postValue(mapProfileList(cached));
-                return;
-            }
-            try {
+            } else {
                 Call<List<PlantCareProfileEntity>> call = apiService.getCareProfile(speciesId, apiKey);
-                Response<List<PlantCareProfileEntity>> resp = call.execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    List<PlantCareProfileEntity> profiles = resp.body();
-                    for (PlantCareProfileEntity p : profiles) p.setLocalId(0);
-                    profileDao.insertAll(profiles);
-                    liveData.postValue(mapProfileList(profiles));
-                    return;
-                }
-            } catch (Exception ignored) {
+                call.enqueue(new Callback<List<PlantCareProfileEntity>>() {
+                    @Override
+                    public void onResponse(Call<List<PlantCareProfileEntity>> call, Response<List<PlantCareProfileEntity>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<PlantCareProfileEntity> profiles = response.body();
+                            for (PlantCareProfileEntity p : profiles) p.setLocalId(0);
+                            executor.execute(() -> {
+                                profileDao.insertAll(profiles);
+                                liveData.postValue(mapProfileList(profiles));
+                            });
+                        } else {
+                            liveData.postValue(Collections.emptyList());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<PlantCareProfileEntity>> call, Throwable t) {
+                        liveData.postValue(Collections.emptyList());
+                    }
+                });
             }
-            liveData.postValue(Collections.emptyList());
         });
         return liveData;
     }
@@ -153,14 +174,25 @@ public class PlantInfoRepository {
             try {
                 RequestBody req = RequestBody.create(MediaType.parse("image/*"), image);
                 MultipartBody.Part part = MultipartBody.Part.createFormData("image", image.getName(), req);
-                Response<List<PlantSpeciesEntity>> resp = idService.identify(part, idApiKey).execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    liveData.postValue(mapSpeciesList(resp.body()));
-                    return;
-                }
+                Call<List<PlantSpeciesEntity>> call = idService.identify(part, idApiKey);
+                call.enqueue(new Callback<List<PlantSpeciesEntity>>() {
+                    @Override
+                    public void onResponse(Call<List<PlantSpeciesEntity>> call, Response<List<PlantSpeciesEntity>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            liveData.postValue(mapSpeciesList(response.body()));
+                        } else {
+                            liveData.postValue(Collections.emptyList());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<PlantSpeciesEntity>> call, Throwable t) {
+                        liveData.postValue(Collections.emptyList());
+                    }
+                });
             } catch (Exception ignored) {
+                liveData.postValue(Collections.emptyList());
             }
-            liveData.postValue(Collections.emptyList());
         });
         return liveData;
     }

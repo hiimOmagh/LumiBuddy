@@ -15,6 +15,7 @@ import de.omagh.core_infra.network.lampid.LampIdRequest;
 import de.omagh.core_infra.network.lampid.LampIdResponse;
 import de.omagh.core_infra.network.lampid.LampIdService;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
@@ -49,14 +50,24 @@ public class LampIdRepository {
                 String base64 = Base64.encodeToString(out.toByteArray(), Base64.NO_WRAP);
                 LampIdRequest request = new LampIdRequest(base64);
                 Call<LampIdResponse> call = service.identify(request);
-                Response<LampIdResponse> resp = call.execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    result.postValue(resp.body().getLabel());
-                    return;
-                }
+                call.enqueue(new Callback<LampIdResponse>() {
+                    @Override
+                    public void onResponse(Call<LampIdResponse> call, Response<LampIdResponse> resp) {
+                        if (resp.isSuccessful() && resp.body() != null) {
+                            result.postValue(resp.body().getLabel());
+                        } else {
+                            result.postValue(null);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LampIdResponse> call, Throwable t) {
+                        result.postValue(null);
+                    }
+                });
             } catch (Exception ignored) {
+                result.postValue(null);
             }
-            result.postValue(null);
         });
         return result;
     }

@@ -2,7 +2,6 @@ package de.omagh.feature_measurement.infra;
 
 import androidx.lifecycle.LiveData;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,6 +11,8 @@ import de.omagh.core_data.db.GrowLightDao;
 import de.omagh.core_data.model.GrowLightProfile;
 import de.omagh.core_infra.network.GrowLightApiService;
 import de.omagh.core_infra.network.RetrofitClient;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import timber.log.Timber;
 
@@ -36,14 +37,19 @@ public class GrowLightSyncManager {
      * Fetches lamp specs from the API and persists them.
      */
     public void syncLamps() {
-        executor.execute(() -> {
-            try {
-                Response<List<GrowLightProfile>> resp = api.getLamps().execute();
-                if (resp.isSuccessful() && resp.body() != null) {
-                    dao.insertAll(resp.body());
+        Call<List<GrowLightProfile>> call = api.getLamps();
+        call.enqueue(new Callback<List<GrowLightProfile>>() {
+            @Override
+            public void onResponse(Call<List<GrowLightProfile>> call, Response<List<GrowLightProfile>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    executor.execute(() -> dao.insertAll(response.body()));
                 }
-            } catch (IOException e) {
-                Timber.tag("GrowLightSync").e(e, "sync error");
+            }
+
+            @Override
+            public void onFailure(Call<List<GrowLightProfile>> call, Throwable t) {
+                Timber.tag("GrowLightSync").e(t, "sync error");
+                // retain existing DAO data on failure
             }
         });
     }

@@ -28,6 +28,7 @@ import de.omagh.core_infra.network.plantid.PlantIdResponse;
 import de.omagh.core_infra.network.plantid.PlantIdService;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PlantIdRepositoryTest {
@@ -54,7 +55,11 @@ public class PlantIdRepositoryTest {
 
         PlantIdResponse resp = new PlantIdResponse();
         Mockito.when(service.identify(Mockito.any())).thenReturn(call);
-        Mockito.when(call.execute()).thenReturn(Response.success(resp));
+        Mockito.doAnswer(invocation -> {
+            Callback<PlantIdResponse> cb = invocation.getArgument(0);
+            cb.onResponse(call, Response.success(resp));
+            return null;
+        }).when(call).enqueue(Mockito.any());
 
         LiveData<PlantIdSuggestion> live = repository.identifyPlant(bmp);
         getValue(live);
@@ -70,7 +75,11 @@ public class PlantIdRepositoryTest {
         String json = "{\"suggestions\":[{\"name\":\"Solanum lycopersicum\",\"details\":{\"common_names\":[\"Tomato\"]}}]}";
         PlantIdResponse resp = new Gson().fromJson(json, PlantIdResponse.class);
         Mockito.when(service.identify(Mockito.any())).thenReturn(call);
-        Mockito.when(call.execute()).thenReturn(Response.success(resp));
+        Mockito.doAnswer(invocation -> {
+            Callback<PlantIdResponse> cb = invocation.getArgument(0);
+            cb.onResponse(call, Response.success(resp));
+            return null;
+        }).when(call).enqueue(Mockito.any());
 
         LiveData<PlantIdSuggestion> live = repository.identifyPlant(bmp);
         PlantIdSuggestion result = getValue(live);
@@ -84,7 +93,11 @@ public class PlantIdRepositoryTest {
     public void identifyPlant_failurePostsNull() throws Exception {
         Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         Mockito.when(service.identify(Mockito.any())).thenReturn(call);
-        Mockito.when(call.execute()).thenThrow(new RuntimeException());
+        Mockito.doAnswer(invocation -> {
+            Callback<PlantIdResponse> cb = invocation.getArgument(0);
+            cb.onFailure(call, new RuntimeException());
+            return null;
+        }).when(call).enqueue(Mockito.any());
 
         LiveData<PlantIdSuggestion> live = repository.identifyPlant(bmp);
         PlantIdSuggestion result = getValue(live);
