@@ -40,6 +40,7 @@ dependencies {
     implementation(libs.tensorflow.lite.metadata) {
         exclude("com.google.flatbuffers", "flatbuffers-java")
     }
+    implementation(libs.mlkit.barcode.scanning)
     implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.timber)
     implementation(libs.appcompat)

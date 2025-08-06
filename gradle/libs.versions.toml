@@ -5,6 +5,7 @@ cameraCore = "1.4.2"
 coreTesting = "2.2.0"
 guava = "33.4.8-android"
 imageLabelingCustom = "17.0.3"
+barcodeScanning = "17.3.0"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
@@ -54,6 +55,7 @@ camera-lifecycle = { module = "androidx.camera:camera-lifecycle", version.ref = 
 camera-view = { module = "androidx.camera:camera-view", version.ref = "cameraCore" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 image-labeling-custom = { module = "com.google.mlkit:image-labeling-custom", version.ref = "imageLabelingCustom" }
+mlkit-barcode-scanning = { module = "com.google.mlkit:barcode-scanning", version.ref = "barcodeScanning" }
 jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "annotationsVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
