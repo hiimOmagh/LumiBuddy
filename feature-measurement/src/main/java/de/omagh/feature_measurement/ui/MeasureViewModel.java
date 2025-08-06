@@ -211,6 +211,13 @@ public class MeasureViewModel extends AndroidViewModel {
     }
 
     /**
+     * Returns the confidence threshold used by the lamp identifier.
+     */
+    public float getMlThreshold() {
+        return lampIdentifier.getThreshold();
+    }
+
+    /**
      * LiveData for the current calibration factor in PPFD/lux.
      */
     public LiveData<Float> getCalibrationFactor() {

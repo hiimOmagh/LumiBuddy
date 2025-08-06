@@ -65,7 +65,7 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.guava)
-    implementation(libs.androidx.activity)
+    implementation(libs.activity)
     implementation(libs.appcompat)
     implementation(libs.work.runtime)
     annotationProcessor(libs.dagger.compiler)

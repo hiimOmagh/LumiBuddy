@@ -2,7 +2,6 @@ package de.omagh.feature_measurement.ui;
 
 import android.Manifest;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import javax.inject.Inject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
@@ -344,24 +346,37 @@ public class MeasureFragment extends Fragment {
                                         String warning = analysis[1];
 
                                         if (mViewModel.isMlFeaturesEnabled()) {
-                                            Bitmap sample = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-                                            sample.eraseColor(Color.rgb((int) Math.min(255, meanR), (int) Math.min(255, meanG), (int) Math.min(255, meanB)));
-                                            Toast.makeText(getContext(), R.string.calibrating, Toast.LENGTH_SHORT).show();
-                                            mViewModel.identifyLamp(sample)
-                                                    .observe(getViewLifecycleOwner(), preds -> {
-                                                        if (preds == null) {
-                                                            Toast.makeText(getContext(), R.string.ml_inference_error, Toast.LENGTH_LONG).show();
-                                                            return;
-                                                        }
-                                                        LampIdentifier.Prediction top = preds.isEmpty() ? null : preds.get(0);
-                                                        Timber.tag("MeasureFragment").d(
-                                                                "Lamp identifier result=%s conf=%.2f",
-                                                                top != null ? top.getLabel() : null,
-                                                                top != null ? top.getConfidence() : 0f);
-                                                        if (top == null || top.getLabel() == null) {
-                                                            Toast.makeText(getContext(), R.string.ml_low_confidence, Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
+                                            Bitmap frame = cameraPreview.getBitmap();
+                                            if (frame != null) {
+                                                int size = Math.min(frame.getWidth(), frame.getHeight());
+                                                int x = (frame.getWidth() - size) / 2;
+                                                int y = (frame.getHeight() - size) / 2;
+                                                Bitmap cropped = Bitmap.createBitmap(frame, x, y, size, size);
+                                                Bitmap resized = Bitmap.createScaledBitmap(cropped, 224, 224, true);
+                                                Toast.makeText(getContext(), R.string.calibrating, Toast.LENGTH_SHORT).show();
+                                                mViewModel.identifyLamp(resized)
+                                                        .observe(getViewLifecycleOwner(), preds -> {
+                                                            if (preds == null) {
+                                                                Toast.makeText(getContext(), R.string.ml_inference_error, Toast.LENGTH_LONG).show();
+                                                                return;
+                                                            }
+                                                            float threshold = mViewModel.getMlThreshold();
+                                                            List<LampIdentifier.Prediction> filtered = new ArrayList<>();
+                                                            for (LampIdentifier.Prediction p : preds) {
+                                                                if (p.getConfidence() >= threshold) {
+                                                                    filtered.add(p);
+                                                                }
+                                                            }
+                                                            LampIdentifier.Prediction top = filtered.isEmpty() ? null : filtered.get(0);
+                                                            Timber.tag("MeasureFragment").d(
+                                                                    "Lamp identifier result=%s conf=%.2f",
+                                                                    top != null ? top.getLabel() : null,
+                                                                    top != null ? top.getConfidence() : 0f);
+                                                            if (top == null) {
+                                                                Toast.makeText(getContext(), R.string.ml_low_confidence, Toast.LENGTH_SHORT).show();
+                                                            }
+                                                        });
+                                            }
                                         }
 
                                         int index = lampTypeStringToIndex(lampSuggestion);

@@ -54,11 +54,11 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.ext.junit)
     testImplementation(libs.androidx.test.core)
-    testImplementation(libs.fragment.testing)
+    testImplementation(libs.androidx.fragment.testing)
     testImplementation(libs.mockito.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.androidx.test.core)
-    androidTestImplementation(libs.fragment.testing)
+    androidTestImplementation(libs.androidx.fragment.testing)
     androidTestImplementation(libs.mockito.core)
     androidTestImplementation(libs.espresso.core)
 }
