@@ -55,7 +55,9 @@ public class OnDevicePlantClassifier implements PlantClassifier {
         }
     }
 
-    /** Release model resources. */
+    /**
+     * Release model resources.
+     */
     public void close() {
         closed = true;
         interpreter.close();
@@ -67,7 +69,7 @@ public class OnDevicePlantClassifier implements PlantClassifier {
         }
         executor.shutdown();
     }
-    
+
     @Override
     public void classify(Bitmap bitmap) {
         executor.execute(() -> {

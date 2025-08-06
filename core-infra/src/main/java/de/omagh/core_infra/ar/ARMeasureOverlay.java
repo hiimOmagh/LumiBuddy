@@ -38,14 +38,14 @@ public class ARMeasureOverlay implements AROverlayRenderer {
     private ViewRenderable viewRenderable;
     private TextView textView;
 
+    public ARMeasureOverlay(HeatmapOverlayView view) {
+        this.overlayView = view;
+    }
+
     private void showToast(int resId) {
         if (overlayView != null) {
             Toast.makeText(overlayView.getContext(), resId, Toast.LENGTH_LONG).show();
         }
-    }
-    
-    public ARMeasureOverlay(HeatmapOverlayView view) {
-        this.overlayView = view;
     }
 
     /**

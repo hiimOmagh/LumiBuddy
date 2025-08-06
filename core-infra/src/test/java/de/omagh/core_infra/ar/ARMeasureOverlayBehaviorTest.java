@@ -28,14 +28,22 @@ import de.omagh.core_domain.model.Measurement;
  * Additional tests for {@link ARMeasureOverlay} covering error handling and cleanup.
  */
 public class ARMeasureOverlayBehaviorTest {
-    @Mock HeatmapOverlayView overlayView;
-    @Mock ArSceneView sceneView;
-    @Mock Session session;
-    @Mock Frame frame;
-    @Mock Anchor anchor;
-    @Mock AnchorNode anchorNode;
-    @Mock ViewRenderable renderable;
-    @Mock Scene scene;
+    @Mock
+    HeatmapOverlayView overlayView;
+    @Mock
+    ArSceneView sceneView;
+    @Mock
+    Session session;
+    @Mock
+    Frame frame;
+    @Mock
+    Anchor anchor;
+    @Mock
+    AnchorNode anchorNode;
+    @Mock
+    ViewRenderable renderable;
+    @Mock
+    Scene scene;
 
     private AutoCloseable mocks;
     private ARMeasureOverlay overlay;
@@ -48,8 +56,15 @@ public class ARMeasureOverlayBehaviorTest {
         when(sceneView.getArFrame()).thenReturn(frame);
         when(session.createAnchor(any(Pose.class))).thenReturn(anchor);
         overlay = new ARMeasureOverlay(overlayView) {
-            @Override protected ArSceneView createSceneView(Context c) { return sceneView; }
-            @Override protected ViewRenderable buildViewRenderable(android.view.View v) { return renderable; }
+            @Override
+            protected ArSceneView createSceneView(Context c) {
+                return sceneView;
+            }
+
+            @Override
+            protected ViewRenderable buildViewRenderable(android.view.View v) {
+                return renderable;
+            }
         };
     }
 

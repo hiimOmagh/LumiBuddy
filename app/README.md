@@ -15,7 +15,8 @@ Dagger is bootstrapped here by creating the `CoreComponent` and the app specific
 - **`MainActivity`** – Hosts the navigation graph and bottom navigation bar.
 - **`OnboardingActivity`** – Handles first run permissions and anonymous sign in.
 - **`PrivacyPolicyActivity`** – Displays the privacy policy content.
-- `MainActivity` implements `SettingsHost` to open the privacy policy when `SettingsFragment` requests it.
+- `MainActivity` implements `SettingsHost` to open the privacy policy when `SettingsFragment`
+  requests it.
 
 ## Dependencies
 

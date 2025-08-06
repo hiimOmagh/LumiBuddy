@@ -74,11 +74,20 @@ public class CameraLightMeterXTest {
     public void analyzeFrame_invokesCallback() throws Exception {
         CountDownLatch latch = new CountDownLatch(1);
         CameraLightMeterX.ResultCallback cb = new CameraLightMeterX.ResultCallback() {
-            @Override public void onResult(float r, float g, float b) { latch.countDown(); }
-            @Override public void onError(String m) { }
+            @Override
+            public void onResult(float r, float g, float b) {
+                latch.countDown();
+            }
+
+            @Override
+            public void onError(String m) {
+            }
         };
         final ImageAnalysis.Analyzer[] holder = new ImageAnalysis.Analyzer[1];
-        doAnswer(inv -> { holder[0] = inv.getArgument(1); return null; })
+        doAnswer(inv -> {
+            holder[0] = inv.getArgument(1);
+            return null;
+        })
                 .when(imageAnalysis).setAnalyzer(any(), any());
         meter.startCamera();
         meter.analyzeFrame(cb);
@@ -94,7 +103,9 @@ public class CameraLightMeterXTest {
             f = CameraLightMeterX.class.getDeclaredField("imageAnalysis");
             f.setAccessible(true);
             f.set(meter, null);
-        } catch (Exception e) { throw new RuntimeException(e); }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         CameraLightMeterX.ResultCallback cb = mock(CameraLightMeterX.ResultCallback.class);
         meter.analyzeFrame(cb);
         verify(cb).onError(any());
@@ -103,32 +114,68 @@ public class CameraLightMeterXTest {
     // helper image with all zeros
     private ImageProxy createImage() {
         return new ImageProxy() {
-            @Override public int getWidth() { return 2; }
-            @Override public int getHeight() { return 2; }
-            @Override public int getFormat() { return ImageFormat.YUV_420_888; }
+            @Override
+            public int getWidth() {
+                return 2;
+            }
+
+            @Override
+            public int getHeight() {
+                return 2;
+            }
+
+            @Override
+            public int getFormat() {
+                return ImageFormat.YUV_420_888;
+            }
+
             @NonNull
-            @Override public ImageProxy.PlaneProxy[] getPlanes() {
+            @Override
+            public ImageProxy.PlaneProxy[] getPlanes() {
                 ByteBuffer buf = ByteBuffer.allocate(4);
                 PlaneProxy plane = new PlaneProxy() {
                     @NonNull
-                    @Override public ByteBuffer getBuffer() { return buf; }
-                    @Override public int getPixelStride() { return 1; }
-                    @Override public int getRowStride() { return 2; }
+                    @Override
+                    public ByteBuffer getBuffer() {
+                        return buf;
+                    }
+
+                    @Override
+                    public int getPixelStride() {
+                        return 1;
+                    }
+
+                    @Override
+                    public int getRowStride() {
+                        return 2;
+                    }
                 };
                 return new PlaneProxy[]{plane, plane, plane};
             }
-            @Override public void close() {}
+
+            @Override
+            public void close() {
+            }
+
             @Override
             @androidx.camera.core.ExperimentalGetImage
-            public Image getImage() { return null; }
+            public Image getImage() {
+                return null;
+            }
 
             @NonNull
-            @Override public Rect getCropRect() { return new Rect(); }
+            @Override
+            public Rect getCropRect() {
+                return new Rect();
+            }
 
-            @Override public void setCropRect(Rect rect) { }
+            @Override
+            public void setCropRect(Rect rect) {
+            }
 
             @NonNull
-            @Override public ImageInfo getImageInfo() {
+            @Override
+            public ImageInfo getImageInfo() {
                 return new ImageInfo() {
                     @NonNull
                     @Override
@@ -136,13 +183,20 @@ public class CameraLightMeterXTest {
                         return androidx.camera.core.impl.TagBundle.emptyBundle();
                     }
 
-                    @Override public long getTimestamp() { return 0; }
+                    @Override
+                    public long getTimestamp() {
+                        return 0;
+                    }
 
-                    @Override public int getRotationDegrees() { return 0; }
+                    @Override
+                    public int getRotationDegrees() {
+                        return 0;
+                    }
 
                     @Override
                     public void populateExifData(
-                            @NonNull androidx.camera.core.impl.utils.ExifData.Builder exifBuilder) {}
+                            @NonNull androidx.camera.core.impl.utils.ExifData.Builder exifBuilder) {
+                    }
                 };
             }
         };
@@ -150,7 +204,10 @@ public class CameraLightMeterXTest {
 
     // subclass exposing executor
     private static class TestMeter extends CameraLightMeterX {
-        TestMeter(Activity a, PreviewView p) { super(a, p); }
+        TestMeter(Activity a, PreviewView p) {
+            super(a, p);
+        }
+
         ExecutorService getExecutor() throws Exception {
             java.lang.reflect.Field f = CameraLightMeterX.class.getDeclaredField("cameraExecutor");
             f.setAccessible(true);

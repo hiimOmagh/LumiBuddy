@@ -2,10 +2,13 @@ package de.omagh.feature_measurement.ui.widget;
 
 import android.app.Dialog;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import android.widget.ProgressBar;
 import android.widget.FrameLayout;
 

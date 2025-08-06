@@ -134,6 +134,7 @@ public class ArHeatmapActivity extends AppCompatActivity {
         if (cameraMeter != null) cameraMeter.stopCamera();
         if (luxDisposable != null && !luxDisposable.isDisposed()) {
             luxDisposable.dispose();
-        }super.onDestroy();
+        }
+        super.onDestroy();
     }
 }

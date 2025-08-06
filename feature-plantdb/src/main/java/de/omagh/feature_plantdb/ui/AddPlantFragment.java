@@ -20,6 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
 import de.omagh.feature_plantdb.ui.widget.LoadingDialogFragment;
 
 import javax.inject.Inject;
@@ -280,7 +281,7 @@ public class AddPlantFragment extends Fragment {
      */
 
     private void identifyWithApi(Bitmap bmp) {
-if (progressDialog != null) progressDialog.dismiss();
+        if (progressDialog != null) progressDialog.dismiss();
         progressDialog = new LoadingDialogFragment();
         progressDialog.show(getChildFragmentManager(), "identify");
         addPlantViewModel.identifyPlantWithApi(bmp);

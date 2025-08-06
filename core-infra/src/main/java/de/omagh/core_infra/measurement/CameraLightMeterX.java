@@ -29,7 +29,9 @@ public class CameraLightMeterX {
     private final Activity activity;
     private final PreviewView previewView;
     private ImageAnalysis imageAnalysis;
-    /** Executor running image analysis off the UI thread. */
+    /**
+     * Executor running image analysis off the UI thread.
+     */
     private ExecutorService cameraExecutor;
     private boolean analysisActive = false;
 

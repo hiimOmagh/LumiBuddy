@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import java.lang.reflect.Method;
 
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
@@ -42,7 +43,7 @@ public class AddPlantViewModelFullTest {
 
     @Test
     public void identifyPlantWithApi_usesLocalResult_whenHighConfidence() {
-        Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
+        Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f)));
         when(identifier.identifyPlant(bmp)).thenReturn(local);
         vm.identifyPlantWithApi(bmp);
@@ -52,10 +53,10 @@ public class AddPlantViewModelFullTest {
 
     @Test
     public void identifyPlantWithApi_fallsBackToApi_whenUnknown() {
-        Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
+        Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction(null, 0.1f)));
         when(identifier.identifyPlant(bmp)).thenReturn(local);
-        MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("c","s"));
+        MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("c", "s"));
         when(repository.identifyPlant(bmp)).thenReturn(remote);
         vm.identifyPlantWithApi(bmp);
         verify(repository).identifyPlant(bmp);

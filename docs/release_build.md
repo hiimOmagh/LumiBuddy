@@ -15,7 +15,8 @@ Store the resulting `lumibuddy.jks` somewhere safe and keep a backup.
 
 ## 2. Configure `gradle.properties`
 
-Add your signing credentials to `gradle.properties` (either in the project root or in `~/.gradle/gradle.properties`).
+Add your signing credentials to `gradle.properties` (either in the project root or in
+`~/.gradle/gradle.properties`).
 Do **not** commit passwords or keystore files to version control.
 
 ```properties

@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
+
 import android.content.Context;
 
 import java.util.ArrayList;

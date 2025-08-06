@@ -47,7 +47,7 @@ public class AddPlantFragmentTest {
     public void setup() {
         identifier = mock(PlantIdentifier.class);
         repo = mock(PlantIdRepository.class);
-        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose",0.9f))));
+        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f))));
     }
 
     @After
@@ -58,7 +58,7 @@ public class AddPlantFragmentTest {
     public void progressDialog_dismissedAfterIdentification() {
         FragmentScenario<TestFragment> scenario = FragmentScenario.launchInContainer(TestFragment.class);
         scenario.onFragment(f -> {
-            Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
+            Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             try {
                 java.lang.reflect.Method m = AddPlantFragment.class.getDeclaredMethod("identifyWithApi", Bitmap.class);
                 m.setAccessible(true);
@@ -74,15 +74,17 @@ public class AddPlantFragmentTest {
         });
     }
 
-    /** Test fragment bypassing Dagger injection. */
+    /**
+     * Test fragment bypassing Dagger injection.
+     */
     public static class TestFragment extends AddPlantFragment {
         @Override
         public void onAttach(@NonNull Context context) {
             super.onAttach(context);
             this.viewModelFactory =
-            new PlantDbViewModelFactory(() -> null,
-                    () -> new AddPlantViewModel(new android.app.Application(), identifier, repo),
-                    () -> null);
+                    new PlantDbViewModelFactory(() -> null,
+                            () -> new AddPlantViewModel(new android.app.Application(), identifier, repo),
+                            () -> null);
         }
     }
 }

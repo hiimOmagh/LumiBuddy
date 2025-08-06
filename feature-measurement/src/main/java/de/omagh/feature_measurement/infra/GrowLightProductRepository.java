@@ -52,6 +52,7 @@ public class GrowLightProductRepository {
                     loadFromCache();
                 }
             }
+
             @Override
             public void onFailure(Call<List<GrowLightProduct>> call, Throwable t) {
                 loadFromCache();

@@ -1,6 +1,7 @@
 # Manual QA Guide
 
-This checklist outlines the key device-based validation steps for LumiBuddy. Run through these tasks on a physical device before releases.
+This checklist outlines the key device-based validation steps for LumiBuddy. Run through these tasks
+on a physical device before releases.
 
 ## Calibration UI
 
@@ -35,8 +36,11 @@ This checklist outlines the key device-based validation steps for LumiBuddy. Run
 
 ## General Stability
 
-- Rotate the device and ensure each screen retains state when returning from the rotated orientation.
-- Put the app in the background and then bring it to the foreground to verify it restores to the last screen.
-- Deny a previously granted permission and re-enable it to confirm the feature recovers without a restart.
+- Rotate the device and ensure each screen retains state when returning from the rotated
+  orientation.
+- Put the app in the background and then bring it to the foreground to verify it restores to the
+  last screen.
+- Deny a previously granted permission and re-enable it to confirm the feature recovers without a
+  restart.
 - Watch logcat or LeakCanary for signs of memory leaks or crashes during extended use.
-Following this checklist helps catch regressions before release.
+  Following this checklist helps catch regressions before release.

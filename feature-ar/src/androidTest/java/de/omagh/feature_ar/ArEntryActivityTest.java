@@ -64,22 +64,29 @@ public class ArEntryActivityTest {
     @Test
     public void onDestroy_cleansGrowthTracker() {
         try (ActivityScenario<TestActivity> scenario = ActivityScenario.launch(TestActivity.class)) {
-            scenario.onActivity(a -> {});
+            scenario.onActivity(a -> {
+            });
             scenario.moveToState(androidx.lifecycle.Lifecycle.State.DESTROYED);
             Mockito.verify(TestActivity.tracker).cleanup();
         }
     }
 
-    /** Test activity overriding dependency setup. */
+    /**
+     * Test activity overriding dependency setup.
+     */
     public static class TestActivity extends ArEntryActivity {
         static ARGrowthTracker tracker = Mockito.mock(ARGrowthTracker.class);
 
         // Skip AR checks to allow running on devices without ARCore.
         @Override
-        protected boolean checkArSupport() { return true; }
+        protected boolean checkArSupport() {
+            return true;
+        }
 
         @Override
-        protected boolean requestArInstall() { return true; }
+        protected boolean requestArInstall() {
+            return true;
+        }
 
         @Override
         protected ARGrowthTracker createGrowthTracker(com.google.ar.sceneform.ux.ArFragment fragment) {

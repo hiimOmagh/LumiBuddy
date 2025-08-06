@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.widget.Toast;
+
 import de.omagh.feature_measurement.ui.widget.LoadingDialogFragment;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -41,7 +42,9 @@ public class CalibrationWizardFragment extends Fragment {
     private Button nextBtn;
     private LightCorrectionRepository correctionStore;
     private MeasurementRepository measurementRepository;
-    /** Dialog shown while recording calibration samples. */
+    /**
+     * Dialog shown while recording calibration samples.
+     */
     private LoadingDialogFragment progressDialog;
 
     @Override

@@ -41,21 +41,6 @@ public class LampIdentifier {
     private final ImageProcessor processor;
     private boolean closed = false;
 
-    private String[] loadLabels(Context context, String assetPath) {
-        List<String> lines = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(context.getAssets().open(assetPath), StandardCharsets.UTF_8))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                lines.add(line);
-            }
-        } catch (Exception e) {
-            Timber.e(e, "Failed to load labels");
-            return new String[]{"Unknown"};
-        }
-        return lines.toArray(new String[0]);
-    }
-
     public LampIdentifier(Context context, ModelProvider provider) {
         this(context, provider, "lamp_labels.txt", DEFAULT_THRESHOLD);
     }
@@ -101,7 +86,24 @@ public class LampIdentifier {
                 .build();
     }
 
-    /** Release model resources. */
+    private String[] loadLabels(Context context, String assetPath) {
+        List<String> lines = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(context.getAssets().open(assetPath), StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line);
+            }
+        } catch (Exception e) {
+            Timber.e(e, "Failed to load labels");
+            return new String[]{"Unknown"};
+        }
+        return lines.toArray(new String[0]);
+    }
+
+    /**
+     * Release model resources.
+     */
     public void close() {
         closed = true;
         interpreter.close();
@@ -115,7 +117,7 @@ public class LampIdentifier {
         image.load(bitmap);
         image = processor.process(image);
 
-        TensorBuffer output = TensorBuffer.createFixedSize(new int[] {1, labels.length}, DataType.FLOAT32);
+        TensorBuffer output = TensorBuffer.createFixedSize(new int[]{1, labels.length}, DataType.FLOAT32);
 
         float[][] out = new float[1][labels.length];
         try {
@@ -129,7 +131,7 @@ public class LampIdentifier {
         }
         int[] idx = IntStream.range(0, labels.length)
                 .boxed()
-                .sorted((a,b) -> Float.compare(out[0][b], out[0][a]))
+                .sorted((a, b) -> Float.compare(out[0][b], out[0][a]))
                 .mapToInt(Integer::intValue)
                 .toArray();
         int topK = Math.min(3, labels.length);
@@ -146,7 +148,7 @@ public class LampIdentifier {
     public LiveData<List<Prediction>> identifyLamp(Bitmap bitmap) {
         MutableLiveData<List<Prediction>> result = new MutableLiveData<>();
         executor.execute(() -> {
-        if (closed) {
+            if (closed) {
                 result.postValue(null);
                 return;
             }

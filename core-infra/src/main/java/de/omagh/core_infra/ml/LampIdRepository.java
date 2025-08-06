@@ -2,6 +2,7 @@ package de.omagh.core_infra.ml;
 
 import android.graphics.Bitmap;
 import android.util.Base64;
+
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.ExecutorService;
 

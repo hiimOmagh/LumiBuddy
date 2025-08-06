@@ -48,7 +48,8 @@ public class OnDevicePlantClassifierTest {
         InputStream is = new ByteArrayInputStream(new byte[4]);
         Context spy = spy(context);
         doReturn(is).when(spy).getAssets().open(anyString());
-        try (MockedConstruction<Interpreter> cons = Mockito.mockConstruction(Interpreter.class, (m,c)->{})) {
+        try (MockedConstruction<Interpreter> cons = Mockito.mockConstruction(Interpreter.class, (m, c) -> {
+        })) {
             OnDevicePlantClassifier c = new OnDevicePlantClassifier(spy);
             Interpreter intr = cons.constructed().get(0);
             doAnswer(inv -> {
@@ -56,7 +57,7 @@ public class OnDevicePlantClassifierTest {
                 out[0][0] = 0.6f;
                 return null;
             }).when(intr).run(any(), any());
-            c.classify(Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888));
+            c.classify(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
             assertEquals("Known", c.getLastResult());
             c.close();
             verify(intr).close();

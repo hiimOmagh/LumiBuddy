@@ -22,7 +22,7 @@ import javax.inject.Provider;
  * Module that provides ML and repository classes for the Plant database feature.
  * Used by {@link PlantDbComponent} and depends on core infrastructure for
  * executors and application context.
- * **/
+ **/
 @Module
 public class PlantDbModule {
     @Provides

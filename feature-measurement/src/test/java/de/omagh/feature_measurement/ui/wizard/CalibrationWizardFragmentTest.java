@@ -33,6 +33,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 import de.omagh.core_data.repository.LightCorrectionRepository;
 import de.omagh.core_domain.repository.MeasurementRepository;
+
 import com.google.android.material.R;
 
 /**
@@ -142,7 +143,9 @@ public class CalibrationWizardFragmentTest {
         verify(measurementRepository).stopALS();
     }
 
-    /** Test fragment subclass overriding dependency injection. */
+    /**
+     * Test fragment subclass overriding dependency injection.
+     */
     public static class TestFragment extends CalibrationWizardFragment {
         private LightCorrectionRepository store;
         private MeasurementRepository repo;

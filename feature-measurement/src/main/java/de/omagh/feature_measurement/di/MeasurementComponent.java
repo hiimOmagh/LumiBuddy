@@ -18,9 +18,11 @@ import de.omagh.feature_measurement.ui.LampProfilesViewModelFactory;
 @Component(dependencies = CoreComponent.class, modules = MeasurementModule.class)
 public interface MeasurementComponent {
     void inject(MeasureFragment fragment);
+
     void inject(LampProfilesFragment fragment);
 
     MeasureViewModelFactory viewModelFactory();
+
     LampProfilesViewModelFactory lampProfilesViewModelFactory();
 
     @Component.Factory

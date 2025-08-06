@@ -180,7 +180,8 @@ build());
 
 ## 📋 Manual QA
 
-See [docs/manual_qa.md](docs/manual_qa.md) for device-based validation steps covering calibration, AR overlays, ML recognition, navigation flows and permission handling.
+See [docs/manual_qa.md](docs/manual_qa.md) for device-based validation steps covering calibration,
+AR overlays, ML recognition, navigation flows and permission handling.
 
 ---
 
@@ -252,7 +253,8 @@ This downloads the `*.tflite` model files required to build the app.
 
 ### Release Builds
 
-See [docs/release_build.md](docs/release_build.md) for instructions on creating a keystore, configuring signing properties, generating a signed build and distributing it to testers.
+See [docs/release_build.md](docs/release_build.md) for instructions on creating a keystore,
+configuring signing properties, generating a signed build and distributing it to testers.
 
 ### Recommended Emulator Profiles
 

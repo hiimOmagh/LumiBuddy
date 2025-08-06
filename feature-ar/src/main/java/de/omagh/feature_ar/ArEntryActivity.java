@@ -52,16 +52,12 @@ import io.reactivex.rxjava3.disposables.Disposable;
 public class ArEntryActivity extends AppCompatActivity {
 
     public static final String EXTRA_PLANT_ID = "plant_id";
-
+    private final CompositeDisposable disposables = new CompositeDisposable();
     @Inject
     MeasurementRepository measurementRepository;
     @Inject
     DiaryRepository diaryRepository;
-
     private AppExecutors executors;
-
-    private final CompositeDisposable disposables = new CompositeDisposable();
-
     private String plantId;
 
     private ArFragment arFragment;

@@ -49,7 +49,7 @@ public class LampIdentifierTest {
         when(provider.loadModel(context)).thenReturn(model);
         try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
             LampIdentifier id = new LampIdentifier(context, provider, 0.2f);
-            Bitmap bmp = Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888);
+            Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
             Interpreter interpreter = construction.constructed().get(0);
             doAnswer(inv -> {
                 float[][] out = (float[][]) inv.getArguments()[1];

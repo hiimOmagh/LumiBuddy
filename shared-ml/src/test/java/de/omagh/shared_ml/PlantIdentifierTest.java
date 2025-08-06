@@ -56,7 +56,7 @@ public class PlantIdentifierTest {
                 return null;
             }).when(interp).run(any(), any());
             CountDownLatch latch = new CountDownLatch(1);
-            id.identifyPlant(Bitmap.createBitmap(1,1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
+            id.identifyPlant(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
                 assertEquals("Plant", p.get(0).getLabel());
                 latch.countDown();
             });

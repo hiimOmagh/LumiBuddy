@@ -9,4 +9,5 @@ Run builds with:
 ./gradlew --warning-mode=all
 ```
 
-Running with `--warning-mode=all` prints any deprecation messages so upgrade steps are clear. Refer to [release_build.md](release_build.md) for signing and distribution instructions.
+Running with `--warning-mode=all` prints any deprecation messages so upgrade steps are clear. Refer
+to [release_build.md](release_build.md) for signing and distribution instructions.
