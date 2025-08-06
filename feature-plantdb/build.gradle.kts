@@ -56,6 +56,8 @@ dependencies {
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.fragment.testing)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.espresso.core)
+    testImplementation(libs.navigation.testing)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.androidx.fragment.testing)

@@ -71,6 +71,26 @@ public class PlantInfoRepositoryTest {
         assertEquals("Sci", result.get(0).getScientificName());
     }
 
+    @Test
+    public void searchSpecies_fallsBackToCacheOnFailure() throws Exception {
+        List<PlantSpeciesEntity> cached = Collections.singletonList(new PlantSpeciesEntity("1", "Sci", "Com", ""));
+        Mockito.when(apiService.searchSpecies(Mockito.eq("tom"), Mockito.anyString())).thenReturn(speciesCall);
+        Mockito.doAnswer(invocation -> {
+            Callback<List<PlantSpeciesEntity>> cb = invocation.getArgument(0);
+            cb.onFailure(speciesCall, new RuntimeException("net"));
+            return null;
+        }).when(speciesCall).enqueue(Mockito.any());
+        Mockito.when(speciesDao.search("%tom%"))
+                .thenReturn(cached);
+
+        LiveData<List<PlantSpeciesEntity>> live = repository.searchSpecies("tom");
+        List<PlantSpeciesEntity> result = getValue(live);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Sci", result.get(0).getScientificName());
+    }
+
     private <T> T getValue(LiveData<T> live) throws InterruptedException {
         final Object[] data = new Object[1];
         CountDownLatch latch = new CountDownLatch(1);
