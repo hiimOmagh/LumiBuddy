@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import org.jspecify.annotations.NonNull;
@@ -13,10 +12,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.omagh.shared_ml.PlantIdentifier;
-import de.omagh.shared_ml.PlantIdentifier.Prediction;
-import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
+import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 import de.omagh.core_domain.model.PlantCareProfile;
 import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
@@ -32,27 +29,23 @@ import de.omagh.feature_plantdb.di.PlantDbComponent;
 public class PlantDetailViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Plant> plant = new MutableLiveData<>();
-    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
+    private LiveData<PlantIdSuggestion> identificationResult = new MutableLiveData<>();
     @Inject
     PlantInfoRepository infoRepository;
     @Inject
     PlantRepository repository;
     @Inject
-    PlantIdentifier plantIdentifier;
-    @Inject
-    PlantIdRepository plantIdRepository;
+    PlantIdentificationUseCase plantIdentificationUseCase;
 
     @Inject
     public PlantDetailViewModel(@NonNull Application application,
                                 PlantInfoRepository infoRepository,
                                 PlantRepository repository,
-                                PlantIdentifier plantIdentifier,
-                                PlantIdRepository plantIdRepository) {
+                                PlantIdentificationUseCase plantIdentificationUseCase) {
         super(application);
         this.infoRepository = infoRepository;
         this.repository = repository;
-        this.plantIdentifier = plantIdentifier;
-        this.plantIdRepository = plantIdRepository;
+        this.plantIdentificationUseCase = plantIdentificationUseCase;
     }
 
 
@@ -111,27 +104,13 @@ public class PlantDetailViewModel extends AndroidViewModel {
     }
 
     public LiveData<PlantIdSuggestion> identifyPlantWithApi(android.graphics.Bitmap bitmap) {
-        identificationResult.setValue(null);
-        LiveData<java.util.List<Prediction>> local = plantIdentifier.identifyPlant(bitmap);
-        identificationResult.addSource(local, prediction -> {
-            identificationResult.removeSource(local);
-            Prediction top = (prediction == null || prediction.isEmpty()) ? null : prediction.get(0);
-            if (top == null || top.getConfidence() < plantIdentifier.getThreshold()) {
-                LiveData<PlantIdSuggestion> remote = plantIdRepository.identifyPlant(bitmap);
-                identificationResult.addSource(remote, suggestion -> {
-                    identificationResult.postValue(suggestion);
-                    identificationResult.removeSource(remote);
-                });
-            } else {
-                identificationResult.postValue(new PlantIdSuggestion(top.getLabel(), top.getLabel()));
-            }
-        });
+        identificationResult = plantIdentificationUseCase.identify(bitmap);
         return identificationResult;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        plantIdentifier.close();
+        plantIdentificationUseCase.close();
     }
 }

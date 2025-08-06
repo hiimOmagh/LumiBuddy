@@ -32,8 +32,8 @@ import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.feature_plantdb.ui.PlantDbViewModelFactory;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
-import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
+import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 
 /**
  * Instrumented tests for {@link AddPlantFragment} verifying progress dialog and permission flows.
@@ -83,7 +83,7 @@ public class AddPlantFragmentTest {
             super.onAttach(context);
             this.viewModelFactory =
                     new PlantDbViewModelFactory(() -> null,
-                            () -> new AddPlantViewModel(new android.app.Application(), identifier, repo),
+                            () -> new AddPlantViewModel(new android.app.Application(), identifier, new PlantIdentificationUseCase(identifier, repo)),
                             () -> null);
         }
     }

@@ -7,6 +7,7 @@ import dagger.Provides;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
+import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.AssetModelProvider;
 import de.omagh.core_domain.util.AppExecutors;
@@ -46,6 +47,13 @@ public class PlantDbModule {
     @Provides
     static PlantIdRepository providePlantIdRepository(AppExecutors executors) {
         return new PlantIdRepository(executors);
+    }
+
+    @Provides
+    static PlantIdentificationUseCase providePlantIdentificationUseCase(
+            PlantIdentifier identifier,
+            PlantIdRepository repository) {
+        return new PlantIdentificationUseCase(identifier, repository);
     }
 
     @Provides

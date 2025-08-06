@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import javax.inject.Inject;
@@ -14,26 +13,26 @@ import javax.inject.Inject;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
-import de.omagh.core_infra.plantdb.PlantIdRepository;
+import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
 
 /**
  * ViewModel for AddPlantFragment handling photo identification via Plant.id.
  */
 public class AddPlantViewModel extends AndroidViewModel {
-    private final MediatorLiveData<PlantIdSuggestion> identificationResult = new MediatorLiveData<>();
+    private LiveData<PlantIdSuggestion> identificationResult = new MutableLiveData<>();
     @Inject
     PlantIdentifier plantIdentifier;
     @Inject
-    PlantIdRepository plantIdRepository;
+    PlantIdentificationUseCase plantIdentificationUseCase;
 
     @Inject
     public AddPlantViewModel(@NonNull Application application,
                              PlantIdentifier plantIdentifier,
-                             PlantIdRepository plantIdRepository) {
+                             PlantIdentificationUseCase plantIdentificationUseCase) {
         super(application);
         this.plantIdentifier = plantIdentifier;
-        this.plantIdRepository = plantIdRepository;
+        this.plantIdentificationUseCase = plantIdentificationUseCase;
     }
 
     public LiveData<PlantIdSuggestion> getIdentificationResult() {
@@ -50,28 +49,13 @@ public class AddPlantViewModel extends AndroidViewModel {
      * exposes a label when the confidence exceeds its threshold.
      */
     public LiveData<PlantIdSuggestion> identifyPlantWithApi(Bitmap bitmap) {
-        identificationResult.setValue(null);
-        LiveData<java.util.List<Prediction>> local = plantIdentifier.identifyPlant(bitmap);
-        identificationResult.addSource(local, prediction -> {
-            identificationResult.removeSource(local);
-            Prediction top = (prediction == null || prediction.isEmpty()) ? null : prediction.get(0);
-            if (top == null || top.getConfidence() < plantIdentifier.getThreshold()) {
-                LiveData<PlantIdSuggestion> remote = plantIdRepository.identifyPlant(bitmap);
-                identificationResult.addSource(remote, suggestion -> {
-                    identificationResult.postValue(suggestion);
-                    identificationResult.removeSource(remote);
-                });
-            } else {
-                identificationResult.postValue(new PlantIdSuggestion(top.getLabel(), top.getLabel()));
-
-            }
-        });
+        identificationResult = plantIdentificationUseCase.identify(bitmap);
         return identificationResult;
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        plantIdentifier.close();
+        plantIdentificationUseCase.close();
     }
 }

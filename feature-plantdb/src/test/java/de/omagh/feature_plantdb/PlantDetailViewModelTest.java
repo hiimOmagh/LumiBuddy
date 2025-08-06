@@ -18,6 +18,7 @@ import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
+import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +39,8 @@ public class PlantDetailViewModelTest {
     @Mock
     PlantIdRepository idRepo;
 
+    private PlantIdentificationUseCase useCase;
+
     private PlantDetailViewModel vm;
 
     @Before
@@ -49,7 +52,8 @@ public class PlantDetailViewModelTest {
         java.util.List<Prediction> list = java.util.Collections.singletonList(new Prediction("id", 0.9f));
         Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(list));
         Mockito.when(idRepo.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new PlantIdSuggestion("c", "s")));
-        vm = new PlantDetailViewModel(app, infoRepo, repo, identifier, idRepo);
+        useCase = new PlantIdentificationUseCase(identifier, idRepo);
+        vm = new PlantDetailViewModel(app, infoRepo, repo, useCase);
     }
 
     @Test

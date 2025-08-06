@@ -21,6 +21,7 @@ import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
+import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 
 /**
  * Additional tests for {@link AddPlantViewModel} verifying ML/API fallback and cleanup.
@@ -31,6 +32,8 @@ public class AddPlantViewModelFullTest {
     @Mock
     PlantIdRepository repository;
 
+    private PlantIdentificationUseCase useCase;
+
     private AddPlantViewModel vm;
 
     @Before
@@ -38,7 +41,8 @@ public class AddPlantViewModelFullTest {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
         when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f))));
-        vm = new AddPlantViewModel(app, identifier, repository);
+        useCase = new PlantIdentificationUseCase(identifier, repository);
+        vm = new AddPlantViewModel(app, identifier, useCase);
     }
 
     @Test
