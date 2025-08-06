@@ -13,7 +13,7 @@ import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.model.GrowLightProduct;
 import de.omagh.core_data.model.GrowLightProfile;
 import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpeciesEntity;
 import de.omagh.core_data.model.Plant;
 import de.omagh.core_data.model.Task;
 import de.omagh.core_data.model.LightCorrectionEntity;
@@ -23,7 +23,7 @@ import de.omagh.core_data.model.LightCorrectionEntity;
                 Plant.class,
                 DiaryEntry.class,
                 GrowLightProfile.class,
-                PlantSpecies.class,
+                PlantSpeciesEntity.class,
                 PlantCareProfileEntity.class,
                 GrowLightProduct.class,
                 Task.class,

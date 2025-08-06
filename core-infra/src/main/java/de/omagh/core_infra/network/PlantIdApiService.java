@@ -2,7 +2,7 @@ package de.omagh.core_infra.network;
 
 import java.util.List;
 
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpeciesEntity;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Multipart;
@@ -17,5 +17,5 @@ public interface PlantIdApiService {
 
     @Multipart
     @POST("identify")
-    Call<List<PlantSpecies>> identify(@Part MultipartBody.Part image, @Query("api_key") String apiKey);
+    Call<List<PlantSpeciesEntity>> identify(@Part MultipartBody.Part image, @Query("api_key") String apiKey);
 }

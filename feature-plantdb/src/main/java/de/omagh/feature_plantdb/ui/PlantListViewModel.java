@@ -11,8 +11,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantCareProfile;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_data.plantdb.PlantDatabaseManager;
 import de.omagh.core_data.plantdb.PlantInfo;
 import de.omagh.core_data.repository.PlantRepository;
@@ -118,7 +118,7 @@ public class PlantListViewModel extends AndroidViewModel {
         return infoRepository.searchSpecies(name);
     }
 
-    public LiveData<List<PlantCareProfileEntity>> getCareProfile(String speciesId) {
+    public LiveData<List<PlantCareProfile>> getCareProfile(String speciesId) {
         return infoRepository.getCareProfile(speciesId);
     }
 

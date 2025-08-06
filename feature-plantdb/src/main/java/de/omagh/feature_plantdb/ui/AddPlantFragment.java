@@ -34,7 +34,7 @@ import com.google.android.material.button.MaterialButton;
 
 import java.util.UUID;
 
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_plantdb.R;
 import de.omagh.core_infra.ar.DummyARGrowthTracker;
@@ -264,7 +264,7 @@ public class AddPlantFragment extends Fragment {
             new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                     .setTitle("Select Plant")
                     .setItems(names, (d, which) -> {
-                        PlantSpecies s = results.get(which);
+                        PlantSpeciesEntity s = results.get(which);
                         nameInput.setText(s.getCommonName());
                         typeInput.setText(s.getScientificName());
                     })

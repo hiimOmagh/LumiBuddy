@@ -17,8 +17,8 @@ import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
-import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantCareProfile;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
@@ -98,11 +98,11 @@ public class PlantDetailViewModel extends AndroidViewModel {
      * @param name plant name
      * @return matching PlantInfo or null
      */
-    public LiveData<List<PlantSpecies>> searchSpecies(String name) {
+    public LiveData<List<PlantSpeciesEntity>> searchSpecies(String name) {
         return infoRepository.searchSpecies(name);
     }
 
-    public LiveData<List<PlantCareProfileEntity>> getCareProfile(String speciesId) {
+    public LiveData<List<PlantCareProfile>> getCareProfile(String speciesId) {
         return infoRepository.getCareProfile(speciesId);
     }
 

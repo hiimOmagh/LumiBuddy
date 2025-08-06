@@ -32,8 +32,8 @@ import android.content.Context;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantCareProfile;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
 import de.omagh.feature_plantdb.R;
@@ -164,12 +164,12 @@ public class PlantDetailFragment extends Fragment {
                     Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                PlantCareProfileEntity p = profiles.get(0);
+                PlantCareProfile p = profiles.get(0);
                 String msg = getString(R.string.plant_care_summary,
                         p.getWateringIntervalDays(),
                         p.getMinTemperature(), p.getMaxTemperature(),
                         p.getMinHumidity(), p.getMaxHumidity(),
-                        p.getSunlightRequirement());
+                        "");
                 android.widget.TextView tv = new android.widget.TextView(requireContext());
                 tv.setText(msg);
                 com.google.android.material.bottomsheet.BottomSheetDialog dialog =
@@ -232,7 +232,7 @@ public class PlantDetailFragment extends Fragment {
                 new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                         .setTitle("Select Plant")
                         .setItems(names, (d, which) -> {
-                            PlantSpecies info = results.get(which);
+                            PlantSpeciesEntity info = results.get(which);
                             dialogNameInput.setText(info.getCommonName());
                             dialogTypeInput.setText(info.getScientificName());
                         })

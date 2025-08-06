@@ -8,8 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.test.core.app.ApplicationProvider;
 
-import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantCareProfile;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_data.repository.PlantRepository;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_infra.plantdb.PlantInfoRepository;
@@ -75,7 +75,7 @@ public class PlantDetailViewModelTest {
 
     @Test
     public void getCareProfile_returnsRepoLiveData() {
-        LiveData<List<PlantCareProfileEntity>> live = vm.getCareProfile("id");
+        LiveData<List<PlantCareProfile>> live = vm.getCareProfile("id");
         assertSame(live, infoRepo.getCareProfile("id"));
     }
 

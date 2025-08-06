@@ -7,16 +7,16 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpeciesEntity;
 
 /**
  * DAO for plant species cached locally.
  */
 @Dao
 public interface PlantSpeciesDao {
-    @Query("SELECT * FROM plant_species WHERE commonName LIKE :query OR scientificName LIKE :query")
-    List<PlantSpecies> search(String query);
+    @Query("SELECT * FROM PlantSpeciesEntity WHERE commonName LIKE :query OR scientificName LIKE :query")
+    List<PlantSpeciesEntity> search(String query);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(List<PlantSpecies> species);
+    void insertAll(List<PlantSpeciesEntity> species);
 }

@@ -36,7 +36,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.feature_plantdb.R;
 import de.omagh.core_data.plantdb.PlantInfo;
@@ -147,7 +147,7 @@ public class PlantListFragment extends Fragment {
             String query = nameInput.getText().toString().trim();
             viewModel.searchPlantInfo(query).observe(getViewLifecycleOwner(), results -> {
                 if (results != null && !results.isEmpty()) {
-                    PlantSpecies species = results.get(0);
+                    PlantSpeciesEntity species = results.get(0);
                     nameInput.setText(species.getCommonName());
                     typeInput.setText(species.getScientificName());
                     Toast.makeText(getContext(), "Loaded profile for " + species.getCommonName(), Toast.LENGTH_SHORT).show();

@@ -3,7 +3,7 @@ package de.omagh.core_infra.network;
 import java.util.List;
 
 import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpeciesEntity;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -19,7 +19,7 @@ public interface PlantApiService {
      * Requires API key passed via query parameter.
      */
     @GET("plants/search")
-    Call<List<PlantSpecies>> searchSpecies(@Query("q") String query, @Query("token") String apiKey);
+    Call<List<PlantSpeciesEntity>> searchSpecies(@Query("q") String query, @Query("token") String apiKey);
 
     /**
      * Fetch detailed care profile for the given species ID.

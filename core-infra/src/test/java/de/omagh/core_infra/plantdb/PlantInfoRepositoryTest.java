@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData;
 
 import de.omagh.core_data.db.PlantCareProfileDao;
 import de.omagh.core_data.db.PlantSpeciesDao;
-import de.omagh.core_data.model.PlantCareProfileEntity;
-import de.omagh.core_data.model.PlantSpecies;
+import de.omagh.core_data.model.PlantSpeciesEntity;
+import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_infra.network.PlantApiService;
 import de.omagh.core_infra.network.PlantIdApiService;
 
@@ -37,7 +37,7 @@ public class PlantInfoRepositoryTest {
     @Mock
     PlantCareProfileDao profileDao;
     @Mock
-    Call<List<PlantSpecies>> speciesCall;
+    Call<List<PlantSpeciesEntity>> speciesCall;
 
     private PlantInfoRepository repository;
 
@@ -50,15 +50,15 @@ public class PlantInfoRepositoryTest {
 
     @Test
     public void searchSpecies_returnsApiResultsAndCaches() throws Exception {
-        List<PlantSpecies> list = Collections.singletonList(new PlantSpecies("1", "Sci", "Com", ""));
-        Response<List<PlantSpecies>> resp = Response.success(list);
+        List<PlantSpeciesEntity> list = Collections.singletonList(new PlantSpeciesEntity("1", "Sci", "Com", ""));
+        Response<List<PlantSpeciesEntity>> resp = Response.success(list);
         Mockito.when(apiService.searchSpecies(Mockito.eq("tom"), Mockito.anyString())).thenReturn(speciesCall);
         Mockito.when(speciesCall.execute()).thenReturn(resp);
         Mockito.when(speciesDao.search("%tom%"))
                 .thenReturn(Collections.emptyList());
 
-        LiveData<List<PlantSpecies>> live = repository.searchSpecies("tom");
-        List<PlantSpecies> result = getValue(live);
+        LiveData<List<PlantSpeciesEntity>> live = repository.searchSpecies("tom");
+        List<PlantSpeciesEntity> result = getValue(live);
 
         Mockito.verify(speciesDao).insertAll(list);
         assertNotNull(result);

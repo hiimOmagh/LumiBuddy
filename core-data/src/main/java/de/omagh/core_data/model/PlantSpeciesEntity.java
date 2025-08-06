@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
  * Entity representing basic plant species information fetched from remote APIs.
  */
 @Entity(tableName = "plant_species")
-public class PlantSpecies {
+public class PlantSpeciesEntity {
     @PrimaryKey
     @NonNull
     private final String id;
@@ -16,7 +16,7 @@ public class PlantSpecies {
     private final String commonName;
     private final String imageUrl;
 
-    public PlantSpecies(@NonNull String id, String scientificName, String commonName, String imageUrl) {
+    public PlantSpeciesEntity(@NonNull String id, String scientificName, String commonName, String imageUrl) {
         this.id = id;
         this.scientificName = scientificName;
         this.commonName = commonName;
