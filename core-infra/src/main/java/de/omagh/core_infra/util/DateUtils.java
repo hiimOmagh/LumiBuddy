@@ -1,5 +1,7 @@
 package de.omagh.core_infra.util;
 
+import androidx.annotation.VisibleForTesting;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,10 +12,10 @@ import java.util.concurrent.TimeUnit;
  * Simple date helper utilities used across modules.
  *
  * <p>These methods are intentionally lightweight so they can run on both
- * Android and JVM unit tests.  If more advanced functionality is required
+ * Android and JVM unit tests. If more advanced functionality is required
  * consider migrating to java.time once minSdk allows.</p>
  */
-@SuppressWarnings("unused")
+@VisibleForTesting
 public class DateUtils {
     private static final String ISO_DATE = "yyyy-MM-dd";
 

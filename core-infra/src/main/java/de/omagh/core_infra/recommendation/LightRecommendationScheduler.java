@@ -58,9 +58,4 @@ public class LightRecommendationScheduler {
             }
         });
     }
-
-    @SuppressWarnings("unused")
-    public void shutdown() {
-        executor.shutdown();
-    }
 }

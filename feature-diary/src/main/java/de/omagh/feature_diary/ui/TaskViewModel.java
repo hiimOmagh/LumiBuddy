@@ -26,25 +26,14 @@ import de.omagh.feature_diary.di.DiaryComponent;
  */
 public class TaskViewModel extends AndroidViewModel {
 
-    @Inject
-    TaskRepository repository;
+    private final TaskRepository repository;
 
     private final MutableLiveData<List<Task>> tasks = new MutableLiveData<>();
 
-    public TaskViewModel(@NonNull Application application) {
-        this(application, null);
-    }
-
-    // Constructor for tests allowing repository injection
+    @Inject
     public TaskViewModel(@NonNull Application application, TaskRepository repository) {
         super(application);
-        if (repository != null) {
-            this.repository = repository;
-        } else {
-            CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-            DiaryComponent component = DaggerDiaryComponent.factory().create(core);
-            component.inject(this);
-        }
+        this.repository = repository;
     }
 
     public LiveData<List<Task>> getPendingTasks(String plantId) {
@@ -82,11 +71,13 @@ public class TaskViewModel extends AndroidViewModel {
         }
 
         @androidx.annotation.NonNull
-        @SuppressWarnings("unchecked")
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             if (modelClass.isAssignableFrom(TaskViewModel.class)) {
-                return (T) new TaskViewModel(application, null);
+                CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
+                DiaryComponent component = DaggerDiaryComponent.factory().create(core);
+                TaskRepository repository = component.taskRepository();
+                return (T) new TaskViewModel(application, repository);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

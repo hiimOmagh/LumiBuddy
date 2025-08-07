@@ -15,8 +15,8 @@ import javax.inject.Inject;
 
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_data.repository.DiaryRepository;
-import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.di.CoreComponent;
+import de.omagh.core_infra.di.CoreComponentProvider;
 import de.omagh.core_infra.sync.DiarySyncManager;
 import de.omagh.core_infra.sync.SyncStatus;
 import de.omagh.feature_diary.di.DaggerDiaryComponent;
@@ -27,33 +27,24 @@ import de.omagh.feature_diary.di.DiaryComponent;
  */
 public class DiaryViewModel extends AndroidViewModel {
 
-    @Inject
-    DiaryRepository repository;
-    @Inject
-    DiarySyncManager syncManager;
-    private LiveData<SyncStatus> syncStatus;
-    private LiveData<String> syncError;
+    private final DiaryRepository repository;
+    private final DiarySyncManager syncManager;
+    private final LiveData<SyncStatus> syncStatus;
+    private final LiveData<String> syncError;
 
-    public DiaryViewModel(@NonNull Application application) {
-        this(application, null, null);
-    }
-
-    // Constructor for tests allowing repository injection
-    public DiaryViewModel(@NonNull Application application, DiaryRepository repository, DiarySyncManager syncManager) {
+    @Inject
+    public DiaryViewModel(@NonNull Application application,
+                          DiaryRepository repository,
+                          DiarySyncManager syncManager) {
         super(application);
-        if (repository != null) {
-            this.repository = repository;
-        } else {
-            CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
-            DiaryComponent component = DaggerDiaryComponent.factory().create(core);
-            component.inject(this);
-        }
-        if (syncManager != null) {
-            this.syncManager = syncManager;
-        }
+        this.repository = repository;
+        this.syncManager = syncManager;
         if (this.syncManager != null) {
             syncStatus = this.syncManager.getSyncStatus();
             syncError = this.syncManager.getError();
+        } else {
+            syncStatus = null;
+            syncError = null;
         }
     }
 
@@ -118,7 +109,11 @@ public class DiaryViewModel extends AndroidViewModel {
         @Override
         public <T extends ViewModel> T create(Class<T> modelClass) {
             if (modelClass.isAssignableFrom(DiaryViewModel.class)) {
-                return (T) new DiaryViewModel(application, null, null);
+                CoreComponent core = ((CoreComponentProvider) application).getCoreComponent();
+                DiaryComponent component = DaggerDiaryComponent.factory().create(core);
+                DiaryRepository repository = component.diaryRepository();
+                DiarySyncManager syncManager = component.diarySyncManager();
+                return (T) new DiaryViewModel(application, repository, syncManager);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

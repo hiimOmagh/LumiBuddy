@@ -60,7 +60,6 @@ public class WateringScheduler {
         });
     }
 
-    @SuppressWarnings("unused")
     public void shutdown() {
         executor.shutdown();
     }

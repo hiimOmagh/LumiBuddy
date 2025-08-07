@@ -276,7 +276,6 @@ public class RecommendationEngine {
         return new float[]{dli, ppfd};
     }
 
-    @SuppressWarnings("unused")
     public void shutdown() {
         executor.shutdown();
     }
