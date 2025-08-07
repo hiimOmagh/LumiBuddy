@@ -9,4 +9,5 @@ dependencies {
     implementation(libs.rxjava3)
     implementation(libs.dagger)
     // no AndroidX here—just pure-Java dependencies if needed
+    testImplementation(libs.junit)
 }
