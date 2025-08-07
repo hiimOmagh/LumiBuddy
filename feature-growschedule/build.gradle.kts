@@ -38,6 +38,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.androidx.lifecycle.livedata)
+    implementation(libs.recyclerview)
+    implementation(libs.activity)
     implementation(libs.material)
     implementation(libs.work.runtime)
     implementation(libs.androidx.navigation.runtime.android)
