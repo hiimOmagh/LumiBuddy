@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -28,6 +29,8 @@ public class TaskViewModel extends AndroidViewModel {
     @Inject
     TaskRepository repository;
 
+    private final MutableLiveData<List<Task>> tasks = new MutableLiveData<>();
+
     public TaskViewModel(@NonNull Application application) {
         this(application, null);
     }
@@ -46,6 +49,14 @@ public class TaskViewModel extends AndroidViewModel {
 
     public LiveData<List<Task>> getPendingTasks(String plantId) {
         return repository.getTasksForPlant(plantId);
+    }
+
+    public LiveData<List<Task>> getTasks() {
+        return tasks;
+    }
+
+    public void loadTasks() {
+        tasks.setValue(repository.getPendingTasksSync());
     }
 
     public void completeTask(Task task) {
