@@ -47,9 +47,10 @@ dependencies {
     implementation(project(":core-domain"))
     implementation(libs.dagger)
     annotationProcessor(libs.dagger.compiler)
-    implementation(libs.androidx.test.core)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.test.core)
 }

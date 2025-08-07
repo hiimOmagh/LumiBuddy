@@ -45,9 +45,10 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation(libs.androidx.test.core)
     testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.androidx.test.core)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation(libs.androidx.test.core)
 }
