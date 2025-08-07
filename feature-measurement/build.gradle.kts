@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.rxjava3)
     implementation(libs.rxandroid3)
     implementation(libs.appcompat)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.material)
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)

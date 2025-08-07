@@ -67,6 +67,8 @@ dependencies {
     implementation(libs.guava)
     implementation(libs.activity)
     implementation(libs.appcompat)
+    implementation(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.livedata)
     implementation(libs.work.runtime)
     annotationProcessor(libs.dagger.compiler)
     implementation(libs.rxjava3)

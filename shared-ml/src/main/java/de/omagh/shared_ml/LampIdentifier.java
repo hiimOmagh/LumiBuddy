@@ -11,9 +11,12 @@ import org.tensorflow.lite.Interpreter;
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.ImageProcessor;
 import org.tensorflow.lite.support.image.TensorImage;
-import org.tensorflow.lite.support.image.ops.NormalizeOp;
+//import org.tensorflow.lite.support.image.ops.NormalizeOp;
 import org.tensorflow.lite.support.image.ops.ResizeOp;
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
+import org.tensorflow.lite.support.common.TensorOperator;
+import org.tensorflow.lite.support.common.Operator;
+import org.tensorflow.lite.support.common.ops.NormalizeOp;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
