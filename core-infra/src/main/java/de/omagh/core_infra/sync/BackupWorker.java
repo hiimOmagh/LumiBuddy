@@ -33,7 +33,11 @@ public class BackupWorker extends Worker {
         Context context = getApplicationContext();
         AppDatabase db = AppDatabase.getInstance(context);
         PlantRepository plantRepo = new PlantRepository(context, db, new AppExecutors(), new WorkSyncScheduler(context));
-        List<Plant> plants = plantRepo.getAllPlantsSync();
+        de.omagh.core_data.repository.Result<List<Plant>> res = plantRepo.getAllPlantsSync();
+        List<Plant> plants = res.getData();
+        if (!res.isSuccess()) {
+            android.util.Log.e("BackupWorker", "getAllPlantsSync failed", res.getError());
+        }
         if (plants == null) plants = new ArrayList<>();
         WorkManager wm = WorkManager.getInstance(context);
         for (Plant p : plants) {

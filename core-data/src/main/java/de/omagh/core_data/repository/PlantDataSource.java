@@ -14,9 +14,9 @@ public interface PlantDataSource {
 
     LiveData<Plant> getPlant(String id);
 
-    void insertPlant(Plant plant);
+    LiveData<Result<Void>> insertPlant(Plant plant);
 
-    void updatePlant(Plant plant);
+    LiveData<Result<Void>> updatePlant(Plant plant);
 
-    void deletePlant(Plant plant);
+    LiveData<Result<Void>> deletePlant(Plant plant);
 }

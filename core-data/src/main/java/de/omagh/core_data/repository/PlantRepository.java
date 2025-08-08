@@ -1,8 +1,10 @@
 package de.omagh.core_data.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
 import java.util.List;
@@ -20,6 +22,7 @@ import de.omagh.core_domain.model.Plant;
  * {@link de.omagh.core_domain.sync.SyncScheduler}.
  */
 public class PlantRepository implements PlantDataSource {
+    private static final String TAG = "PlantRepository";
     private final PlantDao plantDao;
     private final ExecutorService executor;
     private final de.omagh.core_domain.sync.SyncScheduler scheduler;
@@ -46,33 +49,70 @@ public class PlantRepository implements PlantDataSource {
         });
     }
 
-    public List<Plant> getAllPlantsSync() {
-        List<de.omagh.core_data.model.Plant> entities = plantDao.getAllSync();
-        if (entities == null) return null;
-        java.util.List<Plant> result = new java.util.ArrayList<>();
-        for (de.omagh.core_data.model.Plant p : entities) {
-            result.add(toDomain(p));
+    public Result<List<Plant>> getAllPlantsSync() {
+        try {
+            List<de.omagh.core_data.model.Plant> entities = plantDao.getAllSync();
+            if (entities == null) {
+                return Result.success(null);
+            }
+            java.util.List<Plant> result = new java.util.ArrayList<>();
+            for (de.omagh.core_data.model.Plant p : entities) {
+                result.add(toDomain(p));
+            }
+            return Result.success(result);
+        } catch (Exception e) {
+            Log.e(TAG, "getAllPlantsSync failed", e);
+            return Result.error(null, e);
         }
-        return result;
     }
 
     public LiveData<Plant> getPlant(String id) {
         return Transformations.map(plantDao.getById(id), this::toDomain);
     }
 
-    public void insertPlant(Plant plant) {
-        executor.execute(() -> plantDao.insert(toEntity(plant)));
-        scheduler.scheduleDaily();
+    public LiveData<Result<Void>> insertPlant(Plant plant) {
+        MutableLiveData<Result<Void>> live = new MutableLiveData<>();
+        executor.execute(() -> {
+            try {
+                plantDao.insert(toEntity(plant));
+                scheduler.scheduleDaily();
+                live.postValue(Result.success(null));
+            } catch (Exception e) {
+                Log.e(TAG, "insertPlant failed", e);
+                live.postValue(Result.error(null, e));
+            }
+        });
+        return live;
     }
 
-    public void updatePlant(Plant plant) {
-        executor.execute(() -> plantDao.update(toEntity(plant)));
-        scheduler.scheduleDaily();
+    public LiveData<Result<Void>> updatePlant(Plant plant) {
+        MutableLiveData<Result<Void>> live = new MutableLiveData<>();
+        executor.execute(() -> {
+            try {
+                plantDao.update(toEntity(plant));
+                scheduler.scheduleDaily();
+                live.postValue(Result.success(null));
+            } catch (Exception e) {
+                Log.e(TAG, "updatePlant failed", e);
+                live.postValue(Result.error(null, e));
+            }
+        });
+        return live;
     }
 
-    public void deletePlant(Plant plant) {
-        executor.execute(() -> plantDao.delete(toEntity(plant)));
-        scheduler.scheduleDaily();
+    public LiveData<Result<Void>> deletePlant(Plant plant) {
+        MutableLiveData<Result<Void>> live = new MutableLiveData<>();
+        executor.execute(() -> {
+            try {
+                plantDao.delete(toEntity(plant));
+                scheduler.scheduleDaily();
+                live.postValue(Result.success(null));
+            } catch (Exception e) {
+                Log.e(TAG, "deletePlant failed", e);
+                live.postValue(Result.error(null, e));
+            }
+        });
+        return live;
     }
 
     private Plant toDomain(de.omagh.core_data.model.Plant entity) {

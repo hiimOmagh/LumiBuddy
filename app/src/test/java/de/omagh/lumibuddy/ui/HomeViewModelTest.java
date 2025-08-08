@@ -3,6 +3,7 @@ package de.omagh.lumibuddy.ui;
 import androidx.lifecycle.MutableLiveData;
 
 import de.omagh.core_domain.model.Plant;
+import de.omagh.core_data.repository.Result;
 import de.omagh.feature_growschedule.ui.HomeViewModel;
 import de.omagh.core_data.repository.DiaryDataSource;
 import de.omagh.core_data.repository.TaskDataSource;
@@ -100,15 +101,18 @@ public class HomeViewModelTest {
         }
 
         @Override
-        public void insertPlant(Plant plant) {
+        public MutableLiveData<Result<Void>> insertPlant(Plant plant) {
+            return new MutableLiveData<>(Result.success(null));
         }
 
         @Override
-        public void updatePlant(Plant plant) {
+        public MutableLiveData<Result<Void>> updatePlant(Plant plant) {
+            return new MutableLiveData<>(Result.success(null));
         }
 
         @Override
-        public void deletePlant(Plant plant) {
+        public MutableLiveData<Result<Void>> deletePlant(Plant plant) {
+            return new MutableLiveData<>(Result.success(null));
         }
 
         void setPlants(List<Plant> p) {

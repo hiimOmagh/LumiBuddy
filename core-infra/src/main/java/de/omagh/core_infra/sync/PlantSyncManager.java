@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import de.omagh.core_domain.model.Plant;
 import de.omagh.core_domain.util.AppExecutors;
 import de.omagh.core_data.repository.PlantRepository;
+import de.omagh.core_data.repository.Result;
 import de.omagh.core_infra.firebase.FirebaseManager;
 import de.omagh.core_data.repository.firebase.FirestorePlantDao;
 import de.omagh.core_infra.user.SettingsManager;
@@ -56,7 +57,11 @@ public class PlantSyncManager {
                 .addOnSuccessListener(executor, r -> {
                     FirestorePlantDao dao = new FirestorePlantDao(firebaseManager.getUser().getUid());
                     List<Plant> remote = dao.getAllSync();
-                    List<Plant> local = localRepository.getAllPlantsSync();
+                    Result<List<Plant>> localRes = localRepository.getAllPlantsSync();
+                    List<Plant> local = localRes.getData();
+                    if (!localRes.isSuccess()) {
+                        Timber.e(localRes.getError());
+                    }
                     List<Plant> merged = resolveConflicts(local, remote);
 
                     Map<String, Plant> localMap = new HashMap<>();
@@ -114,7 +119,11 @@ public class PlantSyncManager {
                 com.google.android.gms.tasks.Tasks.await(firebaseManager.signInAnonymously());
                 FirestorePlantDao dao = new FirestorePlantDao(firebaseManager.getUser().getUid());
                 List<Plant> remote = dao.getAllSync();
-                List<Plant> local = localRepository.getAllPlantsSync();
+                Result<List<Plant>> localRes = localRepository.getAllPlantsSync();
+                List<Plant> local = localRes.getData();
+                if (!localRes.isSuccess()) {
+                    Timber.e(localRes.getError());
+                }
                 List<Plant> merged = resolveConflicts(local, remote);
 
                 Map<String, Plant> localMap = new HashMap<>();

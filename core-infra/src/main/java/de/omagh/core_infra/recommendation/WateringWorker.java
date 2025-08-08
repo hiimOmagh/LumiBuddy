@@ -46,7 +46,11 @@ public class WateringWorker extends Worker {
         if (ActivityCompat.checkSelfPermission(ctx, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             return Result.success();
         }
-        List<Plant> plants = plantRepository.getAllPlantsSync();
+        de.omagh.core_data.repository.Result<List<Plant>> res = plantRepository.getAllPlantsSync();
+        List<Plant> plants = res.getData();
+        if (!res.isSuccess()) {
+            android.util.Log.e("WateringWorker", "getAllPlantsSync failed", res.getError());
+        }
         if (plants == null) plants = new ArrayList<>();
         scheduler.runDailyCheck(plants);
         return Result.success();
