@@ -19,11 +19,17 @@ module.
 - **LampProfilesFragment** – manage lamp calibration profiles.
 - **CalibrationFragment** – manual calibration screen.
 - **CalibrationWizardFragment** – guided calibration flow.
+- **ArEntryActivity** – entry point for AR mode; sets up ARCore and launches the overlay.
+- **ArHeatmapActivity** – displays the AR heatmap overlay for light measurements.
 
 Each feature module (`feature-measurement`, `feature-plantdb`, `feature-diary`,
 `feature-growschedule`) exposes its own navigation graph which is included in the main app graph.
 Actions between fragments rely on Android Navigation component IDs as defined in their respective
 `res/navigation` XML files.
+
+The AR activities are not part of any Navigation component graph. They are launched via explicit
+`Intent`s (typically from `MeasureFragment` or debug utilities) and simply return to the fragment
+that started them once the AR session ends.
 
 See [Feature Entry Points](feature_entry_points.md) for the list of fragments or activities that
 start each module and the Dagger components that inject them. For an example of requesting a feature
