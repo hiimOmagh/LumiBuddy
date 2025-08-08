@@ -1,0 +1,7 @@
+digraph {
+    rankdir=LR;
+    node [shape=box];
+    "shared-arcore" -> "feature-ar" [label="ArCoreSessionProvider"];
+    "core-infra" -> "feature-ar" [label="ARCoreGrowthTracker"];
+    "core-infra" -> "feature-plantdb" [label="DummyARGrowthTracker"];
+}

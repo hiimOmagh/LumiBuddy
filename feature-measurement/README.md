@@ -8,7 +8,8 @@ metrics.
 ### Entry points
 
 - `MeasureFragment`
-- `CalibrationFragment` (planned)
+- `CalibrationFragment`
+- `LampProfilesFragment`
 
 ### Main classes
 
@@ -18,7 +19,8 @@ metrics.
 
 ### Dagger component
 
-`MeasurementComponent` depends on `CoreComponent` and injects `MeasureFragment`.
+`MeasurementComponent` depends on `CoreComponent`, injects `MeasureFragment` and
+`LampProfilesFragment`, and provides the corresponding ViewModel factories.
 
 ### Dependencies
 
@@ -30,3 +32,6 @@ metrics.
 
 Measurement results can be attached to diary entries or used by the grow schedule feature to verify
 light requirements.
+
+For a diagram of how `MeasurementComponent` connects to other components, see
+[docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md).

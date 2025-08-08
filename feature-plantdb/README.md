@@ -30,3 +30,6 @@ Handles CRUD operations for plant profiles and exposes them to other modules.
 
 Fragments obtain `PlantDbComponent` from the application's `CoreComponent`. Plant IDs are passed via
 the NavController to other features such as the diary and measurement screens.
+
+Refer to [docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md) for how
+`PlantDbComponent` participates in the overall dependency graph.

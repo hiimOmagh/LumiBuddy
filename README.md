@@ -25,16 +25,19 @@ LumiBuddy/
 ├── :core-domain           // Entities and use cases (Java only)
 ├── :core-data             // Room DB, repositories, mappers
 ├── :core-infra            // Android-specific: SensorManager, Camera, DI
-├── :feature-measurement  // Live lux, PPFD, DLI reading UI
-├── :feature-plantdb      // Plant profile management
-├── :feature-diary        // Timeline of care events
-├── :feature-growschedule // Reminder engine (WIP)
+├── :feature-measurement   // Live lux, PPFD, DLI reading UI
+├── :feature-plantdb       // Plant profile management
+├── :feature-diary         // Timeline of care events
+├── :feature-growschedule  // Reminder engine (WIP)
+├── :feature-ar            // ARCore features (WIP)
+├── :shared-arcore         // ARCore integration helpers
+├── :shared-ml             // On-device TFLite inference
+├── :shared-ml-cloud       // Cloud ML model download interfaces
 ```
 
 ### Planned Modules
 
-- `:feature-ar` – ARCore features (WIP)
-- `:shared-ml` – On-device TFLite inference
+- *(none currently)*
 
 For more details on fragment routes, dependency injection and module boundaries see
 [docs/architecture/navigation_overview.md](docs/architecture/navigation_overview.md),
@@ -42,7 +45,9 @@ For more details on fragment routes, dependency injection and module boundaries 
 [docs/architecture/module_map.md](docs/architecture/module_map.md).
 [docs/architecture/class_overview.md](docs/architecture/class_overview.md)
 summarises helper classes like `OnSwipeTouchListener` and the data layer.
-Diagram source files live under `docs/diagrams`.
+Diagram source files live under `docs/diagrams`. Updated diagrams:
+- [dagger_components.dot](docs/diagrams/dagger_components.dot)
+- [module_map.dot](docs/diagrams/module_map.dot)
 
 ---
 

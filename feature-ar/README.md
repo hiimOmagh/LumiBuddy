@@ -25,3 +25,6 @@ Experimental ARCore module that renders a heatmap of light intensity in real tim
 
 Activities build `ArComponent` from the application's `CoreComponent`. Collected measurements may be
 stored via the measurement feature or displayed alongside plant details.
+
+For an overview of how `ArComponent` relates to other components, see
+[docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md).

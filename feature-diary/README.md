@@ -8,7 +8,7 @@ actions for each plant.
 ### Entry points
 
 - `PlantDiaryFragment` – default destination in `diary_nav_graph.xml`
-- `AddDiaryEntryDialog` – dialog for creating new entries
+- `DiaryEntryDialog` – dialog for creating new entries
 
 ### Main classes
 
@@ -30,3 +30,6 @@ actions for each plant.
 
 Other features navigate to `PlantDiaryFragment` using the shared NavController. `DiaryComponent` is
 created when the fragment attaches and obtains `CoreComponent` from the application.
+
+For a complete picture of how `DiaryComponent` fits into the app's dependency graph, see
+[docs/architecture/dagger_graph.md](../docs/architecture/dagger_graph.md).
