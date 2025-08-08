@@ -1,11 +1,13 @@
 package de.omagh.core_infra.plantdb;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -34,6 +36,7 @@ import retrofit2.Response;
  * Uses a network first strategy with Room caching for offline usage.
  */
 public class PlantInfoRepository {
+    private static final String TAG = "PlantInfoRepository";
     private final PlantApiService apiService;
     private final PlantIdApiService idService;
     private final PlantSpeciesDao speciesDao;
@@ -95,10 +98,43 @@ public class PlantInfoRepository {
     }
 
     /**
+     * Simple result wrapper containing data or an error.
+     */
+    public static class Result<T> {
+        private final T data;
+        private final Throwable error;
+
+        private Result(T data, Throwable error) {
+            this.data = data;
+            this.error = error;
+        }
+
+        public static <T> Result<T> success(T data) {
+            return new Result<>(data, null);
+        }
+
+        public static <T> Result<T> error(T data, Throwable error) {
+            return new Result<>(data, error);
+        }
+
+        public T getData() {
+            return data;
+        }
+
+        public Throwable getError() {
+            return error;
+        }
+
+        public boolean isSuccess() {
+            return error == null;
+        }
+    }
+
+    /**
      * Search species from remote API, caching results locally.
      */
-    public LiveData<List<PlantSpeciesEntity>> searchSpecies(String query) {
-        MutableLiveData<List<PlantSpeciesEntity>> liveData = new MutableLiveData<>();
+    public LiveData<Result<List<PlantSpecies>>> searchSpecies(String query) {
+        MutableLiveData<Result<List<PlantSpecies>>> liveData = new MutableLiveData<>();
         Call<List<PlantSpeciesEntity>> call = apiService.searchSpecies(query, apiKey);
         call.enqueue(new Callback<List<PlantSpeciesEntity>>() {
             @Override
@@ -107,22 +143,24 @@ public class PlantInfoRepository {
                     List<PlantSpeciesEntity> species = response.body();
                     executor.execute(() -> {
                         speciesDao.insertAll(species);
-                        liveData.postValue(mapSpeciesList(species));
+                        liveData.postValue(Result.success(mapSpeciesList(species)));
                     });
                 } else {
-                    loadFromCache();
+                    Log.e(TAG, "searchSpecies failed: " + response.code());
+                    loadFromCache(new IOException("HTTP " + response.code()));
                 }
             }
 
             @Override
             public void onFailure(Call<List<PlantSpeciesEntity>> call, Throwable t) {
-                loadFromCache();
+                Log.e(TAG, "searchSpecies network error", t);
+                loadFromCache(t);
             }
 
-            private void loadFromCache() {
+            private void loadFromCache(Throwable error) {
                 executor.execute(() -> {
                     List<PlantSpeciesEntity> cached = speciesDao.search('%' + query + '%');
-                    liveData.postValue(mapSpeciesList(cached));
+                    liveData.postValue(Result.error(mapSpeciesList(cached), error));
                 });
             }
         });
@@ -132,12 +170,12 @@ public class PlantInfoRepository {
     /**
      * Retrieve a full care profile for the given species id.
      */
-    public LiveData<List<PlantCareProfile>> getCareProfile(String speciesId) {
-        MutableLiveData<List<PlantCareProfile>> liveData = new MutableLiveData<>();
+    public LiveData<Result<List<PlantCareProfile>>> getCareProfile(String speciesId) {
+        MutableLiveData<Result<List<PlantCareProfile>>> liveData = new MutableLiveData<>();
         executor.execute(() -> {
             List<PlantCareProfileEntity> cached = profileDao.getBySpecies(speciesId);
             if (!cached.isEmpty()) {
-                liveData.postValue(mapProfileList(cached));
+                liveData.postValue(Result.success(mapProfileList(cached)));
             } else {
                 Call<List<PlantCareProfileEntity>> call = apiService.getCareProfile(speciesId, apiKey);
                 call.enqueue(new Callback<List<PlantCareProfileEntity>>() {
@@ -148,16 +186,18 @@ public class PlantInfoRepository {
                             for (PlantCareProfileEntity p : profiles) p.setLocalId(0);
                             executor.execute(() -> {
                                 profileDao.insertAll(profiles);
-                                liveData.postValue(mapProfileList(profiles));
+                                liveData.postValue(Result.success(mapProfileList(profiles)));
                             });
                         } else {
-                            liveData.postValue(Collections.emptyList());
+                            Log.e(TAG, "getCareProfile failed: " + response.code());
+                            liveData.postValue(Result.error(Collections.emptyList(), new IOException("HTTP " + response.code())));
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<PlantCareProfileEntity>> call, Throwable t) {
-                        liveData.postValue(Collections.emptyList());
+                        Log.e(TAG, "getCareProfile network error", t);
+                        liveData.postValue(Result.error(Collections.emptyList(), t));
                     }
                 });
             }
@@ -168,8 +208,8 @@ public class PlantInfoRepository {
     /**
      * Attempts to identify a plant by common or scientific name.
      */
-    public LiveData<List<PlantSpecies>> identifyPlantFromImage(File image) {
-        MutableLiveData<List<PlantSpecies>> liveData = new MutableLiveData<>();
+    public LiveData<Result<List<PlantSpecies>>> identifyPlantFromImage(File image) {
+        MutableLiveData<Result<List<PlantSpecies>>> liveData = new MutableLiveData<>();
         executor.execute(() -> {
             try {
                 RequestBody req = RequestBody.create(MediaType.parse("image/*"), image);
@@ -179,19 +219,23 @@ public class PlantInfoRepository {
                     @Override
                     public void onResponse(Call<List<PlantSpeciesEntity>> call, Response<List<PlantSpeciesEntity>> response) {
                         if (response.isSuccessful() && response.body() != null) {
-                            liveData.postValue(mapSpeciesList(response.body()));
+                            liveData.postValue(Result.success(mapSpeciesList(response.body())));
                         } else {
-                            liveData.postValue(Collections.emptyList());
+                            Log.e(TAG, "identifyPlantFromImage failed: " + response.code());
+                            liveData.postValue(Result.error(Collections.emptyList(), new IOException("HTTP " + response.code())));
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<PlantSpeciesEntity>> call, Throwable t) {
-                        liveData.postValue(Collections.emptyList());
+                        Log.e(TAG, "identifyPlantFromImage network error", t);
+                        liveData.postValue(Result.error(Collections.emptyList(), t));
                     }
                 });
             } catch (Exception ignored) {
-                liveData.postValue(Collections.emptyList());
+            } catch (IOException e) {
+                Log.e(TAG, "identifyPlantFromImage I/O error", e);
+                liveData.postValue(Result.error(Collections.emptyList(), e));
             }
         });
         return liveData;

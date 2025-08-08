@@ -47,8 +47,10 @@ public class PlantDetailViewModelTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
-        Mockito.when(infoRepo.searchSpecies(Mockito.anyString())).thenReturn(new MutableLiveData<>(Collections.emptyList()));
-        Mockito.when(infoRepo.getCareProfile(Mockito.anyString())).thenReturn(new MutableLiveData<>(Collections.emptyList()));
+        Mockito.when(infoRepo.searchSpecies(Mockito.anyString()))
+                .thenReturn(new MutableLiveData<>(PlantInfoRepository.Result.success(Collections.emptyList())));
+        Mockito.when(infoRepo.getCareProfile(Mockito.anyString()))
+                .thenReturn(new MutableLiveData<>(PlantInfoRepository.Result.success(Collections.emptyList())));
         java.util.List<Prediction> list = java.util.Collections.singletonList(new Prediction("id", 0.9f));
         Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(list));
         Mockito.when(idRepo.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new PlantIdSuggestion("c", "s")));
@@ -73,13 +75,13 @@ public class PlantDetailViewModelTest {
 
     @Test
     public void searchSpecies_returnsRepoLiveData() {
-        LiveData<List<PlantSpecies>> live = vm.searchSpecies("a");
+        LiveData<PlantInfoRepository.Result<List<PlantSpecies>>> live = vm.searchSpecies("a");
         assertSame(live, infoRepo.searchSpecies("a"));
     }
 
     @Test
     public void getCareProfile_returnsRepoLiveData() {
-        LiveData<List<PlantCareProfile>> live = vm.getCareProfile("id");
+        LiveData<PlantInfoRepository.Result<List<PlantCareProfile>>> live = vm.getCareProfile("id");
         assertSame(live, infoRepo.getCareProfile("id"));
     }
 

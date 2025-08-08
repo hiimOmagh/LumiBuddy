@@ -114,11 +114,11 @@ public class PlantListViewModel extends AndroidViewModel {
      * @param name search query
      * @return matching PlantInfo or null
      */
-    public LiveData<List<PlantSpecies>> searchPlantInfo(String name) {
+    public LiveData<PlantInfoRepository.Result<List<PlantSpecies>>> searchPlantInfo(String name) {
         return infoRepository.searchSpecies(name);
     }
 
-    public LiveData<List<PlantCareProfile>> getCareProfile(String speciesId) {
+    public LiveData<PlantInfoRepository.Result<List<PlantCareProfile>>> getCareProfile(String speciesId) {
         return infoRepository.getCareProfile(speciesId);
     }
 

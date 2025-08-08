@@ -32,6 +32,8 @@ import android.content.Context;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
+import java.util.List;
+
 import de.omagh.core_domain.model.PlantCareProfile;
 import de.omagh.core_domain.model.PlantSpecies;
 import de.omagh.core_domain.model.Plant;
@@ -159,7 +161,8 @@ public class PlantDetailFragment extends Fragment {
         fetchDetails.setOnClickListener(v -> {
             Plant current = viewModel.getPlant().getValue();
             if (current == null) return;
-            viewModel.getCareProfile(current.getType()).observe(getViewLifecycleOwner(), profiles -> {
+            viewModel.getCareProfile(current.getType()).observe(getViewLifecycleOwner(), result -> {
+                List<PlantCareProfile> profiles = result.getData();
                 if (profiles == null || profiles.isEmpty()) {
                     Toast.makeText(getContext(), "No data", Toast.LENGTH_SHORT).show();
                     return;
@@ -225,14 +228,15 @@ public class PlantDetailFragment extends Fragment {
         searchPlantBtn.setOnClickListener(v -> {
             // Trigger remote species search using the ViewModel
             String query = dialogNameInput.getText().toString().trim();
-            viewModel.searchSpecies(query).observe(getViewLifecycleOwner(), results -> {
+            viewModel.searchSpecies(query).observe(getViewLifecycleOwner(), result -> {
+                List<PlantSpecies> results = result.getData();
                 if (results == null || results.isEmpty()) return;
                 String[] names = new String[results.size()];
                 for (int i = 0; i < results.size(); i++) names[i] = results.get(i).getCommonName();
                 new androidx.appcompat.app.AlertDialog.Builder(requireContext())
                         .setTitle("Select Plant")
                         .setItems(names, (d, which) -> {
-                            PlantSpeciesEntity info = results.get(which);
+                            PlantSpecies info = results.get(which);
                             dialogNameInput.setText(info.getCommonName());
                             dialogTypeInput.setText(info.getScientificName());
                         })

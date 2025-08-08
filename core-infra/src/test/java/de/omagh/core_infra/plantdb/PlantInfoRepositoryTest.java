@@ -62,13 +62,14 @@ public class PlantInfoRepositoryTest {
         Mockito.when(speciesDao.search("%tom%"))
                 .thenReturn(Collections.emptyList());
 
-        LiveData<List<PlantSpeciesEntity>> live = repository.searchSpecies("tom");
-        List<PlantSpeciesEntity> result = getValue(live);
+        LiveData<PlantInfoRepository.Result<List<PlantSpecies>>> live = repository.searchSpecies("tom");
+        PlantInfoRepository.Result<List<PlantSpecies>> result = getValue(live);
 
         Mockito.verify(speciesDao).insertAll(list);
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Sci", result.get(0).getScientificName());
+        assertNotNull(result.getData());
+        assertEquals(1, result.getData().size());
+        assertEquals("Sci", result.getData().get(0).getScientificName());
+        assertTrue(result.isSuccess());
     }
 
     @Test
@@ -83,12 +84,13 @@ public class PlantInfoRepositoryTest {
         Mockito.when(speciesDao.search("%tom%"))
                 .thenReturn(cached);
 
-        LiveData<List<PlantSpeciesEntity>> live = repository.searchSpecies("tom");
-        List<PlantSpeciesEntity> result = getValue(live);
+        LiveData<PlantInfoRepository.Result<List<PlantSpecies>>> live = repository.searchSpecies("tom");
+        PlantInfoRepository.Result<List<PlantSpecies>> result = getValue(live);
 
-        assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Sci", result.get(0).getScientificName());
+        assertNotNull(result.getData());
+        assertEquals(1, result.getData().size());
+        assertEquals("Sci", result.getData().get(0).getScientificName());
+        assertNotNull(result.getError());
     }
 
     private <T> T getValue(LiveData<T> live) throws InterruptedException {

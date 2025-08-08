@@ -34,6 +34,7 @@ import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import de.omagh.core_domain.model.PlantSpecies;
@@ -145,13 +146,17 @@ public class PlantListFragment extends Fragment {
         pickImageBtn.setOnClickListener(v -> imagePickerLauncher.launch("image/*"));
         searchPlantBtn.setOnClickListener(v -> {
             String query = nameInput.getText().toString().trim();
-            viewModel.searchPlantInfo(query).observe(getViewLifecycleOwner(), results -> {
+            viewModel.searchPlantInfo(query).observe(getViewLifecycleOwner(), result -> {
+                List<PlantSpecies> results = result.getData();
                 if (results != null && !results.isEmpty()) {
-                    PlantSpeciesEntity species = results.get(0);
+                    PlantSpecies species = results.get(0);
                     nameInput.setText(species.getCommonName());
                     typeInput.setText(species.getScientificName());
                     Toast.makeText(getContext(), "Loaded profile for " + species.getCommonName(), Toast.LENGTH_SHORT).show();
                     return;
+                }
+                if (result.getError() != null) {
+                    Toast.makeText(getContext(), "Search failed", Toast.LENGTH_SHORT).show();
                 }
 
                 java.util.List<PlantInfo> all = viewModel.getAllPlantInfo();
