@@ -43,14 +43,20 @@ public class LampAutoIdentifier implements AutoCloseable {
      */
     public LiveData<String> identifyLamp(Bitmap bitmap) {
         MutableLiveData<String> result = new MutableLiveData<>();
-        LiveData<List<LampIdentifier.Prediction>> live = classifier.identifyLamp(bitmap);
-        Observer<List<LampIdentifier.Prediction>> observer = new Observer<>() {
+        LiveData<IdentifierResult<List<LampIdentifier.Prediction>>> live = classifier.identifyLamp(bitmap);
+        Observer<IdentifierResult<List<LampIdentifier.Prediction>>> observer = new Observer<>() {
             @Override
-            public void onChanged(List<LampIdentifier.Prediction> preds) {
+            public void onChanged(IdentifierResult<List<LampIdentifier.Prediction>> res) {
                 live.removeObserver(this);
-                if (preds != null && !preds.isEmpty() &&
-                        preds.get(0).getConfidence() >= classifier.getThreshold()) {
-                    result.postValue(preds.get(0).getLabel());
+                if (res instanceof IdentifierResult.Success) {
+                    List<LampIdentifier.Prediction> preds =
+                            ((IdentifierResult.Success<List<LampIdentifier.Prediction>>) res).getValue();
+                    if (preds != null && !preds.isEmpty() &&
+                            preds.get(0).getConfidence() >= classifier.getThreshold()) {
+                        result.postValue(preds.get(0).getLabel());
+                    } else {
+                        scanBarcode(bitmap, result);
+                    }
                 } else {
                     scanBarcode(bitmap, result);
                 }

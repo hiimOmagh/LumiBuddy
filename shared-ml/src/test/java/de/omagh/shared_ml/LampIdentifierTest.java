@@ -58,9 +58,12 @@ public class LampIdentifierTest {
             }).when(interpreter).run(any(), any());
             CountDownLatch latch = new CountDownLatch(1);
             id.identifyLamp(bmp).observeForever(p -> {
-                assertNotNull(p);
-                assertFalse(p.isEmpty());
-                assertEquals("Lamp", p.get(0).getLabel());
+                assertTrue(p instanceof IdentifierResult.Success);
+                java.util.List<LampIdentifier.Prediction> list =
+                        ((IdentifierResult.Success<java.util.List<LampIdentifier.Prediction>>) p).getValue();
+                assertNotNull(list);
+                assertFalse(list.isEmpty());
+                assertEquals("Lamp", list.get(0).getLabel());
                 latch.countDown();
             });
             assertTrue(latch.await(1, TimeUnit.SECONDS));

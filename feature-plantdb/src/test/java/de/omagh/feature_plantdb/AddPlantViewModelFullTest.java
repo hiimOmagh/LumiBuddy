@@ -19,6 +19,7 @@ import java.lang.reflect.Method;
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
+import de.omagh.shared_ml.IdentifierResult;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
@@ -40,7 +41,8 @@ public class AddPlantViewModelFullTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
-        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f))));
+        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(
+                new IdentifierResult.Success<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f)))));
         useCase = new PlantIdentificationUseCase(identifier, repository);
         vm = new AddPlantViewModel(app, identifier, useCase);
     }
@@ -48,7 +50,8 @@ public class AddPlantViewModelFullTest {
     @Test
     public void identifyPlantWithApi_usesLocalResult_whenHighConfidence() {
         Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f)));
+        MutableLiveData<IdentifierResult<java.util.List<Prediction>>> local = new MutableLiveData<>(
+                new IdentifierResult.Success<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f))));
         when(identifier.identifyPlant(bmp)).thenReturn(local);
         vm.identifyPlantWithApi(bmp);
         assertEquals("rose", vm.getIdentificationResult().getValue().getCommonName());
@@ -58,7 +61,8 @@ public class AddPlantViewModelFullTest {
     @Test
     public void identifyPlantWithApi_fallsBackToApi_whenUnknown() {
         Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
-        MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction(null, 0.1f)));
+        MutableLiveData<IdentifierResult<java.util.List<Prediction>>> local = new MutableLiveData<>(
+                new IdentifierResult.Success<>(java.util.Collections.singletonList(new Prediction(null, 0.1f))));
         when(identifier.identifyPlant(bmp)).thenReturn(local);
         MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("c", "s"));
         when(repository.identifyPlant(bmp)).thenReturn(remote);

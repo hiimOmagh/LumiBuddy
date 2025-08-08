@@ -18,6 +18,7 @@ import de.omagh.core_infra.ar.HeatmapOverlayView;
 import de.omagh.core_infra.measurement.CameraLightMeterX;
 import de.omagh.core_infra.measurement.LampProduct;
 import de.omagh.shared_ml.LampIdentifier;
+import de.omagh.shared_ml.IdentifierResult;
 
 /**
  * Handles camera measurement, AR overlay rendering and analysis logic.
@@ -107,8 +108,10 @@ public class MeasurementController {
                             int y = (frame.getHeight() - size) / 2;
                             Bitmap cropped = Bitmap.createBitmap(frame, x, y, size, size);
                             Bitmap resized = Bitmap.createScaledBitmap(cropped, 224, 224, true);
-                            viewModel.identifyLamp(resized).observe(activity, preds -> {
-                                if (preds == null) return;
+                            viewModel.identifyLamp(resized).observe(activity, res -> {
+                                if (!(res instanceof IdentifierResult.Success)) return;
+                                List<LampIdentifier.Prediction> preds =
+                                        ((IdentifierResult.Success<List<LampIdentifier.Prediction>>) res).getValue();
                                 float threshold = viewModel.getMlThreshold();
                                 List<LampIdentifier.Prediction> filtered = new ArrayList<>();
                                 for (LampIdentifier.Prediction p : preds) {

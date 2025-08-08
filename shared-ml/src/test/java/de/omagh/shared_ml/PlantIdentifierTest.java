@@ -59,7 +59,10 @@ public class PlantIdentifierTest {
             }).when(interp).run(any(), any());
             CountDownLatch latch = new CountDownLatch(1);
             id.identifyPlant(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
-                assertEquals("Plant", p.get(0).getLabel());
+                assertTrue(p instanceof IdentifierResult.Success);
+                java.util.List<PlantIdentifier.Prediction> list =
+                        ((IdentifierResult.Success<java.util.List<PlantIdentifier.Prediction>>) p).getValue();
+                assertEquals("Plant", list.get(0).getLabel());
                 latch.countDown();
             });
             assertTrue(latch.await(1, TimeUnit.SECONDS));
@@ -82,7 +85,10 @@ public class PlantIdentifierTest {
             }).when(interp).run(any(), any());
             CountDownLatch latch = new CountDownLatch(1);
             id.identifyPlant(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
-                assertTrue(p.isEmpty());
+                assertTrue(p instanceof IdentifierResult.Success);
+                java.util.List<PlantIdentifier.Prediction> list =
+                        ((IdentifierResult.Success<java.util.List<PlantIdentifier.Prediction>>) p).getValue();
+                assertTrue(list.isEmpty());
                 latch.countDown();
             });
             assertTrue(latch.await(1, TimeUnit.SECONDS));

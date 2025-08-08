@@ -14,7 +14,8 @@ The model is supplied by a `ModelProvider` which abstracts where the
 ```java
 ModelProvider provider = new AssetModelProvider(MlConfig.PLANT_MODEL);
 PlantIdentifier identifier = new PlantIdentifier(context, provider);
-LiveData<java.util.List<PlantIdentifier.Prediction>> result = identifier.identifyPlant(bitmap);
+LiveData<IdentifierResult<java.util.List<PlantIdentifier.Prediction>>> result =
+        identifier.identifyPlant(bitmap);
 ```
 
 Each instance creates its own single-threaded executor. You may also supply
@@ -35,11 +36,12 @@ TensorFlow Lite model, loaded via a `ModelProvider`. The default provider loads
 ```java
 ModelProvider provider = new AssetModelProvider(MlConfig.LAMP_MODEL);
 LampIdentifier identifier = new LampIdentifier(context, provider);
-LiveData<java.util.List<LampIdentifier.Prediction>> result = identifier.identifyLamp(bitmap);
+LiveData<IdentifierResult<java.util.List<LampIdentifier.Prediction>>> result =
+        identifier.identifyLamp(bitmap);
 ```
 
 Like `PlantIdentifier`, a dedicated executor is created per instance unless a
 custom one is provided.
 
 Results return a label only when the confidence exceeds the built‑in threshold. A cloud fallback
-service could be queried when the label is `null` to improve accuracy.
+service could be queried when an {@code Error} result is received to improve accuracy.

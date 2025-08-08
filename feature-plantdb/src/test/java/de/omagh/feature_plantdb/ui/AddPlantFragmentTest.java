@@ -32,6 +32,7 @@ import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.feature_plantdb.ui.PlantDbViewModelFactory;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
+import de.omagh.shared_ml.IdentifierResult;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 
@@ -47,7 +48,8 @@ public class AddPlantFragmentTest {
     public void setup() {
         identifier = mock(PlantIdentifier.class);
         repo = mock(PlantIdRepository.class);
-        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f))));
+        when(identifier.identifyPlant(any())).thenReturn(new MutableLiveData<>(
+                new IdentifierResult.Success<>(java.util.Collections.singletonList(new Prediction("rose", 0.9f)))));
     }
 
     @After

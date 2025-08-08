@@ -29,6 +29,7 @@ import de.omagh.core_data.repository.DiaryRepository;
 import de.omagh.core_data.model.DiaryEntry;
 import de.omagh.core_infra.util.PermissionUtils;
 import de.omagh.shared_ml.LampIdentifier;
+import de.omagh.shared_ml.IdentifierResult;
 import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
@@ -206,7 +207,7 @@ public class MeasureViewModel extends AndroidViewModel {
     /**
      * Performs on-device lamp identification.
      */
-    public LiveData<List<LampIdentifier.Prediction>> identifyLamp(Bitmap bitmap) {
+    public LiveData<IdentifierResult<List<LampIdentifier.Prediction>>> identifyLamp(Bitmap bitmap) {
         return lampIdentifier.identifyLamp(bitmap);
     }
 

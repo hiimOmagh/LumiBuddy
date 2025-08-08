@@ -116,7 +116,7 @@ public class LampIdentifier {
         }
     }
 
-    private List<Prediction> run(Bitmap bitmap) {
+    private IdentifierResult<List<Prediction>> run(Bitmap bitmap) {
         TensorImage image = new TensorImage(DataType.FLOAT32);
         image.load(bitmap);
         image = processor.process(image);
@@ -131,7 +131,7 @@ public class LampIdentifier {
             System.arraycopy(arr, 0, out[0], 0, labels.length);
         } catch (Exception e) {
             Timber.e(e, "Inference failed");
-            return null;
+            return new IdentifierResult.Error<>("Inference failed", e);
         }
         int[] idx = IntStream.range(0, labels.length)
                 .boxed()
@@ -143,25 +143,20 @@ public class LampIdentifier {
         for (int i = 0; i < topK; i++) {
             preds.add(new Prediction(labels[idx[i]], out[0][idx[i]]));
         }
-        return preds;
+        return new IdentifierResult.Success<>(preds);
     }
 
     /**
      * Identify the lamp in the given image asynchronously.
      */
-    public LiveData<List<Prediction>> identifyLamp(Bitmap bitmap) {
-        MutableLiveData<List<Prediction>> result = new MutableLiveData<>();
+    public LiveData<IdentifierResult<List<Prediction>>> identifyLamp(Bitmap bitmap) {
+        MutableLiveData<IdentifierResult<List<Prediction>>> result = new MutableLiveData<>();
         executor.execute(() -> {
             if (closed) {
-                result.postValue(null);
+                result.postValue(new IdentifierResult.Error<>("Identifier closed", null));
                 return;
             }
-            List<Prediction> preds = run(bitmap);
-            if (preds == null) {
-                Timber.e("Lamp identifier returned null label");
-                result.postValue(null);
-                return;
-            }
+            IdentifierResult<List<Prediction>> preds = run(bitmap);
             result.postValue(preds);
         });
         return result;

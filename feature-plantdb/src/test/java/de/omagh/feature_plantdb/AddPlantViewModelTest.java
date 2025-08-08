@@ -11,6 +11,7 @@ import androidx.test.core.app.ApplicationProvider;
 import de.omagh.feature_plantdb.ui.AddPlantViewModel;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
+import de.omagh.shared_ml.IdentifierResult;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 
@@ -33,7 +34,8 @@ public class AddPlantViewModelTest {
         MockitoAnnotations.openMocks(this);
         Application app = ApplicationProvider.getApplicationContext();
         java.util.List<Prediction> list = java.util.Collections.singletonList(new Prediction("id", 0.9f));
-        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(list));
+        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(
+                new IdentifierResult.Success<>(list)));
         Mockito.when(useCase.identify(Mockito.any())).thenReturn(new MutableLiveData<>(new PlantIdSuggestion("c", "s")));
         vm = new AddPlantViewModel(app, identifier, useCase);
     }

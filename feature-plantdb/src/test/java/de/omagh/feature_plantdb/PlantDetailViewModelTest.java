@@ -16,6 +16,7 @@ import de.omagh.core_infra.plantdb.PlantInfoRepository;
 import de.omagh.feature_plantdb.ui.PlantDetailViewModel;
 import de.omagh.shared_ml.PlantIdentifier;
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
+import de.omagh.shared_ml.IdentifierResult;
 import de.omagh.core_infra.plantdb.PlantIdRepository;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
@@ -52,7 +53,8 @@ public class PlantDetailViewModelTest {
         Mockito.when(infoRepo.getCareProfile(Mockito.anyString()))
                 .thenReturn(new MutableLiveData<>(PlantInfoRepository.Result.success(Collections.emptyList())));
         java.util.List<Prediction> list = java.util.Collections.singletonList(new Prediction("id", 0.9f));
-        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(list));
+        Mockito.when(identifier.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(
+                new IdentifierResult.Success<>(list)));
         Mockito.when(idRepo.identifyPlant(Mockito.any())).thenReturn(new MutableLiveData<>(new PlantIdSuggestion("c", "s")));
         useCase = new PlantIdentificationUseCase(identifier, idRepo);
         vm = new PlantDetailViewModel(app, infoRepo, repo, useCase);
@@ -88,7 +90,8 @@ public class PlantDetailViewModelTest {
     @Test
     public void identifyPlantWithApi_usesRepositoryWhenUnknown() {
         android.graphics.Bitmap bmp = android.graphics.Bitmap.createBitmap(1, 1, android.graphics.Bitmap.Config.ARGB_8888);
-        MutableLiveData<java.util.List<Prediction>> local = new MutableLiveData<>(java.util.Collections.singletonList(new Prediction(null, 0.1f)));
+        MutableLiveData<IdentifierResult<java.util.List<Prediction>>> local = new MutableLiveData<>(
+                new IdentifierResult.Success<>(java.util.Collections.singletonList(new Prediction(null, 0.1f))));
         Mockito.when(identifier.identifyPlant(bmp)).thenReturn(local);
         MutableLiveData<PlantIdSuggestion> remote = new MutableLiveData<>(new PlantIdSuggestion("rose", "rosa"));
         Mockito.when(idRepo.identifyPlant(bmp)).thenReturn(remote);

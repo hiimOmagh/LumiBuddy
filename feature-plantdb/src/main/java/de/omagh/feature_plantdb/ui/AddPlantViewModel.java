@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import de.omagh.shared_ml.PlantIdentifier.Prediction;
 import de.omagh.shared_ml.PlantIdentifier;
+import de.omagh.shared_ml.IdentifierResult;
 import de.omagh.core_infra.network.plantid.PlantIdSuggestion;
 import de.omagh.core_infra.plantdb.PlantIdentificationUseCase;
 import de.omagh.feature_plantdb.di.PlantDbComponent;
