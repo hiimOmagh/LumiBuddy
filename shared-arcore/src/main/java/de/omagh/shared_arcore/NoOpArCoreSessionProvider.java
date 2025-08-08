@@ -4,12 +4,12 @@ import android.app.Activity;
 import com.google.ar.core.Session;
 
 /**
- * Placeholder implementation used on devices without ARCore.
+ * No-op implementation used on devices that definitively do not support ARCore.
  */
 public class NoOpArCoreSessionProvider implements ArCoreSessionProvider {
     @Override
     public Session createSession(Activity activity) {
-        throw new UnsupportedOperationException("ARCore not available");
+        throw new UnsupportedOperationException("ARCore is not supported on this device");
     }
 
     @Override

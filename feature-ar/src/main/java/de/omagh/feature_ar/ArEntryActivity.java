@@ -180,7 +180,10 @@ public class ArEntryActivity extends AppCompatActivity {
                                     diaryRepository.insert(entry);
                                     Toast.makeText(this, R.string.add_diary_entry, Toast.LENGTH_SHORT).show();
                                 });
-                            }, Timber::e);
+                            }, t -> {
+                                Timber.e(t);
+                                Toast.makeText(this, R.string.lux_read_error, Toast.LENGTH_LONG).show();
+                            });
                     disposables.add(d);
                 })
                 .exceptionally(t -> {
