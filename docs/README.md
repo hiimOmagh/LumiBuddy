@@ -6,8 +6,8 @@ This folder collects guides for building and contributing to LumiBuddy.
 
 - **Architecture** – High level overview of module boundaries, navigation and dependency injection.
   See the [architecture](architecture) directory for articles. Source diagrams are
-  in [diagrams](diagrams), including [Dagger components](diagrams/dagger_components.dot) and
-  the [module map](diagrams/module_map.dot).
+  in [diagrams](diagrams), including the rendered [Dagger components](diagrams/dagger_components.png)
+  and the [module map](diagrams/module_map.dot).
 - **Build notes** – Environment requirements and build tips: [build_notes.md](build_notes.md).
 - **Firebase setup** – Steps to configure Firestore sync: [firebase_setup.md](firebase_setup.md).
 - **Testing** – Unit test patterns and QA workflow: [testing.md](testing.md).

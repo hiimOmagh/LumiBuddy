@@ -35,4 +35,7 @@ Components share the same `CoreComponent` instance, so repositories and managers
 across the app. Feature components are usually created by their host fragments when needed and
 destroyed afterwards.
 
+`shared-ml-cloud` and `shared-arcore` currently provide only library code and expose no Dagger
+components, so they do not appear in this diagram.
+
 Diagram source: [docs/diagrams/dagger_components.dot](../diagrams/dagger_components.dot)
