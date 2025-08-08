@@ -229,6 +229,7 @@ AR overlays, ML recognition, navigation flows and permission handling.
 
 - **JDK 17** (Gradle uses AGP 8.10.1, modules target Java 11)
 - **Android Studio Hedgehog (2023.1.1)** or newer
+- **Firebase project** with Authentication and Firestore enabled (for cloud sync)
 
 ### local.properties
 
@@ -255,6 +256,12 @@ git lfs pull
 ```
 
 This downloads the `*.tflite` model files required to build the app.
+
+### Firebase Setup
+
+LumiBuddy uses Firebase for authentication and data sync. Create a Firebase project and place its
+`google-services.json` in `app/`. Step-by-step instructions are in
+[docs/firebase_setup.md](docs/firebase_setup.md).
 
 ### Build & Run
 
