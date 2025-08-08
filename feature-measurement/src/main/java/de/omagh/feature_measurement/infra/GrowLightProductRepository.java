@@ -2,6 +2,7 @@ package de.omagh.feature_measurement.infra;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import timber.log.Timber;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -21,9 +22,11 @@ import retrofit2.Response;
  * Results are cached in Room for offline access.
  */
 public class GrowLightProductRepository {
+    private static final String TAG = "GrowLightProductRepo";
     private final GrowLightApiService apiService;
     private final GrowLightProductDao productDao;
     private final ExecutorService executor;
+    private final MutableLiveData<Throwable> errorLiveData = new MutableLiveData<>();
     private final String apiKey = BuildConfig.GROW_LIGHT_API_KEY;
 
     @Inject
@@ -33,6 +36,10 @@ public class GrowLightProductRepository {
         this.apiService = apiService;
         this.productDao = productDao;
         this.executor = executor;
+    }
+
+    public LiveData<Throwable> getErrors() {
+        return errorLiveData;
     }
 
     /**
@@ -49,6 +56,8 @@ public class GrowLightProductRepository {
                     executor.execute(() -> productDao.insertAll(products));
                     liveData.postValue(products);
                 } else {
+                    Timber.tag(TAG).e("Request failed with code=%s", response.code());
+                    errorLiveData.postValue(new RuntimeException("Request failed: " + response.code()));
                     loadFromCache();
                 }
             }

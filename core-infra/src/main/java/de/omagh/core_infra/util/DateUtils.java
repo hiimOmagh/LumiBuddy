@@ -1,5 +1,7 @@
 package de.omagh.core_infra.util;
 
+import android.annotation.SuppressLint;
+
 import androidx.annotation.VisibleForTesting;
 
 import java.text.ParseException;
@@ -15,6 +17,7 @@ import java.util.concurrent.TimeUnit;
  * Android and JVM unit tests. If more advanced functionality is required
  * consider migrating to java.time once minSdk allows.</p>
  */
+@SuppressLint("SupportAnnotationUsage")
 @VisibleForTesting
 public class DateUtils {
     private static final String ISO_DATE = "yyyy-MM-dd";
