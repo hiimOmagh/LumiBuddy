@@ -6,4 +6,4 @@ The project is organised into several Gradle modules grouped into **core**, **fe
 ![Module Map](../diagrams/module_map.png)
 
 Each feature module depends on `core-infra` and `core-data` which in turn rely on `core-domain`.
-Some features also depend on each other or on the `shared-ml` helpers.
+Some features also depend on each other or on shared helpers like `shared-ml`, `shared-arcore` or `shared-ml-cloud`.
