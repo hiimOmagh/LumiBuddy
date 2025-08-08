@@ -117,6 +117,18 @@ Diagram source files live under `docs/diagrams`.
 - 📱 **AR Assistant** (light heatmap, growth simulation)
 - 🎛️ **Grow Light Simulator** (distance/PPFD visualization)
 
+## 🌿 Plant Database & Care Recommendations
+
+- AI-assisted plant identification with manual search fallback
+- Species-specific profiles covering optimal light, temperature, humidity and watering needs
+- Diary entries combine measurements, photos and notes for growth tracking
+- Recommendation engine compares logs against plant needs and schedules reminders
+
+## 🔌 Grow Light Product Integration
+
+- Auto-identify lamp brand/model via search or barcode scanning
+- Manual entry of spectrum, wattage and PPFD at distance
+- Per-lamp calibration profiles for accurate measurements
 ---
 
 ## 🧩 Modular DI with Dagger 2
