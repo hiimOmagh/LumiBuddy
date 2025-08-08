@@ -288,15 +288,14 @@ configuring signing properties, generating a signed build and distributing it to
 | Pixel 4        | 30 (Android 11) | Good baseline for sensors and ARCore |
 | 2GB Android Go | 28 (Android 9)  | Low-end performance test             |
 
-### ARCore Device Compatibility
+### ARCore Requirements
 
-Most recent Pixel, Samsung Galaxy, and OnePlus devices support ARCore.
-Check [Google's official list](https://developers.google.com/ar/devices) to verify a specific model.
-On a device, ensure the **Google Play Services for AR** package is installed or run:
+To use the app's AR features:
 
-```bash
-adb shell pm list packages | grep arcore
-```
+- An [ARCore‑compatible device](https://developers.google.com/ar/devices) (e.g., recent Pixel, Samsung Galaxy, or OnePlus models)
+- [Google Play Services for AR](https://play.google.com/store/apps/details?id=com.google.ar.core) installed and up to date
+
+Integration notes will be documented in [`shared-arcore/README.md`](shared-arcore/README.md) as that module expands.
 
 Emulators do not support ARCore-based features.
 
