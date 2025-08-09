@@ -193,6 +193,11 @@ build());
 | Integration | Firebase Test Lab                          | 🚧       |
 | Performance | Android Profiler, LeakCanary               | ✅        |
 
+Recent UI tests also simulate failure paths using mocked dependencies:
+
+- **AddPlantFailureTest** – injects a `PlantIdentificationUseCase` that returns `null` to verify the `identification_failed` toast.
+- **MeasureFragmentErrorTest** – replaces `MeasurementController` with a fake that triggers `onError("test failure")` and checks the corresponding camera error toast.
+
 ---
 
 ## 📋 Manual QA
