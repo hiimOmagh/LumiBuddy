@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -25,22 +26,32 @@ public class DiaryEntryDialog {
         EditText noteInput = dialog.findViewById(R.id.editDiaryNote);
         ImageView imagePreview = dialog.findViewById(R.id.diaryImagePreview);
 
-        new AlertDialog.Builder(context)
+        AlertDialog alert = new AlertDialog.Builder(context)
                 .setTitle(R.string.add_diary_entry)
                 .setView(dialog)
-                .setPositiveButton(R.string.save, (d, which) -> {
-                    DiaryEntry entry = new DiaryEntry(
-                            UUID.randomUUID().toString(),
-                            "",
-                            System.currentTimeMillis(),
-                            noteInput.getText().toString().trim(),
-                            "",
-                            typeSpinner.getSelectedItem().toString()
-                    );
-                    listener.onEntryAdded(entry);
-                })
+                .setPositiveButton(R.string.save, null)
                 .setNegativeButton(android.R.string.cancel, null)
-                .show();
+ .create();
+
+        alert.setOnShowListener(d -> alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String note = noteInput.getText().toString().trim();
+            String eventType = typeSpinner.getSelectedItem() != null ? typeSpinner.getSelectedItem().toString() : "";
+            if (note.isEmpty() || eventType.isEmpty()) {
+                Toast.makeText(context, R.string.diary_entry_validation_error, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            DiaryEntry entry = new DiaryEntry(
+                    UUID.randomUUID().toString(),
+                    "",
+                    System.currentTimeMillis(),
+                    note,
+                    "",
+                    eventType
+            );
+            listener.onEntryAdded(entry);
+            alert.dismiss();
+        }));
+        alert.show();
     }
 
     public static void edit(Context context, DiaryEntry entry, OnEntryEditedListener listener) {
@@ -56,22 +67,32 @@ public class DiaryEntryDialog {
             }
         }
 
-        new AlertDialog.Builder(context)
+        AlertDialog alert = new AlertDialog.Builder(context)
                 .setTitle(R.string.edit_diary_entry)
                 .setView(dialog)
-                .setPositiveButton(R.string.save, (d, w) -> {
-                    DiaryEntry edited = new DiaryEntry(
-                            entry.getId(),
-                            entry.getPlantId(),
-                            System.currentTimeMillis(),
-                            noteInput.getText().toString().trim(),
-                            entry.getImageUri(),
-                            typeSpinner.getSelectedItem().toString()
-                    );
-                    listener.onEntryEdited(edited);
-                })
+                .setPositiveButton(R.string.save, null)
                 .setNegativeButton(android.R.string.cancel, null)
-                .show();
+ .create();
+
+        alert.setOnShowListener(d -> alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            String note = noteInput.getText().toString().trim();
+            String eventType = typeSpinner.getSelectedItem() != null ? typeSpinner.getSelectedItem().toString() : "";
+            if (note.isEmpty() || eventType.isEmpty()) {
+                Toast.makeText(context, R.string.diary_entry_validation_error, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            DiaryEntry edited = new DiaryEntry(
+                    entry.getId(),
+                    entry.getPlantId(),
+                    System.currentTimeMillis(),
+                    note,
+                    entry.getImageUri(),
+                    eventType
+            );
+            listener.onEntryEdited(edited);
+            alert.dismiss();
+        }));
+        alert.show();
     }
 
     public interface OnEntryAddedListener {
