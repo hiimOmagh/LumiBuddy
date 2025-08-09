@@ -95,6 +95,61 @@ public class LampIdentifierTest {
         }
     }
 
+    
+    @Test
+    public void identifyPlant_includesPredictionAtThreshold() throws Exception {
+        ByteBuffer model = ByteBuffer.allocate(4);
+        when(provider.loadModel(context)).thenReturn(model);
+        try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
+            float threshold = 0.7f;
+            PlantIdentifier id = new PlantIdentifier(context, provider, MlConfig.PLANT_LABELS,
+                    MlConfig.PLANT_INPUT_SIZE, threshold);
+            Interpreter interp = construction.constructed().get(0);
+            doAnswer(inv -> {
+                float[][] out = (float[][]) inv.getArguments()[1];
+                out[0][1] = threshold;
+                return null;
+            }).when(interp).run(any(), any());
+            CountDownLatch latch = new CountDownLatch(1);
+            id.identifyPlant(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
+                assertTrue(p instanceof IdentifierResult.Success);
+                java.util.List<PlantIdentifier.Prediction> list =
+                        ((IdentifierResult.Success<java.util.List<PlantIdentifier.Prediction>>) p).getValue();
+                assertEquals("Plant", list.get(0).getLabel());
+                latch.countDown();
+            });
+            assertTrue(latch.await(1, TimeUnit.SECONDS));
+            id.close();
+        }
+    }
+
+    @Test
+    public void identifyPlant_excludesPredictionBelowThreshold() throws Exception {
+        ByteBuffer model = ByteBuffer.allocate(4);
+        when(provider.loadModel(context)).thenReturn(model);
+        try (MockedConstruction<Interpreter> construction = Mockito.mockConstruction(Interpreter.class)) {
+            float threshold = 0.7f;
+            PlantIdentifier id = new PlantIdentifier(context, provider, MlConfig.PLANT_LABELS,
+                    MlConfig.PLANT_INPUT_SIZE, threshold);
+            Interpreter interp = construction.constructed().get(0);
+            doAnswer(inv -> {
+                float[][] out = (float[][]) inv.getArguments()[1];
+                out[0][1] = 0.69f;
+                return null;
+            }).when(interp).run(any(), any());
+            CountDownLatch latch = new CountDownLatch(1);
+            id.identifyPlant(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888)).observeForever(p -> {
+                assertTrue(p instanceof IdentifierResult.Success);
+                java.util.List<PlantIdentifier.Prediction> list =
+                        ((IdentifierResult.Success<java.util.List<PlantIdentifier.Prediction>>) p).getValue();
+                assertTrue(list.isEmpty());
+                latch.countDown();
+            });
+            assertTrue(latch.await(1, TimeUnit.SECONDS));
+            id.close();
+        }
+    }
+
     @Test
     public void close_shutsExecutor() throws Exception {
         ByteBuffer model = ByteBuffer.allocate(4);
