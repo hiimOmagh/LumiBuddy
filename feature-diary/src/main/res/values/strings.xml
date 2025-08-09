@@ -95,6 +95,7 @@
     <string name="enable_ml">Enable ML Features</string>
     <string name="edit_diary_entry">Edit entry</string>
     <string name="delete_diary_entry">Delete this entry?</string>
+    <string name="diary_entry_validation_error">Please enter note and type</string>
 
     <string name="care_reminders">Care Reminders</string>
     <string name="sync_now">Sync Now</string>
